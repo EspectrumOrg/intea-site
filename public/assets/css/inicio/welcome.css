@@ -1,0 +1,172 @@
+:root {
+    --cor-tema: #017373;
+    --cor-fundo: #262626;
+    --cor-branco: #FFFFFF;
+    --cor-preto: #000000;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+}
+
+body {
+    background-color: var(--cor-branco);
+    width: 100vw;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header .logo {
+    width: 150px;
+    margin: 50px 50px ;
+}
+
+.container {
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+    width: 100vw;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 432px;
+}
+
+.form h1 {
+    color: var(--cor-preto);
+    font-size: var(--texto-titulo);
+    margin: 20px 0 0 20px;
+}
+
+.form p {
+    font-size: var(--texto-padrao);
+    margin: 20px 0 30px 0;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid var(--cor-tema);
+    margin-bottom: 25px;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: var(--texto-padrao);
+    font-weight: 500;
+    pointer-events: none;
+    transition: .7s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+    left: 15px;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0 35px 0  5px;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: var(--texto-secundario);
+    color: var(--cor-tema);
+    line-height: 57px;
+}
+
+.btn-login {
+    width: 100%;
+    height: 40px;
+    border-radius: 25px;
+    font-size: var(--texto-padrao);
+    background-color: var(--cor-branco);
+    border: 2px solid var(--cor-tema);
+    color: var(--cor-preto);
+    transition: .7s;
+    cursor: pointer;
+}
+
+.btn-login:hover{
+    color: var(--cor-tema);
+}
+
+.esqueci-senha {
+    margin: 20px 0 0 10px ;
+}
+.esqueci-senha a {
+    text-decoration: none;
+    color: var(--cor-preto);
+    cursor: pointer;
+    transition: .7s;
+}
+
+.esqueci-senha a:hover {
+    color: var(--cor-tema);
+}
+
+.ou { /* - ou - */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+ .ou hr {
+    width: 100px;
+    height: 1px;
+    background-color: var(--cor-fundo);
+    margin: 0 45px;
+}
+
+.ou h2 {
+    font-size: var(--texto-titulo);
+    color: var(--cor-fundo);
+}
+
+.registro p { /* registro */
+    font-size: var(--texto-padrao);
+    text-align: center;
+}
+
+.registro a {
+    text-decoration: underline;
+    color: var(--cor-preto);
+    cursor: pointer;
+    transition: .7s;
+    padding: 2.5px 5px;
+    border-radius: 20px;
+}
+
+.registro a:hover {
+    color: var(--cor-tema);
+}
+
+.botao-registro {
+    width: 100%;
+    height: 40px;
+    border-radius: 25px;
+    font-size: var(--texto-padrao);
+    background-color: var(--cor-tema);
+    color: var(--cor-branco);
+    border: 2px solid var(--cor-tema);
+    transition: .7s;
+    cursor: pointer;
+}
+
+.botao-registro:hover{
+    color: var(--cor-preto);
+    background-color: var(--cor-branco);
+}
