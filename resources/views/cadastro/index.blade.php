@@ -32,6 +32,8 @@
             </button>
 
             <button class="botao-opcao">
+                <a href="{{ route('cadastro.responsavel') }}">Responsavel</a></p>
+
                 Responsável
             </button>
 
