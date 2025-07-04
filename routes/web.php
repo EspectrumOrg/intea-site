@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ComunidadeController;
+use App\Http\Controllers\UsuarioController;
+use App\Models\ProfissionalSaude;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,19 +25,18 @@ Route::get('/cadastro', function () {
     return view('cadastro.index'); // Cadastro de usuário
 })->name('cadastro.index');
 
-
-Route::get('/cadastro/autista', function() {
-    return view('cadastro.create-autista'); // Cadastro de usuário autista
-})->name('cadastro.autista');
-
-Route::get('/cadastro/comunidade', function() {
-    return view('cadastro.create-comunidade'); // Cadastro de usuário da comunidade
-})->name('cadastro.comunidade');
-
-Route::get('/cadastro/psicologo', function() {
-    return view('cadastro.create-psicologo'); // Cadastro de profissional da saúde
-})->name('cadastro.profissional');
-
-Route::get('/cadastro/responsavel', function() {
-    return view('cadastro.create-responsavel'); // Cadastro de responsável
-})->name('cadastro.responsavel');
+// Cadastro de Admin
+Route::get('/cadastro/admin', [UsuarioController::class, 'create'])->name('cadastro.admin');
+Route::post('/cadastro', [UsuarioController::class, 'storeAdmin'])->name('cadastro.store.admin');
+// Cadastro de Autista
+Route::get('/cadastro/autista', [UsuarioController::class, 'create'])->name('cadastro.autista');
+Route::post('/cadastro', [UsuarioController::class, 'storeAutista'])->name('cadastro.store.autista');
+// Cadastro de Comunidade
+Route::get('/cadastro/comunidade', [UsuarioController::class, 'create'])->name('cadastro.comunidade');
+Route::post('/cadastro', [UsuarioController::class, 'storeComunidade'])->name('cadastro.store.comunidade');
+// Cadastro de Profissional de Saúde
+Route::get('/cadastro/profissionalsaude', [UsuarioController::class, 'create'])->name('cadastro.profissionalsaude');
+Route::post('/cadastro', [UsuarioController::class, 'storeProfissionalSaude'])->name('cadastro.store.profissionalsaude');
+// Cadastro de Responsável
+Route::get('/cadastro/responsavel', [UsuarioController::class, 'create'])->name('cadastro.responsavel');
+Route::post('/cadastro', [UsuarioController::class, 'storeResponsavel'])->name('cadastro.store.responsavel');

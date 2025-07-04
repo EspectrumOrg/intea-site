@@ -53,8 +53,11 @@
                 </div>
             </div>
 
-            <form class="form-cadastro" method="" action="">
+            <form class="form-cadastro" method="post" action="{{ route('cadastro.store.profissionalsaude') }}">
                 @csrf
+                <input type="hidden" name="tipo_usuario" value="2"> <!-- Tipo User 4-->
+                <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->
+
                 <div class="page slidepage"> <!-- Início -->
                     <div class="title">Seu Nome:</div>
                     <div class="field">

@@ -53,8 +53,11 @@
                 </div>
             </div>
 
-            <form class="form-cadastro" method="" action="">
+            <form class="form-cadastro" method="post" action="{{ route('cadastro.store.comunidade') }}"> <!-- Formulário -->
                 @csrf
+                <input type="hidden" name="tipo_usuario" value="3"> <!-- Tipo User Comunidade-->
+                <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->
+
                 <div class="page slidepage"> <!-- Início -->
                     <div class="title">Seu Nome:</div>
                     <div class="field">
@@ -103,7 +106,7 @@
 
                     <div class="field">
                         <label>Data de Nascimento *</label>
-                        <input type="date" name="nascimento" required>
+                        <input type="date" name="data_nascimento" required>
                     </div>
 
                     <div class="field">
@@ -144,6 +147,7 @@
                         <label>Confirmar Senha *</label>
                         <input type="password" name="senha_confirmacao" required>
                     </div>
+
                     <div class="field btns"> <!-- btns -->
                         <button type="button" class="prev-3 prev">Anterior</button>
                         <button type="submit" class="botao-registro submit">Criar Conta</button>

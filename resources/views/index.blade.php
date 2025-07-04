@@ -15,6 +15,12 @@
         <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
     </header>
 
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+
     <main class="container">
         <form action="" method="POST" class="form">
             @csrf
@@ -50,7 +56,7 @@
                 <p>Não tem uma conta? Registre-se aqui</p>
             </div>
 
-            <button type="button" class="botao-registro"> 
+            <button type="button" class="botao-registro">
                 <a href="{{ route('cadastro.index') }}">Criar Conta</a>
             </button>
 
