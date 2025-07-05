@@ -16,11 +16,11 @@ return new class extends Migration
         // nesse  codigo um autista so pode ter 1 cuidador
         Schema::create('tb_autista', function (Blueprint $table) {
         $table->id();
-        $table->string('cipteiaAutista');
-        $table->string('rgAutista');
-        $table->string('statusCipteiaAutista');
-        $table->unsignedBigInteger('idusuario');
-        $table->foreign('idusuario')->references('id')->on('tb_usuario');
+        $table->string('cipteia_autista');
+        $table->string('rg_autista');
+        $table->string('status_cipteia_autista');
+        $table->unsignedBigInteger('usuario_id');
+        $table->foreign('usuario_id')->references('id')->on('tb_usuario');
         $table->unsignedBigInteger('responsavel_id')->nullable();
         $table->foreign('responsavel_id')->references('id')->on('tb_responsavel');
         $table->timestamps();        

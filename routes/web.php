@@ -36,7 +36,7 @@ Route::get('/cadastro/admin', [AdminController::class, 'create'])->name('cadastr
 Route::post('/cadastro', [AdminController::class, 'store'])->name('cadastro.store.admin');
 // Cadastro de Autista
 Route::get('/cadastro/autista', [AutistaController::class, 'create'])->name('cadastro.autista');
-Route::post('/cadastro', [AutistaController::class, 'store'])->name('cadastro.store.autista');
+Route::post('/cadastro/autista', [AutistaController::class, 'store'])->name('cadastro.store.autista');
 // Cadastro de Comunidade
 Route::get('/cadastro/comunidade', [ComunidadeController::class, 'create'])->name('cadastro.comunidade');
 Route::post('/cadastro/comunidade', [ComunidadeController::class, 'store'])->name('cadastro.store.comunidade');

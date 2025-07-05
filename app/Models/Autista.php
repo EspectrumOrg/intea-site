@@ -16,7 +16,7 @@ class Autista extends Model
         'cipteia_autista',
         'rg_autista',
         'status_cipteia_autista',
-        'id_cuidador',
+        'responsavel_id',
         'created_at',
         'updated_at'
     ];

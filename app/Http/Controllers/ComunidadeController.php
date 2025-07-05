@@ -34,7 +34,7 @@ class ComunidadeController extends Controller
             'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
             'apelido' => 'nullable|string|max:255',
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email|unique:tb_usuario,email',
             'senha' => 'required|string|min:6|max:255',
             'cpf' => 'required|string|max:255',
             'genero' => 'required|string|max:255',

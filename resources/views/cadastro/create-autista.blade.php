@@ -53,7 +53,8 @@
                 </div>
             </div>
 
-            <form class="form-cadastro" method="post" action="{{ route('cadastro.store.autista') }}">
+            <form class="form-cadastro" method="post" action="{{ route('cadastro.store.autista') }}"> <!-- Formulário -->
+                <!-- No topo do formulário -->
                 @if($errors->any())
                 <div class="alert alert-danger" style="color: red; margin-bottom: 20px;">
                     <ul>
@@ -94,7 +95,7 @@
                     <div id="telefones">
                         <div class="field">
                             <label>Telefone 1 *</label>
-                            <input type="tel" name="telefone[]" required>
+                            <input type="tel" name="numero_telefone[]" required>
                         </div>
                     </div>
 
@@ -114,8 +115,13 @@
                     </div>
 
                     <div class="field">
+                        <label>RG *</label>
+                        <input type="text" name="rg_autista" required>
+                    </div>
+
+                    <div class="field">
                         <label>Data de Nascimento *</label>
-                        <input type="date" name="nascimento" required>
+                        <input type="date" name="data_nascimento" required>
                     </div>
 
                     <div class="field">
@@ -156,6 +162,7 @@
                         <label>Confirmar Senha *</label>
                         <input type="password" name="senha_confirmacao" required>
                     </div>
+
                     <div class="field btns"> <!-- btns -->
                         <button type="button" class="prev-3 prev">Anterior</button>
                         <button type="submit" class="botao-registro submit">Criar Conta</button>

@@ -25,7 +25,7 @@ class AutistaController extends Controller
      */
     public function create()
     {
-        //
+        return view('cadastro.create-autista');
     }
 
     /**
@@ -39,25 +39,29 @@ class AutistaController extends Controller
 
         // Validação dos campos obrigatórios e formato dos dados recebidos
         $validator = Validator::make($request->all(), [
-            'nomeUsuario' => 'required|string|max:255',
-            'emailUsuario' => 'required|email|unique:tb_usuario,emailUsuario',
-            'senhaUsuario' => 'required|string|min:6',
-            'cpfUsuario' => 'required|string',
-            'generoUsuario' => 'required|string',
-            'dataNascUsuario' => 'required|date',
-            'cepUsuario' => 'nullable|string',
-            'logradouroUsuario' => 'nullable|string',
-            'enderecoUsuario' => 'nullable|string',
-            'ruaUsuario' => 'nullable|string',
-            'bairroUsuario' => 'nullable|string',
-            'numeroUsuario' => 'nullable|string',
-            'cidadeUsuario' => 'nullable|string',
-            'estadoUsuario' => 'nullable|string',
-            'complementoUsuario' => 'nullable|string',
-            'rgAutista' => 'required|string',
-            'userUsuario' => 'nullable|string|max:255',
-            'apelidoUsuario' => 'nullable|string|max:255',
-            'cpfResponsavel' => 'nullable|string', // novo campo, obrigatório para menores de 18 anos
+            'nome' => 'required|string|max:255',
+            'user' => 'nullable|string|max:255',
+            'apelido' => 'nullable|string|max:255',
+            'email' => 'required|email|unique:tb_usuario,email',
+            'senha' => 'required|string|min:6',
+            'cpf' => 'required|string',
+            'genero' => 'required|string',
+            'data_nascimento' => 'required|date',
+            'cep' => 'nullable|string',
+            'logradouro' => 'nullable|string',
+            'endereco' => 'nullable|string',
+            'rua' => 'nullable|string',
+            'bairro' => 'nullable|string',
+            'numero' => 'nullable|string',
+            'cidade' => 'nullable|string',
+            'estado' => 'nullable|string',
+            'complemento' => 'nullable|string',
+            'rg_autista' => 'required|string',
+            'cpf_responsavel' => 'nullable|string', // novo campo, obrigatório para menores de 18 anos
+            'tipo_usuario' => 'required|in:2',
+            'status_conta' => 'required|in:1',
+            'numero_telefone' => 'required|array|min:1',
+            'numero_telefone.*' => 'required|string|max:20'
         ]);
 
         // Se a validação falhar, retorna erros com status 422
@@ -70,12 +74,12 @@ class AutistaController extends Controller
         }
 
         // Calcula a idade do usuário com base na data de nascimento
-        $dataNascimento = new \DateTime($request->dataNascUsuario);
+        $data_nascimento = new \DateTime($request->data_nascimento);
         $hoje = new \DateTime();
-        $idade = $hoje->diff($dataNascimento)->y;
+        $idade = $hoje->diff($data_nascimento)->y;
 
         // Se usuário for menor de 18 anos, CPF do responsável torna-se obrigatório
-        if ($idade < 18 && empty($request->cpfResponsavel)) {
+        if ($idade < 18 && empty($request->cpf_responsavel)) {
             return response()->json([
                 'message' => 'CPF do responsável é obrigatório para menores de 18 anos.'
             ], 422);
@@ -85,11 +89,11 @@ class AutistaController extends Controller
         $limparCPF = function ($cpf) {
             return preg_replace('/[^0-9]/', '', $cpf);
         };
-        $cpfRequest = $limparCPF($request->cpfUsuario);
+        $cpfRequest = $limparCPF($request->cpf);
         Log::info('CPF limpo: ' . $cpfRequest);
 
         // Verifica se o CPF do usuário já está cadastrado no banco
-        if (Usuario::where('cpfUsuario', $cpfRequest)->exists()) {
+        if (Usuario::where('cpf', $cpfRequest)->exists()) {
             Log::warning('CPF já cadastrado: ' . $cpfRequest);
             return response()->json(['message' => 'CPF já cadastrado.'], 409);
         }
@@ -100,14 +104,14 @@ class AutistaController extends Controller
             return response()->json(['message' => 'CPF inválido.'], 422);
         }
 
-        // Inicializa variável para armazenar o ID do cuidador (responsável)
+        // Inicializa variável para armazenar o ID do Responsavel (responsável)
         $idCuidador = null;
         // Se usuário for menor de 18 anos, procura o cuidador pelo CPF informado
         if ($idade < 18) {
-            $cpfRespLimpo = $limparCPF($request->cpfResponsavel);
+            $cpfRespLimpo = $limparCPF($request->cpf_responsavel);
 
             // Busca o responsável no banco pelo CPF
-            $cuidador = Usuario::where('cpfUsuario', $cpfRespLimpo)->first();
+            $cuidador = Usuario::where('cpf', $cpfRespLimpo)->first();
             if (!$cuidador) {
                 return response()->json([
                     'message' => 'CPF do responsável não encontrado no sistema.'
@@ -119,43 +123,45 @@ class AutistaController extends Controller
         }
 
         // Se o campo userUsuario estiver vazio, define-o com o apelidoUsuario
-        $userUsuario = $request->userUsuario ?? '';
-        if (empty($userUsuario)) {
-            $userUsuario = $request->apelidoUsuario ?? '';
-            Log::info('userUsuario estava vazio, usando apelidoUsuario: ' . $userUsuario);
+        $user_usuario = $request->user ?? '';
+        if (empty($user_usuario)) {
+            $user_usuario = $request->apelido ?? '';
+            Log::info('user estava vazio, usando apelido: ' . $user_usuario);
         }
 
         // Tenta criar os registros no banco dentro de um bloco try-catch para tratar erros
         try {
             // Cria o usuário com os dados validados
             $usuario = Usuario::create([
-                'nomeUsuario' => $request->nomeUsuario,
-                'emailUsuario' => $request->emailUsuario,
-                'userUsuario' => $userUsuario,
-                'senhaUsuario' => bcrypt($request->senhaUsuario), // senha criptografada
-                'cpfUsuario' => $cpfRequest,
-                'generoUsuario' => $request->generoUsuario,
-                'dataNascUsuario' => $request->dataNascUsuario,
-                'cepUsuario' => $request->cepUsuario,
-                'logradouroUsuario' => $request->logradouroUsuario,
-                'enderecoUsuario' => $request->enderecoUsuario,
-                'ruaUsuario' => $request->ruaUsuario,
-                'bairroUsuario' => $request->bairroUsuario,
-                'numeroUsuario' => $request->numeroUsuario,
-                'cidadeUsuario' => $request->cidadeUsuario,
-                'estadoUsuario' => $request->estadoUsuario,
-                'complementoUsuario' => $request->complementoUsuario,
-                'apelidoUsuario' => $request->apelidoUsuario,
+                'nome' => $request->nome,
+                'email' => $request->email,
+                'user' => $user_usuario,
+                'senha' => bcrypt($request->senha), // senha criptografada
+                'cpf' => $cpfRequest,
+                'genero' => $request->genero,
+                'data_nascimento' => $request->data_nascimento,
+                'cep' => $request->cep,
+                'logradouro' => $request->logradouro,
+                'endereco' => $request->endereco,
+                'rua' => $request->rua,
+                'bairro' => $request->bairro,
+                'numero' => $request->numero,
+                'cidade' => $request->cidade,
+                'estado' => $request->estado,
+                'complemento' => $request->complemento,
+                'apelido' => $request->apelido,
+                'tipo_usuario' => $request->tipo_usuario,
+                'status_conta' => $request->status_conta,
             ]);
 
             Log::info('Usuário criado com ID: ' . $usuario->id);
 
             // Se o request tem telefones e é array, cadastra todos na tabela tb_foneusuario
-            if ($request->has('telefoneUsuario') && is_array($request->telefoneUsuario)) {
-                foreach ($request->telefoneUsuario as $telefone) {
+            if ($request->has('numero_telefone') && is_array($request->numero_telefone)) {
+                foreach ($request->numero_telefone as $telefone) {
                     \App\Models\FoneUsuario::create([
-                        'idusuario' => $usuario->id,
-                        'numeroUsuario' => $telefone,
+                        'usuario_id' => $usuario->id,
+                        'numero_telefone' => $telefone,
                     ]);
                 }
                 Log::info('Telefones cadastrados para usuário ID: ' . $usuario->id);
@@ -163,11 +169,11 @@ class AutistaController extends Controller
 
             // Cria o registro na tabela autista, relacionando ao usuário e cuidador (se houver)
             Autista::create([
-                'cipteiaAutista' => 'Existente',
-                'statusCipteiaAutista' => 'Ativo',
-                'rgAutista' => $request->rgAutista,
-                'idusuario' => $usuario->id,
-                'idCuidador' => $idCuidador,
+                'cipteia_autista' => 'Existente',
+                'status_cipteia_autista' => 'Ativo',
+                'rg_autista' => $request->rg_autista,
+                'usuario_id' => $usuario->id,
+                'responsavel_id' => $idCuidador,
             ]);
 
             Log::info('Autista criado para usuário ID: ' . $usuario->id);
