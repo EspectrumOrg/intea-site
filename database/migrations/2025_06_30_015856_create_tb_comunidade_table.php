@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_profsaude', function (Blueprint $table) {
+        Schema::create('tb_comunidade', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idusuario');
-            $table->foreign('idusuario')->references('id')->on('tb_usuario');
-            $table->string('crpProfSaude');
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('tb_usuario');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_profsaude');
+        Schema::dropIfExists('tb_comunidade');
     }
 };

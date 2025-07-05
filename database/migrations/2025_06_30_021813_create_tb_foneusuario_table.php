@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_foneusuario', function (Blueprint $table) {
+        Schema::create('tb_fone_usuario', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idusuario');
-            $table->foreign('idusuario')->references('id')->on('tb_usuario');
-            $table->string('numeroUsuario');
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('tb_usuario');
+            $table->string('numero_telefone');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_foneusuario');
+        Schema::dropIfExists('tb_fone_usuario');
     }
 };

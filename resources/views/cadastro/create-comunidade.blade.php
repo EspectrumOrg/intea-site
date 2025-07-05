@@ -54,6 +54,16 @@
             </div>
 
             <form class="form-cadastro" method="post" action="{{ route('cadastro.store.comunidade') }}"> <!-- Formulário -->
+                <!-- No topo do formulário -->
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $erro)
+                        <li>{{ $erro }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 @csrf
                 <input type="hidden" name="tipo_usuario" value="3"> <!-- Tipo User Comunidade-->
                 <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->
@@ -85,7 +95,7 @@
                     <div id="telefones">
                         <div class="field">
                             <label>Telefone 1 *</label>
-                            <input type="tel" name="telefone[]" required>
+                            <input type="tel" name="numero_telefone[]" required>
                         </div>
                     </div>
 

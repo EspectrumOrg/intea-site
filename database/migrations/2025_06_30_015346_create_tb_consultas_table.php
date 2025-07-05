@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('tb_consultas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idPsicologo');
-            $table->foreign('idPsicologo')->references('id')->on('tb_profsaude');
-            $table->unsignedBigInteger('idAutista');
-            $table->foreign('idAutista')->references('id')->on('tb_autista');
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('tb_profissional_saude');
+            $table->unsignedBigInteger('autista_id');
+            $table->foreign('autista_id')->references('id')->on('tb_autista');
             $table->timestamps();
         });
     }

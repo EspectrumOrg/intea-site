@@ -21,8 +21,8 @@ return new class extends Migration
         $table->string('statusCipteiaAutista');
         $table->unsignedBigInteger('idusuario');
         $table->foreign('idusuario')->references('id')->on('tb_usuario');
-        $table->unsignedBigInteger('idCuidador')->nullable();
-        $table->foreign('idCuidador')->references('id')->on('tb_cuidador');
+        $table->unsignedBigInteger('responsavel_id')->nullable();
+        $table->foreign('responsavel_id')->references('id')->on('tb_responsavel');
         $table->timestamps();        
 });
     }

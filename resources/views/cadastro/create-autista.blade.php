@@ -54,6 +54,15 @@
             </div>
 
             <form class="form-cadastro" method="post" action="{{ route('cadastro.store.autista') }}">
+                @if($errors->any())
+                <div class="alert alert-danger" style="color: red; margin-bottom: 20px;">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 @csrf
                 <input type="hidden" name="tipo_usuario" value="2"> <!-- Tipo User Autista-->
                 <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->

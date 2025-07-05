@@ -8,12 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Responsavel extends Model
 {
     use HasFactory;
+    protected $table ='tb_responsavel';
 
-    protected $fillable = [
-        'usuario_id',
+    public $fillable = [
+        'id',
+        'usuario_id', 
+        'cipteia_autista',
+        'created_at',
+        'updated_at'
     ];
-
-    public function Usuario() {
-        return $this->belongsTo(Usuario::class);
+    //public $timestamps=false;
+      public function usuarioModel()
+    {
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 }

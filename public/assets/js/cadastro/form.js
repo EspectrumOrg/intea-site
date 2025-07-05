@@ -16,7 +16,7 @@ if (contadorTelefone >= 5) return;
     novoCampo.classList.add('input-box-cadastro');
     novoCampo.innerHTML = `
         <label>Telefone ${contadorTelefone}</label>
-        <input type="tel" name="telefone[]">
+        <input type="tel" name="numero_telefone[]">
     `;
 
     container.appendChild(novoCampo);

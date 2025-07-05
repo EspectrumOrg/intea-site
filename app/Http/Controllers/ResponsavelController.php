@@ -2,26 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Usuario;
-use App\Models\Comunidade;
+use App\Models\Responsavel;
 use App\Models\FoneUsuario;
+use Illuminate\Http\Request;
 
-use function Laravel\Prompts\alert;
-
-class ComunidadeController extends Controller
+class ResponsavelController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+        //
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('cadastro.create-comunidade');
+        //
     }
 
     /**
@@ -32,9 +33,8 @@ class ComunidadeController extends Controller
         // 0. Validar Dados
         $request->validate([
             'nome' => 'required|string|max:255',
-            'user' => 'required|string|max:255',
             'apelido' => 'nullable|string|max:255',
-            'email' => 'required|email:rfc,dns',
+            'email' => 'required|email|unique:tb_usuario,emailUsuario',
             'senha' => 'required|string|min:6|max:255',
             'cpf' => 'required|string|max:255',
             'genero' => 'required|string|max:255',
@@ -48,20 +48,17 @@ class ComunidadeController extends Controller
             'cidade' => 'nullable|string|max:255',
             'estado' => 'nullable|string|max:255',
             'complemento' => 'nullable|string|max:255',
-            'tipo_usuario' => 'required|in:3',
+            'tipo_usuario' => 'required|in:5',
             'status_conta' => 'required|in:1',
-            'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20'
+            'numero_telefone' => 'required|'
         ]);
 
-        if ($request->tipo_usuario != 3) { // 0.5 Define tipo Comunidade
+        if ($request->tipo_usuario != 5) { // 0.5 Define tipo Responsável
             abort(403, 'Tentativa de fraude no tipo de usuário.');
         }
-
         // 1. Criar Usuário Padrão
         $usuario = Usuario::create([
             'nome' => $request->nome,
-            'user' => $request->user,
             'apelido' => $request->apelido,
             'email' => $request->email,
             'senha' => bcrypt($request->senha),
@@ -80,21 +77,20 @@ class ComunidadeController extends Controller
             'tipo_usuario' => $request->tipo_usuario,
             'status_conta' => $request->status_conta,
         ]);
-
-        // 2. Criar Dados Específicos Comunidade
-        Comunidade::create([
+        // 2. Criar Dados Específicos Responsável
+        $cuidador = Responsavel::create([
             'usuario_id' => $usuario->id,
+            'cipteia_autista' => $request->cipteiaAutista,
         ]);
-        // 3. Criar Telefone(s)
-        foreach ($request->numero_telefone as $telefone) {
-            FoneUsuario::create([
-                'usuario_id' => $usuario->id,
-                'numero_telefone' => $request->$telefone,
-            ]);
-        }
+        // 3. Criar Telefone
+        $fone = FoneUsuario::create([
+            'usuario_id' => $usuario->id,
+            'numero_telefone' => $request->foneUsuario,
+        ]);
 
-        return redirect()->route('index')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
+        return redirect()->route('cadastro.index')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
     }
+
 
     /**
      * Display the specified resource.

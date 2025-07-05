@@ -11,32 +11,34 @@ return new class extends Migration
      *
      * @return void
      */
-        public function up()
-        {
-            Schema::create('tb_usuario', function (Blueprint $table) {
-                $table->id();
-                $table->string('nomeUsuario');
-                $table->string('emailUsuario');
-                $table->string('senhaUsuario');
-                $table->string('userUsuario')->nullable();
-                $table->string('apelidoUsuario')->nullable();
-                $table->integer('cpfUsuario'); 
-                $table->string('generoUsuario');
-                $table->date('dataNascUsuario');
-                $table->string('cepUsuario')->nullable();
-                $table->string('logradouroUsuario')->nullable();
-                $table->string('enderecoUsuario')->nullable();
-                $table->string('ruaUsuario')->nullable();
-                $table->string('bairroUsuario')->nullable();
-                $table->integer('numeroUsuario')->nullable();
-                $table->string('cidadeUsuario')->nullable();
-                $table->string('estadoUsuario',)->nullable();
-                $table->string('complementoUsuario')->nullable();   
-                $table->timestamps();
-            });
-        }
+    public function up()
+    {
+        Schema::create('tb_usuario', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome');
+            $table->string('user');
+            $table->string('apelido')->nullable();
+            $table->string('email')->unique();
+            $table->string('senha');
+            $table->string('cpf');
+            $table->string('genero');
+            $table->date('data_nascimento');
+            $table->string('cep')->nullable();
+            $table->string('logradouro')->nullable();
+            $table->string('endereco')->nullable();
+            $table->string('rua')->nullable();
+            $table->string('bairro')->nullable();
+            $table->string('numero')->nullable();
+            $table->string('cidade')->nullable();
+            $table->string('estado')->nullable();
+            $table->string('complemento')->nullable();
+            $table->string('tipo_usuario');
+            $table->string('status_conta');
+            $table->timestamps();
+        });
+    }
 
-        /**
+    /**
      * Reverse the migrations.
      *
      * @return void

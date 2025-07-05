@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_alistico', function (Blueprint $table) {
+        Schema::create('tb_responsavel', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idusuario');
-            $table->foreign('idusuario')->references('id')->on('tb_usuario');
+            $table->unsignedBigInteger('usuario_id');
+            $table->foreign('usuario_id')->references('id')->on('tb_usuario');
+            $table->string('cipteiaAutista');
             $table->timestamps();
+
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_alistico');
+        Schema::dropIfExists('tb_responsavel');
     }
 };

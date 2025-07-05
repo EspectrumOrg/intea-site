@@ -20,7 +20,7 @@
             <p>Selecione uma das opções abaixo para continuar com o cadastro:</p>
 
             <button class="botao-opcao">
-                Autista
+                <a href="{{ route('cadastro.autista') }}">Autista</a></p>
             </button>
 
             <button class="botao-opcao">
@@ -28,13 +28,11 @@
             </button>
 
             <button class="botao-opcao">
-                Profissional da Saúde
+                <a href="{{ route('cadastro.responsavel') }}">Responsavel</a></p>
             </button>
 
             <button class="botao-opcao">
-                <a href="{{ route('cadastro.responsavel') }}">Responsavel</a></p>
-
-                Responsável
+                <a href="{{ route('cadastro.profissionalsaude') }}">Profissional da Saúde</a></p>
             </button>
 
             <div class="registro">
