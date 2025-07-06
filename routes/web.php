@@ -30,6 +30,9 @@ Route::get('/', function () {
 Route::get('/cadastro', function () {
     return view('cadastro.index'); // Cadastro de usuário
 })->name('cadastro.index');
+Route::get('/cadastroresponsavel', function () {
+    return view('cadastro.create-responsavel');
+});
 
 // Cadastro de Admin
 Route::get('/cadastro/admin', [AdminController::class, 'create'])->name('cadastro.admin');
