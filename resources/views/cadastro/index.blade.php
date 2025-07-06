@@ -28,7 +28,7 @@
             </button>
 
             <button class="botao-opcao">
-                <a href="{{ route('cadastro.responsavel') }}">Responsavel</a></p>
+            <a href="{{ route('cadastro.responsavel') }}" class="botao-opcao">Responsavel</a>
             </button>
 
             <button class="botao-opcao">

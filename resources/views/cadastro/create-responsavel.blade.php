@@ -55,8 +55,17 @@
 
             <form class="form-cadastro" method="post" action="{{ route('cadastro.store.responsavel') }}">
                 @csrf
-                <input type="hidden" name="tipo_usuario" value="5"> <!-- Tipo User Responsável-->
-                <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->
+                 @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+                <input type="hidden" name="tipo_usuario" value="5">
+                <input type="hidden" name="status_conta" value="1">
 
                 <div class="page slidepage"> <!-- Início -->
                     <div class="title">Seu Nome:</div>
@@ -70,7 +79,7 @@
                         <input type="text" name="apelido">
                     </div>
 
-                    <div class="field nextBtn"> <!-- btns -->
+                    <div class="field nextBtn">
                         <button type="button" class="next">Próximo</button>
                     </div>
                 </div>
@@ -85,13 +94,13 @@
                     <div id="telefones">
                         <div class="field">
                             <label>Telefone 1 *</label>
-                            <input type="tel" name="telefone[]" required>
+                            <input type="tel" name="numero_telefone[]" required>
                         </div>
                     </div>
 
                     <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
 
-                    <div class="field btns"> <!-- btns -->
+                    <div class="field btns">
                         <button type="button" class="prev-1 prev">Anterior</button>
                         <button type="button" class="next-1 next">Próximo</button>
                     </div>
@@ -103,10 +112,14 @@
                         <label>CPF *</label>
                         <input type="text" name="cpf" required>
                     </div>
+                    <div class="field">
+                        <label>Cipteia do seu protegido *</label>
+                        <input type="text" name="cipteia" required>
+                    </div>
 
                     <div class="field">
                         <label>Data de Nascimento *</label>
-                        <input type="date" name="nascimento" required>
+                        <input type="date" name="data_nascimento" required>
                     </div>
 
                     <div class="field">
@@ -126,7 +139,7 @@
                         <input type="text" name="genero_outro">
                     </div>
 
-                    <div class="field btns"> <!-- btns -->
+                    <div class="field btns">
                         <button type="button" class="prev-2 prev">Anterior</button>
                         <button type="button" class="next-2 next">Próximo</button>
                     </div>
@@ -140,14 +153,14 @@
                     </div>
                     <div class="field">
                         <label>Senha *</label>
-                        <input type="password" name="senha" required>
+                        <input type="password" name="senha" placeholder="minimo 6 caracteres" required>
                     </div>
 
                     <div class="field">
                         <label>Confirmar Senha *</label>
-                        <input type="password" name="senha_confirmacao" required>
+                        <input type="password" name="senha_confirmation" required>
                     </div>
-                    <div class="field btns"> <!-- btns -->
+                    <div class="field btns">
                         <button type="button" class="prev-3 prev">Anterior</button>
                         <button type="submit" class="botao-registro submit">Criar Conta</button>
                     </div>

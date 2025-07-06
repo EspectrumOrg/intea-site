@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class cuidadorModel extends Model
 {
     use HasFactory;
-    protected $table ='tb_cuidador';
+    protected $table ='tb_responsavel';
 
-    public $fillable = ['id','idusuario', 'cipteiaAutista','created_at','updated_at'];
+    public $fillable = ['id','usuario_id', 'cipteiaAutista','created_at','updated_at'];
     //public $timestamps=false;
       public function usuarioModel()
     {
