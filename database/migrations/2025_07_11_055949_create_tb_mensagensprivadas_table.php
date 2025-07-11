@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_mensagens', function (Blueprint $table) {
+        Schema::create('tb_mensagensprivadas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('conversa_id');
             $table->foreign('conversa_id')->references('id')->on('tb_chatprivado')->onDelete('cascade');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_mensagens');
+        Schema::dropIfExists('tb_mensagensprivadas');
     }
 };
