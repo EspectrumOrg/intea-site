@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Models\Responsavel;
 use App\Models\FoneUsuario;
+use App\Models\ProfissionalSaude;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProfissionalSaudeController extends Controller
 {
@@ -22,73 +24,70 @@ class ProfissionalSaudeController extends Controller
      */
     public function create()
     {
-        //
+        return view('cadastro.create-profissional-saude');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // 0. Validar Dados
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'apelido' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:tb_usuario,emailUsuario',
-            'senha' => 'required|string|min:6|max:255',
-            'cpf' => 'required|string|max:255',
-            'genero' => 'required|string|max:255',
-            'data_nascimento' => 'required|date',
-            'cep' => 'nullable|string|max:255',
-            'logradouro' => 'nullable|string|max:255',
-            'endereco' => 'nullable|string|max:255',
-            'rua' => 'nullable|string|max:255',
-            'bairro' => 'nullable|string|max:255',
-            'numero' => 'nullable|string|max:255',
-            'cidade' => 'nullable|string|max:255',
-            'estado' => 'nullable|string|max:255',
-            'complemento' => 'nullable|string|max:255',
-            'tipo_usuario' => 'required|in:5',
-            'status_conta' => 'required|in:1',
-            'numero_telefone' => 'required|'
-        ]);
+   public function store(Request $request)
+{
+    // Validação
+    $request->validate([
+        'nome' => 'required|string|max:255',
+         'user' => 'nullable|string|max:255',
+        'apelido' => 'nullable|string|max:255',
+        'email' => 'required|email|unique:tb_usuario,email',
+        'senha' => 'required|string|min:6|max:255|confirmed',
+        'cpf' => 'required|string|max:255',
+        'genero' => 'required|string|max:255',
+        'data_nascimento' => 'required|date',
+        'tipo_usuario' => 'required|in:4',
+        'status_conta' => 'required|in:1',
+        'numero_telefone' => 'required|array|min:1',
+        'numero_telefone.*' => 'required|string|max:20',
+        'registro_profissional' => 'nullable|string|max:255', // <- será usado como crp_profissional_saude
+    ], [
+        'email.unique' => 'Este e-mail já está cadastrado.',
+        'senha.confirmed' => 'As senhas não coincidem.',
+    ]);
 
-        if ($request->tipo_usuario != 4) { // 0.5 Define tipo Profissional
-            abort(403, 'Tentativa de fraude no tipo de usuário.');
-        }
-        // 1. Criar Usuário Padrão
-        $usuario = Usuario::create([
-            'nome' => $request->nome,
-            'apelido' => $request->apelido,
-            'email' => $request->email,
-            'senha' => bcrypt($request->senha),
-            'cpf' => $request->cpf,
-            'genero' => $request->genero,
-            'data_nascimento' => $request->data_nascimento,
-            'cep' => $request->cep,
-            'logradouro' => $request->logradouro,
-            'endereco' => $request->endereco,
-            'rua' => $request->rua,
-            'bairro' => $request->bairro,
-            'numero' => $request->numero,
-            'cidade' => $request->cidade,
-            'estado' => $request->estado,
-            'complemento' => $request->complemento,
-            'tipo_usuario' => $request->tipo_usuario,
-            'status_conta' => $request->status_conta,
-        ]);
-        // 2. Criar Dados Específicos Profissional
-        $cuidador = Responsavel::create([
-            'usuario_id' => $usuario->id,
-        ]);
-        // 3. Criar Telefone
-        $fone = FoneUsuario::create([
-            'usuario_id' => $usuario->id,
-            'numero_telefone' => $request->foneUsuario,
-        ]);
 
-        return redirect()->route('cadastro.index')->with('Sucesso', 'Usuário Tipo Profissional cadastrado com sucesso!');
+    // Verificação de segurança
+    if ($request->tipo_usuario != 4) {
+        abort(403, 'Tentativa de fraude no tipo de usuário.');
     }
+
+    // Criação do usuário
+    $usuario = Usuario::create([
+        'nome' => $request->nome,
+        'user' => $request->user,
+        'apelido' => $request->apelido,
+        'email' => $request->email,
+        'senha' => bcrypt($request->senha),
+        'cpf' => $request->cpf,
+        'genero' => $request->genero,
+        'data_nascimento' => $request->data_nascimento,
+        'tipo_usuario' => $request->tipo_usuario,
+        'status_conta' => $request->status_conta,
+    ]);
+
+    // Cadastro como profissional (somente com registro)
+    $profissional = ProfissionalSaude::create([
+        'usuario_id' => $usuario->id,
+        'crp_profissional_saude' => $request->registro_profissional,
+    ]);
+
+    // Telefones
+    foreach ($request->numero_telefone as $telefone) {
+        FoneUsuario::create([
+            'usuario_id' => $usuario->id,
+            'numero_telefone' => $telefone,
+        ]);
+    }
+
+    return redirect()->route('cadastro.index')->with('Sucesso', 'Profissional de Saúde cadastrado com sucesso!');
+}
 
 
     /**

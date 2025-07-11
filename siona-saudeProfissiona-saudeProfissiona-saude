@@ -1,0 +1,29 @@
+[33mcommit 4ff4d7d1a47b4c8ebd6f3e9d9302966ea9e52a77[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mProfissiona-saude[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Sat Jul 5 01:45:03 2025 -0300
+
+    correção de nomes e adição de campos tipo e status no Controller, Model e Table Autista
+
+[33mcommit 3ecae4b457ca250bff84f7a86d258eac14ac39ee[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Sat Jul 5 00:46:49 2025 -0300
+
+    Atualizações de nomes para snake_case e Create Comunidade feitos
+
+[33mcommit fc226812f6cf9cabb751015f737b88a0dba377fa[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Fri Jul 4 15:11:27 2025 -0300
+
+    meu comitt do  cuidadorUser
+
+[33mcommit 01764ac61684e43d937916e7fd0c12a49582ca74[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Fri Jul 4 02:42:22 2025 -0300
+
+    mudança no UsuarioController e no forms de cadastro
+
+[33mcommit 064f944c5474fab0d37f65c5210b4e19d7143702[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Thu Jul 3 15:37:26 2025 -0300
+
+    versão 03/07 com formulários de cadastro e tables feitas

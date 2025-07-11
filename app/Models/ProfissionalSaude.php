@@ -9,10 +9,11 @@ class ProfissionalSaude extends Model
 {
     use HasFactory;
 
-    protected $table = "tb_profissionalsaude";
+    protected $table = "tb_profissional_saude";
 
     protected $fillable = [
         'usuario_id',
+        'crp_profissional_saude',
     ];
 
     public function Usuario() {
