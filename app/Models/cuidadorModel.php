@@ -14,6 +14,6 @@ class cuidadorModel extends Model
     //public $timestamps=false;
       public function usuarioModel()
     {
-        return $this->belongsTo(Usuario::class, 'idusuario');
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 }

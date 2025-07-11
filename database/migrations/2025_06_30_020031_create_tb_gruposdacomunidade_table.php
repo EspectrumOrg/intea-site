@@ -11,9 +11,13 @@ return new class extends Migration
      *
      * @return void
      */
+        /**
+     * aqui eu estou criando o grupo e dps na tabela gruposcomunidade usuario estou relacionando 
+     * um grupo a  muitos usuarios
+    */  
     public function up()
     {
-        // criacao da tb grupo
+   
         Schema::create('tb_gruposdacomunidade', function (Blueprint $table) {
             $table->id();
             $table->string('nomeGrupo');

@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
+        /**
      * Run the migrations.
      *
      * @return void
      */
+    // tbUsuario  principal do site
+
     public function up()
     {
         Schema::create('tb_usuario', function (Blueprint $table) {
@@ -23,6 +25,7 @@ return new class extends Migration
             $table->string('cpf');
             $table->string('genero');
             $table->date('data_nascimento');
+            $table->string('imagem')->nullable();
             $table->string('cep')->nullable();
             $table->string('logradouro')->nullable();
             $table->string('endereco')->nullable();

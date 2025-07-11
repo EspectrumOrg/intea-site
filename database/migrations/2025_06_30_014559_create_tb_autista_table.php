@@ -11,6 +11,8 @@ return new class extends Migration
      *
      * @return void
      */
+        // tbAutista
+
     public function up()
     {
         // nesse  codigo um autista so pode ter 1 cuidador

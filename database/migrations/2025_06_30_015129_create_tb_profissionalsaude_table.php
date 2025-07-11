@@ -11,6 +11,8 @@ return new class extends Migration
      *
      * @return void
      */
+
+         // tbProfSaude
     public function up()
     {
         Schema::create('tb_profissional_saude', function (Blueprint $table) {

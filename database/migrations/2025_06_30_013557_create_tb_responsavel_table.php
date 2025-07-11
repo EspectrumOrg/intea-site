@@ -11,6 +11,8 @@ return new class extends Migration
      *
      * @return void
      */
+    // tbResponsavel
+
     public function up()
     {
         Schema::create('tb_responsavel', function (Blueprint $table) {

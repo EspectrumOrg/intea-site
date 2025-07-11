@@ -104,13 +104,14 @@ class cuidadorController extends Controller
 
 public function apiTodosUsuarios()
 {
- $usuarios = Usuario::select('nome', 'email', 'tipo_usuario')->get()->map(function ($user) {
-    return [
-        'nome' => $user->nome,
-        'email' => $user->email,
-        'tipo_usuario' => $user->tipo_usuario,
-    ];
-});
+        $usuarios = Usuario::with('responsavel')->select('id', 'nome', 'email', 'tipo_usuario')->get()->map(function ($user) {
+        return [
+            'nome' => $user->nome,
+            'email' => $user->email,
+            'tipo_usuario' => $user->tipo_usuario,
+            'responsavel_id' => $user->responsavel ? $user->responsavel->id : null,
+        ];
+    });
 
     return response()->json([
         'success' => true,

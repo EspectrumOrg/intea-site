@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         // tb muitos para muitos um usuario pode estar em muitos grupos e um grupo pode ter muitos usuarios
+        // tb muitos para muitos relacionando o usuario aos grupos ja criados anteriormente
         Schema::create('tb_gruposdacomunidade_usuarios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('idusuario');
