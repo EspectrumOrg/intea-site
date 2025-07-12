@@ -12,9 +12,11 @@ class ProfissionalSaude extends Model
     protected $table = "tb_profissional_saude";
 
     protected $fillable = [
-        'usuario_id',
-        'crp_profissional_saude',
+    'usuario_id',
+    'tipo_registro',
+    'registro_profissional',
     ];
+
 
     public function Usuario() {
         return $this->belongsTo(Usuario::class, 'usuario_id');

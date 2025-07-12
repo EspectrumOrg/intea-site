@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_profissional_saude', function (Blueprint $table) {
+            Schema::create('tb_profissional_saude', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('tb_usuario');
-            $table->string('crp_profissional_saude');
+            $table->string('tipo_registro');
+            $table->string('registro_profissional');
             $table->timestamps();
         });
+
     }
 
     /**

@@ -30,12 +30,11 @@ class ProfissionalSaudeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   public function store(Request $request)
+  public function store(Request $request)
 {
-    // Validação
     $request->validate([
         'nome' => 'required|string|max:255',
-         'user' => 'nullable|string|max:255',
+        'user' => 'nullable|string|max:255',
         'apelido' => 'nullable|string|max:255',
         'email' => 'required|email|unique:tb_usuario,email',
         'senha' => 'required|string|min:6|max:255|confirmed',
@@ -46,19 +45,17 @@ class ProfissionalSaudeController extends Controller
         'status_conta' => 'required|in:1',
         'numero_telefone' => 'required|array|min:1',
         'numero_telefone.*' => 'required|string|max:20',
-        'registro_profissional' => 'nullable|string|max:255', // <- será usado como crp_profissional_saude
+        'tipo_registro' => 'required|string|max:255',
+        'registro_profissional' => 'required|string|max:255',
     ], [
         'email.unique' => 'Este e-mail já está cadastrado.',
         'senha.confirmed' => 'As senhas não coincidem.',
     ]);
 
-
-    // Verificação de segurança
     if ($request->tipo_usuario != 4) {
         abort(403, 'Tentativa de fraude no tipo de usuário.');
     }
 
-    // Criação do usuário
     $usuario = Usuario::create([
         'nome' => $request->nome,
         'user' => $request->user,
@@ -72,13 +69,12 @@ class ProfissionalSaudeController extends Controller
         'status_conta' => $request->status_conta,
     ]);
 
-    // Cadastro como profissional (somente com registro)
-    $profissional = ProfissionalSaude::create([
+    ProfissionalSaude::create([
         'usuario_id' => $usuario->id,
-        'crp_profissional_saude' => $request->registro_profissional,
+        'tipo_registro' => $request->tipo_registro,
+        'registro_profissional' => $request->registro_profissional,
     ]);
 
-    // Telefones
     foreach ($request->numero_telefone as $telefone) {
         FoneUsuario::create([
             'usuario_id' => $usuario->id,
@@ -88,6 +84,7 @@ class ProfissionalSaudeController extends Controller
 
     return redirect()->route('cadastro.index')->with('Sucesso', 'Profissional de Saúde cadastrado com sucesso!');
 }
+
 
 
     /**

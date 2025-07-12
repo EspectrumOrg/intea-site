@@ -120,8 +120,27 @@
                         <input type="text" name="genero_outro">
                     </div>
                     <div class="field">
-                        <label>Registro Profissional (CRP, CRM, etc.) *</label>
-                        <input type="text" name="registro_profissional" required>
+                        <label>Profissão *</label>
+                        <select name="profissao" id="profissao" required>
+                            <option value="">Selecione</option>
+                            <option value="Psiquiatra">Psiquiatra</option>
+                            <option value="Psicólogo">Psicólogo</option>
+                            <option value="Terapeuta Ocupacional">Terapeuta Ocupacional</option>
+                            <option value="Fonoaudiólogo">Fonoaudiólogo</option>
+                            <option value="Neurologista">Neurologista</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Tipo de Registro Profissional *</label>
+                        <select name="tipo_registro" id="tipo_registro" required onchange="mostrarCampoRegistro()">
+                            <option value="">Selecione</option>
+                            <option value="CRM">CRM (Conselho Regional de Medicina)</option>
+                            <option value="CRP">CRP (Psicologia)</option>
+                        </select>
+                    </div>
+                    <div class="field" id="campo-registro-box" style="display: none;">
+                        <label id="label-registro-dinamico">Número do Registro *</label>
+                        <input type="text" name="registro_profissional" id="registro_profissional">
                     </div>
                     <div class="field btns">
                         <button type="button" class="prev-2 prev">Anterior</button>
@@ -158,6 +177,7 @@
 
     <script src="{{ asset('assets/js/cadastro/form.js') }}"></script>
     <script src="{{ asset('assets/js/cadastro/progresso.js') }}"></script>
+    <script src="{{ asset('assets/js/cadastro/registro_profissional_saude.js') }}"></script>
 </body>
 
 </html>
