@@ -119,6 +119,7 @@
                         <label>Informe o gênero:</label>
                         <input type="text" name="genero_outro">
                     </div>
+
                     <div class="field">
                         <label>Profissão *</label>
                         <select name="profissao" id="profissao" required>
@@ -130,6 +131,7 @@
                             <option value="Neurologista">Neurologista</option>
                         </select>
                     </div>
+
                     <div class="field">
                         <label>Tipo de Registro Profissional *</label>
                         <select name="tipo_registro" id="tipo_registro" required onchange="mostrarCampoRegistro()">
@@ -138,10 +140,13 @@
                             <option value="CRP">CRP (Psicologia)</option>
                         </select>
                     </div>
+
                     <div class="field" id="campo-registro-box" style="display: none;">
                         <label id="label-registro-dinamico">Número do Registro *</label>
                         <input type="text" name="registro_profissional" id="registro_profissional">
+                        <small id="erro-registro" style="color: red; display: none;">Formato inválido para o número de registro selecionado.</small>
                     </div>
+
                     <div class="field btns">
                         <button type="button" class="prev-2 prev">Anterior</button>
                         <button type="button" class="next-2 next">Próximo</button>
