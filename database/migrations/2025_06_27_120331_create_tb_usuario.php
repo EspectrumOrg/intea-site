@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('cidade')->nullable();
             $table->string('estado')->nullable();
             $table->string('complemento')->nullable();
-            $table->string('tipo_usuario');
+            $table->integer('tipo_usuario');
             $table->string('status_conta');
             $table->timestamps();
         });

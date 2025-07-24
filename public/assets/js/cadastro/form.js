@@ -4,10 +4,10 @@ function mostrarOutroGenero() {
     outroBox.style.display = (select.value === 'Outro') ? 'block' : 'none';
 }
 
-let contadorTelefone = 1;
+let contadorTelefone = document.querySelectorAll('#telefones input[type="tel"]').length;
 
 function adicionarTelefone() {
-if (contadorTelefone >= 5) return;
+    if (contadorTelefone >= 5) return;
 
     contadorTelefone++;
     const container = document.getElementById('telefones');
@@ -16,7 +16,7 @@ if (contadorTelefone >= 5) return;
     novoCampo.classList.add('input-box-cadastro');
     novoCampo.innerHTML = `
         <label>Telefone ${contadorTelefone}</label>
-        <input type="tel" name="numero_telefone[]">
+        <input type="tel" name="numero_telefone[]" required>
     `;
 
     container.appendChild(novoCampo);

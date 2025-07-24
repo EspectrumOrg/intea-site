@@ -27,7 +27,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
+
+Route::get('/index', function () {
+    return view('index');
+})->name('index');
+
 
 Route::get('/cadastro', function () {
     return view('cadastro.index'); // Cadastro de usuário
@@ -49,19 +54,30 @@ Route::get('/cadastro/comunidade', [ComunidadeController::class, 'create'])->nam
 Route::post('/cadastro/comunidade', [ComunidadeController::class, 'store'])->name('cadastro.store.comunidade');
 // Cadastro de Profissional de Saúde
 Route::get('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'create'])->name('cadastro.profissionalsaude');
-Route::post('/cadastro', [ProfissionalSaudeController::class, 'store'])->name('cadastro.store.profissionalsaude');
+Route::post('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'store'])->name('cadastro.store.profissionalsaude');
 // Cadastro de Responsável
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Usuário Logado
 Route::middleware('auth')->group(function () {
+
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })
+    ->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+// Apenas Admin
+Route::middleware(['auth', 'is_admin'])->group(function () {
+
+    Route::resource("usuario", UsuarioController::class)
+        ->names("usuario")
+        ->parameters(["usuarios" => "usuario"]);
+});
+
+require __DIR__ . '/auth.php';

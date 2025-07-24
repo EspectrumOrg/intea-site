@@ -6,6 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Comunidade;
 use App\Models\FoneUsuario;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
+use Illuminate\View\View;
 
 use function Laravel\Prompts\alert;
 
@@ -34,9 +41,10 @@ class ComunidadeController extends Controller
             'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
             'apelido' => 'nullable|string|max:255',
-            'email' => 'required|email|unique:tb_usuario,email',
+            'email' => 'required|lowercase|email|unique:tb_usuario,email',
             'senha' => 'required|string|min:6|max:255',
-            'cpf' => 'required|string|max:255',
+            'senha_confirmacao' => 'required|same:senha',
+            'cpf' => 'required|digits:11',
             'genero' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'cep' => 'nullable|string|max:255',
@@ -52,6 +60,23 @@ class ComunidadeController extends Controller
             'status_conta' => 'required|in:1',
             'numero_telefone' => 'required|array|min:1',
             'numero_telefone.*' => 'required|string|max:20'
+        ], [
+            'nome.required' => 'O campo nome é obrigatório',
+            'user.required' => 'O campo user é obrigatório',
+            'email.required' => 'O campo email é obrigatório',
+            'email.lowercase' => 'o campo email não deve conter letras maiúsculas',
+            'email.email' => 'o campo email deve ser preenchido corretamente',
+            'email.unique' => 'este email já existe em nossos registros',
+            'senha.required' => 'O campo senha é obrigatório',
+            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
+            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
+            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
+            'cpf.required' => 'O campo cpf é obrigatório',
+            'cpf.digits' => 'O CPF deve conter exatamente 11 dígitos numéricos',
+            'genero.required' => 'O campo gênero é obrigatório',
+            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
+            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
         ]);
 
         if ($request->tipo_usuario != 3) { // 0.5 Define tipo Comunidade
@@ -89,11 +114,13 @@ class ComunidadeController extends Controller
         foreach ($request->numero_telefone as $telefone) {
             FoneUsuario::create([
                 'usuario_id' => $usuario->id,
-                'numero_telefone' => $request->$telefone,
+                'numero_telefone' => $telefone,
             ]);
         }
 
-        return redirect()->route('index')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
+        Auth::login($usuario); 
+
+        return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
     }
 
     /**

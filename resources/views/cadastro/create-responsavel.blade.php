@@ -52,18 +52,29 @@
                     <div class="check fas fa-check"></div>
                 </div>
             </div>
-
+            <!-- No topo do formulário -->
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $erro)
+                    <li>
+                        <h3 class="alert-mensage">{{ $erro }}</h3>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form class="form-cadastro" method="post" action="{{ route('cadastro.store.responsavel') }}">
                 @csrf
-                 @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <input type="hidden" name="tipo_usuario" value="5">
                 <input type="hidden" name="status_conta" value="1">
 
@@ -71,12 +82,17 @@
                     <div class="title">Seu Nome:</div>
                     <div class="field">
                         <label>Nome Completo *</label>
-                        <input type="text" name="nome" required>
+                        <input type="text" name="nome" value="{{ $usuario->nome ?? old('nome') }}">
                     </div>
 
                     <div class="field">
                         <label>Como quer ser chamado no site</label>
-                        <input type="text" name="apelido">
+                        <input type="text" name="apelido" value="{{ $usuario->apelido ?? old('apelido') }}">
+                    </div>
+
+                    <div class="field">
+                        <label>Cipteia (não sei como vai funcionar na prática)</label>
+                        <input type="text" name="cipteia_autista" value="{{ $usuario->cipteia_autista ?? old('cipteia_autista') }}">
                     </div>
 
                     <div class="field nextBtn">
@@ -88,14 +104,21 @@
                     <div class="title">Contato:</div>
                     <div class="field">
                         <label>Email *</label>
-                        <input type="email" name="email" required>
+                        <input type="email" name="email" value="{{ $usuario->email ?? old('email') }}">
                     </div>
 
+                    <!-- Telefone -->
                     <div id="telefones">
-                        <div class="field">
-                            <label>Telefone 1 *</label>
-                            <input type="tel" name="numero_telefone[]" required>
+                        @php
+                        $telefones = old('numero_telefone', ['']);
+                        @endphp
+
+                        @foreach ($telefones as $index => $tel)
+                        <div class="input-box-cadastro">
+                            <label>Telefone {{ $index + 1 }}</label>
+                            <input type="tel" name="numero_telefone[]" value="{{ $tel }}">
                         </div>
+                        @endforeach
                     </div>
 
                     <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
@@ -110,8 +133,9 @@
                     <div class="title">Informações:</div>
                     <div class="field">
                         <label>CPF *</label>
-                        <input type="text" name="cpf" required>
+                        <input type="text" name="cpf" value="{{ $usuario->cpf ?? old('cpf') }}">
                     </div>
+                    
                     <div class="field">
                         <label>Cipteia do seu protegido *</label>
                         <input type="text" name="cipteia" required>
@@ -119,12 +143,12 @@
 
                     <div class="field">
                         <label>Data de Nascimento *</label>
-                        <input type="date" name="data_nascimento" required>
+                        <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
                     </div>
 
                     <div class="field">
                         <label>Gênero *</label>
-                        <select name="genero" id="genero" onchange="mostrarOutroGenero()" required>
+                        <select name="genero" id="genero" onchange="mostrarOutroGenero()">
                             <option value="">Selecione</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
@@ -133,6 +157,7 @@
                             <option value="Outro">Outro</option>
                         </select>
                     </div>
+
 
                     <div class="field" id="genero-outro-box" style="display: none;">
                         <label>Informe o gênero:</label>
@@ -149,7 +174,7 @@
                     <div class="title">Conta:</div>
                     <div class="field">
                         <label>Seu USER *</label>
-                        <input type="text" name="user" required>
+                        <input type="text" name="user" value="{{ $usuario->user ?? old('user') }}">
                     </div>
                     <div class="field">
                         <label>Senha *</label>
@@ -160,7 +185,7 @@
                         <label>Confirmar Senha *</label>
                         <input type="password" name="senha_confirmation" required>
                     </div>
-                    <div class="field btns">
+                    <div class="field btns"> <!-- btns cipteia_autista -->
                         <button type="button" class="prev-3 prev">Anterior</button>
                         <button type="submit" class="botao-registro submit">Criar Conta</button>
                     </div>

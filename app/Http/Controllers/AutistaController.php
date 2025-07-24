@@ -179,6 +179,7 @@ class AutistaController extends Controller
             Log::info('Autista criado para usuário ID: ' . $usuario->id);
 
             // Retorna sucesso com status 201
+            //return redirect()->route('dashboard')->with('Sucesso', 'Usuário e autista cadastrados com sucesso!');
             return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);
         } catch (\Exception $e) {
             // Em caso de erro, loga e retorna erro interno 500

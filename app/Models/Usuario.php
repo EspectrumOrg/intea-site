@@ -5,38 +5,64 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Usuario extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+
+class Usuario extends Authenticatable
 {
-    use HasFactory;  // mover para o topo da classe, antes dos métodos
+  use HasApiTokens, HasFactory, Notifiable;
 
-    protected $table = 'tb_usuario';
+  protected $table = 'tb_usuario';
+  public $fillable = [
+    'nome',
+    'user',
+    'apelido',
+    'email',
+    'senha',
+    'cpf',
+    'genero',
+    'data_nascimento',
+    'cep',
+    'logradouro',
+    'endereco',
+    'rua',
+    'bairro',
+    'numero',
+    'cidade',
+    'estado',
+    'complemento',
+    'tipo_usuario',
+    'status_conta',
+    'created_at',
+    'updated_at'
+  ];
 
-    // preencher com protected e $fillable como array
-    protected $fillable = [
-        'nome',
-        'user',
-        'apelido',
-        'email',
-        'senha',
-        'cpf',
-        'genero',
-        'data_nascimento',
-        'cep',
-        'logradouro',
-        'endereco',
-        'rua',
-        'bairro',
-        'numero',
-        'cidade',
-        'estado',
-        'complemento',
-        'tipo_usuario',
-        'status_conta',
-        // Não precisa colocar timestamps no fillable, pois eles são automáticos
-    ];
+  /**
+   * The attributes that should be hidden for serialization.
+   *
+   * @var array<int, string>
+   */
+  protected $hidden = [
+    'senha',
+    'remember_token',
+  ];
 
-    // Se os timestamps estão no banco e você quer que Eloquent os atualize automaticamente, mantenha assim:
-    public $timestamps = true;
+  /**
+   * The attributes that should be cast.
+   *
+   * @var array<string, string>
+   */
+  protected $casts = [
+    'email_verified_at' => 'datetime',
+  ];
+
+  // Aqui está o método necessário para o Auth::attempt funcionar com o campo "senha"
+  public function getAuthPassword()
+  {
+    return $this->senha;
+  }
 
     // Relacionamentos
     public function admin()

@@ -41,10 +41,6 @@ submitBtn.addEventListener("click", function() {
     progressText[current - 1].classList.add("active");
     progressCheck[current - 1].classList.add("active");
     current += 1;
-    setTimeout(function () {
-        alert("Cadastro Realizado com Sucesso");
-        location.reload();
-    }, 800);
 });
 
 

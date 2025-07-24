@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Usuario;
 use App\Models\Comunidade;
+use App\Models\Admin;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,8 +23,20 @@ class UsuarioSeeder extends Seeder
             'tipo_usuario' => 1,
         ]);
 
-        Comunidade::factory()->create([
+        // criar comunidade padrão
+        $comunidade = Usuario::factory()->create([
+            'nome' => 'Comunidade',
+            'email' => 'comunidade@site.com',
+            'senha' => bcrypt('senhacomunidade'),
+            'tipo_usuario' => 3,
+        ]);
+
+        Admin::factory()->create([
             'usuario_id' => $admin->id,
+        ]);
+
+        Comunidade::factory()->create([
+            'usuario_id' => $comunidade->id,
         ]);
 
         Usuario::factory(15)->create();

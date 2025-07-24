@@ -3,6 +3,8 @@
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
+    --cor--vermelho: #F22727;
+    --texto-pequeno: .75rem;
     --texto-padrao: 1rem;
     --texto-secundario: 1.4rem;
     --texto-titulo: 2.5rem;
@@ -25,6 +27,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.alert-mensage {
+    color: var(--cor--vermelho);
+    font-size: var(--texto-pequeno);
 }
 
 .form {
@@ -104,11 +111,13 @@ body {
 
 .botao-opcao {
     /* botao de opcao */
-    width: 100%;
     height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 25px;
     font-size: var(--texto-padrao);
-    background-color: var(--cor-fundo);
+    background-color: var(--cor-branco);
     border: 2px solid var(--cor-tema);
     color: var(--cor-branco);
     transition: .7s;
@@ -117,8 +126,19 @@ body {
 }
 
 .botao-opcao:hover {
-    color: var(--cor-tema);
-    background-color: var(--cor-branco);
+    color: var(--cor-branco);
+    background-color: var(--cor-tema);
+}
+
+.botao-opcao a {
+    text-decoration: none;
+    color: var(--cor-fundo);
+    width: 100%;
+    height: 40px;
+}
+
+.botao-opcao a:hover {
+    color: var(--cor-branco);
 }
 
 .ou {

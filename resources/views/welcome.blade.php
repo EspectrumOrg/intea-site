@@ -1,68 +1,51 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<x-guest-layout>
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/inicio/welcome.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+    <form method="POST" action="{{ route('login') }}">
+        @csrf
 
-<body>
-    <header class="header">
-        <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
-    </header>
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
 
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
 
-    <main class="container">
-        <form action="" method="POST" class="form">
-            @csrf
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
 
-            <h1>Entrar</h1>
-            <p>Preencha seus dados para acessar a plataforma</p>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
 
-            <div class="input-box">
-                <input type="email" name="email" required>
-                <label>Email</label>
-                <i class="fas fa-envelope icon"></i>
+        <!-- Remember Me -->
+        <div class="block mt-4">
+            <label for="remember_me" class="inline-flex items-center">
+                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
+                <span class="ms-2 text-sm text-gray-600">{{ __('Lembrar Senha') }}</span>
+            </label>
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <div class="flex flex-direction-column items-center justify-center mt-4">
+                @if (Route::has('password.request'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
+                        {{ __('Esqueceu a sua senha?') }}
+                    </a>
+                @endif
+
+                <p>Não possui uma conta? <a href="{{ route('register') }}">Entre aqui</a></p>
             </div>
 
-            <div class="input-box">
-                <input type="password" name="password" required>
-                <label>Senha</label>
-                <i class="fas fa-lock icon"></i>
-            </div>
-
-            <div class="esqueci-senha">
-                <a href="#">Esqueci minha senha</a>
-            </div>
-
-            <button type="submit" class="btn-login">Entrar</button>
-
-            <div class="ou">
-                <hr>
-                <h2> ou </h2>
-                <hr>
-            </div>
-
-            <div class="registro">
-                <p>Não tem uma conta? Registre-se aqui</p>
-            </div>
-
-            <button type="button" class="botao-registro">
-                <a href="{{ route('cadastro.index') }}">Criar Conta</a>
-            </button>
-
-
-        </form>
-    </main>
-</body>
-
-</html>
+            <x-primary-button class="ms-3">
+                {{ __('Entrar') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>

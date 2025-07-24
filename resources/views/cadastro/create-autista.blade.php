@@ -53,17 +53,20 @@
                 </div>
             </div>
 
+            <!-- No topo do formulário -->
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $erro)
+                    <li>
+                        <h3 class="alert-mensage">{{ $erro }}</h3>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form class="form-cadastro" method="post" action="{{ route('cadastro.store.autista') }}"> <!-- Formulário -->
-                <!-- No topo do formulário -->
-                @if($errors->any())
-                <div class="alert alert-danger" style="color: red; margin-bottom: 20px;">
-                    <ul>
-                        @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif
                 @csrf
                 <input type="hidden" name="tipo_usuario" value="2"> <!-- Tipo User Autista-->
                 <input type="hidden" name="status_conta" value="1"> <!-- 1 = ativo, 0 = inativo-->
@@ -72,12 +75,12 @@
                     <div class="title">Seu Nome:</div>
                     <div class="field">
                         <label>Nome Completo *</label>
-                        <input type="text" name="nome" required>
+                        <input type="text" name="nome" value="{{ $usuario->nome ?? old('nome') }}">
                     </div>
 
                     <div class="field">
                         <label>Como quer ser chamado no site</label>
-                        <input type="text" name="apelido">
+                        <input type="text" name="apelido" value="{{ $usuario->apelido ?? old('apelido') }}">
                     </div>
 
                     <div class="field nextBtn"> <!-- btns -->
@@ -89,14 +92,21 @@
                     <div class="title">Contato:</div>
                     <div class="field">
                         <label>Email *</label>
-                        <input type="email" name="email" required>
+                        <input type="email" name="email" value="{{ $usuario->email ?? old('email') }}">
                     </div>
 
+                    <!-- Telefone -->
                     <div id="telefones">
-                        <div class="field">
-                            <label>Telefone 1 *</label>
-                            <input type="tel" name="numero_telefone[]" required>
+                        @php
+                        $telefones = old('numero_telefone', ['']);
+                        @endphp
+
+                        @foreach ($telefones as $index => $tel)
+                        <div class="input-box-cadastro">
+                            <label>Telefone {{ $index + 1 }}</label>
+                            <input type="tel" name="numero_telefone[]" value="{{ $tel }}">
                         </div>
+                        @endforeach
                     </div>
 
                     <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
@@ -111,7 +121,7 @@
                     <div class="title">Informações:</div>
                     <div class="field">
                         <label>CPF *</label>
-                        <input type="text" name="cpf" required>
+                        <input type="text" name="cpf" value="{{ $usuario->cpf ?? old('cpf') }}">
                     </div>
 
                     <div class="field">
@@ -121,7 +131,7 @@
 
                     <div class="field">
                         <label>Data de Nascimento *</label>
-                        <input type="date" name="data_nascimento" required>
+                        <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
                     </div>
 
                     <div class="field">
@@ -151,7 +161,7 @@
                     <div class="title">Conta:</div>
                     <div class="field">
                         <label>Seu USER *</label>
-                        <input type="text" name="user" required>
+                        <input type="text" name="user" value="{{ $usuario->user ?? old('user') }}">
                     </div>
                     <div class="field">
                         <label>Senha *</label>
@@ -170,7 +180,7 @@
                 </div>
             </form>
             <div class="voltar">
-                <p><a href="{{ route('cadastro.index') }}">Voltar para tipo conta</a></p>
+                <p><a href="{{ route('register') }}">Voltar para tipo conta</a></p>
             </div>
         </div>
     </main>

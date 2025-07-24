@@ -39,6 +39,8 @@
                 </a>
             @endif
 
+            <p>Já possui uma conta? <a href="{{ route('register') }}">Entre aqui</a></p>
+
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
