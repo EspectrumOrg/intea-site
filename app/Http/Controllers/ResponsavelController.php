@@ -35,77 +35,91 @@ class ResponsavelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        // 0. Validar Dados
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'user' => 'required|string|max:255',
-            'apelido' => 'required|string|max:255',
-            'email' => 'required|lowercase|email|unique:tb_usuario,email',
-            'senha' => 'required|string|min:6|max:255',
-            'senha_confirmacao' => 'required|same:senha',
-            'cpf' => 'required|digits:11',
-            'cipteia_autista' => 'required|max:255',
-            'genero' => 'required|string|max:255',
-            'data_nascimento' => 'required|date',
-            'tipo_usuario' => 'required|in:5',
-            'status_conta' => 'required|in:1',
-            'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20'
-        ], [
-            'nome.required' => 'O campo nome é obrigatório',
-            'user.required' => 'O campo user é obrigatório',
-            'email.required' => 'O campo email é obrigatório',
-            'email.lowercase' => 'o campo email não deve conter letras maiúsculas',
-            'email.email' => 'o campo email deve ser preenchido corretamente',
-            'email.unique' => 'este email já existe em nossos registros',
-            'senha.required' => 'O campo senha é obrigatório',
-            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
-            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
-            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
-            'cpf.required' => 'O campo cpf é obrigatório',
-            'cpf.digits' => 'O CPF deve conter exatamente 11 dígitos numéricos',
-            'cipteia_autista.required' => 'O campo cipteia autista é obrigatório',
-            'genero.required' => 'O campo gênero é obrigatório',
-            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
-            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-        ]);
+   public function store(Request $request)
+{
+    // 0. Validar Dados com regras básicas
+    $request->validate([
+        'nome' => 'required|string|max:255',
+        'user' => 'required|string|max:255',
+        'apelido' => 'required|string|max:255',
+        'email' => 'required|lowercase|email|unique:tb_usuario,email',
+        'senha' => 'required|string|min:6|max:255',
+        'senha_confirmacao' => 'required|same:senha',
+        'cpf' => 'required|digits:11',
+        'cipteia_autista' => 'required|max:255',
+        'genero' => 'required|string|max:255',
+        'data_nascimento' => 'required|date',
+        'tipo_usuario' => 'required|in:5',
+        'status_conta' => 'required|in:1',
+        'numero_telefone' => 'required|array|min:1',
+        'numero_telefone.*' => 'required|string|max:20'
+    ], [
+        // mensagens de erro ...
+    ]);
 
-        if ($request->tipo_usuario != 5) { // 0.5 Define tipo Responsável
-            abort(403, 'Tentativa de fraude no tipo de usuário.');
-        }
-        // 1. Criar Usuário Padrão
-        $usuario = Usuario::create([
-            'nome' => $request->nome,
-            'user' => $request->user,
-            'apelido' => $request->apelido,
-            'email' => $request->email,
-            'senha' => bcrypt($request->senha),
-            'cpf' => $request->cpf,
-            'genero' => $request->genero,
-            'data_nascimento' => $request->data_nascimento,
-            'tipo_usuario' => $request->tipo_usuario,
-            'status_conta' => $request->status_conta,
-        ]);
-        // 2. Criar Dados Específicos Responsável
-        Responsavel::create([
-            'usuario_id' => $usuario->id,
-            'cipteia_autista' => $request->cipteia_autista,
-        ]);
-        // 3. Criar Telefone(s)
-        foreach ($request->numero_telefone as $telefone) {
-            FoneUsuario::create([
-                'usuario_id' => $usuario->id,
-                'numero_telefone' => $telefone,
-            ]);
-        }
-
-        Auth::login($usuario); //Entra direto
-
-        return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
+    // Validação customizada do CPF
+    if (!self::validaCPF($request->cpf)) {
+        return back()
+            ->withErrors(['cpf' => 'CPF inválido. Por favor, verifique e tente novamente.'])
+            ->withInput();
     }
+
+    // Verifica tipo usuário
+    if ($request->tipo_usuario != 5) {
+        abort(403, 'Tentativa de fraude no tipo de usuário.');
+    }
+
+    // Cria usuário e demais dados
+    $usuario = Usuario::create([
+        'nome' => $request->nome,
+        'user' => $request->user,
+        'apelido' => $request->apelido,
+        'email' => $request->email,
+        'senha' => bcrypt($request->senha),
+        'cpf' => $request->cpf,
+        'genero' => $request->genero,
+        'data_nascimento' => $request->data_nascimento,
+        'tipo_usuario' => $request->tipo_usuario,
+        'status_conta' => $request->status_conta,
+    ]);
+
+    Responsavel::create([
+        'usuario_id' => $usuario->id,
+        'cipteia_autista' => $request->cipteia_autista,
+    ]);
+
+    foreach ($request->numero_telefone as $telefone) {
+        FoneUsuario::create([
+            'usuario_id' => $usuario->id,
+            'numero_telefone' => $telefone,
+        ]);
+    }
+
+    Auth::login($usuario);
+
+    return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
+}
+
+// Função estática para validar CPF (copie essa função dentro da classe)
+private static function validaCPF($cpf)
+{
+    $cpf = preg_replace('/[^0-9]/', '', $cpf);
+
+    if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf)) {
+        return false;
+    }
+
+    for ($t = 9; $t < 11; $t++) {
+        for ($d = 0, $c = 0; $c < $t; $c++) {
+            $d += $cpf[$c] * (($t + 1) - $c);
+        }
+        $d = ((10 * $d) % 11) % 10;
+        if ($cpf[$c] != $d) {
+            return false;
+        }
+    }
+    return true;
+}
 
 
     /**

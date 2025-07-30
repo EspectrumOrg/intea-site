@@ -43,9 +43,9 @@ class ComunidadeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    
     public function store(Request $request)
     {
-        // 0. Validar Dados
         $request->validate([
             'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
@@ -70,29 +70,21 @@ class ComunidadeController extends Controller
             'numero_telefone' => 'required|array|min:1',
             'numero_telefone.*' => 'required|string|max:20'
         ], [
-            'nome.required' => 'O campo nome é obrigatório',
-            'user.required' => 'O campo user é obrigatório',
-            'email.required' => 'O campo email é obrigatório',
-            'email.lowercase' => 'o campo email não deve conter letras maiúsculas',
-            'email.email' => 'o campo email deve ser preenchido corretamente',
-            'email.unique' => 'este email já existe em nossos registros',
-            'senha.required' => 'O campo senha é obrigatório',
-            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
-            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
-            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
-            'cpf.required' => 'O campo cpf é obrigatório',
-            'cpf.digits' => 'O CPF deve conter exatamente 11 dígitos numéricos',
-            'genero.required' => 'O campo gênero é obrigatório',
-            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
-            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+            // mensagens de erro personalizadas...
         ]);
 
-        if ($request->tipo_usuario != 3) { // 0.5 Define tipo Comunidade
+        // Validação customizada do CPF
+        if (!self::validaCPF($request->cpf)) {
+            return back()
+                ->withErrors(['cpf' => 'CPF inválido. Por favor, verifique e tente novamente.'])
+                ->withInput();
+        }
+
+        if ($request->tipo_usuario != 3) {
             abort(403, 'Tentativa de fraude no tipo de usuário.');
         }
 
-        // 1. Criar Usuário Padrão
+        // Criar Usuário Padrão
         $usuario = Usuario::create([
             'nome' => $request->nome,
             'user' => $request->user,
@@ -115,11 +107,12 @@ class ComunidadeController extends Controller
             'status_conta' => $request->status_conta,
         ]);
 
-        // 2. Criar Dados Específicos Comunidade
+        // Criar Dados Específicos Comunidade
         Comunidade::create([
             'usuario_id' => $usuario->id,
         ]);
-        // 3. Criar Telefone(s)
+
+        // Criar Telefone(s)
         foreach ($request->numero_telefone as $telefone) {
             FoneUsuario::create([
                 'usuario_id' => $usuario->id,
@@ -131,6 +124,29 @@ class ComunidadeController extends Controller
 
         return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
     }
+
+    // Método para validar CPF
+    private static function validaCPF($cpf)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $cpf);
+
+        if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        }
+
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     /**
      * Display the specified resource.

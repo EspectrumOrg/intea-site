@@ -135,11 +135,8 @@
                         <label>CPF *</label>
                         <input type="text" name="cpf" value="{{ $usuario->cpf ?? old('cpf') }}">
                     </div>
-
-                    <div class="field">
-                        <label>Cipteia do seu protegido *</label>
-                        <input type="text" name="cipteia" required>
-                    </div>
+                    
+             
 
                     <div class="field">
                         <label>Data de Nascimento *</label>
@@ -193,8 +190,8 @@
 
                     <div class="field">
                         <label>Confirmar Senha *</label>
-                        <input type="password" name="senha_confirmation" required>
-                    </div>
+                        <input type="password" name="senha_confirmacao" required>
+</div>
                     <div class="field btns"> <!-- btns cipteia_autista -->
                         <button type="button" class="prev-3 prev">Anterior</button>
                         <button type="submit" class="botao-registro submit">Criar Conta</button>
