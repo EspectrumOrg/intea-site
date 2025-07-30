@@ -8,10 +8,17 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Usuario;
 use App\Models\Autista;
+use App\Models\Genero;
 use App\Models\FoneUsuario;
 
 class AutistaController extends Controller
 {
+    private $genero;
+
+    public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
+    {
+        $this->genero = $genero;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -25,7 +32,9 @@ class AutistaController extends Controller
      */
     public function create()
     {
-        return view('cadastro.create-autista');
+        $generos = $this->genero->all();
+
+        return view('cadastro.create-autista', compact('generos'));
     }
 
     /**

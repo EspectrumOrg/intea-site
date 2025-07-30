@@ -56,7 +56,7 @@
         <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
     </div>
 
-    <div class="field">
+    {{--<div class="field">
         <label>Gênero *</label>
         <select name="genero" id="genero" onchange="mostrarOutroGenero()">
             <option value="">Selecione</option>
@@ -65,6 +65,16 @@
             <option value="Não Binario">Não Binário</option>
             <option value="Prefiro não informar">Prefiro não informar</option>
             <option value="Outro">Outro</option>
+        </select>
+    </div>--}}
+
+    <div class="field">
+        <label>Gênero</label>
+        <select type="text" id="genero" name="genero">
+            <option value="">--- Selecione ---</option>
+            @foreach($generos as $item)
+            <option value="{{ $item->id }}" {{ isset($usuario) && $item->id === $usuario->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
+            @endforeach
         </select>
     </div>
 

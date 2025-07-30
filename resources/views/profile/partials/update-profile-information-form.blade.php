@@ -17,21 +17,20 @@
         @csrf
         @method('patch')
 
-        <div>
-            <x-input-label for="nome" :value="__('Nome')" />
-            <x-text-input id="nome" nome="nome" type="text" class="mt-1 block w-full" :value="old('nome', $user->nome)" required autofocus autocomplete="nome" />
-            <x-input-error class="mt-2" :messages="$errors->get('nome')" />
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input id="nome" nome="nome" type="text" class="form-control" value="{{ $user->nome ?? old('nome') }}" required autofocus autocomplete="nome" />
         </div>
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" name="email" type="email" class="form-control" value="{{ $user->email ?? old('email') }}" required autocomplete="username" />
+
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div>
                 <p class="text-sm mt-2 text-gray-800">
-                    {{ __('Your email address is unverified.') }}
+                    {{ __('Seu endereço de email não é verificado.') }}
 
                     <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         {{ __('Clique aqui para enviar o e-mail de verificação.') }}
@@ -47,101 +46,117 @@
             @endif
         </div>
 
-        <div>
-            <x-input-label for="apelido" value="Apelido" />
-            <x-text-input id="apelido" name="apelido" type="text" class="mt-1 block w-full" :value="old('apelido', $user->apelido)" />
+        <div class="mb-3">
+            <label for="nome" class="form-label">Apelido</label>
+            <input id="apelido" name="apelido" type="text" class="form-control" value="{{ $user->apelido ?? old('apelido')}}" required autocomplete="apelido" />
             <x-input-error class="mt-2" :messages="$errors->get('apelido')" />
         </div>
 
-        <div>
-            <x-input-label for="user" value="Nome user" />
-            <x-text-input id="user" name="user" type="text" class="mt-1 block w-full" :value="old('user', $user->user)" />
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome User</label>
+            <input id="user" name="user" type="text" class="form-control" value="{{ $user->user ?? old('user')}}" required autocomplete="user" />
             <x-input-error class="mt-2" :messages="$errors->get('user')" />
         </div>
 
-        <div>
-            <x-input-label for="tipo_usuario" value="Tipo conta" />
+        <div class="mb-3">
+            <label for="nome" class="form-label">Tipo Conta</label>
+            <x-input-label for="tipo_usuario" />
             @if($user->tipo_usuario===1)
-                <h2>Admin</h2>
+            <h3>Admin</h3>
             @elseif($user->tipo_usuario===2)
-                <h2>Admin</h2>
+            <h3>Admin</h3>
             @elseif($user->tipo_usuario===3)
-                <h2>Comunidade</h2>
+            <h3>Comunidade</h3>
             @elseif($user->tipo_usuario===4)
-                <h2>Profissional de Saúde</h2>
+            <h3>Profissional de Saúde</h3>
             @elseif($user->tipo_usuario===5)
-                <h2>Responsável</h2>
+            <h3>Responsável</h3>
             @endif
         </div>
 
-        <div>
-            <x-input-label for="cpf" value="CPF" />
-            <x-text-input id="cpf" name="cpf" type="text" class="mt-1 block w-full" :value="old('cpf', $user->cpf)" />
+        {{-- adicionar campos específicos para cada tipo de conta (tirando admin e comunidade)--}}
+
+        <div class="mb-3">
+            <label for="cpf" class="form-label">CPF</label>
+            <input id="cpf" name="cpf" type="text" class="form-control" value="{{ $user->cpf ?? old('cpf')}}" required autocomplete="cpf" />
             <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
         </div>
 
-        <div>
-            <x-input-label for="genero" value="Gênero" />
-            <x-text-input id="genero" name="genero" type="text" class="mt-1 block w-full" :value="old('genero', $user->genero)" />
-            <x-input-error class="mt-2" :messages="$errors->get('genero')" />
+        {{--
+        <div class="mb-3">
+            <label for="genero" class="form-label">Gênero</label>
+            <input id="genero" name="genero" type="text" class="form-control" value="{{ $user->genero ?? old('genero')}}" required autocomplete="genero" />
+        <x-input-error class="mt-2" :messages="$errors->get('genero')" />
+        </div>
+        --}}
+
+        <div class="mb-3">
+            <label for="genero_id" class="form-label"><strong>Gênero</strong></label>
+            <select type="text" class="form-select" id="genero_id" name="genero_id">
+                <option value="">--- Selecione ---</option>
+                @foreach($generos as $item)
+                <option value="{{ $item->id }}" {{ isset($user) && $item->id === $user->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
+
+                @endforeach
+            </select>
         </div>
 
-        <div>
-            <x-input-label for="data_nascimento" value="Data de Nascimento" />
-            <x-text-input id="data_nascimento" name="data_nascimento" type="date" class="mt-1 block w-full" :value="old('data_nascimento', $user->data_nascimento)" />
+        <div class="mb-3">
+            <label for="data_nascimento" class="form-label">Data Nascimento</label>
+            <input id="data_nascimento" name="data_nascimento" type="date" class="form-control" value="{{ $user->data_nascimento ?? old('data_nascimento')}}" required autocomplete="data_nascimento" />
             <x-input-error class="mt-2" :messages="$errors->get('data_nascimento')" />
         </div>
 
-        <div>
-            <x-input-label for="logradouro" value="Logradouro" />
-            <x-text-input id="logradouro" name="logradouro" type="text" class="mt-1 block w-full" :value="old('logradouro', $user->logradouro)" />
+        <div class="mb-3">
+            <label for="logradouro" class="form-label">Logradouro</label>
+            <input id="logradouro" name="logradouro" type="text" class="form-control" value="{{ $user->logradouro ?? old('logradouro')}}" required autocomplete="logradouro" />
             <x-input-error class="mt-2" :messages="$errors->get('logradouro')" />
         </div>
 
-        <div>
-            <x-input-label for="endereco" value="Endereço" />
-            <x-text-input id="endereco" name="endereco" type="text" class="mt-1 block w-full" :value="old('endereco', $user->endereco)" />
+        <div class="mb-3">
+            <label for="endereco" class="form-label">Endereço</label>
+            <input id="endereco" name="endereco" type="text" class="form-control" value="{{ $user->endereco ?? old('endereco')}}" required autocomplete="endereco" />
             <x-input-error class="mt-2" :messages="$errors->get('endereco')" />
         </div>
 
-        <div>
-            <x-input-label for="rua" value="Rua" />
-            <x-text-input id="rua" name="rua" type="text" class="mt-1 block w-full" :value="old('rua', $user->rua)" />
+        <div class="mb-3">
+            <label for="rua" class="form-label">Rua</label>
+            <input id="rua" name="rua" type="text" class="form-control" value="{{ $user->rua ?? old('rua')}}" required autocomplete="rua" />
             <x-input-error class="mt-2" :messages="$errors->get('rua')" />
         </div>
 
-        <div>
-            <x-input-label for="bairro" value="Bairro" />
-            <x-text-input id="bairro" name="bairro" type="text" class="mt-1 block w-full" :value="old('bairro', $user->bairro)" />
+        <div class="mb-3">
+            <label for="bairro" class="form-label">Bairro</label>
+            <input id="bairro" name="bairro" type="text" class="form-control" value="{{ $user->bairro ?? old('bairro')}}" required autocomplete="bairro" />
             <x-input-error class="mt-2" :messages="$errors->get('bairro')" />
         </div>
 
-        <div>
-            <x-input-label for="numero" value="Número" />
-            <x-text-input id="numero" name="numero" type="text" class="mt-1 block w-full" :value="old('numero', $user->numero)" />
+        <div class="mb-3">
+            <label for="numero" class="form-label">Número</label>
+            <input id="numero" name="numero" type="text" class="form-control" value="{{ $user->numero ?? old('numero')}}" required autocomplete="numero" />
             <x-input-error class="mt-2" :messages="$errors->get('numero')" />
         </div>
 
-        <div>
-            <x-input-label for="cidade" value="Cidade" />
-            <x-text-input id="cidade" name="cidade" type="text" class="mt-1 block w-full" :value="old('cidade', $user->cidade)" />
+        <div class="mb-3">
+            <label for="Cidade" class="form-label">Cidade</label>
+            <input id="cidade" name="cidade" type="text" class="form-control" value="{{ $user->cidade ?? old('cidade')}}" required autocomplete="cidade" />
             <x-input-error class="mt-2" :messages="$errors->get('cidade')" />
         </div>
 
-        <div>
-            <x-input-label for="estado" value="Estado" />
-            <x-text-input id="estado" name="estado" type="text" class="mt-1 block w-full" :value="old('estado', $user->estado)" />
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <input id="estado" name="estado" type="text" class="form-control" value="{{ $user->estado ?? old('estado')}}" required autocomplete="estado" />
             <x-input-error class="mt-2" :messages="$errors->get('estado')" />
         </div>
 
-        <div>
-            <x-input-label for="complemento" value="Complemento" />
-            <x-text-input id="complemento" name="complemento" type="text" class="mt-1 block w-full" :value="old('complemento', $user->complemento)" />
+        <div class="mb-3">
+            <label for="complemento" class="form-label">Complemento</label>
+            <input id="complemento" name="complemento" type="text" class="form-control" value="{{ $user->complemento ?? old('complemento')}}" required autocomplete="complemento" />
             <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button>{{ __('Salvar') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
             <p

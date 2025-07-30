@@ -94,4 +94,9 @@ class Usuario extends Authenticatable
     {
         return $this->hasMany(FoneUsuario::class, 'usuario_id');
     }
+
+    public function genero()
+    {
+      return $this->belongsTo(Genero::class);
+    }
 }

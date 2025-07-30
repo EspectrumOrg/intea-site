@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\ProfissionalSaude;
+use App\Models\Genero;
 use App\Models\FoneUsuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfissionalSaudeController extends Controller
 {
+    private $genero;
+
+    public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
+    {
+        $this->genero = $genero;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +30,9 @@ class ProfissionalSaudeController extends Controller
      */
     public function create()
     {
-        return view('cadastro.create-profissional-saude');
+        $generos = $this->genero->all();
+
+        return view('cadastro.create-profissional-saude', compact('generos'));
     }
 
     /**

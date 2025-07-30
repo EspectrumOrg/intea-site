@@ -7,17 +7,22 @@
          <div class="collapse navbar-collapse" id="navbarSupportedContent">
              <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
              <ul class="navbar-nav mb-2 mb-lg-0">
+                 @can('visualizar-admin')
+                 <li class="nav-item">
+                     <a class="nav-link" href="{{ route('usuario.index') }}">Admin</a>
+                 </li>
+                 @endcan
+                 <li class="nav-item">
+                     <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                 </li>
                  <li class="nav-item">
                      <a class="nav-link" href=" ">Postagens</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="">Profissionais</a>
+                     <a class="nav-link" href="#">Profissionais</a>
                  </li>
                  <li class="nav-item">
                      <a class="nav-link" href="#">[barra pesquisa]</a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
                  </li>
                  <li class="nav-item">
                      <a class="nav-link" href="{{ route('profile.edit') }}">Conta</a>

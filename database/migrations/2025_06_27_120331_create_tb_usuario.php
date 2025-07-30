@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('senha');
             $table->string('cpf');
-            $table->string('genero');
+            $table->integer('genero'); //FK
             $table->date('data_nascimento');
             $table->string('imagem')->nullable();
             $table->string('cep')->nullable();
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->string('cidade')->nullable();
             $table->string('estado')->nullable();
             $table->string('complemento')->nullable();
-            $table->integer('tipo_usuario');
+            $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
             $table->timestamps();
         });

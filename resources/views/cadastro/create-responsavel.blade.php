@@ -135,7 +135,7 @@
                         <label>CPF *</label>
                         <input type="text" name="cpf" value="{{ $usuario->cpf ?? old('cpf') }}">
                     </div>
-                    
+
                     <div class="field">
                         <label>Cipteia do seu protegido *</label>
                         <input type="text" name="cipteia" required>
@@ -146,7 +146,7 @@
                         <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
                     </div>
 
-                    <div class="field">
+                    {{--<div class="field">
                         <label>Gênero *</label>
                         <select name="genero" id="genero" onchange="mostrarOutroGenero()">
                             <option value="">Selecione</option>
@@ -162,6 +162,16 @@
                     <div class="field" id="genero-outro-box" style="display: none;">
                         <label>Informe o gênero:</label>
                         <input type="text" name="genero_outro">
+                    </div>--}}
+
+                    <div class="field">
+                        <label>Gênero</label>
+                        <select type="text" id="genero" name="genero">
+                            <option value="">--- Selecione ---</option>
+                            @foreach($generos as $item)
+                            <option value="{{ $item->id }}" {{ isset($usuario) && $item->id === $usuario->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="field btns">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\Comunidade;
+use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -18,6 +19,12 @@ use function Laravel\Prompts\alert;
 
 class ComunidadeController extends Controller
 {
+    private $genero;
+
+    public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
+    {
+        $this->genero = $genero;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +35,9 @@ class ComunidadeController extends Controller
      */
     public function create()
     {
-        return view('cadastro.create-comunidade');
+        $generos = $this->genero->all();
+
+        return view('cadastro.create-comunidade', compact('generos'));
     }
 
     /**
@@ -45,7 +54,7 @@ class ComunidadeController extends Controller
             'senha' => 'required|string|min:6|max:255',
             'senha_confirmacao' => 'required|same:senha',
             'cpf' => 'required|digits:11',
-            'genero' => 'required|string|max:255',
+            'genero' => 'required|integer',
             'data_nascimento' => 'required|date',
             'cep' => 'nullable|string|max:255',
             'logradouro' => 'nullable|string|max:255',
@@ -118,7 +127,7 @@ class ComunidadeController extends Controller
             ]);
         }
 
-        Auth::login($usuario); 
+        Auth::login($usuario);
 
         return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
     }

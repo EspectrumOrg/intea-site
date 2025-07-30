@@ -27,7 +27,7 @@ class UsuarioFactory extends Factory
             //'remember_token' => Str::random(10),
 
             'cpf' => fake()->numerify('###.###.###-##'),
-            'genero' => fake()->randomElement(['masculino', 'feminino', 'outro']),
+            'genero' => fake()->randomElement(['1', '2', '3', '4']),
             'data_nascimento' => fake()->dateTimeBetween('-67 years', '-18')->format('Y-m-d'),
 
             'cep'  =>  null,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\Admin;
+use App\Models\Genero;
 use App\Models\FoneUsuario;
 use Illuminate\Http\Request;
 use App\Providers\RouteServiceProvider;
@@ -18,6 +19,12 @@ use function Laravel\Prompts\alert;
 
 class AdminController extends Controller
 {
+    private $genero;
+
+    public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
+    {
+        $this->genero = $genero;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -31,13 +38,16 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $generos = $this->genero->all();
+
+        return view('#', compact('generos'));
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-public function store(Request $request)
+    public function store(Request $request)
     {
         // 0. Validar Dados
         $request->validate([
