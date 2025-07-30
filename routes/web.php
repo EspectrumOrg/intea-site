@@ -35,7 +35,7 @@ Route::get('/index', function () {
 
 
 Route::get('/cadastro', function () {
-    return view('cadastro.index'); // Cadastro de usuário
+    return view('auth.register'); // Cadastro de usuário
 })->name('cadastro.index');
 Route::get('/cadastro/responsavel', function () {
     return view('cadastro.create-responsavel');

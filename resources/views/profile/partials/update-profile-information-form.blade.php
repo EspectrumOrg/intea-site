@@ -59,22 +59,57 @@
         </div>
 
         <div class="mb-3">
-            <label for="nome" class="form-label">Tipo Conta</label>
-            <x-input-label for="tipo_usuario" />
-            @if($user->tipo_usuario===1)
-            <h3>Admin</h3>
-            @elseif($user->tipo_usuario===2)
-            <h3>Admin</h3>
-            @elseif($user->tipo_usuario===3)
-            <h3>Comunidade</h3>
-            @elseif($user->tipo_usuario===4)
-            <h3>Profissional de Saúde</h3>
-            @elseif($user->tipo_usuario===5)
-            <h3>Responsável</h3>
-            @endif
+            <label for="tipo_usuario" class="form-label">Tipo de Conta</label>
+            <input id="tipo_usuario" name="tipo_usuario" type="text" class="form-control"
+                value="@switch($user->tipo_usuario)
+                @case(1) Admin @break
+                @case(2) Autista @break
+                @case(3) Comunidade @break
+                @case(4) Profissional de Saúde @break
+                @case(5) Responsável @break
+               @endswitch"
+                readonly />
         </div>
 
         {{-- adicionar campos específicos para cada tipo de conta (tirando admin e comunidade)--}}
+        @if ($user->tipo_usuario === 2 && $dadosespecificos)
+        <div class="mb-3">
+            <label for="cipteia_autista" class="form-label"><strong>Autista</strong></label>
+            <input id="cipteia_autista" name="cipteia_autista" type="text" class="form-control" value="{{ $dadosespecificos->cipteia_autista ?? old('cipteia_autista')}}" required autocomplete="cipteia_autista" />
+        </div>
+        <div class="mb-3">
+            <label for="status_cipteia_autista" class="form-label"><strong>Status Cipteia Autista</strong></label>
+            <input id="status_cipteia_autista" name="status_cipteia_autista" type="text" class="form-control" value="{{ $dadosespecificos->status_cipteia_autista ?? old('status_cipteia_autista')}}" required autocomplete="status_cipteia_autista" />
+        </div>
+        <div class="mb-3">
+            <label for="rg_autista" class="form-label"><strong>RG Autista</strong></label>
+            <input id="rg_autista" name="rg_autista" type="text" class="form-control" value="{{ $dadosespecificos->rg_autista ?? old('rg_autista')}}" required autocomplete="rg_autista" />
+        </div>
+            @if (isset($dadosespecificos->responsavel_id))
+                <div class="mb-3">
+                    <label for="responsavel" class="form-label"><strong>Responsável</strong></label>
+                    <h1 value="{{ $dadosespecificos->responsavel_id ?? old('responsavel_id')}}" required autocomplete="responsavel_id"></h1>
+                </div>
+            @endif
+        @endif
+
+        @if ($user->tipo_usuario === 4 && $dadosespecificos)
+        <div class="mb-3">
+            <label for="tipo_registro" class="form-label"><strong>Tipo Registro</strong></label>
+            <input id="tipo_registro" name="tipo_registro" type="text" class="form-control" value="{{ $dadosespecificos->tipo_registro ?? old('tipo_registro')}}" required autocomplete="tipo_registro" />
+        </div>
+        <div class="mb-3">
+            <label for="registro_profissional" class="form-label"><strong>Registro Profissional</strong></label>
+            <input id="registro_profissional" name="registro_profissional" type="text" class="form-control" value="{{ $dadosespecificos->registro_profissional ?? old('registro_profissional')}}" required autocomplete="registro_profissional" />
+        </div>
+        @endif
+
+        @if ($user->tipo_usuario === 4 && $dadosespecificos)
+        <div class="mb-3">
+            <label for="cipteia_autista" class="form-label"><strong>Cipteia Autista</strong></label>
+            <input id="cipteia_autista" name="cipteia_autista" type="text" class="form-control" value="{{ $dadosespecificos->cipteia_autista ?? old('cipteia_autista')}}" required autocomplete="cipteia_autista" />
+        </div>
+        @endif
 
         <div class="mb-3">
             <label for="cpf" class="form-label">CPF</label>
@@ -91,7 +126,7 @@
         --}}
 
         <div class="mb-3">
-            <label for="genero_id" class="form-label"><strong>Gênero</strong></label>
+            <label for="genero_id" class="form-label">Gênero</label>
             <select type="text" class="form-select" id="genero_id" name="genero_id">
                 <option value="">--- Selecione ---</option>
                 @foreach($generos as $item)

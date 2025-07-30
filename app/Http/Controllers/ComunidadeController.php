@@ -43,7 +43,7 @@ class ComunidadeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -70,7 +70,22 @@ class ComunidadeController extends Controller
             'numero_telefone' => 'required|array|min:1',
             'numero_telefone.*' => 'required|string|max:20'
         ], [
-            // mensagens de erro personalizadas...
+            'nome.required' => 'O campo nome é obrigatório',
+            'user.required' => 'O campo user é obrigatório',
+            'email.required' => 'O campo email é obrigatório',
+            'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
+            'email.email' => 'O campo email deve ser preenchido corretamente',
+            'email.unique' => 'este email já eestá cadastrado',
+            'senha.required' => 'O campo senha é obrigatório',
+            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
+            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
+            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
+            'cpf.required' => 'O campo cpf é obrigatório',
+            'cpf.digits' => 'O CPF deve conter exatamente 11 dígitos numéricos',
+            'genero.required' => 'O campo gênero é obrigatório',
+            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
+            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
         ]);
 
         // Validação customizada do CPF
