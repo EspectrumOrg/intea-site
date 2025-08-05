@@ -59,7 +59,7 @@ Route::post('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
 
-// Usuário Logado
+// Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', function () {
@@ -71,6 +71,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+ 
+// Profissional de Saúde Logado 
+Route::middleware('auth', 'is_profissional')->group(function () {
+
+    Route::get('/pagina_saude', function () {
+        return view('paginas/profissional_saude/inicio_profissional_saude');
+    })
+    ->name('pagina_saude');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
 
 // Apenas Admin
 Route::middleware(['auth', 'is_admin'])->group(function () {
