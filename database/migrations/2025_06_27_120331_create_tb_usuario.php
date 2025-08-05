@@ -22,11 +22,7 @@ return new class extends Migration
             $table->string('apelido')->nullable();
             $table->string('email')->unique();
             $table->string('senha');
-<<<<<<< HEAD
             $table->string('cpf')->unique();
-=======
-            $table->string('cpf');
->>>>>>> 445a02a33d671da2689f6369c55fb1070307aa6c
             $table->integer('genero'); //FK
             $table->date('data_nascimento');
             $table->string('imagem')->nullable();
