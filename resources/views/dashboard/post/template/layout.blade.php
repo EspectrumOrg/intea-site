@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laravel INTEA (Beta) - Área Admin</title>
+    <title>Laravel INTEA (Beta) - Postagens</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous"> <!-- Boostrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> <!-- icones boostrap-->
 </head>
@@ -15,23 +15,26 @@
 
     <div class="container-fluid">
         <div class="row">
-
-            @include("layouts.partials.menu")
-
+            <!-- create post-->
+            @include('dashboard.post.create')
         </div>
     </div>
 
     <div class="container-fluid">
         <div class="row">
-            {{-- SIDEBAR (MENU VERTICAL) --}}
-            <div class="col-md-3 bg-light min-vh-100 p-3">
-                @include("layouts.partials.sidebar-admin")
+
+             <!-- conteúdo principal  -->
+            <div class="col-md-9 p-4">
+                @yield('main')
             </div>
 
-            {{-- CONTEÚDO PRINCIPAL --}}
-            <div class="col-md-9 p-4">
-                @yield("main")
+            <h1>TEste</h1>
+
+            <!-- o que está bombando (mais vistos) -->
+            <div class="col-md-3 bg-light min-vh-100 p-3">
+                @include('dashboard.post.partials.sidebar-popular')
             </div>
+
         </div>
     </div>
 

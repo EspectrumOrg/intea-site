@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_imagens', function (Blueprint $table) {
+        Schema::create('tb_imagem_postagem', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idPostagem');
-            $table->foreign('idPostagem')->references('id')->on('tb_postagem')->onDelete('cascade');
-            $table->string('caminhoImagem');
+            $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
+            $table->string('caminho_imagem');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_imagens');
+        Schema::dropIfExists('tb_imagem_postagem');
     }
 };

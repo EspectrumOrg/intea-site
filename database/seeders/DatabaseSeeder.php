@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Postagem;
+use App\Models\ImagemPostagem;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,6 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsuarioSeeder::class,
             GeneroSeeder::class,
+            PostagemSeeder::class,
+            ImagemPostagemSeeder::class,
         ]);
         // \App\Models\User::factory(10)->create();
 

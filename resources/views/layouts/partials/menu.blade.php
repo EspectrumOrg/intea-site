@@ -22,9 +22,6 @@
                      <a class="nav-link" href="#">Profissionais</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#">[barra pesquisa]</a>
-                 </li>
-                 <li class="nav-item">
                      <a class="nav-link" href="{{ route('profile.edit') }}">Conta</a>
                  </li>
                  <!-- Authentication -->

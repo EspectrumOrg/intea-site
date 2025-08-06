@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_likes', function (Blueprint $table) {
+        Schema::create('tb_curtida', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idPostagem');
-            $table->foreign('idPostagem')->references('id')->on('tb_postagem');
-            $table->unsignedBigInteger('idusuario');
-            $table->foreign('idusuario')->references('id')->on('tb_usuario');
+            $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_likes');
+        Schema::dropIfExists('tb_curtida');
     }
 };

@@ -8,28 +8,22 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tb_postagem', function (Blueprint $table) {
+        Schema::create('curtida_comentario', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
-            $table->string('titulo_postagem');
-            $table->text('texto_postagem');
-            $table->timestamp('data_postagem');
+            $table->foreignId('id_comentario')->constrained('tb_comentario_postagem')->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('tb_postagem');
+        Schema::dropIfExists('curtida_comentario');
     }
 };

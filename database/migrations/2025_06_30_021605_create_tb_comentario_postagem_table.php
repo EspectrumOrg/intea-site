@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_comentarios', function (Blueprint $table) {
+        Schema::create('tb_comentario_postagem', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idPostagem');
-            $table->foreign('idPostagem')->references('id')->on('tb_postagem');
-            $table->unsignedBigInteger('idusuario');
-            $table->foreign('idusuario')->references('id')->on('tb_usuario');
+            $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
             $table->text('comentario');
             $table->boolean('is_autor')->default(false);
             $table->timestamps();
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_comentarios');
+        Schema::dropIfExists('tb_comentario_postagem');
     }
 };
