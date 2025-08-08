@@ -34,6 +34,7 @@ Route::get('/index', function () {
 })->name('index');
 
 
+
 Route::get('/cadastro', function () {
     return view('auth.register'); // Cadastro de usuário
 })->name('cadastro.index');
@@ -56,6 +57,8 @@ Route::post('/cadastro/comunidade', [ComunidadeController::class, 'store'])->nam
 Route::get('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'create'])->name('cadastro.profissionalsaude');
 Route::post('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'store'])->name('cadastro.store.profissionalsaude');
 // Cadastro de Responsável
+Route::get('/perfilResponsavel', [ResponsavelController::class, 'perfil'])->name('perfilr');
+
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
 
