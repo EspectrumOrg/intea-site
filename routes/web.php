@@ -4,16 +4,10 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
 use App\Http\Controllers\ComunidadeController;
-use App\Http\Controllers\cuidadorController;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
-use App\Models\Autista;
-use App\Models\ProfissionalSaude;
-use App\Models\Responsavel;
-use App\Models\Usuario;
 use App\Http\Controllers\ProfileController;
-use App\Models\Postagem;
 use Illuminate\Support\Facades\Route;
 
 /*

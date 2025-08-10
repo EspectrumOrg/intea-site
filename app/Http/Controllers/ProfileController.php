@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
-use App\Models\Autista;
-use App\Models\ProfissionalSaude;
-use App\Models\Responsavel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,38 +50,6 @@ class ProfileController extends Controller
         $generos = $this->genero->all();
         $user = Auth::user();
 
-        /*$user->update($request->only([
-            'nome',
-            'user',
-            'apelido',
-            'email',
-            'cpf',
-            'genero',
-            'data_nascimento',
-            'cep',
-            'logradouro',
-            'endereco',
-            'rua',
-            'bairro',
-            'numero',
-            'cidade',
-            'estado',
-            'complemento',
-        ]));
-
-        switch ($user->tipo_usuario) {
-            case 2:
-                $user->autista()->update($request->only(['cipteia_autista', 'rg_autista', 'status_cipteia']));
-                break;
-            case 4:
-                $user->profissionalsaude()->update($request->only(['tipo_registro', 'registro_profissional']));
-                break;
-            case 5:
-                $user->responsavel()->update($request->only(['cipteia_autista']));
-                break;
-        }*/
-
-
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
@@ -97,7 +62,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account. logout
      */
     public function destroy(Request $request): RedirectResponse
     {
