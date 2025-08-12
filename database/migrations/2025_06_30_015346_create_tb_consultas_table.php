@@ -13,14 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_consultas', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('tb_profissional_saude');
-            $table->unsignedBigInteger('autista_id');
-            $table->foreign('autista_id')->references('id')->on('tb_autista');
-            $table->timestamps();
-        });
+      Schema::create('tb_consultas', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('usuario_id');
+    $table->foreign('usuario_id')->references('id')->on('tb_usuario');
+    $table->unsignedBigInteger('profissional_id');
+    $table->foreign('profissional_id')->references('id')->on('tb_profissional_saude');
+    $table->dateTime('dataAgendamento');
+    $table->dateTime('dataRealizacao');
+    $table->string('status_consulta');
+    $table->timestamps();
+});
     }
 
     /**

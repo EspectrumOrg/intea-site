@@ -98,6 +98,7 @@ class Usuario extends Authenticatable
 
     public function genero()
     {
-      return $this->belongsTo(Genero::class);
+    return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
     }
-}
+    
+  }

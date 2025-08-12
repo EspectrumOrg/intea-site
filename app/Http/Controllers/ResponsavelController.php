@@ -112,7 +112,7 @@ class ResponsavelController extends Controller
 
         Auth::login($usuario);
 
-        return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
+        return redirect()->route('perfilr')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
     }
 
     // Função estática para validar CPF (copie essa função dentro da classe)
@@ -136,7 +136,14 @@ class ResponsavelController extends Controller
         return true;
     }
 
-
+  public function perfil()
+{       
+    // a linha abaixo e para poder usar o load se nao ele da erro
+    /** @var \App\Models\Usuario $usuario */
+$usuario = Auth::user();
+$usuario->load('responsavel', 'telefones', 'genero');
+return view('perfilResponsavel', compact('usuario'));
+}
     /**
      * Display the specified resource.
      */

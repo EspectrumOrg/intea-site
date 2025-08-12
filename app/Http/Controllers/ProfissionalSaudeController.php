@@ -113,7 +113,7 @@ class ProfissionalSaudeController extends Controller
 
         Auth::login($usuario);
 
-        return redirect()->route('dashboard')->with('Sucesso', 'Profissional de Saúde cadastrado com sucesso!');
+        return redirect()->route('pagina_saude')->with('Sucesso', 'Profissional de Saúde cadastrado com sucesso!');
     }
 
     // Função para validar CPF, copie ela para dentro da sua classe (controller)
