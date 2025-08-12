@@ -11,6 +11,7 @@
 </head>
 
 <body>
+
     <header class="header">
         <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
     </header>

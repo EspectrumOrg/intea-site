@@ -1,0 +1,16 @@
+:root {
+    --cor-tema: #017373;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor--vermelho: #F22727;
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+}
+
+.container-post{
+    display: flex;
+    flex-direction: row;
+}
