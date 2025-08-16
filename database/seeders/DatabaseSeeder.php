@@ -4,8 +4,10 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\FoneUsuario;
 use App\Models\Postagem;
 use App\Models\ImagemPostagem;
+use Database\Factories\TelefoneFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

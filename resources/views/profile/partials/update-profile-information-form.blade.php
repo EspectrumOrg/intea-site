@@ -85,12 +85,12 @@
             <label for="rg_autista" class="form-label"><strong>RG Autista</strong></label>
             <input id="rg_autista" name="rg_autista" type="text" class="form-control" value="{{ $dadosespecificos->rg_autista ?? old('rg_autista')}}" required autocomplete="rg_autista" />
         </div>
-            @if (isset($dadosespecificos->responsavel_id))
-                <div class="mb-3">
-                    <label for="responsavel" class="form-label"><strong>Responsável</strong></label>
-                    <h1 value="{{ $dadosespecificos->responsavel_id ?? old('responsavel_id')}}" required autocomplete="responsavel_id"></h1>
-                </div>
-            @endif
+        @if (isset($dadosespecificos->responsavel_id))
+        <div class="mb-3">
+            <label for="responsavel" class="form-label"><strong>Responsável</strong></label>
+            <h1 value="{{ $dadosespecificos->responsavel_id ?? old('responsavel_id')}}" required autocomplete="responsavel_id"></h1>
+        </div>
+        @endif
         @endif
 
         @if ($user->tipo_usuario === 4 && $dadosespecificos)
@@ -117,21 +117,12 @@
             <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
         </div>
 
-        {{--
-        <div class="mb-3">
-            <label for="genero" class="form-label">Gênero</label>
-            <input id="genero" name="genero" type="text" class="form-control" value="{{ $user->genero ?? old('genero')}}" required autocomplete="genero" />
-        <x-input-error class="mt-2" :messages="$errors->get('genero')" />
-        </div>
-        --}}
-
         <div class="mb-3">
             <label for="genero_id" class="form-label">Gênero</label>
             <select type="text" class="form-select" id="genero_id" name="genero_id">
                 <option value="">--- Selecione ---</option>
                 @foreach($generos as $item)
                 <option value="{{ $item->id }}" {{ isset($user) && $item->id === $user->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
-
                 @endforeach
             </select>
         </div>
@@ -190,16 +181,20 @@
             <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Salvar') }}</x-primary-button>
+        <h6>Telefones</h6>
 
+        @foreach($telefones as $index => $telefone)
+        <div class="mb-3">
+            <label for="telefone_{{ $index }}" class="form-label">Telefone {{ $index + 1 }}</label>
+            <input id="telefone_{{ $index }}" name="numero_telefone[]" type="tel" class="form-control" value="{{ $telefone->numero_telefone ?? old('numero_telefone.' . $index)}}" required autocomplete="telefone" />
+            <x-input-error class="mt-2" :messages="$errors->get('numero_telefone.' . $index)" />
+        </div>
+        @endforeach
+
+        <div class="flex">
+            <button type="submit" class="btn-primary">{{ __('Salvar') }}</button>
             @if (session('status') === 'profile-updated')
-            <p
-                x-data="{ show: true }"
-                x-show="show"
-                x-transition
-                x-init="setTimeout(() => show = false, 2000)"
-                class="text-sm text-gray-600">{{ __('Saved.') }}</p>
+            <p class="text-success">{{ __('Informações atualizadas com sucesso.') }}</p>
             @endif
         </div>
     </form>

@@ -27,22 +27,6 @@ class GeneroSeeder extends Seeder
         ]);
 
         Genero::factory()->create([
-            'titulo' => 'homem trans',
-        ]);
-
-        Genero::factory()->create([
-            'titulo' => 'mulher trans',
-        ]);
-
-        Genero::factory()->create([
-            'titulo' => 'agênero',
-        ]);
-
-        Genero::factory()->create([
-            'titulo' => 'gênero fluido',
-        ]);
-
-        Genero::factory()->create([
             'titulo' => 'prefere não informar',
         ]);
     }

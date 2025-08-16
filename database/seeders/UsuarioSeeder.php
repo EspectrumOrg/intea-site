@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Usuario;
+use App\Models\FoneUsuario;
 use App\Models\Admin;
 use App\Models\Autista;
 use App\Models\Comunidade;
@@ -62,7 +63,15 @@ class UsuarioSeeder extends Seeder
             'usuario_id' => $admin->id,
         ]);
 
+        FoneUsuario::factory(5)->create([
+            'usuario_id' => $admin->id,
+        ]);
+
         Autista::factory()->create([
+            'usuario_id' => $autista->id,
+        ]);
+
+        FoneUsuario::factory(5)->create([
             'usuario_id' => $autista->id,
         ]);
 
@@ -70,7 +79,15 @@ class UsuarioSeeder extends Seeder
             'usuario_id' => $comunidade->id,
         ]);
 
+        FoneUsuario::factory(5)->create([
+            'usuario_id' => $comunidade->id,
+        ]);
+
         ProfissionalSaude::factory()->create([
+            'usuario_id' => $profissionalsaude->id,
+        ]);
+
+        FoneUsuario::factory(5)->create([
             'usuario_id' => $profissionalsaude->id,
         ]);
 
@@ -78,6 +95,8 @@ class UsuarioSeeder extends Seeder
             'usuario_id' => $responsavel->id,
         ]);
 
-        Usuario::factory(15)->create();
+        FoneUsuario::factory(5)->create([
+            'usuario_id' => $responsavel->id,
+        ]);
     }
 }

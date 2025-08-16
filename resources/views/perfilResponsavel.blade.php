@@ -19,7 +19,6 @@
 <p>teste {{$usuario->responsavel->created_at}} </p>
 <h2>Telefones</h2>
 <ul> 
-    eqwkhjqkej
     @foreach ($usuario->telefones as $telefone)
         <li>{{ $telefone->numero_telefone }}</li>
     @endforeach

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
+use App\Models\FoneUsuario;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +14,12 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     private $genero;
+    private $telefone;
 
-    public function __construct(Genero $genero)
+    public function __construct(Genero $genero, FoneUsuario $telefone)
     {
         $this->genero = $genero;
+        $this->telefone = $telefone;
     }
     /**
      * Display the user's profile form.
@@ -25,6 +28,7 @@ class ProfileController extends Controller
     {
         $generos = $this->genero->all();
         $user = Auth::user();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
 
         switch ($user->tipo_usuario) {
@@ -39,7 +43,7 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('dadosespecificos', 'generos', 'user'));
+        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user'));
     }
 
     /**
