@@ -10,9 +10,6 @@
 </head>
 
 <body>
-    <header class="header">
-        <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
-    </header>
 
     <main class="container-cadastro">
         <div class="form-outer">
@@ -86,7 +83,7 @@
                     </div>
 
                     <!-- Telefone -->
-                    <div id="telefones">
+                    <div class="telefone" id="telefones">
                         @php
                         $telefones = old('numero_telefone', ['']);
                         @endphp
@@ -99,8 +96,9 @@
                         @endforeach
                     </div>
 
-                    <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
-
+                    <div class="btn-telefone">
+                        <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
+                    </div>
 
                     <div class="field btns">
                         <button type="button" class="prev-1 prev">Anterior</button>
@@ -119,23 +117,6 @@
                         <label>Data de Nascimento *</label>
                         <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
                     </div>
-
-                    {{--<div class="field">
-                        <label>Gênero *</label>
-                        <select name="genero" id="genero" onchange="mostrarOutroGenero()">
-                            <option value="">Selecione</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Não Binario">Não Binário</option>
-                            <option value="Prefiro não informar">Prefiro não informar</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-
-                    <div class="field" id="genero-outro-box" style="display: none;">
-                        <label>Informe o gênero:</label>
-                        <input type="text" name="genero_outro">
-                    </div>--}}
 
                     <div class="field">
                         <label>Gênero</label>
@@ -201,8 +182,10 @@
                 </div>
             </form>
 
+            <!-- Criar conta -->
             <div class="voltar">
-                <p><a href="{{ route('cadastro.index') }}">Voltar para tipo conta</a></p>
+                <p><a href="{{ route('cadastro.index') }}">Tipo conta</a></p>
+                <p><a href="{{ route('welcome') }}">Início</a></p>
             </div>
         </div>
     </main>

@@ -23,7 +23,7 @@
     </div>
 
     <!-- Telefone -->
-    <div id="telefones">
+    <div class="telefone" id="telefones">
         @php
         $telefones = old('numero_telefone', ['']);
         @endphp
@@ -36,7 +36,9 @@
         @endforeach
     </div>
 
-    <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
+    <div class="btn-telefone">
+        <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
+    </div>
 
     <div class="field btns"> <!-- btns -->
         <button type="button" class="prev-1 prev">Anterior</button>
@@ -56,31 +58,14 @@
         <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
     </div>
 
-    {{--<div class="field">
-        <label>Gênero *</label>
-        <select name="genero" id="genero" onchange="mostrarOutroGenero()">
-            <option value="">Selecione</option>
-            <option value="Masculino">Masculino</option>
-            <option value="Feminino">Feminino</option>
-            <option value="Não Binario">Não Binário</option>
-            <option value="Prefiro não informar">Prefiro não informar</option>
-            <option value="Outro">Outro</option>
-        </select>
-    </div>--}}
-
     <div class="field">
         <label>Gênero</label>
         <select type="text" id="genero" name="genero">
-            <option value="">--- Selecione ---</option>
+            <option value="">Opções</option>
             @foreach($generos as $item)
             <option value="{{ $item->id }}" {{ isset($usuario) && $item->id === $usuario->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
             @endforeach
         </select>
-    </div>
-
-    <div class="field" id="genero-outro-box" style="display: none;">
-        <label>Informe o gênero:</label>
-        <input type="text" name="genero_outro">
     </div>
 
     <div class="field btns"> <!-- btns -->

@@ -8,6 +8,7 @@
 
     <!-- Link do CSS -->
     <link rel="stylesheet" href="{{ url('assets/css/inicio/login.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
 </head>
 
 <body>

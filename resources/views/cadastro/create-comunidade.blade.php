@@ -10,14 +10,14 @@
 </head>
 
 <body>
-    <header class="header">
-        <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
-    </header>
-
     <main class="container-cadastro">
+
         <div class="form-outer">
-            <h1>Cadastro - Participante da Comunidade</h1>
-            <p>Preencha todos os campos obrigatórios (*)</p>
+            <div class="descricao">
+                <h2>Cadastro - Participante da Comunidade</h2>
+                <p>Preencha todos os campos obrigatórios (*)</p>
+            </div>
+
 
             <div class="progress-bar">
                 <div class="step">
@@ -57,7 +57,9 @@
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $erro)
-                    <li><h3 class="alert-mensage">{{ $erro }}</h3></li>
+                    <li>
+                        <h3 class="alert-mensage">{{ $erro }}</h3>
+                    </li>
                     @endforeach
                 </ul>
             </div>
@@ -69,6 +71,8 @@
 
                 @include("cadastro.partials.form")
             </form>
+
+            <!-- Criar conta -->
             <div class="voltar">
                 <p><a href="{{ route('cadastro.index') }}">Tipo conta</a></p>
                 <p><a href="{{ route('welcome') }}">Início</a></p>

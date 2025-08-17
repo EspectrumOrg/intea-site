@@ -10,14 +10,13 @@
 </head>
 
 <body>
-    <header class="header">
-        <img src="{{ asset('assets/images/logos/intea/logo.png') }}" alt="Logo" class="logo">
-    </header>
-
     <main class="container-cadastro">
+
         <div class="form-outer">
-            <h1>Cadastro - Autista</h1>
-            <p>Preencha todos os campos obrigatórios (*)</p>
+            <div class="descricao">
+                <h2>Cadastro - Autista</h2>
+                <p>Preencha todos os campos obrigatórios (*)</p>
+            </div>
 
             <div class="progress-bar">
                 <div class="step">
@@ -95,8 +94,7 @@
                         <input type="email" name="email" value="{{ $usuario->email ?? old('email') }}">
                     </div>
 
-                    <!-- Telefone -->
-                    <div id="telefones">
+                    <div class="telefone" id="telefones">
                         @php
                         $telefones = old('numero_telefone', ['']);
                         @endphp
@@ -109,8 +107,10 @@
                         @endforeach
                     </div>
 
-                    <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
-
+                    <div class="btn-telefone">
+                        <button type="button" class="botao-telefone" onclick="adicionarTelefone()">Adicionar Telefone</button>
+                    </div>
+                    
                     <div class="field btns"> <!-- btns -->
                         <button type="button" class="prev-1 prev">Anterior</button>
                         <button type="button" class="next-1 next">Próximo</button>
@@ -134,27 +134,10 @@
                         <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
                     </div>
 
-                    {{--<div class="field">
-                        <label>Gênero *</label>
-                        <select name="genero" id="genero" onchange="mostrarOutroGenero()" required>
-                            <option value="">Selecione</option>
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                            <option value="Não Binario">Não Binário</option>
-                            <option value="Prefiro não informar">Prefiro não informar</option>
-                            <option value="Outro">Outro</option>
-                        </select>
-                    </div>
-
-                    <div class="field" id="genero-outro-box" style="display: none;">
-                        <label>Informe o gênero:</label>
-                        <input type="text" name="genero_outro">
-                    </div>--}}
-
                     <div class="field">
                         <label>Gênero</label>
                         <select type="text" id="genero" name="genero">
-                            <option value="">--- Selecione ---</option>
+                            <option value="">Opções</option>
                             @foreach($generos as $item)
                             <option value="{{ $item->id }}" {{ isset($usuario) && $item->id === $usuario->genero ? "selected='selected'": "" }}>{{ $item->titulo }}</option>
                             @endforeach
@@ -189,8 +172,11 @@
                     </div>
                 </div>
             </form>
+
+            <!-- Criar conta -->
             <div class="voltar">
-                <p><a href="{{ route('register') }}">Voltar para tipo conta</a></p>
+                <p><a href="{{ route('cadastro.index') }}">Tipo conta</a></p>
+                <p><a href="{{ route('welcome') }}">Início</a></p>
             </div>
         </div>
     </main>
