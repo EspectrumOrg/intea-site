@@ -1,72 +1,290 @@
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0; padding: 0;
-            background: #f5f7fa;
-            color: #333;
-        }
-        header {
-            background-color: #0d6efd;
-            color: white;
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        nav a {
-            color: white;
-            margin-left: 1rem;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .container {
-            display: flex;
-            padding: 2rem;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .sidebar {
-            width: 250px;
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        .profile-summary {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-        .profile-summary img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 0.5rem;
-        }
-        .main-content {
-            flex: 1;
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
-        }
-        .post {
-            border-bottom: 1px solid #ddd;
-            padding: 1rem 0;
-        }
-        .post:last-child {
-            border-bottom: none;
-        }
-        .post-header {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-        .post-content {
-            margin-bottom: 0.5rem;
-        }
-        .sidebar-footer {
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            color: #666;
-            text-align: center;
-        }
+/* RESET BÁSICO */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f3f2ef;
+    color: #1c1c1c;
+}
+
+/* === HEADER === */
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #ddd;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 1.2rem;
+    color: #0a66c2;
+}
+
+header nav {
+    display: flex;
+    gap: 1rem;
+}
+
+header nav a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 600;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+header nav a:hover {
+    color: #0a66c2;
+}
+
+.notification-count {
+    background: #d93025;
+    color: white;
+    font-size: 10px;
+    border-radius: 50%;
+    padding: 2px 6px;
+    position: absolute;
+    top: -8px;
+    right: -12px;
+}
+
+/* === CONTAINER === */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+/* === SIDEBAR ESQUERDA === */
+.sidebar {
+    width: 260px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.profile-summary {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.profile-summary img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+}
+
+.profile-summary h2 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    color: #1c1c1c;
+}
+
+.profile-summary p {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.sidebar h3 {
+    margin: 1rem 0 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar ul li {
+    margin: 0.5rem 0;
+}
+
+.sidebar ul li a {
+    color: #0a66c2;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.sidebar-footer {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    text-align: center;
+    color: #999;
+}
+
+/* === FEED CENTRAL === */
+.feed {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.2rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Publicação */
+.create-post {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.create-post img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.create-post input[type="text"] {
+    padding: 0.6rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.post-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.post-options button {
+    background: none;
+    border: none;
+    color: #0a66c2;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+/* Postagens */
+.post {
+    margin-bottom: 1.5rem;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-post {
+    max-width: 100px;
+    height: 100px;
+    border-radius: 100%;
+}
+
+.post-header div {
+    flex: 1;
+}
+
+.post-header strong {
+    font-size: 0.95rem;
+    color: #1c1c1c;
+}
+
+.post-header span {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.post-header small {
+    font-size: 0.7rem;
+    color: #999;
+}
+
+.follow-btn {
+    background-color: #0a66c2;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.post p {
+    font-size: 0.95rem;
+    color: #333;
+    margin-bottom: 0.8rem;
+}
+
+.post img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.post-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.post-actions button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+/* === SIDEBAR DIREITA === */
+.sidebar-right {
+    width: 280px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.sidebar-right h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+}
+
+.sidebar-right ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.sidebar-right li {
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.sidebar-right li strong {
+    color: #1c1c1c;
+}
+
+.sidebar-right li small {
+    color: #888;
+}
+
+.show-more {
+    background: none;
+    border: none;
+    color: #0a66c2;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 0.5rem;
+}

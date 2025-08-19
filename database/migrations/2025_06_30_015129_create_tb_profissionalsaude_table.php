@@ -12,18 +12,18 @@ return new class extends Migration
      * @return void
      */
 
-         // tbProfSaude
+    // tbProfSaude
     public function up()
     {
-            Schema::create('tb_profissional_saude', function (Blueprint $table) {
+        Schema::create('tb_profissional_saude', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('tb_usuario');
             $table->string('tipo_registro');
             $table->string('registro_profissional');
+            $table->string('tipo_profissional'); 
             $table->timestamps();
         });
-
     }
 
     /**
