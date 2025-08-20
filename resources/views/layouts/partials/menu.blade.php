@@ -21,19 +21,29 @@
                  <li class="nav-item">
                      <a href="#">Profissionais</a>
                  </li>
-                 <li class="nav-item" id="conta">
+
+                 <li class="nav-item dropdown-item">
+                     <a href="#"><img src="{{ asset('storage/'.Auth::user()->foto) }}"></a>
+                     <ul class="dropdown">
+                         <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
+                         <li> <!-- Authentication -->
+                             <form method="POST" action="{{ route('logout') }}">
+                                 @csrf
+                                 <a onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link" href="#">Sair</a>
+                             </form>
+                         </li>
+                     </ul>
+                 </li>
+
+                 {{--<li class="nav-item" id="conta">
                      <a href="{{ route('profile.edit') }}">Conta</a>
 
                      <!-- Authentication -->
                      <form method="POST" action="{{ route('logout') }}">
                          @csrf
-
-                         <a
-                             onclick="event.preventDefault(); this.closest('form').submit();"
-                             class="nav-link"
-                             href="#">Sair</a>
+                         <a onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link" href="#">Sair</a>
                      </form>
-                 </li>
+                 </li>--}}
              </ul>
          </div>
 

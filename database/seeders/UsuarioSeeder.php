@@ -22,10 +22,14 @@ class UsuarioSeeder extends Seeder
         // criar admin padrão
         $admin = Usuario::factory()->create([
             'nome' => 'Admin',
+            'user' => 'German Freud dir Sor',
+            'apelido' => 'GFdS',
             'email' => 'admin@site.com',
             'senha' => bcrypt('6~5~5y9%Rfq'),
+            'data_nascimento' => '2007-04-08',
             'tipo_usuario' => 1,
             'foto' => 'arquivos/perfil/fotos/admin-pick.avif',
+            'descricao' => 'Their King | Rey de ellas | Leur Roi | Re di loro | Ihr König | Hun Koning | Deras Kung | Deres Konge | Deres Konge | Heidän Kuninkaansa | Ich Król | Их Король | Ο βασιλιάς τους | Onların Kralı | ملكهم | המלך שלהם | 她们的国王 | 彼女たちの王 | 그녀들의 왕'
         ]);
 
         // Criar autista padrão

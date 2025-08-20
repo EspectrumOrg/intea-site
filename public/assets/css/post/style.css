@@ -6,6 +6,7 @@
     --cor-vermelho: #F22222;
 
     --preto: #0D0D0D;
+    --cinza: #404040;
     --branco: #F2F2F2;
     --branco-light: #ccc;
     --azul: #1d3e55;
@@ -25,45 +26,103 @@
     flex-direction: column;
     justify-content: flex-end;
 }
+
 /* ----------------------------- create posts ------------------------------- */
-/* Corpo */
 .create-post {
     background-color: var(--branco);
     margin: 0 0 2.5rem 0;
     padding: 1rem 2rem;
     border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .create-post .form {
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-/* campo */
+/* campo principal */
 .create-post .form .textfield {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    gap: 1rem;
 }
 
-/* img */
 .create-post .form .textfield img {
-    width: 55px;
+    width: 75px;
+    border-radius: 50%;
 }
 
-/* Input */
 .create-post .form .textfield input {
-    width: 32rem;
-    padding: 10px 20px;
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--branco-light);
+    border-radius: 10px;
+    font-size: var(--texto-padrao);
+    background-color: var(--branco);
+    color: var(--preto);
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* opções */
+.create-post .form .textfield input:focus {
+    border-color: var(--cor-tema);
+    box-shadow: 0 0 5px rgba(1,115,115,0.3);
+    outline: none;
+}
+
+/* opções (upload etc) */
 .create-post .form .content {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 70%;
-    margin: 1rem auto;
+    justify-content: flex-start;
+    gap: 2rem;
+    margin-top: .5rem;
+}
+
+/* label customizada */
+.create-post .form .upload-label {
+    cursor: pointer;
+    color: var(--cor-tema);
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.create-post .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.create-post .form .input-file {
+    display: none;
+}
+
+/* botão */
+.create-post .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.create-post .form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--cor-tema);
+    color: var(--branco);
+    font-size: var(--texto-padrao);
+    font-weight: bold;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.create-post .form .botao-postar:hover {
+    background-color: var(--azul);
+    transform: scale(1.03);
 }
 
 /* ----------------------------- posts ------------------------------- */
@@ -78,27 +137,81 @@
     max-width: 100%;
     background-color: var(--branco);
     border-radius: 15px;
-    padding: 2rem 1rem;
+    padding: 1rem 2rem;
     margin: 2rem 0;
 
 }
 
-/* Img */
-.container-post .content-post .corpo-post .conteudo-post img {
+/* topo ---*/
+.container-post .content-post .corpo-post .topo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* foto perfil */
+.container-post .content-post .corpo-post .topo .foto-perfil img {
+    width: 75px;
+    border-radius: 75px;
+}
+
+/* info perfil */
+.container-post .content-post .corpo-post .topo .info-perfil {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 2rem;
+}
+
+/* nome user */
+.container-post .content-post .corpo-post .topo .info-perfil h1 {
+    font-size: var(--texto-secundario);
+    color: var(--cor-preto);
+}
+
+/* descricao */
+.container-post .content-post .corpo-post .topo .info-perfil h2 {
+    font-size: .75rem;
+    color: var(--cinza);
+    margin: .2rem 0;
+}
+
+/* data */
+.container-post .content-post .corpo-post .topo .info-perfil h3 {
+    font-size: .75rem;
+    color: var(--cinza);
+}
+
+/* Imagem Post */
+.container-post .content-post .corpo-post .conteudo-post .image-post img {
+    padding: .5rem 1.5rem;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .image-post img {
     max-width: 100%;
 }
 
 /* texto */
-.container-post .content-post .corpo-post .conteudo-post  .mostrar-mais {
-  background: none;
-  border: none;
-  color: var(--cor-tema);
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0;
-  margin-top: 5px;
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais {
+    background: none;
+    border: none;
+    color: var(--cor-tema);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 5px;
 }
 
-.container-post .content-post .corpo-post .conteudo-post  .mostrar-mais:hover {
-  text-decoration: underline;
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais:hover {
+    text-decoration: underline;
+}
+
+/* interações postagens ---*/
+.container-post .content-post .corpo-post .opcoes-perfil .options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 1rem 2rem;
 }

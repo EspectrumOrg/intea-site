@@ -41,6 +41,7 @@
         </div>
     </div>
 </body>
-<script src="{{ asset('js/posts/mostrar-mais.js') }}"></script>
+
+<script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
 
 </html>

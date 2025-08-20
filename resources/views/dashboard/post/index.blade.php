@@ -7,41 +7,52 @@
      <div class="content-post">
          @foreach($postagens as $postagem)
          <div class="corpo-post">
-             <h5>{{ $postagem->created_at->format('d/m/y') }}</h5>
-             <p>{{ $postagem->usuario->nome ?? 'Desconhecido' }}</p>
-             <div class="conteudo-post">
-                 @if ($postagem->imagens->isNotEmpty())
-                 <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
-                 @endif
 
+             <div class="topo"> <!-- info conta -->
+                 <div class="foto-perfil">
+                     <a href="#"><img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil"></a>
+                 </div>
+
+                 <div class="info-perfil">
+                     <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                     <h2>{{ Str::limit($postagem->usuario->descricao ?? '--', 75, '...') }}</h2>
+                     <h3>{{ $postagem->created_at->format('d/m/y') }}</h3>
+                 </div>
+             </div>
+
+             <div class="conteudo-post"> <!-- conteudo postagem -->
                  <div class="coment-perfil">
                      <p class="texto-curto" id="texto-{{ $postagem->id }}">
-                         {{ Str::limit($postagem->texto_postagem, 150, '...') }}
+                         {{ Str::limit($postagem->texto_postagem, 150, '') }}
+                         @if (strlen($postagem->texto_postagem) > 150)
+                         <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
+                         @endif
                      </p>
 
                      <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
                          {{ $postagem->texto_postagem }}
+                         <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
                      </p>
 
-                     @if (strlen($postagem->texto_postagem) > 150)
-                     <button type="button"
-                         class="mostrar-mais"
-                         onclick="toggleTexto('{{ $postagem->id }}', this)">
-                         Mostrar mais
-                     </button>
-                     @endif
+
                  </div>
 
-                 <div class="opcoes-perfil">
+                 <div class="image-post">
+                     @if ($postagem->imagens->isNotEmpty())
+                     <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
+                     @endif
+                 </div>
+             </div>
+
+
+             <div class="opcoes-perfil"> <!-- interações postagem -->
+
+                 <hr>
+
+                 <div class="options">
                      <a> Comentarios </a>
                      <a> Reagir </a>
                      <a> Compartilhar </a>
-                 </div>
-
-                 <div class="foto-perfil">
-                     <h1>
-                         <a> (foto--perfil)Comentar </a>
-                     </h1>
                  </div>
              </div>
          </div>

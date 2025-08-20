@@ -64,6 +64,62 @@
     transition: .5s;
 }
 
+/* dropdown conta */
+.dropdown-item {
+    position: relative;
+}
+
+.dropdown-item img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul {
+    list-style: none;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li {
+    display: block;
+    position: relative;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    color: var(--cor-preto);
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li a:hover {
+    background-color: var(--cor-branco);
+    color: var(--cor-tema);
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li {
+    display: block;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown {
+    min-width: 150px;
+    background-color: var(--branco);
+    position: absolute;
+    top: 100%;
+    /* fica logo abaixo do "Conta" */
+    left: 0;
+    z-index: 10;
+    display: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item:hover ul.dropdown {
+    display: block;
+}
+
 .container-content-nav .container-navbar .content .links .ul .nav-item a:hover {
     color: var(--cor-tema);
 }
