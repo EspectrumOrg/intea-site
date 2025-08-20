@@ -12,7 +12,7 @@ class Postagem extends Model
     protected $table = "tb_postagem";
 
     protected $fillable = [
-        'titulo_postagem',
+        'usuario_id',
         'texto_postagem',
     ];
 

@@ -34,6 +34,8 @@ class Usuario extends Authenticatable
     'cidade',
     'estado',
     'complemento',
+    'foto',
+    'descricao',
     'tipo_usuario',
     'status_conta',
     'created_at',

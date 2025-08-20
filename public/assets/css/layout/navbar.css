@@ -1,0 +1,74 @@
+:root {
+    --cor-tema: #017373;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+}
+
+/* navbar */
+.container-content-nav .container-navbar {
+    background-color: var(--branco);
+}
+
+.container-content-nav .container-navbar .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1297px;
+    margin: auto;
+}
+
+/* logo */
+.container-content-nav .container-navbar .content .logo {
+    display: flex;
+    align-items: center;
+}
+
+.container-content-nav .container-navbar .content .logo a {
+    text-decoration: none;
+    font-size: var(--texto-titulo);
+    color: var(--preto);
+    transition: .7s;
+}
+
+.container-content-nav .container-navbar .content .logo a:hover {
+    color: var(--cor-tema);
+}
+
+/* links */
+.container-content-nav .container-navbar .content .links .ul {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container-content-nav .container-navbar .content .links .ul .nav-item a {
+    text-decoration: none;
+    margin: 0 .5rem;
+    color: var(--preto);
+    transition: .5s;
+}
+
+.container-content-nav .container-navbar .content .links .ul .nav-item a:hover {
+    color: var(--cor-tema);
+}
+
+/* botão conta */
+.container-content-nav .container-navbar .content .links .ul #conta a {
+    color: var(--azul);
+}

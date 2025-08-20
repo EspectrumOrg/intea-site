@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-        /**
+    /**
      * Run the migrations.
      *
      * @return void
@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('cidade')->nullable();
             $table->string('estado')->nullable();
             $table->string('complemento')->nullable();
+            $table->string('foto')->nullable(); //foto perfil
+            $table->string('descricao')->nullable(); //descrição perfil
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
             $table->timestamps();

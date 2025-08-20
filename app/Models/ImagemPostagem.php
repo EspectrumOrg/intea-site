@@ -12,10 +12,12 @@ class ImagemPostagem extends Model
     protected $table = "tb_imagem_postagem";
 
     protected $fillable = [
-        'caminho_imagem'
+        'id_postagem',
+        'caminho_imagem',
     ];
 
-    public function postagem () {
+    public function postagem()
+    {
         return $this->belongsTo(Postagem::class, 'id_postagem');
     }
 }

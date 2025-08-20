@@ -26,7 +26,7 @@ class UsuarioFactory extends Factory
             'senha' => bcrypt('senha'), // password
             //'remember_token' => Str::random(10),
 
-            'cpf' => fake()->numerify('###.###.###-##'),
+            'cpf' => fake()->numerify('###########'),
             'genero' => fake()->randomElement(['1', '2', '3', '4']),
             'data_nascimento' => fake()->dateTimeBetween('-67 years', '-18')->format('Y-m-d'),
 

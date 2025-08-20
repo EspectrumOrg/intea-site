@@ -25,6 +25,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'admin@site.com',
             'senha' => bcrypt('6~5~5y9%Rfq'),
             'tipo_usuario' => 1,
+            'foto' => 'arquivos/perfil/fotos/admin-pick.avif',
         ]);
 
         // Criar autista padrão
@@ -33,6 +34,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'autista@site.com',
             'senha' => bcrypt('<Pf&2>9N.£6'),
             'tipo_usuario' => 2,
+            'foto' => 'arquivos/perfil/fotos/autista-pick.avif',
         ]);
 
         // criar comunidade padrão
@@ -41,6 +43,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'comunidade@site.com',
             'senha' => bcrypt('senhacomunidade'),
             'tipo_usuario' => 3,
+            'foto' => 'arquivos/perfil/fotos/comunidade-pick.avif',
         ]);
 
         // criar profissional saúde padrão
@@ -49,6 +52,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'profissionalsaude@site.com',
             'senha' => bcrypt('$wjB?y17'),
             'tipo_usuario' => 4,
+            'foto' => 'arquivos/perfil/fotos/profissional-pick.avif',
         ]);
 
         // criar responsável padrão
@@ -57,6 +61,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'responsavel@site.com',
             'senha' => bcrypt('W4I3XpYy1'),
             'tipo_usuario' => 5,
+            'foto' => 'arquivos/perfil/fotos/responsavel-pick.avif',
         ]);
 
         Admin::factory()->create([

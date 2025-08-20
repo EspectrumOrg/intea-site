@@ -58,16 +58,19 @@ Route::get('/perfilResponsavel', [ResponsavelController::class, 'perfil'])->name
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
 
+
 // Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [PostagemController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard', [PostagemController::class, 'store'])->name('post.create');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
  
+
 // Profissional de Saúde Logado 
 Route::middleware('auth', 'is_profissional')->group(function () {
 

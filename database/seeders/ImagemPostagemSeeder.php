@@ -16,7 +16,7 @@ class ImagemPostagemSeeder extends Seeder
         //Imagem padrão
         ImagemPostagem::factory()->create([
             'id_postagem' => 1,
-            'caminho_imagem' => 'assets/images/conteudo/postagens/post-01-comunnity.jpg',
+            'caminho_imagem' => 'arquivos/postagens/post-01-comunnity.jpg',
         ]);
     }
 }

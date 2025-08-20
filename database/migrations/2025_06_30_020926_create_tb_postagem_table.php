@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::create('tb_postagem', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
-            $table->string('titulo_postagem');
             $table->text('texto_postagem');
-            $table->timestamp('data_postagem');
             $table->timestamps();
         });
     }
