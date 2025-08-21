@@ -18,6 +18,11 @@
                      <h2>{{ Str::limit($postagem->usuario->descricao ?? '--', 75, '...') }}</h2>
                      <h3>{{ $postagem->created_at->format('d/m/y') }}</h3>
                  </div>
+
+                 <div class="opcoes-perfil">
+                    <h1>+Seguir</h1>
+                    <h2>...</h2>
+                 </div>
              </div>
 
              <div class="conteudo-post"> <!-- conteudo postagem -->
@@ -51,7 +56,7 @@
 
                  <div class="options">
                      <a> Comentarios </a>
-                     <a> Reagir </a>
+                     <a> Curtir </a>
                      <a> Compartilhar </a>
                  </div>
              </div>
