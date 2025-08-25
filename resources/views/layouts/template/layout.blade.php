@@ -7,6 +7,8 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laravel INTEA (Beta) - Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
@@ -43,5 +45,6 @@
 </body>
 
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
+<script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
 
 </html>

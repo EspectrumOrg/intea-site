@@ -23,9 +23,13 @@ class PostagemController extends Controller
      */
     public function index()
     {
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->get();
 
-        return view('dashboard', compact('postagens'));
+        return view('dashboard', compact('postagens', 'posts'));
     }
 
     /**
@@ -63,8 +67,7 @@ class PostagemController extends Controller
 
         // Criar Imagens Ligadas à imagem
         $imagem = null;
-        if($request->hasFile('caminho_imagem')) 
-        {
+        if ($request->hasFile('caminho_imagem')) {
             $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
         }
         ImagemPostagem::create([

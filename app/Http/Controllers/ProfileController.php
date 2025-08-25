@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
+use App\Models\Postagem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,11 @@ class ProfileController extends Controller
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
 
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
+
         switch ($user->tipo_usuario) {
             case 2:
                 $dadosespecificos = $user->autista;
@@ -43,7 +49,7 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user'));
+        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
     }
 
     /**

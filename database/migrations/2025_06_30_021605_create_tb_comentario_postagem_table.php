@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('tb_comentario_postagem', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
-            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
             $table->text('comentario');
-            $table->boolean('is_autor')->default(false);
             $table->timestamps();
         });
     }

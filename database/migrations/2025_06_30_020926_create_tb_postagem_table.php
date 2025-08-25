@@ -26,8 +26,11 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down() //tirar tabelas filhas primeiro
     {
+        Schema::dropIfExists('tb_curtida_postagem');
+        Schema::dropIfExists('tb_comentario_postagem');
+        Schema::dropIfExists('tb_imagem_postagem');
         Schema::dropIfExists('tb_postagem');
     }
 };

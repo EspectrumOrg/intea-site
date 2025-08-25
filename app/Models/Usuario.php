@@ -15,7 +15,7 @@ class Usuario extends Authenticatable
   use HasApiTokens, HasFactory, Notifiable;
 
   protected $table = 'tb_usuario';
-  
+
   public $fillable = [
     'nome',
     'user',
@@ -67,40 +67,44 @@ class Usuario extends Authenticatable
     return $this->senha;
   }
 
-    // Relacionamentos
-    public function admin()
-    {
-        return $this->hasOne(Admin::class, 'usuario_id');
-    }
-
-    public function autista()
-    {
-        return $this->hasOne(Autista::class, 'usuario_id');
-    }
-
-    public function comunidade()
-    {
-        return $this->hasOne(Comunidade::class, 'usuario_id');
-    }
-
-    public function profissionalsaude()
-    {
-        return $this->hasOne(ProfissionalSaude::class, 'usuario_id');
-    }
-
-    public function responsavel()
-    {
-        return $this->hasOne(Responsavel::class, 'usuario_id');
-    }
-
-    public function telefones()
-    {
-        return $this->hasMany(FoneUsuario::class, 'usuario_id');
-    }
-
-    public function genero()
-    {
-    return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
-    }
-    
+  // Relacionamentos
+  public function admin()
+  {
+    return $this->hasOne(Admin::class, 'usuario_id');
   }
+
+  public function autista()
+  {
+    return $this->hasOne(Autista::class, 'usuario_id');
+  }
+
+  public function comunidade()
+  {
+    return $this->hasOne(Comunidade::class, 'usuario_id');
+  }
+
+  public function profissionalsaude()
+  {
+    return $this->hasOne(ProfissionalSaude::class, 'usuario_id');
+  }
+
+  public function responsavel()
+  {
+    return $this->hasOne(Responsavel::class, 'usuario_id');
+  }
+
+  public function telefones()
+  {
+    return $this->hasMany(FoneUsuario::class, 'usuario_id');
+  }
+
+  public function denuncias()
+  {
+    return $this->hasMany(Denuncia::class, 'usuario_id');
+  }
+
+  public function genero()
+  {
+    return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
+  }
+}

@@ -3,11 +3,14 @@
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
+use App\Http\Controllers\ComentarioPostagemController;
 use App\Http\Controllers\ComunidadeController;
+use App\Http\Controllers\CurtidaPostagemController;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
+use App\Models\ComentarioPostagem;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +67,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [PostagemController::class, 'index'])->name('dashboard');
     Route::post('/dashboard', [PostagemController::class, 'store'])->name('post.create');
+    // curtida postagem
+    Route::post('/dashboard/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
+    // curtida postagem
+    Route::post('/dashboard/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

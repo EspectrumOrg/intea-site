@@ -16,23 +16,49 @@ class Postagem extends Model
         'texto_postagem',
     ];
 
-    public function usuario () 
+    protected $appends = [
+        'curtidas_count',
+        'comentario_count',
+        'curtidas_usuario',
+    ];
+
+    public function usuario()
     {
         return $this->belongsTo(Usuario::class);
     }
 
-    public function comentarios () 
+    public function comentarios()
     {
-        return $this->hasMany(ComentarioPostagem::class);
+        return $this->hasMany(ComentarioPostagem::class, 'id_postagem');
     }
 
-    public function imagens ()
+    public function imagens()
     {
         return $this->hasMany(ImagemPostagem::class, 'id_postagem');
     }
 
-    public function curtidas ()
+    public function curtidas()
     {
-        return $this->hasMany(CurtidaPostagem::class);
+        return $this->hasMany(CurtidaPostagem::class, 'id_postagem');
+    }
+
+    public function denuncias()
+    {
+        return $this->hasMany(Denuncia::class, 'postagem_id');
+    }
+
+    public function getCurtidasCountAttribute()
+    {
+        return $this->curtidas()->count();
+    }
+
+    public function getComentariosCountAttribute()
+    {
+        return $this->comentarios()->count();
+    }
+
+    public function getCurtidasUsuarioAttribute()
+    {
+        return $this->curtidas()->where('id_usuario', auth()->id())->exists();
     }
 }

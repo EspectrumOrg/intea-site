@@ -1,5 +1,5 @@
 :root {
-    --cor-tema: #017373;
+    --cor-tema: #048ABF;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
@@ -17,6 +17,11 @@
     --texto-padrao: 1rem;
     --texto-secundario: 1.4rem;
     --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
 }
 
 /* Corpo */
@@ -195,40 +200,106 @@
 }
 
 /* +seguir */
-.container-post .content-post .corpo-post .topo .opcoes-perfil h1 {
-    font-size: 1rem;
-    margin-right: 2rem;
-    padding: .5rem;
+.container-post .content-post .corpo-post .acoes-perfil {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+}
+
+.container-post .content-post .corpo-post .acoes-perfil .seguir-btn {
+    font-size: .9rem;
+    padding: .4rem 1rem;
     font-weight: bold;
-    border-radius: 15px;
+    border-radius: 20px;
     color: var(--cor-tema);
-    transition: .7s;
+    background-color: transparent;
+    border: 1px solid var(--cor-tema);
+    cursor: pointer;
+    transition: all .3s ease;
 }
 
-.container-post .content-post .corpo-post .topo .opcoes-perfil h1:hover {
+.container-post .content-post .corpo-post .acoes-perfil .seguir-btn:hover {
+    background-color: var(--cor-tema);
     color: var(--branco);
-    background-color: var(--azul);
 }
 
-/* ... */
-.container-post .content-post .corpo-post .topo .opcoes-perfil h2 {
+.container-post .content-post .corpo-post .acoes-perfil .menu-opcoes {
     font-size: 1.5rem;
     color: var(--cinza);
+    cursor: pointer;
+    padding: .3rem .6rem;
     border-radius: 50%;
-    transition: .3s;
+    transition: background .2s;
 }
 
-.container-post .content-post .corpo-post .topo .opcoes-perfil h2:hover {
+.container-post .content-post .corpo-post .acoes-perfil .menu-opcoes:hover {
     background-color: var(--branco-light);
 }
 
-/* Imagem Post */
-.container-post .content-post .corpo-post .conteudo-post .image-post img {
-    padding: .5rem 1.5rem;
+/* container do dropdown */
+.container-post .content-post .corpo-post .acoes-perfil .dropdown {
+    position: relative;
+    display: inline-block;
 }
 
+/* botão do dropdown */
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .menu-opcoes {
+    font-size: 1.5rem;
+    color: var(--cinza);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: .3rem .6rem;
+    border-radius: 50%;
+    transition: background .2s;
+}
+
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .menu-opcoes:hover {
+    background-color: var(--branco-light);
+}
+
+/* conteúdo do dropdown (inicialmente escondido) */
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--branco);
+    min-width: 150px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    padding: .5rem 0;
+}
+
+/* cada item do dropdown */
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li {
+    list-style: none;
+}
+
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li a {
+    display: block;
+    padding: .5rem 1rem;
+    color: var(--preto);
+    text-decoration: none;
+    transition: background .2s, color .2s;
+}
+
+.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li a:hover {
+    background-color: var(--cor-tema);
+    color: var(--branco);
+    border-radius: 10px;
+}
+
+/* mostrar dropdown ao passar o mouse */
+.container-post .content-post .corpo-post .acoes-perfil .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Imagem Post*/
 .container-post .content-post .corpo-post .conteudo-post .image-post img {
     max-width: 100%;
+    padding: .5rem 1.5rem;
 }
 
 /* texto */
@@ -247,10 +318,166 @@
     text-decoration: underline;
 }
 
-/* interações postagens ---*/
-.container-post .content-post .corpo-post .opcoes-perfil .options {
+/* Dados e informações */
+.container-post .content-post .corpo-post .conteudo-post .dados-post {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    margin: 1rem 0;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .dados-post h1 {
+    font-size: 1rem;
+    color: var(--cinza);
+}
+
+/* interações postagens ---*/
+.container-post .content-post .corpo-post .acoes-post {
+    border-top: 1px solid var(--branco-light);
+    margin-top: 1rem;
+    padding-top: .5rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* botões ---*/
+.container-post .content-post .corpo-post .acoes-post .options .botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: .5rem 1.5rem;
+}
+
+/* comentarios form ---------------*/
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post {
+    margin-top: 10px;
+    width: 100%;
+    padding: 0rem 1rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--cor-tema);
+    color: white;
+    cursor: pointer;
+}
+
+/* lista de comentários ------*/
+.lista-comentarios {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* espaçamento entre comentários */
+}
+
+.lista-comentarios .hidden {
+    display: none;
+}
+
+/* cada comentário */
+.lista-comentarios .comentario {
+    padding: 12px;
+    background: var(--branco);
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: box-shadow 0.2s ease;
+}
+
+.lista-comentarios .comentario:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* cabeçalho perfil */
+.lista-comentarios .comentario .info-perfil {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+/* foto perfil */
+.lista-comentarios .comentario .info-perfil img {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* info do usuário */
+.lista-comentarios .comentario .info h1 {
+    font-size: 0.95rem;
+    color: var(--preto);
+    margin: 0;
+    font-weight: 600;
+}
+
+.lista-comentarios .comentario .info h2 {
+    font-size: 0.75rem;
+    color: var(--cinza);
+    margin: 2px 0;
+    font-weight: 400;
+}
+
+/* tempo (ex: "há 2 horas") */
+.lista-comentarios .comentario .info .tempo {
+    font-size: 0.7rem;
+    color: var(--branco-light);
+}
+
+/* texto do comentário */
+.lista-comentarios .comentario .texto-comentario {
+    font-size: 0.9rem;
+    color: var(--preto);
+    margin: 6px 0 0 52px;
+    /* alinhado com o texto ao lado da foto */
+    line-height: 1.4;
+}
+
+/* opcoes */
+.container-post .content-post .corpo-post .acoes-post .options a,
+.container-post .content-post .corpo-post .acoes-post .options button {
+    background: none;
+    border: none;
+    font-size: var(--texto-padrao);
+    color: var(--cinza);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: color .2s, transform .1s;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button:hover,
+.container-post .content-post .corpo-post .acoes-post .options a:hover {
+    color: var(--cor-tema);
+    transform: scale(1.05);
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button {
+    font-weight: bold;
 }
