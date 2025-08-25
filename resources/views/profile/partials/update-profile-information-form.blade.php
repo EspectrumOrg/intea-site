@@ -5,7 +5,7 @@
             @if (!empty($user->foto))
             <img src="{{ asset('storage/'.$user->foto) }}" class="card-img-top" alt="foto perfil">
             @else
-            <img src="{{ route('assets/images/logos/contas') }}" class="card-img-top" alt="foto perfil">
+            <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
             @endif
         </div>
 

@@ -15,8 +15,7 @@ return new class extends Migration
     {
         Schema::create('tb_admin', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('usuario_id');
-            $table->foreign('usuario_id')->references('id')->on('tb_usuario');
+            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
             $table->timestamps();
         });
     }

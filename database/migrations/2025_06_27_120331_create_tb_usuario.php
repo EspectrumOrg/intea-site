@@ -50,6 +50,16 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('tb_fone_usuario');
+        Schema::dropIfExists('tb_admin');
+        Schema::dropIfExists('tb_autista');
+        Schema::dropIfExists('tb_comunidade');
+        Schema::dropIfExists('tb_profissional_saude');
+        Schema::dropIfExists('tb_responsavel');
+        Schema::dropIfExists('tb_postagem');
+        Schema::dropIfExists('tb_comentario_postagem');
+        Schema::dropIfExists('tb_curtida_postagem');
+        Schema::dropIfExists('tb_denuncia_postagem');
         Schema::dropIfExists('tb_usuario');
     }
 };

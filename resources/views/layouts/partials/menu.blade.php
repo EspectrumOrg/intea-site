@@ -23,7 +23,12 @@
                  </li>
 
                  <li class="nav-item dropdown-item">
+                     @if (!empty(Auth::user()->foto))
                      <a href="#"><img src="{{ asset('storage/'.Auth::user()->foto) }}"></a>
+                     @else
+                     <a href="#"><img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil"></a>
+                     @endif
+
                      <ul class="dropdown">
                          <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
                          <li> <!-- Authentication -->

@@ -10,7 +10,11 @@
 
              <div class="topo"> <!-- info conta -->
                  <div class="foto-perfil">
+                     @if (!empty($postagem->usuario->foto))
                      <a href="#"><img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil"></a>
+                     @else
+                     <a href="#"><img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto"></a>
+                     @endif
                  </div>
 
                  <div class="info-perfil">
@@ -22,16 +26,48 @@
                  <div class="acoes-perfil">
                      <button class="seguir-btn">+Seguir</button>
 
-                     <div class="dropdown">
+                     <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">...</button>
                          <ul class="dropdown-content">
                              <li><a href="#">Editar</a></li>
                              <li><a href="#">Excluir</a></li>
-                             <li><a href="#">Denunciar</a></li>
+                             <li><a href="javascript:void(0)" onclick="abrirModal('{{ $postagem->id }}')">Denunciar</a></li>
                          </ul>
                      </div>
+
+                     <!-- Modal de denúncia (um para cada postagem) -->
+                     <div id="modal-denuncia-{{ $postagem->id }}" class="modal-denuncia hidden">
+                         <div class="modal-content">
+                             <span class="close" onclick="fecharModal('{{ $postagem->id }}')">&times;</span>
+
+                             <form method="POST" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
+                                 @csrf
+                                 <div class="form">
+                                     <label class="form-label">Motivo Denúncia</label>
+                                     <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                                         <option value="">Tipo</option>
+                                         <option value="spam">Spam</option>
+                                         <option value="falsidade">Falsidade</option>
+                                         <option value="conteudo-explicito">Conteúdo Explícito</option>
+                                     </select>
+                                 </div>
+
+                                 <div class="form-label">
+                                     <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
+                                     <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
+                                 </div>
+
+                                 <div style="display: flex; justify-content: end;">
+                                     <button type="submit">Denunciar</button>
+                                 </div>
+                             </form>
+                         </div>
+                     </div>
+
                  </div>
              </div>
+
+
 
              <div class="conteudo-post"> <!-- conteudo postagem -->
                  <div class="coment-perfil">
@@ -59,6 +95,7 @@
                      <h1>({{ $postagem->comentarios_count }}) comentários</h1>
                  </div>
              </div>
+
 
 
              <div class="acoes-post">
@@ -112,7 +149,6 @@
                          </div>
                          @endforeach
                      </div>
-
 
                      @if($postagem->comentarios->count() > 2)
                      <button type="button" class="carregar-mais" onclick="carregarMais('{{ $postagem->id }}')">

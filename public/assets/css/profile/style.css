@@ -119,11 +119,11 @@
 
 /* Mensagens */
 .perfil-section .text-success {
-    color: var(--cor--tema);
+    color: var(--cor-tema);
 }
 
 .perfil-section .text-error {
-    color: var(--cor-cor-vermelho);
+    color: var(--cor-vermelho);
 }
 
 /* Espaçamento */
