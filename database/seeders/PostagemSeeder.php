@@ -15,8 +15,10 @@ class PostagemSeeder extends Seeder
     {
         // criar postagem padrão
         $postagem_sobre = Postagem::factory()->create([
-            'titulo_postagem' => 'Bem Vindo Ao Intea',
-            'texto_postagem' => 'O site Intea foi criado com o intuido de criar um ambiente seguro para comunidade autista e providenciar uma forma de contato entre os membros. Além de facilitar as formas de acesso a profissionais de saúde diversos, sendo também uma ferramenta de acesso a coisas ai. Perdi a vontade de escrever',
+            'texto_postagem' => 'Bem Vindo Ao Intea
+            
+            Aqui é um espaço virtual voltado para o apoio e comunicação de pessoas do espectro autista. Além familiares, profissionais de saúde voltados para a área psicologica e alísticos que possuem interesse em aprender mais sobre o espectro. Esse ambiente foi desenvolvido pela Espectrum, em colaboração com grupos como os Azuis da Leste.
+            Ademais, o site também possibilita uma forma de facilitar o acesso a profissionais da área para pessoas do espectro ou responsáveis desses. Com uma área exclusiva para o contato e consulta com esses médicos',
             'usuario_id' => 1,
         ]);
     }

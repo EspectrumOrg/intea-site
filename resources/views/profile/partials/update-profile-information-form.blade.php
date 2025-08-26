@@ -1,5 +1,14 @@
 <section class="perfil-section">
-    <header>
+    <header class="header">
+
+        <div class="foto-perfil">
+            @if (!empty($user->foto))
+            <img src="{{ asset('storage/'.$user->foto) }}" class="card-img-top" alt="foto perfil">
+            @else
+            <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
+            @endif
+        </div>
+
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Informações do Perfil') }}
         </h2>
@@ -13,13 +22,13 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
         <div class="mb-3">
             <label for="nome" class="form-label">Nome</label>
-            <input id="nome" nome="nome" type="text" class="form-control" value="{{ $user->nome ?? old('nome') }}" required autofocus autocomplete="nome" />
+            <input id="nome" name="nome" type="text" class="form-control" value="{{ $user->nome ?? old('nome') }}" required autofocus autocomplete="nome" />
         </div>
 
         <div class="mb-3">
@@ -47,8 +56,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="nome" class="form-label">Apelido</label>
-            <input id="apelido" name="apelido" type="text" class="form-control" value="{{ $user->apelido ?? old('apelido')}}" required autocomplete="apelido" />
+            <label for="foto" class="form-label">Foto Perfil</label>
+            <input id="foto" name="foto" type="file" class="form-control" accept="image/*" value="{{ $user->foto ?? old('foto')}}" autocomplete="foto">
+            <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+        </div>
+
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição</label>
+            <textarea id="descricao" name="descricao" class="form-control" rows="4" cols="50">{{ $user->descricao ?? old('descricao') }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('descricao')" />
+        </div>
+
+        <div class="mb-3">
+            <label for="apelido" class="form-label">Apelido</label>
+            <input id="apelido" name="apelido" type="text" class="form-control" value="{{ $user->apelido ?? old('apelido')}}" autocomplete="apelido" />
             <x-input-error class="mt-2" :messages="$errors->get('apelido')" />
         </div>
 
@@ -135,49 +156,49 @@
 
         <div class="mb-3">
             <label for="logradouro" class="form-label">Logradouro</label>
-            <input id="logradouro" name="logradouro" type="text" class="form-control" value="{{ $user->logradouro ?? old('logradouro')}}" required autocomplete="logradouro" />
+            <input id="logradouro" name="logradouro" type="text" class="form-control" value="{{ $user->logradouro ?? old('logradouro')}}" autocomplete="logradouro" />
             <x-input-error class="mt-2" :messages="$errors->get('logradouro')" />
         </div>
 
         <div class="mb-3">
             <label for="endereco" class="form-label">Endereço</label>
-            <input id="endereco" name="endereco" type="text" class="form-control" value="{{ $user->endereco ?? old('endereco')}}" required autocomplete="endereco" />
+            <input id="endereco" name="endereco" type="text" class="form-control" value="{{ $user->endereco ?? old('endereco')}}" autocomplete="endereco" />
             <x-input-error class="mt-2" :messages="$errors->get('endereco')" />
         </div>
 
         <div class="mb-3">
             <label for="rua" class="form-label">Rua</label>
-            <input id="rua" name="rua" type="text" class="form-control" value="{{ $user->rua ?? old('rua')}}" required autocomplete="rua" />
+            <input id="rua" name="rua" type="text" class="form-control" value="{{ $user->rua ?? old('rua')}}" autocomplete="rua" />
             <x-input-error class="mt-2" :messages="$errors->get('rua')" />
         </div>
 
         <div class="mb-3">
             <label for="bairro" class="form-label">Bairro</label>
-            <input id="bairro" name="bairro" type="text" class="form-control" value="{{ $user->bairro ?? old('bairro')}}" required autocomplete="bairro" />
+            <input id="bairro" name="bairro" type="text" class="form-control" value="{{ $user->bairro ?? old('bairro')}}" autocomplete="bairro" />
             <x-input-error class="mt-2" :messages="$errors->get('bairro')" />
         </div>
 
         <div class="mb-3">
             <label for="numero" class="form-label">Número</label>
-            <input id="numero" name="numero" type="text" class="form-control" value="{{ $user->numero ?? old('numero')}}" required autocomplete="numero" />
+            <input id="numero" name="numero" type="text" class="form-control" value="{{ $user->numero ?? old('numero')}}" autocomplete="numero" />
             <x-input-error class="mt-2" :messages="$errors->get('numero')" />
         </div>
 
         <div class="mb-3">
             <label for="Cidade" class="form-label">Cidade</label>
-            <input id="cidade" name="cidade" type="text" class="form-control" value="{{ $user->cidade ?? old('cidade')}}" required autocomplete="cidade" />
+            <input id="cidade" name="cidade" type="text" class="form-control" value="{{ $user->cidade ?? old('cidade')}}" autocomplete="cidade" />
             <x-input-error class="mt-2" :messages="$errors->get('cidade')" />
         </div>
 
         <div class="mb-3">
             <label for="estado" class="form-label">Estado</label>
-            <input id="estado" name="estado" type="text" class="form-control" value="{{ $user->estado ?? old('estado')}}" required autocomplete="estado" />
+            <input id="estado" name="estado" type="text" class="form-control" value="{{ $user->estado ?? old('estado')}}" autocomplete="estado" />
             <x-input-error class="mt-2" :messages="$errors->get('estado')" />
         </div>
 
         <div class="mb-3">
             <label for="complemento" class="form-label">Complemento</label>
-            <input id="complemento" name="complemento" type="text" class="form-control" value="{{ $user->complemento ?? old('complemento')}}" required autocomplete="complemento" />
+            <input id="complemento" name="complemento" type="text" class="form-control" value="{{ $user->complemento ?? old('complemento')}}" autocomplete="complemento" />
             <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
         </div>
 

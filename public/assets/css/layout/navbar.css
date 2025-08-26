@@ -1,0 +1,137 @@
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
+}
+
+/* navbar */
+.container-content-nav .container-navbar {
+    background-color: var(--branco);
+    border-bottom: 1px solid var(--cor-tema);
+}
+
+.container-content-nav .container-navbar .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 1297px;
+    margin: auto;
+}
+
+/* logo */
+.container-content-nav .container-navbar .content .logo {
+    display: flex;
+    align-items: center;
+}
+
+.container-content-nav .container-navbar .content .logo a {
+    text-decoration: none;
+    font-size: var(--texto-titulo);
+    color: var(--preto);
+    transition: .7s;
+}
+
+.container-content-nav .container-navbar .content .logo a:hover {
+    color: var(--cor-tema);
+}
+
+/* links */
+.container-content-nav .container-navbar .content .links .ul {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.container-content-nav .container-navbar .content .links .ul .nav-item a {
+    text-decoration: none;
+    margin: 0 .5rem;
+    color: var(--preto);
+    transition: .5s;
+}
+
+/* dropdown conta */
+.dropdown-item {
+    position: relative;
+}
+
+.dropdown-item img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul {
+    list-style: none;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li {
+    display: block;
+    position: relative;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li a {
+    display: block;
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    color: var(--cor-preto);
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li a:hover {
+    background-color: var(--cor-branco);
+    color: var(--cor-tema);
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown li {
+    display: block;
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item ul.dropdown {
+    min-width: 150px;
+    background-color: var(--branco);
+    position: absolute;
+    top: 100%;
+    /* fica logo abaixo do "Conta" */
+    left: 0;
+    z-index: 10;
+    display: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container-content-nav .container-navbar .content .links .ul .dropdown-item:hover ul.dropdown {
+    display: block;
+}
+
+.container-content-nav .container-navbar .content .links .ul .nav-item a:hover {
+    color: var(--cor-tema);
+}
+
+/* botão conta */
+.container-content-nav .container-navbar .content .links .ul #conta a {
+    color: var(--azul);
+}

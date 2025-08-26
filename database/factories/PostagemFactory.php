@@ -18,9 +18,7 @@ class PostagemFactory extends Factory
     public function definition(): array
     {
         return [
-            'titulo_postagem' => 'titulo',
             'texto_postagem' => 'texto',
-            'data_postagem' => fake()->dateTime()->format('Y-m-d'),
             'usuario_id' => 1,
         ];
     }

@@ -7,24 +7,25 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laravel INTEA (Beta) - Postagens</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous"> <!-- Boostrap-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"> <!-- icones boostrap-->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> <!-- css -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}"> <!-- navbar -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}"> <!-- sidebar esquerda -->
+    <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}"> <!-- profile -->
+    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> <!-- postagens -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
 </head>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
+    <div class="container-content">
             @include('dashboard.post.create')
             <!-- conteúdo principal  -->
-            <div class="col-md-9 p-4">
+            <div class="container-main">
                 @yield('main')
             </div>
 
             <!-- o que está bombando (mais vistos) -->
-            <div class="col-md-3 bg-light min-vh-100 p-3">
+            <div class="container-popular">
                 @include('dashboard.post.partials.sidebar-popular')
             </div>
 

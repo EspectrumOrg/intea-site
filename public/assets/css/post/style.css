@@ -1,16 +1,336 @@
 :root {
-    --cor-tema: #017373;
+    --cor-tema: #048ABF;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
-    --cor--vermelho: #F22727;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
     --texto-pequeno: .75rem;
     --texto-padrao: 1rem;
     --texto-secundario: 1.4rem;
     --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
 }
 
-.container-post{
+/* Corpo */
+.container-post {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* ----------------------------- create posts ------------------------------- */
+.create-post {
+    background-color: var(--branco);
+    margin: 0 0 2.5rem 0;
+    padding: 1rem 2rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.create-post .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* campo principal */
+.create-post .form .textfield {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.create-post .form .textfield img {
+    width: 75px;
+    border-radius: 50%;
+}
+
+.create-post .form .textfield input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--branco-light);
+    border-radius: 10px;
+    font-size: var(--texto-padrao);
+    background-color: var(--branco);
+    color: var(--preto);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.create-post .form .textfield input:focus {
+    border-color: var(--cor-tema);
+    box-shadow: 0 0 5px rgba(1, 115, 115, 0.3);
+    outline: none;
+}
+
+/* opções (upload etc) */
+.create-post .form .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 2rem;
+    margin-top: .5rem;
+}
+
+/* label customizada */
+.create-post .form .upload-label {
+    cursor: pointer;
+    color: var(--cor-tema);
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.create-post .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.create-post .form .input-file {
+    display: none;
+}
+
+/* botão */
+.create-post .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.create-post .form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--cor-tema);
+    color: var(--branco);
+    font-size: var(--texto-padrao);
+    font-weight: bold;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.create-post .form .botao-postar:hover {
+    background-color: var(--azul);
+    transform: scale(1.03);
+}
+
+/* ----------------------------- posts ------------------------------- */
+.container-post .content-post {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* post */
+.container-post .content-post .corpo-post {
+    max-width: 100%;
+    background-color: var(--branco);
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    margin: 2rem 0;
+
+}
+
+
+/* Imagem Post*/
+.container-post .content-post .corpo-post .conteudo-post .image-post img {
+    max-width: 100%;
+    padding: .5rem 1.5rem;
+}
+
+/* texto */
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais {
+    background: none;
+    border: none;
+    color: var(--cor-tema);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    text-indent: .1rem;
+    margin-top: 5px;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais:hover {
+    text-decoration: underline;
+}
+
+/* Dados e informações */
+.container-post .content-post .corpo-post .conteudo-post .dados-post {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .dados-post h1 {
+    font-size: 1rem;
+    color: var(--cinza);
+}
+
+/* interações postagens ---*/
+.container-post .content-post .corpo-post .acoes-post {
+    border-top: 1px solid var(--branco-light);
+    margin-top: 1rem;
+    padding-top: .5rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* botões ---*/
+.container-post .content-post .corpo-post .acoes-post .options .botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: .5rem 1.5rem;
+}
+
+/* comentarios form ---------------*/
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post {
+    margin-top: 10px;
+    width: 100%;
+    padding: 0rem 1rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--cor-tema);
+    color: white;
+    cursor: pointer;
+}
+
+/* lista de comentários ------*/
+.lista-comentarios {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* espaçamento entre comentários */
+}
+
+.lista-comentarios .hidden {
+    display: none;
+}
+
+/* cada comentário */
+.lista-comentarios .comentario {
+    padding: 12px;
+    background: var(--branco);
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: box-shadow 0.2s ease;
+}
+
+.lista-comentarios .comentario:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* cabeçalho perfil */
+.lista-comentarios .comentario .info-perfil {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+/* foto perfil */
+.lista-comentarios .comentario .info-perfil img {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* info do usuário */
+.lista-comentarios .comentario .info h1 {
+    font-size: 0.95rem;
+    color: var(--preto);
+    margin: 0;
+    font-weight: 600;
+}
+
+.lista-comentarios .comentario .info h2 {
+    font-size: 0.75rem;
+    color: var(--cinza);
+    margin: 2px 0;
+    font-weight: 400;
+}
+
+/* tempo (ex: "há 2 horas") */
+.lista-comentarios .comentario .info .tempo {
+    font-size: 0.7rem;
+    color: var(--branco-light);
+}
+
+/* texto do comentário */
+.lista-comentarios .comentario .texto-comentario {
+    font-size: 0.9rem;
+    color: var(--preto);
+    margin: 6px 0 0 52px;
+    /* alinhado com o texto ao lado da foto */
+    line-height: 1.4;
+}
+
+/* opcoes */
+.container-post .content-post .corpo-post .acoes-post .options a,
+.container-post .content-post .corpo-post .acoes-post .options button {
+    background: none;
+    border: none;
+    font-size: var(--texto-padrao);
+    color: var(--cinza);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: color .2s, transform .1s;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button:hover,
+.container-post .content-post .corpo-post .acoes-post .options a:hover {
+    color: var(--cor-tema);
+    transform: scale(1.05);
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button {
+    font-weight: bold;
 }

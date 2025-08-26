@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_curtida', function (Blueprint $table) {
+        Schema::create('tb_curtida_postagem', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
             $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['id_postagem', 'id_usuario']); // evita curtir duas vezes
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_curtida');
+        Schema::dropIfExists('tb_curtida_postagem');
     }
 };

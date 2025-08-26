@@ -30,6 +30,8 @@ class ProfileUpdateRequest extends FormRequest
             'cidade' => 'nullable|string|max:255',
             'estado' => 'nullable|string|max:255',
             'complemento' => 'nullable|string|max:255',
+            'foto' => 'nullable|image|mimes:png,jpg,gif|max:2048', //foto perfil
+            'descricao' => 'nullable|string|max:755', //descrição perfil
         ];
     }
 }

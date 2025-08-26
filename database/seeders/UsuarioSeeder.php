@@ -22,9 +22,14 @@ class UsuarioSeeder extends Seeder
         // criar admin padrão
         $admin = Usuario::factory()->create([
             'nome' => 'Admin',
+            'user' => 'German Freud dir Sor',
+            'apelido' => 'GFdS',
             'email' => 'admin@site.com',
             'senha' => bcrypt('6~5~5y9%Rfq'),
+            'data_nascimento' => '2007-04-08',
             'tipo_usuario' => 1,
+            'foto' => 'arquivos/perfil/fotos/admin-pick.avif',
+            'descricao' => 'Their King | Rey de ellas | Leur Roi | Re di loro | Ihr König | Hun Koning | Deras Kung | Deres Konge | Deres Konge | Heidän Kuninkaansa | Ich Król | Их Король | Ο βασιλιάς τους | Onların Kralı | ملكهم | המלך שלהם | 她们的国王 | 彼女たちの王 | 그녀들의 왕'
         ]);
 
         // Criar autista padrão
@@ -33,6 +38,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'autista@site.com',
             'senha' => bcrypt('<Pf&2>9N.£6'),
             'tipo_usuario' => 2,
+            'foto' => 'arquivos/perfil/fotos/autista-pick.avif',
         ]);
 
         // criar comunidade padrão
@@ -41,6 +47,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'comunidade@site.com',
             'senha' => bcrypt('senhacomunidade'),
             'tipo_usuario' => 3,
+            'foto' => 'arquivos/perfil/fotos/comunidade-pick.avif',
         ]);
 
         // criar profissional saúde padrão
@@ -49,6 +56,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'profissionalsaude@site.com',
             'senha' => bcrypt('$wjB?y17'),
             'tipo_usuario' => 4,
+            'foto' => 'arquivos/perfil/fotos/profissional-pick.avif',
         ]);
 
         // criar responsável padrão
@@ -57,6 +65,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'responsavel@site.com',
             'senha' => bcrypt('W4I3XpYy1'),
             'tipo_usuario' => 5,
+            'foto' => 'arquivos/perfil/fotos/responsavel-pick.avif',
         ]);
 
         Admin::factory()->create([

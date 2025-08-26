@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
+use App\Models\Postagem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -31,6 +32,11 @@ class ProfileController extends Controller
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
 
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
+
         switch ($user->tipo_usuario) {
             case 2:
                 $dadosespecificos = $user->autista;
@@ -43,7 +49,7 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user'));
+        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
     }
 
     /**
@@ -55,6 +61,14 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         $request->user()->fill($request->validated());
+
+        if ($request->hasFile('foto')) {
+            // salva em storage/app/arquivos/perfil/fotos
+            $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
+
+            // salva o caminho no banco
+            $user->foto = $path;
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

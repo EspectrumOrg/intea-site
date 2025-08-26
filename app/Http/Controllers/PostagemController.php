@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Postagem;
 use App\Models\ImagemPostagem;
+use Faker\Core\File;
+use Illuminate\Support\Facades\Auth;
 
 class PostagemController extends Controller
 {
@@ -21,9 +23,13 @@ class PostagemController extends Controller
      */
     public function index()
     {
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->get();
 
-        return view('dashboard', compact('postagens'));
+        return view('dashboard', compact('postagens', 'posts'));
     }
 
     /**
@@ -43,27 +49,30 @@ class PostagemController extends Controller
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $request->validate([
-            'titulo_postagem' => 'required|string|max:255',
-            'texto_postagem' => 'required|string|max:555',
-            'caminho_imagem' => 'nullable|string|max:255',
+            'texto_postagem' => 'required|string|max:755',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
         ], [
-            'titulo_postagem.required' => 'O campo título é obrigatório',
             'texto_postagem.required' => 'O campo texto é obrigatório',
-            'titulo_postagem.max' => 'O campo título só comporta até 255 caracteres',
-            'texto_postagem.max' => 'O campo texto só comporta até 555 caracteres',
+            'texto_postagem.max' => 'O campo texto só comporta até 755 caracteres',
         ]);
 
         // Criar Postagem
         $postagem = Postagem::create([
-            'titulo_postagem' => $request->titulo_postagem,
+            'usuario_id' => $user->id,
             'texto_postagem' => $request->texto_postagem,
         ]);
 
         // Criar Imagens Ligadas à imagem
+        $imagem = null;
+        if ($request->hasFile('caminho_imagem')) {
+            $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
+        }
         ImagemPostagem::create([
-            'caminho_imagem' => $request->caminho_imagem,
-            'id_postagem' => $postagem->id, // associa corretamente
+            'caminho_imagem' => $imagem,
+            'id_postagem' => $postagem->id,
         ]);
 
         return redirect()->route('dashboard')->with('Sucesso', 'Postado, confira já!');

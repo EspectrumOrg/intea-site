@@ -3,7 +3,10 @@
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
+use App\Http\Controllers\ComentarioPostagemController;
+use App\Http\Controllers\DenunciaPostagemController;
 use App\Http\Controllers\ComunidadeController;
+use App\Http\Controllers\CurtidaPostagemController;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
@@ -58,24 +61,32 @@ Route::get('/perfilResponsavel', [ResponsavelController::class, 'perfil'])->name
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
 
+
 // Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [PostagemController::class, 'index'])->name('dashboard');
-    
+    Route::post('/dashboard', [PostagemController::class, 'store'])->name('post.create');
+    // curtida postagem
+    Route::post('/dashboard/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
+    // comentario postagem
+    Route::post('/dashboard/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    // denuncia postagem
+    Route::post('/dashboard/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
- 
+
+
 // Profissional de Saúde Logado 
 Route::middleware('auth', 'is_profissional')->group(function () {
 
     Route::get('/pagina_saude', function () {
         return view('paginas/profissional_saude/inicio_profissional_saude');
     })
-    ->name('pagina_saude');
-
+        ->name('pagina_saude');
 });
 
 

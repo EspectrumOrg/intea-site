@@ -2,28 +2,29 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\PostagemController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CurtidaPostagem extends Model
+class Denuncia extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_curtida_postagem';
+    protected $table = "tb_denuncia_postagem";
 
     protected $fillable = [
         'id_postagem',
         'id_usuario',
+        'motivo_denuncia',
+        'texto_denuncia',
     ];
 
     public function postagem()
     {
-        return $this->belongsTo(Postagem::class, 'id_postagem');
+        return $this->hasOne(Postagem::class, 'id_postagem');
     }
 
     public function usuario()
     {
-        return $this->belongsTo(USuario::class, 'id_usuario');
+        return $this->hasOne(Usuario::class, 'id_usuario');
     }
 }

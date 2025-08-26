@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-        /**
+    /**
      * Run the migrations.
      *
      * @return void
@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('cidade')->nullable();
             $table->string('estado')->nullable();
             $table->string('complemento')->nullable();
+            $table->string('foto')->nullable(); //foto perfil
+            $table->string('descricao')->nullable(); //descrição perfil
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
             $table->timestamps();
@@ -48,6 +50,16 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('tb_fone_usuario');
+        Schema::dropIfExists('tb_admin');
+        Schema::dropIfExists('tb_autista');
+        Schema::dropIfExists('tb_comunidade');
+        Schema::dropIfExists('tb_profissional_saude');
+        Schema::dropIfExists('tb_responsavel');
+        Schema::dropIfExists('tb_postagem');
+        Schema::dropIfExists('tb_comentario_postagem');
+        Schema::dropIfExists('tb_curtida_postagem');
+        Schema::dropIfExists('tb_denuncia_postagem');
         Schema::dropIfExists('tb_usuario');
     }
 };
