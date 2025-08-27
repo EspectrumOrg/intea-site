@@ -98,4 +98,11 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->parameters(["usuarios" => "usuario"]);
 });
 
+Route::middleware('auth', 'is_profissional')->group(function () {
+
+    Route::resource("usuario", UsuarioController::class)
+        ->names("usuario")
+        ->parameters(["usuarios" => "usuario"]);
+});
+
 require __DIR__ . '/auth.php';
