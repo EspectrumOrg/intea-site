@@ -13,7 +13,7 @@
                  </li>
                  @endcan
                  <li class="nav-item">
-                     <a href="{{ route('dashboard') }}">Dashboard</a>
+                     <a href="{{ route('dashboard') }}">Feed</a>
                  </li>
                  <li class="nav-item">
                      <a href=" ">Postagens</a>

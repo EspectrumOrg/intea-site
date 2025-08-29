@@ -107,5 +107,8 @@ class UsuarioSeeder extends Seeder
         FoneUsuario::factory(5)->create([
             'usuario_id' => $responsavel->id,
         ]);
+
+        //vários users comunidade
+        Usuario::factory(25)->create();
     }
 }

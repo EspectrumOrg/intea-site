@@ -1,7 +1,7 @@
 :root {
     --cor-tema: #048ABF;
     --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
+    --branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
 
@@ -12,88 +12,170 @@
     --azul: #1d3e55;
     --verde: #03A64A;
     --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-    /* cores para tema
-    antiga(ciano) - #017373*
-    azul claro - #048ABF/
-    */
+    
+    --border-radius: 8px;
+    --padding-card: 1.5rem;
 }
 
 body {
-    background-color: var(--cor-fundo);
-    max-width: 100vw;
-    max-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--cor-branco);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--cinza);
+    margin: 0;
 }
 
-.nav-header {
-    background-color: var(--cor-preto);
-    height: 80px;
+/* Container principal */
+.usuario-gerenciamento {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
-.container-nav {
-    width: 90%;
+/* Título */
+.usuario-gerenciamento h1 {
+    font-size: 2rem;
+    color: var(--cor-fundo);
+}
+
+/* Card */
+.card {
+    background-color: var(--branco);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: scroll;
+}
+
+/* Header do card */
+.card-header {
     display: flex;
-    margin: auto;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 1rem;
 }
 
-.container-nav .logo {
-    color: var(--cor-branco);
-    font-size: var(--texto-titulo);
+.card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--cor-fundo);
 }
 
-.container-nav .nav-list {
-    color: var(--cor-branco);
-    display: flex;
-    flex-direction: row;
-    text-decoration: none;
-    list-style: none;
-}
-
-.container-nav .nav-list li {
-    margin: 0 15px;
-}
-
-.container-nav .nav-list li a {
-    cursor: pointer;
-    transition: .7s ease-in-out;
-}
-
-.container-nav .nav-list li a:hover {
-    color: var(--cor-tema);
-}
-
-.container {
-    display: flex;
-    flex-direction: row;
-}
-
-.container-menu {
+/* Botão Novo */
+.btn-novo {
     background-color: var(--cor-tema);
-    height: auto;
-    width: 289px;
+    color: var(--branco);
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.2s;
 }
 
-.container-menu .dados-usuario {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.btn-novo:hover {
+    background-color: #036f99;
 }
 
-.container-menu  .opcoes-admin {
-    margin-top: 50px;
+/* Tabela */
+.card-body {
+    padding: 0 .2rem;
 }
 
-.container-conteudo {
-    background-color: var(--cor-branco);
+.table-usuarios {
     width: 100%;
+    border-collapse: collapse;
+}
+
+.table-usuarios th,
+.table-usuarios td {
+    border: 1px solid #ddd;
+    padding: 0.75rem 1rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
+.table-usuarios th {
+    background-color: var(--cor-fundo);
+    color: var(--branco);
+}
+
+.table-usuarios tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Botão Excluir */
+.btn-excluir {
+    background-color: var(--cor-fundo);
+    color: var(--cor-branco);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-excluir:hover {
+    background-color: #c11717;
+}
+
+/* Botão desbanir */
+.btn-desbanir {
+    background-color: var(--cor-fundo);
+    color: var(--cor-branco);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-desbanir:hover {
+    background-color: var(--azul);
+}
+
+/* Paginação */
+.paginacao {
+    margin-top: .5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Filtros */
+.filtro-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: .5rem;
+}
+
+.filtro-form input,
+.filtro-form select {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.btn-filtrar {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    background-color: #048ABF;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-filtrar:hover {
+    background-color: #036f99;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .filtro-form {
+        flex-direction: column;
+    }
+
+    .table-usuarios th,
+    .table-usuarios td {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
 }

@@ -95,7 +95,14 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
     Route::resource("usuario", UsuarioController::class)
         ->names("usuario")
-        ->parameters(["usuarios" => "usuario"]);
+        ->parameters(["usuario" => "usuarios"]);
+    Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+    Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
+
+    Route::resource("denuncia", DenunciaPostagemController::class)
+        ->names("denuncia")
+        ->parameters(["denuncia" => "denuncias"]);
+    Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 });
 
 require __DIR__ . '/auth.php';
