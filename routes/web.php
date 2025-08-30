@@ -65,8 +65,9 @@ Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastr
 // Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', [PostagemController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [PostagemController::class, 'store'])->name('post.create');
+    Route::resource("dashboard", PostagemController::class)
+        ->names("post")
+        ->parameters(["dashboard" => "post"]);
     // curtida postagem
     Route::post('/dashboard/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     // comentario postagem
@@ -95,7 +96,14 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
     Route::resource("usuario", UsuarioController::class)
         ->names("usuario")
-        ->parameters(["usuarios" => "usuario"]);
+        ->parameters(["usuario" => "usuarios"]);
+    Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+    Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
+
+    Route::resource("denuncia", DenunciaPostagemController::class)
+        ->names("denuncia")
+        ->parameters(["denuncia" => "denuncias"]);
+    Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 });
 
 require __DIR__ . '/auth.php';

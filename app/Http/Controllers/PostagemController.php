@@ -7,6 +7,7 @@ use App\Models\Postagem;
 use App\Models\ImagemPostagem;
 use Faker\Core\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostagemController extends Controller
 {
@@ -27,7 +28,7 @@ class PostagemController extends Controller
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
             ->get();
-        $postagens = $this->postagem->with(['imagens', 'usuario'])->get();
+        $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
         return view('dashboard', compact('postagens', 'posts'));
     }
@@ -66,16 +67,15 @@ class PostagemController extends Controller
         ]);
 
         // Criar Imagens Ligadas à imagem
-        $imagem = null;
         if ($request->hasFile('caminho_imagem')) {
             $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
-        }
-        ImagemPostagem::create([
-            'caminho_imagem' => $imagem,
-            'id_postagem' => $postagem->id,
-        ]);
 
-        return redirect()->route('dashboard')->with('Sucesso', 'Postado, confira já!');
+            ImagemPostagem::create([
+                'caminho_imagem' => $imagem,
+                'id_postagem' => $postagem->id,
+            ]);
+        }
+        return redirect()->route('post.index')->with('Sucesso', 'Postado, confira já!');
     }
 
     /**
@@ -89,24 +89,56 @@ class PostagemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Postagem $postagem)
     {
-        //
+        return view('post.edit', compact('postagem'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Postagem $post)
     {
-        //
+        $request->validate([
+            'texto_postagem' => 'required|string|max:755',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
+        ]);
+
+        $post->update([
+            'texto_postagem' => $request->texto_postagem,
+        ]);
+
+        if ($request->hasFile('caminho_imagem')) {
+            $arquivo = $request->file('caminho_imagem');
+            $caminho = $arquivo->store('arquivos/postagens', 'public');
+
+            $imagemPrincipal = $post->imagens()->first();
+
+            if ($imagemPrincipal) {
+                // Apaga imagem antiga se existir
+                if ($imagemPrincipal->caminho_imagem && Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
+                    Storage::disk('public')->delete($imagemPrincipal->caminho_imagem);
+                }
+                $imagemPrincipal->caminho_imagem = $caminho;
+                $imagemPrincipal->save();
+            } else {
+                $post->imagens()->create(['caminho_imagem' => $caminho]);
+            }
+        }
+
+
+        return redirect()->route('post.index')->with('Sucesso', 'Postagem atualizada!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $postagem = Postagem::findOrFail($id);
+        $postagem->delete();
+
+        session()->flash("successo", "Postagem exclúido");
+        return redirect()->back();
     }
 }

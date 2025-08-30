@@ -6,8 +6,8 @@
 
         <div class="links">
             <a href="" class="nav-link mb-2">Estatísticas</a>
-            <a href="" class="nav-link mb-2">Usuários</a>
-            <a href="" class="nav-link mb-2">Denúncias</a>
+            <a href="{{ route('usuario.index')}}" class="nav-link mb-2">Usuários</a>
+            <a href="{{ route('denuncia.index')}}" class="nav-link mb-2">Denúncias</a>
         </div>
     @endcan
 </div>

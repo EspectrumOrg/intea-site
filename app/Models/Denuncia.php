@@ -20,11 +20,11 @@ class Denuncia extends Model
 
     public function postagem()
     {
-        return $this->hasOne(Postagem::class, 'id_postagem');
+        return $this->belongsTo(Postagem::class, 'id_postagem');
     }
 
     public function usuario()
     {
-        return $this->hasOne(Usuario::class, 'id_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 }

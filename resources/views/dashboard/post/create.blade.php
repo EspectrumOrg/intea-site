@@ -1,5 +1,5 @@
 <div class="form">
-    <form action="{{ route('post.create')}}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="textfield">
             @if (!empty(Auth::user()->foto))
@@ -14,7 +14,7 @@
         <div class="content">
             <div class="extras">
                 <label for="caminho_imagem" class="upload-label">
-                    <span>📷 Foto</span>
+                    <span>Foto</span>
                 </label>
                 <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />

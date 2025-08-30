@@ -22,7 +22,7 @@ class UsuarioSeeder extends Seeder
         // criar admin padrão
         $admin = Usuario::factory()->create([
             'nome' => 'Admin',
-            'user' => 'German Freud dir Sor',
+            'user' => 'Ademir Emer',
             'apelido' => 'GFdS',
             'email' => 'admin@site.com',
             'senha' => bcrypt('6~5~5y9%Rfq'),
@@ -35,6 +35,7 @@ class UsuarioSeeder extends Seeder
         // Criar autista padrão
         $autista = Usuario::factory()->create([
             'nome' => 'Matheus',
+            'user' => 'Authur Emer',
             'email' => 'autista@site.com',
             'senha' => bcrypt('<Pf&2>9N.£6'),
             'tipo_usuario' => 2,
@@ -44,6 +45,7 @@ class UsuarioSeeder extends Seeder
         // criar comunidade padrão
         $comunidade = Usuario::factory()->create([
             'nome' => 'Comunidade',
+            'user' => 'Cobe Emer',
             'email' => 'comunidade@site.com',
             'senha' => bcrypt('senhacomunidade'),
             'tipo_usuario' => 3,
@@ -53,6 +55,7 @@ class UsuarioSeeder extends Seeder
         // criar profissional saúde padrão
         $profissionalsaude = Usuario::factory()->create([
             'nome' => 'Profissional Saúde',
+            'user' => 'Salazar Emer',
             'email' => 'profissionalsaude@site.com',
             'senha' => bcrypt('$wjB?y17'),
             'tipo_usuario' => 4,
@@ -62,6 +65,7 @@ class UsuarioSeeder extends Seeder
         // criar responsável padrão
         $responsavel = Usuario::factory()->create([
             'nome' => 'Responsável',
+            'user' => 'Rafael Emer',
             'email' => 'responsavel@site.com',
             'senha' => bcrypt('W4I3XpYy1'),
             'tipo_usuario' => 5,
@@ -107,5 +111,8 @@ class UsuarioSeeder extends Seeder
         FoneUsuario::factory(5)->create([
             'usuario_id' => $responsavel->id,
         ]);
+
+        //vários users comunidade
+        Usuario::factory(25)->create();
     }
 }

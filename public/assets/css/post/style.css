@@ -334,3 +334,290 @@
 .container-post .content-post .corpo-post .acoes-post .options button {
     font-weight: bold;
 }
+
+/* container do dropdown */
+.dropdown-content {
+    list-style: none;
+    margin: 0;
+    padding: .5rem;
+    background: var(--branco);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+/* estilo base para botões de ação */
+.btn-acao {
+    width: 100%;
+    text-align: left;
+    padding: .6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--texto-padrao);
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--preto);
+    transition: background-color .2s, color .2s, transform .1s;
+}
+
+/* hover geral */
+.btn-acao:hover {
+    transform: scale(1.02);
+}
+
+/* editar */
+.btn-acao.editar:hover {
+    background-color: var(--cor-tema);
+    color: var(--branco);
+}
+
+/* excluir */
+.btn-acao.excluir:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
+}
+
+/* denunciar */
+.btn-acao.denunciar:hover {
+    background-color: #ffcccb;
+    color: var(--vermelho);
+}
+
+/* Modal base */
+.modal,
+.modal-denuncia {
+    display: none;
+    /* escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* fundo escuro */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Quando a classe "hidden" NÃO está presente */
+.modal:not(.hidden),
+.modal-denuncia:not(.hidden) {
+    display: flex;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background: var(--branco);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Botão fechar */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--cinza);
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- MODAL BASE ---------- */
+.modal {
+    display: none;
+    /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    /* overlay escuro */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Mostra quando remove .hidden */
+.modal:not(.hidden) {
+    display: flex;
+}
+
+/* ---------- CONTEÚDO DO MODAL ---------- */
+.modal-content {
+    background: var(--branco);
+    padding: 2rem;
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    position: relative;
+    animation: aparecerModal 0.3s ease-out;
+}
+
+/* Animação de entrada */
+@keyframes aparecerModal {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ---------- BOTÃO FECHAR ---------- */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--cinza);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-content .close:hover {
+    color: var(--azul-escuro);
+    transform: scale(1.1);
+}
+
+/* ================= MODAL EDIT POST ================ */
+.modal {
+    display: none;
+    /* escondido por padrão */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 12px;
+    padding: .5rem 1rem;
+    width: 50rem;
+    max-width: 90%;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* botão de fechar */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 22px;
+    color: #888;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: color 0.3s;
+}
+
+.modal-content-content {
+    padding: 1rem;
+}
+
+.modal-content .close:hover {
+    color: #000;
+}
+
+/* form dentro do modal */
+.form-editar {
+    background: transparent;
+    /* sem fundo extra */
+    box-shadow: none;
+    padding: 0;
+}
+
+.form-editar .textfield-editar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-editar .textfield-editar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.form-editar .textfield-editar input[type="text"] {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.form-editar .extras-editar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.form-editar .upload-label-editar {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.form-editar .upload-label-editar:hover {
+    color: #0056b3;
+}
+
+.form-editar .input-file-editar {
+    display: none;
+}
+
+.form-editar .botao-submit-editar {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.form-editar .botao-postar-editar {
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.form-editar .botao-postar-editar:hover {
+    background: #218838;
+}
