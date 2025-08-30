@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tb_imagem_postagem', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
-            $table->string('caminho_imagem');
+            $table->string('caminho_imagem')->nullable();
             $table->timestamps();
         });
     }

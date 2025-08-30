@@ -43,6 +43,7 @@
                         <th>Texto</th>
                         <th>Data de Denuncia</th>
                         <th>Status Conta</th>
+                        <th>Visualizar</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -56,6 +57,45 @@
                     <td>{{ $item->texto_denuncia }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
                     <td>{{ $item->usuario->status_conta }}</td>
+                    <td>
+                        <!-- Botão para abrir o modal -->
+                        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
+                            Ver Postagem
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalPostagem{{ $item->id }}" tabindex="-1" aria-labelledby="modalPostagemLabel{{ $item->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalPostagemLabel{{ $item->id }}">
+                                            Postagem de {{ $item->postagem->usuario->user }}
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p><strong>Conteúdo:</strong></p>
+                                        <p>{{ $item->postagem->texto_postagem ?? 'Sem texto' }}</p>
+
+                                        @if($item->postagem->imagens->count() > 0)
+                                        <div class="text-center mt-3">
+                                            @foreach($item->postagem->imagens as $img)
+                                            <img src="{{ asset('storage/'.$img->caminho_imagem) }}"
+                                                class="img-fluid rounded mb-2"
+                                                alt="Imagem da postagem">
+                                            @endforeach
+                                        </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+
                     <td>
                         <!-- Usuário ativo → Mostrar botão de banir -->
                         <form action="{{ route('denuncia.destroy', $item->usuario->id) }}" method="post">

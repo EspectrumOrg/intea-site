@@ -29,10 +29,33 @@
                      <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">...</button>
                          <ul class="dropdown-content">
-                             <li><a href="#">Editar</a></li>
-                             <li><a href="#">Excluir</a></li>
+                             @if(Auth::id() === $postagem->usuario_id)
+                             <li>
+                                 <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
+                                     Editar
+                                 </button>
+                             </li>
+                             <li>
+                                 <form action="{{ route('post.destroy', $postagem->id) }}" method="POST" style="display:inline">
+                                     @csrf
+                                     @method('DELETE')
+                                     <button type="submit" class="btn-acao excluir">Excluir</button>
+                                 </form>
+                             </li>
+                             @else
                              <li><a href="javascript:void(0)" onclick="abrirModal('{{ $postagem->id }}')">Denunciar</a></li>
+                             @endif
                          </ul>
+                     </div>
+
+                     <!-- Modal Edição dessa postagem -->
+                     <div id="modal-editar-{{ $postagem->id }}" class="modal hidden">
+                         <div class="modal-content">
+                             <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
+                             <div class="modal-content-content">
+                                 @include('dashboard.post.edit', ['postagem' => $postagem])
+                             </div>
+                         </div>
                      </div>
 
                      <!-- Modal de denúncia (um para cada postagem) -->
@@ -86,10 +109,11 @@
                  </div>
 
                  <div class="image-post">
-                     @if ($postagem->imagens->isNotEmpty())
+                     @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
                      <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
                      @endif
                  </div>
+
 
                  <div class="dados-post">
                      <h1>({{ $postagem->curtidas_count }}) curtidas</h1>
@@ -160,6 +184,7 @@
                  </div>
              </div>
          </div>
+
          @endforeach
      </div>
  </div>

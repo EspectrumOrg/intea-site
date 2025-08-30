@@ -48,5 +48,6 @@
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
 <script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
 <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
+<script src="{{ url('assets/js/posts/modal-edit.js') }}"></script>
 
 </html>

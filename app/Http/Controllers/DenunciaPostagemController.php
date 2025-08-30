@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\Denuncia;
+use App\Models\ImagemPostagem;
 use Illuminate\Http\Request;
 
 class DenunciaPostagemController extends Controller
 {
     private $denuncia;
+    private $imagem_postagem;
 
-    public function __construct(Denuncia $denuncia)
+    public function __construct(Denuncia $denuncia, ImagemPostagem $imagem_postagem)
     {
         $this->denuncia = $denuncia;
+        $this->imagem_postagem = $imagem_postagem;
     }
 
     public function index(Request $request)
@@ -43,7 +46,7 @@ class DenunciaPostagemController extends Controller
         $ordem = $request->input('ordem', 'desc'); // padrão: mais recente
         $query->orderBy('created_at', $ordem);
 
-        $denuncias = $query->with(['usuario', 'postagem.usuario'])->paginate(10);
+        $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens'])->paginate(10);
 
         return view('admin.denuncia.index', compact('denuncias'));
     }
@@ -75,7 +78,7 @@ class DenunciaPostagemController extends Controller
         $usuario->status_conta = 0;
         $usuario->save();
 
-        session()->flash("success", "Usuário banido");
+        session()->flash("successo", "Usuário banido");
         return redirect()->back();
     }
 }

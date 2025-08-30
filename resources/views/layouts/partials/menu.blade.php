@@ -2,7 +2,7 @@
      <div class="content">
 
          <div class="logo">
-             <a href="{{ route('dashboard') }}">INTEA</a>
+             <a href="{{ route('post.index') }}">INTEA</a>
          </div>
 
          <div class="links">
@@ -13,7 +13,7 @@
                  </li>
                  @endcan
                  <li class="nav-item">
-                     <a href="{{ route('dashboard') }}">Feed</a>
+                     <a href="{{ route('post.index') }}">Feed</a>
                  </li>
                  <li class="nav-item">
                      <a href=" ">Postagens</a>

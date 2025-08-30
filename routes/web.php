@@ -65,8 +65,9 @@ Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastr
 // Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
-    Route::get('/dashboard', [PostagemController::class, 'index'])->name('dashboard');
-    Route::post('/dashboard', [PostagemController::class, 'store'])->name('post.create');
+    Route::resource("dashboard", PostagemController::class)
+        ->names("post")
+        ->parameters(["dashboard" => "post"]);
     // curtida postagem
     Route::post('/dashboard/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     // comentario postagem
