@@ -55,6 +55,7 @@ class ProfissionalSaudeController extends Controller
             'numero_telefone.*' => 'required|string|max:20',
             'tipo_registro' => 'required|string|max:255',
             'registro_profissional' => 'required|string|max:255',
+            'profissao' => 'required|string|max:255',
         ], [
             'nome.required' => 'O campo nome é obrigatório',
             'user.required' => 'O campo user é obrigatório',
@@ -72,6 +73,7 @@ class ProfissionalSaudeController extends Controller
             'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
             'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
             'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+            'profissao.required' => 'O campo profissão é obrigatório',
         ]);
 
         // Validação customizada do CPF
@@ -102,7 +104,9 @@ class ProfissionalSaudeController extends Controller
             'usuario_id' => $usuario->id,
             'tipo_registro' => $request->tipo_registro,
             'registro_profissional' => $request->registro_profissional,
+            'tipo_profissional' => $request->profissao,
         ]);
+
 
         foreach ($request->numero_telefone as $telefone) {
             FoneUsuario::create([

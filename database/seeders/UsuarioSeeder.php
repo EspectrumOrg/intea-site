@@ -98,6 +98,9 @@ class UsuarioSeeder extends Seeder
 
         ProfissionalSaude::factory()->create([
             'usuario_id' => $profissionalsaude->id,
+            'tipo_registro' => 'CRP',
+            'registro_profissional' => '06-12345',
+            'tipo_profissional' => 'Psicólogo', 
         ]);
 
         FoneUsuario::factory(5)->create([

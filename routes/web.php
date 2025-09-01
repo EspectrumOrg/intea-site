@@ -106,4 +106,11 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 });
 
+Route::middleware('auth', 'is_profissional')->group(function () {
+
+    Route::resource("usuario", UsuarioController::class)
+        ->names("usuario")
+        ->parameters(["usuarios" => "usuario"]);
+});
+
 require __DIR__ . '/auth.php';

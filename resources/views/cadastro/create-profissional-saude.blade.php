@@ -131,12 +131,12 @@
                     <div class="field">
                         <label>Profissão *</label>
                         <select name="profissao" id="profissao" required>
-                            <option value="">Selecione</option>
-                            <option value="Psiquiatra">Psiquiatra</option>
-                            <option value="Psicólogo">Psicólogo</option>
-                            <option value="Terapeuta Ocupacional">Terapeuta Ocupacional</option>
-                            <option value="Fonoaudiólogo">Fonoaudiólogo</option>
-                            <option value="Neurologista">Neurologista</option>
+                            <option value="" {{ old('profissao') == '' ? 'selected' : '' }}>Selecione</option>
+                            <option value="Psiquiatra" {{ old('profissao') == 'Psiquiatra' ? 'selected' : '' }}>Psiquiatra</option>
+                            <option value="Psicólogo" {{ old('profissao') == 'Psicólogo' ? 'selected' : '' }}>Psicólogo</option>
+                            <option value="Terapeuta Ocupacional" {{ old('profissao') == 'Terapeuta Ocupacional' ? 'selected' : '' }}>Terapeuta Ocupacional</option>
+                            <option value="Fonoaudiólogo" {{ old('profissao') == 'Fonoaudiólogo' ? 'selected' : '' }}>Fonoaudiólogo</option>
+                            <option value="Neurologista" {{ old('profissao') == 'Neurologista' ? 'selected' : '' }}>Neurologista</option>
                         </select>
                     </div>
 
