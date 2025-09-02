@@ -1,21 +1,39 @@
-/* Reset básico */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
 }
 
 body {
   font-family: "Segoe UI", sans-serif;
-  color: #333;
-  background: #f9fafc;
+  color: var(--cor-preto);
+  background: var(--cor-branco);
   line-height: 1.6;
 }
 
 /* Header */
 header {
-  background: #4a6fa5; /* azul suave */
-  color: #fff;
+  background: var(--branco); /* azul suave */
   padding: 1rem 0;
   position: relative;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -35,12 +53,9 @@ header {
 
 /* Logo */
 .logo-img {
-  height: 200px;
+  height: 100px;
   width: auto;
   object-fit: contain;
-  position: absolute;
-  top: -90%;
-  left: -3%;
   filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.2));
 }
 
@@ -52,14 +67,14 @@ header {
 }
 
 .nav-links a {
-  color: white;
+  color: var(--cor-tema);
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.7s ease;
 }
 
 .nav-links a:hover {
-  color: #e3eaf5;
+  color: var(--azul);
 }
 
 .menu-toggle {
@@ -70,7 +85,7 @@ header {
 
 /* Hero */
 .hero {
-  background: linear-gradient(to right, #7fa7d4, #4a6fa5);
+  background: linear-gradient(to right, var(--azul), var(--cor-tema));
   color: white;
   padding: 7rem 2rem;
   text-align: center;
@@ -96,12 +111,12 @@ header {
 }
 
 .alt-bg {
-  background: #eef2fa;
+  background: var(--cor-branco);
 }
 
 .section h3 {
   font-size: 2rem;
-  color: #4a6fa5;
+  color: var(--cor-tema);
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
@@ -184,7 +199,7 @@ header {
 .card h4 {
   font-size: 1.3rem;
   margin-bottom: 0.8rem;
-  color: #4a6fa5;
+  color: var(--cor-tema);
   font-weight: 600;
 }
 
@@ -196,16 +211,16 @@ header {
 /* Card "Mais" */
 .card.mais {
   background: linear-gradient(145deg, #e6efff, #f9fbff);
-  border: 2px dashed #4a6fa5;
+  border: 2px dashed var(--cor-tema);
 }
 
 .card.mais h4 {
-  color: #2c4d7a;
+  color: var(--azul);
 }
 
 /* Footer */
 footer {
-  background: #4a6fa5;
+  background: var(--azul);
   color: white;
   text-align: center;
   padding: 1.5rem;
@@ -219,7 +234,8 @@ footer {
     position: absolute;
     top: 70px;
     right: 0;
-    background: #4a6fa5;
+    background: var(--cor-tema
+);
     flex-direction: column;
     width: 220px;
     padding: 1.2rem;

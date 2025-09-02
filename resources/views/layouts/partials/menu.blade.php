@@ -3,25 +3,11 @@
      <div class="content">
 
          <div class="logo">
-             <a href="{{ route('post.index') }}">INTEA</a>
+             <a href="{{ route('post.index') }}"><img src="{{ asset('assets/images/logos/intea/logo-brain.png') }}"></a>
          </div>
 
          <div class="links">
              <ul class="ul">
-                 @can('visualizar-admin')
-                 <li class="nav-item">
-                     <a href="{{ route('usuario.index') }}">Admin</a>
-                 </li>
-                 @endcan
-                 <li class="nav-item">
-                     <a href="{{ route('post.index') }}">Feed</a>
-                 </li>
-                 <li class="nav-item">
-                     <a href=" ">Postagens</a>
-                 </li>
-                 <li class="nav-item">
-                     <a href="#">Profissionais</a>
-                 </li>
 
                  <li class="nav-item dropdown-item">
                      @if (!empty(Auth::user()->foto))

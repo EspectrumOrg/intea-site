@@ -4,20 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comunidade Autista</title>
-  <link rel="stylesheet" href="landpage.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/landpage.css') }}">
 </head>
 <body>
   <!-- Header -->
   <header>
     <div class="container nav-container">
       <div class="logo-container">
-        <img src="logo.png" alt="Logo" class="logo-img">
+        <img src="{{ asset('assets/images/logos/intea/logo-brain.png') }}" alt="Logo" class="logo-img">
       </div>
       <nav>
         <ul class="nav-links">
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#profissionais">Profissionais</a></li>
-          <li><a href="#">Login</a></li>
+          <li><a href="{{ route('welcome') }}">Login</a></li>
         </ul>
       </nav>
       <div class="menu-toggle">&#9776;</div>
@@ -39,7 +40,7 @@
   <section id="sobre" class="section">
     <h3>Nosso Objetivo</h3>
     <div class="text-img">
-      <img src="Autismo.jpg" alt="Comunidade unida">
+      <img src="{{ asset('assets/images/landpage/Autismo.jpg') }}" alt="Comunidade unida">
       <p>
         Criamos esta comunidade para oferecer informação, apoio e acolhimento.
         Aqui, famílias, profissionais de saúde e autistas podem se conectar,
@@ -55,7 +56,7 @@
       <p>
         Temos especialistas preparados para ajudar no desenvolvimento e bem-estar das pessoas autistas.
       </p>
-      <img src="autismo2.jpeg" alt="Equipe de saúde">
+      <img src="{{ asset('assets/images/landpage/autismo2.jpeg') }}" alt="Equipe de saúde">
     </div>
     <div class="cards">
       <div class="card fade-in">
@@ -81,6 +82,6 @@
     <p>© 2025 Comunidade Autista. Todos os direitos reservados.</p>
   </footer>
 
-  <script src="landpage.js"></script>
+  <script src="{{ asset('assets/js/landpage.js') }}"></script>
 </body>
 </html>

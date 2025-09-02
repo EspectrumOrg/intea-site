@@ -32,14 +32,8 @@ class AuthenticatedSessionController extends Controller
         $usuario = Auth::user();
 
         if (!$usuario->tipo_usuario === 4) {
-            $usuario = Auth::user();
-
-        if (!$usuario->tipo_usuario === 4) {
             return redirect()->intended(RouteServiceProvider::HOME); 
         } else{
-            return redirect()->route('pagina_saude');
-        }
-        } else {
             return redirect()->route('pagina_saude');
         }
     }

@@ -27,10 +27,34 @@
 /* Container geral */
 .login-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
     min-height: 100vh;
     background: var(--cor-branco);
+}
+
+/* botão voltar */
+.back-button {
+    padding: .5rem 0 0 2rem;
+}
+
+.back-button img {
+    height: 50px;
+    cursor: pointer;
+    transition: .7s;
+    border-radius: 50%;
+    background-color: var(--cor-tema);
+}
+
+.back-button img:hover {
+    background-color: var(--azul);
+}
+
+/* Formulário div*/
+.login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
 }
 
 /* Formulário */

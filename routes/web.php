@@ -24,7 +24,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
 Route::get('/', function () {
+    return view('landpage');
+})->name('landpage');
+
+Route::get('/welcome', function () {
     return view('welcome');
 })->name('welcome');
 
@@ -105,12 +111,4 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 });
-
-Route::middleware('auth', 'is_profissional')->group(function () {
-
-    Route::resource("usuario", UsuarioController::class)
-        ->names("usuario")
-        ->parameters(["usuarios" => "usuario"]);
-});
-
 require __DIR__ . '/auth.php';
