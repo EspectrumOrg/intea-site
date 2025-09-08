@@ -34,7 +34,7 @@ class AutistaController extends Controller
     {
         $generos = $this->genero->all();
 
-        return view('cadastro.create-autista', compact('generos'));
+        return view('auth.create-autista', compact('generos'));
     }
 
     /**

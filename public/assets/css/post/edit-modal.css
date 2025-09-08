@@ -1,0 +1,149 @@
+/* Quando a classe "hidden" NÃO está presente */
+.modal:not(.hidden),
+.modal-denuncia:not(.hidden) {
+    display: flex;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background: var(--branco);
+    padding: 4rem 1rem 1rem 1rem;
+    border-radius: 15px;
+    width: 600px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- BOTÃO FECHAR ---------- */
+.modal-content .close {
+    position: absolute;
+    top: 0px;
+    left: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--cinza);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Animação de entrada */
+@keyframes aparecerModal {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content-content {
+    width: 100%;
+}
+
+/* ================= MODAL EDIT POST ================ */
+.modal {
+    display: none;
+    /* escondido por padrão */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+}
+
+/* form dentro do modal */
+.form-editar {
+    background: transparent;
+    /* sem fundo extra */
+    box-shadow: none;
+    padding: 0;
+}
+
+.form-editar .textfield-editar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* conta dígitos*/
+.form-editar #char-count {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.form-editar .textfield-editar img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.form-editar .textfield-editar textarea {
+    flex: 1;
+    padding: 10px 12px;
+    margin-top: 1.5rem;
+    border: none;
+    min-height: 50px;
+    /* altura inicial */
+    max-height: 300px;
+    /* limite de crescimento */
+    resize: none;
+    /* impede redimensionamento manual */
+    background-color: var(--branco);
+}
+
+.form-editar .textfield-editar textarea:focus {
+    outline: none;
+}
+
+.form-editar .upload-label-editar {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.form-editar .upload-label-editar:hover {
+    color: #0056b3;
+}
+
+.form-editar .input-file-editar {
+    display: none;
+}
+
+.form-editar .botao-submit-editar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-editar .botao-postar-editar {
+    padding: 8px 18px;
+    border-radius: 8px;
+    background: var(--cor-fundo);
+    color: var(--branco);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-editar .botao-postar-editar:hover {
+    background: var(--cor-tema);
+}

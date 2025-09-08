@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Comunidade Autista</title>
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/landpage.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/auth/landpage.css') }}">
 </head>
 <body>
   <!-- Header -->
@@ -18,7 +18,7 @@
         <ul class="nav-links">
           <li><a href="#sobre">Sobre</a></li>
           <li><a href="#profissionais">Profissionais</a></li>
-          <li><a href="{{ route('welcome') }}">Login</a></li>
+          <li><a href="{{ route('login') }}">Login</a></li>
         </ul>
       </nav>
       <div class="menu-toggle">&#9776;</div>
@@ -82,6 +82,6 @@
     <p>© 2025 Comunidade Autista. Todos os direitos reservados.</p>
   </footer>
 
-  <script src="{{ asset('assets/js/landpage.js') }}"></script>
+  <script src="{{ asset('assets/js/auth/landpage.js') }}"></script>
 </body>
 </html>

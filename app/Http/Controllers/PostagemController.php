@@ -30,7 +30,7 @@ class PostagemController extends Controller
             ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-        return view('dashboard', compact('postagens', 'posts'));
+        return view('feed', compact('postagens', 'posts'));
     }
 
     /**
@@ -41,7 +41,7 @@ class PostagemController extends Controller
         $postagens = $this->postagem->all();
         $imagem_postagem = $this->imagem_postagem->all();
 
-        return view('dashboard.post.index', compact('imagem_postagem', 'postagens'));
+        return view('feed.post.index', compact('imagem_postagem', 'postagens'));
     }
 
     /**

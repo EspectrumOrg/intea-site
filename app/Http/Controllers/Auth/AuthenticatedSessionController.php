@@ -31,10 +31,11 @@ class AuthenticatedSessionController extends Controller
 
         $usuario = Auth::user();
 
-        if (!$usuario->tipo_usuario === 4) {
-            return redirect()->intended(RouteServiceProvider::HOME); 
-        } else{
+        if (!$usuario->tipo_usuario === 4) { //tirar essa parte caso o profissional saúde seja removido
             return redirect()->route('pagina_saude');
+
+        } else{
+            return redirect()->intended(RouteServiceProvider::HOME); 
         }
     }
 

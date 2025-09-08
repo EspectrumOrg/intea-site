@@ -11,6 +11,7 @@ use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
+use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,65 +22,59 @@ use Illuminate\Support\Facades\Route;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
+
+    Register
 |
 */
 
 
-
+// Início
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
-
-Route::get('/welcome', function () {
-    return view('welcome');
-})->name('welcome');
-
-Route::get('/index', function () {
-    return view('index');
-})->name('index');
-
-
-
+// Login
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+// Tipo Conta
 Route::get('/cadastro', function () {
-    return view('auth.register'); // Cadastro de usuário
+    return view('auth.register');
 })->name('cadastro.index');
+
+// Cadastro de Admin
+Route::resource("admin", AdminController::class)->names("admin");
+// Cadastro de Autista
+Route::resource("autista", AutistaController::class)->names("autista");
+// Cadastro de Comunidade
+Route::resource("comunidade", ComunidadeController::class)->names("comunidade");
+// Cadastro de Profissional de Saúde
+Route::resource("profissional", ProfissionalSaudeController::class)->names("profissional");
+// Cadastro de Responsável
+Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
+
+/* Sua Parte Nicola ------------------ 
 Route::get('/cadastro/responsavel', function () {
     return view('cadastro.create-responsavel');
 })->name('cadastro.responsavel');
 
-
-
-// Cadastro de Admin
-Route::get('/cadastro/admin', [AdminController::class, 'create'])->name('cadastro.admin');
-Route::post('/cadastro', [AdminController::class, 'store'])->name('cadastro.store.admin');
-// Cadastro de Autista
-Route::get('/cadastro/autista', [AutistaController::class, 'create'])->name('cadastro.autista');
-Route::post('/cadastro/autista', [AutistaController::class, 'store'])->name('cadastro.store.autista');
-// Cadastro de Comunidade
-Route::get('/cadastro/comunidade', [ComunidadeController::class, 'create'])->name('cadastro.comunidade');
-Route::post('/cadastro/comunidade', [ComunidadeController::class, 'store'])->name('cadastro.store.comunidade');
-// Cadastro de Profissional de Saúde
-Route::get('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'create'])->name('cadastro.profissionalsaude');
-Route::post('/cadastro/profissionalsaude', [ProfissionalSaudeController::class, 'store'])->name('cadastro.store.profissionalsaude');
-// Cadastro de Responsável
 Route::get('/perfilResponsavel', [ResponsavelController::class, 'perfil'])->name('perfilr');
-
 Route::get('/cadastro/responsavel', [ResponsavelController::class, 'create'])->name('cadastro.responsavel');
 Route::post('/cadastro', [ResponsavelController::class, 'store'])->name('cadastro.store.responsavel');
+*/
 
 
 // Usuário Logado PADRÃO
 Route::middleware('auth')->group(function () {
 
-    Route::resource("dashboard", PostagemController::class)
+    Route::resource("feed", PostagemController::class)
         ->names("post")
-        ->parameters(["dashboard" => "post"]);
+        ->parameters(["feed" => "post"]);
     // curtida postagem
-    Route::post('/dashboard/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
+    Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     // comentario postagem
-    Route::post('/dashboard/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    Route::post('/feed/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
     // denuncia postagem
-    Route::post('/dashboard/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
+    Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -111,4 +106,5 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 });
+
 require __DIR__ . '/auth.php';

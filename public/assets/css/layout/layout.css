@@ -31,7 +31,7 @@ body {
 /* body */
 .layout {
     max-width: 100vw;
-    background-color: var(--cor-branco);
+    background-color: var(--branco);
 }
 
 /* navbar */
@@ -47,12 +47,9 @@ body {
     flex: 1;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     max-width: 1297px;
     margin: auto;
-    padding-top: 6rem;
     background-color: var(--cor-branco);
-    overflow: hidden;
 }
 
 .container-main {

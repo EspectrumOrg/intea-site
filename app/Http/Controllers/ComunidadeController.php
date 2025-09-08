@@ -37,7 +37,7 @@ class ComunidadeController extends Controller
     {
         $generos = $this->genero->all();
 
-        return view('cadastro.create-comunidade', compact('generos'));
+        return view('auth.create-comunidade', compact('generos'));
     }
 
     /**
@@ -137,7 +137,7 @@ class ComunidadeController extends Controller
 
         Auth::login($usuario);
 
-        return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
+        return redirect()->route('feed')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
     }
 
     // Método para validar CPF

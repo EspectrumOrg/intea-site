@@ -1,4 +1,4 @@
-@extends('layouts.template.layout')
+@extends('profile.template.layout')
 
 @section('main')
 

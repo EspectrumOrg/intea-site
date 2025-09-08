@@ -18,7 +18,7 @@
 
                      <ul class="dropdown">
                          <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
-                         <li> <!-- Authentication -->
+                         <li>
                              <form method="POST" action="{{ route('logout') }}">
                                  @csrf
                                  <a onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link" href="#">Sair</a>

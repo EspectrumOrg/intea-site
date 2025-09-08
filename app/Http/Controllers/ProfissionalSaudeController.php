@@ -32,7 +32,7 @@ class ProfissionalSaudeController extends Controller
     {
         $generos = $this->genero->all();
 
-        return view('cadastro.create-profissional-saude', compact('generos'));
+        return view('auth.create-profissional-saude', compact('generos'));
     }
 
     /**
