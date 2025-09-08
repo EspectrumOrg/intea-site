@@ -14,7 +14,7 @@
         <div class="content">
             <div class="extras">
                 <label for="caminho_imagem" class="upload-label">
-                    <span>Foto</span>
+                    <img src="{{ url('assets/images/logos/symbols/image.png') }}" class="card-img-top" alt="adicionar imagem">
                 </label>
                 <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />

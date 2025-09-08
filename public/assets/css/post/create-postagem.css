@@ -51,6 +51,14 @@
 }
 
 /* label customizada */
+.create-post .form .upload-label img {
+    width: 25px;
+}
+
+.create-post .form .upload-label img:hover {
+    transform: scale(1.05);
+}
+
 .create-post .form .upload-label {
     cursor: pointer;
     color: var(--cor-tema);

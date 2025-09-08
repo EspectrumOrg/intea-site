@@ -1,17 +1,9 @@
 <div class="content">
-    <div class="logo">
-        <h5>Logo</h5>
-    </div>
-
-    <div class="info">
-        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
-        <div class="text">
-            <h5>{{ Auth::user()->user}}</h5>
-            <h4>{{ Auth::user()->email}}</h4>
-        </div>
-    </div>
-
     <div class="links">
+        <div class="logo">
+            <img src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+        </div>
+
         <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="home">
             <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="Home">
             <h1>Home</h1>
@@ -48,31 +40,49 @@
             <h1>Admin</h1>
         </a>
         @endcan
-
-
-        <ul class="ul">
-            <li class="nav-item dropdown-item">
-                @if (!empty(Auth::user()->foto))
-                <a href="#"><img src="{{ asset('storage/'.Auth::user()->foto) }}"></a>
-                @else
-                <a href="#"><img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil"></a>
-                @endif
-
-                <ul class="dropdown">
-                    <li><a href="{{ route('profile.edit') }}">Perfil</a></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a onclick="event.preventDefault(); this.closest('form').submit();" class="nav-link" href="#">Sair</a>
-                        </form>
-                    </li>
-                </ul>
-            </li>
-        </ul>
     </div>
 
     <!-- Modal de criação de postagem -->
     <div class="post-button">
         <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
     </div>
+
+    <div class="info dropdown-container" id="userDropdown">
+        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
+        <div class="text">
+            <h5>{{ Auth::user()->user }}</h5>
+            <h4>{{ Auth::user()->email }}</h4>
+        </div>
+
+        <ul class="dropdown-checar-perfil hidden">
+            <li><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
+            <li>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair {{ Auth::user()->user}}</a>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dropdownContainer = document.getElementById("userDropdown");
+            const dropdownMenu = dropdownContainer.querySelector(".dropdown-checar-perfil");
+
+            // Abre/fecha ao clicar na área .info
+            dropdownContainer.addEventListener("click", (e) => {
+                e.stopPropagation(); // evita fechar ao clicar dentro
+                dropdownMenu.classList.toggle("hidden");
+            });
+
+            // Fecha ao clicar fora
+            document.addEventListener("click", () => {
+                dropdownMenu.classList.add("hidden");
+            });
+        });
+    </script>
+
+
+
 </div>
