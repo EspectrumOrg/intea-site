@@ -17,7 +17,6 @@
       <nav>
         <ul class="nav-links">
           <li><a href="#sobre">Sobre</a></li>
-          <li><a href="#profissionais">Profissionais</a></li>
           <li><a href="{{ route('login') }}">Login</a></li>
         </ul>
       </nav>
@@ -48,35 +47,6 @@
       </p>
     </div>
   </section>
-
-  <!-- Profissionais -->
-  <section id="profissionais" class="section alt-bg">
-    <h3>Profissionais de Saúde</h3>
-    <div class="text-img">
-      <p>
-        Temos especialistas preparados para ajudar no desenvolvimento e bem-estar das pessoas autistas.
-      </p>
-      <img src="{{ asset('assets/images/landpage/autismo2.jpeg') }}" alt="Equipe de saúde">
-    </div>
-    <div class="cards">
-      <div class="card fade-in">
-        <div class="icon">🧠</div>
-        <h4>Psicólogos</h4>
-        <p>Apoio emocional e acompanhamento terapêutico.</p>
-      </div>
-      <div class="card fade-in">
-        <div class="icon">🤲</div>
-        <h4>Terapeutas Ocupacionais</h4>
-        <p>Auxílio no desenvolvimento de habilidades funcionais.</p>
-      </div>
-      <div class="card mais fade-in">
-        <div class="icon">➕</div>
-        <h4>E muitos outros</h4>
-        <p>Psiquiatra, fonoaudiologos e neurologista</p>
-      </div>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer>
     <p>© 2025 Comunidade Autista. Todos os direitos reservados.</p>

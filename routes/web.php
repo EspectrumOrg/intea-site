@@ -75,10 +75,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
+    //Mensagem
+    Route::get('/mensagem', function () {
+        return view('mensagens.painelmensagem');
+    })->name('cadastro.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
 });
 
 

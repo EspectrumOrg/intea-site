@@ -9,7 +9,7 @@
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('post.index') }}" class="nav-link" id="message">
+        <a href="mensagem" class="nav-link" id="message">
             <img src="{{ asset('assets/images/logos/symbols/site-claro/email.png') }}" alt="Mensagens">
             <h1>Mensagens</h1>
         </a>
@@ -25,7 +25,7 @@
             <h1>Configurações</h1>
         </a>
 
-        @if (Auth::user()->tipo_usuario === 4)
+        <!--@if (Auth::user()->tipo_usuario === 4)
         <a href="{{ route('pagina_saude') }}" class="nav-link">
             <h1>Profissionais</h1>
         </a>
@@ -33,7 +33,7 @@
         <a href="" class="nav-link">
             <h1>Especialistas</h1>
         </a>
-        @endif
+        @endif-->
 
         @can("visualizar-admin")
         <a href="{{ route('usuario.index') }}" class="nav-link">

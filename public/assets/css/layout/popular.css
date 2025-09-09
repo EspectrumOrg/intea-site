@@ -45,6 +45,7 @@
     font-weight: bold;
     color: var(--cor-tema);
     margin-bottom: 1.5rem;
+    margin:auto;
 }
 
 /* lista de posts */

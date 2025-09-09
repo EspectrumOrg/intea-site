@@ -19,10 +19,11 @@
         </select>
 
         <select name="status_conta">
-            <option value="">Todos status</option>
-            <option value="1" {{ request('status_conta') == 1 ? 'selected' : '' }}>Ativa</option>
-            <option value="0" {{ request('status_conta') == 0 ? 'selected' : '' }}>Banida</option>
+            <option value="" {{ request('status_conta') == null ? 'selected' : '' }}>Todos status</option>
+            <option value="1" {{ request('status_conta') == '1' ? 'selected' : '' }}>Ativa</option>
+            <option value="0" {{ request('status_conta') == '0' ? 'selected' : '' }}>Banida</option>
         </select>
+
 
         <select name="ordem">
             <option value="desc" {{ request('ordem') == 'desc' ? 'selected' : '' }}>Mais recente</option>
