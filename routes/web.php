@@ -11,6 +11,8 @@ use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SeguirController;
+
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +77,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
+    
+    
+    Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store')->middleware('auth');
+
+    Route::post('/seguir', [SeguirController::class, 'store'])->name('seguir.store');
+
+
+    
     //Mensagem
     Route::get('/mensagem', function () {
         return view('mensagens.painelmensagem');

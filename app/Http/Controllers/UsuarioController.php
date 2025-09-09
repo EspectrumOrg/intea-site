@@ -46,17 +46,12 @@ class UsuarioController extends Controller
         // Busca por nome, user ou email
         if ($request->filled('search')) {
             $search = $request->search;
-            $terms = explode(' ', $search);
-        
-            $query->where(function ($q) use ($terms) {
-                foreach ($terms as $term) {
-                    $q->Where('nome', 'like', "%{$term}%")
-                      ->orWhere('user', 'like', "%{$term}%")
-                      ->orWhere('email', 'like', "%{$term}%");
-                }
+            $query->where(function ($q) use ($search) {
+                $q->where('nome', 'like', "%{$search}%")
+                    ->orWhere('user', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%");
             });
         }
-        
 
         // Filtro por tipo_usuario
         if ($request->filled('tipo_usuario')) {

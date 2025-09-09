@@ -112,7 +112,7 @@ class ResponsavelController extends Controller
 
         Auth::login($usuario);
 
-        return redirect()->route('perfil')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
+        return redirect()->route('login')->with('Sucesso', 'Usuário Tipo Responsável cadastrado com sucesso!');
     }
 
     // Função estática para validar CPF (copie essa função dentro da classe)

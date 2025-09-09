@@ -23,9 +23,12 @@
                      <h3>{{ $postagem->created_at->format('d/m/y') }}</h3>
                  </div>
 
+                <form action="{{ route('seguir.store') }}" method="POST">
                  <div class="acoes-perfil">
-                     <button class="seguir-btn">+Seguir</button>
-
+                 @csrf
+                 <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                 <button type="submit" class="seguir-btn">+Seguir</button>
+                     </form>
                      <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">...</button>
                          <ul class="dropdown-content">
