@@ -1,0 +1,77 @@
+[33mcommit 6bf79fed65ea5338f4708e508ad88620a7991890[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mparte-admin[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Thu Jul 24 00:18:57 2025 -0300
+
+    Mudanças na parte de login e admin com base na playlist de laravel do canal area do código
+
+[33mcommit 0bc389c2c6d4677dd78161a3b1acf49615d5907f[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Fri Jul 18 19:53:04 2025 -0300
+
+    mudanças na área admin + atualizações com breeze e boostrap5
+
+[33mcommit 051e7dbf07402f8d2509b489793bc76152785988[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Fri Jul 11 03:09:42 2025 -0300
+
+    remoco dos arquivos na pasta principal'
+
+[33mcommit 10bbe02c9f10e7f8422699070072ef2dfebf25ca[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Fri Jul 11 03:00:56 2025 -0300
+
+    criacao das tabelas likes,denunciaPostagem,chatprivado,mensagensprivadas,alem da criacao do campo imagem na tabela usuario
+
+[33mcommit 35a74dbc9c9219185fdbca065775553dc05641c0[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Fri Jul 11 02:58:55 2025 -0300
+
+    criacao das tabelas like,denunciaPostagem,chatprivado,mensagenschatprivado  $table->id();
+
+[33mcommit 5f0b67a43f040ab48e0f17d056276675241aefa2[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Sun Jul 6 17:33:22 2025 -0300
+
+    pequeno ajuste  na api de teste
+
+[33mcommit 89e629526dc1c9fa07cae04c4aed3a0194adde41[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Sun Jul 6 17:30:44 2025 -0300
+
+    Insert tbResponsavel e tb usuario e tb fone
+
+[33mcommit ea641a3805a30eeea724552a58c51da0fc1bf5c4[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Sun Jul 6 16:29:31 2025 -0300
+
+    teste
+
+[33mcommit 4ff4d7d1a47b4c8ebd6f3e9d9302966ea9e52a77[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Sat Jul 5 01:45:03 2025 -0300
+
+    correção de nomes e adição de campos tipo e status no Controller, Model e Table Autista
+
+[33mcommit 3ecae4b457ca250bff84f7a86d258eac14ac39ee[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Sat Jul 5 00:46:49 2025 -0300
+
+    Atualizações de nomes para snake_case e Create Comunidade feitos
+
+[33mcommit fc226812f6cf9cabb751015f737b88a0dba377fa[m
+Author: NicolasPedo <suicunelindo@gmail.com>
+Date:   Fri Jul 4 15:11:27 2025 -0300
+
+    meu comitt do  cuidadorUser
+
+[33mcommit 01764ac61684e43d937916e7fd0c12a49582ca74[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Fri Jul 4 02:42:22 2025 -0300
+
+    mudança no UsuarioController e no forms de cadastro
+
+[33mcommit 064f944c5474fab0d37f65c5210b4e19d7143702[m
+Author: Guilherme <guilhermefermino08@gmail.com>
+Date:   Thu Jul 3 15:37:26 2025 -0300
+
+    versão 03/07 com formulários de cadastro e tables feitas

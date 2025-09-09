@@ -1,0 +1,177 @@
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
+}
+
+/* Escopo exclusivo para evitar conflito */
+.perfil-section {
+    background: var(--branco);
+    padding: 2rem;
+    max-width: 800px;
+    margin: auto;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* topo */
+.perfil-section .header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+/* img perfil */
+.perfil-section .header .foto-perfil img {
+    width: 155px;
+    margin: auto;
+    border-radius: 75px;
+}
+
+/* informações perfil */
+.perfil-section .header h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cor-tema);
+}
+
+/* atualize as informações */
+.perfil-section .header p {
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    color: var(--cor-texto);
+}
+
+/* Campos */
+.perfil-section .form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--cor-preto);
+    margin-bottom: 0.3rem;
+}
+
+.perfil-section .form-control {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.perfil-section .form-control:focus {
+    border-color: var(--cor-tema);
+    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
+    outline: none;
+}
+
+/* Botões */
+.perfil-section .btn-primary,
+.perfil-section x-primary-button {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background-color: var(--cor-tema);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.perfil-section #botao-excluir {
+    background-color: var(--cor-vermelho);
+}
+
+
+
+.perfil-section .btn-primary:hover,
+.perfil-section x-primary-button:hover {
+    background-color: var(--azul);
+}
+
+.perfil-section #botao-excluir:hover {
+    background-color: var(--vermelho);
+}
+
+/* Mensagens */
+.perfil-section .text-success {
+    color: var(--cor-tema);
+}
+
+.perfil-section .text-error {
+    color: var(--cor-vermelho);
+}
+
+/* Espaçamento */
+.perfil-section .mb-3 {
+    margin-bottom: 1rem;
+}
+
+.perfil-section .flex {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.perfil-section .gap-4 {
+    gap: 1rem;
+}
+
+/* Form Select */
+.perfil-section .form-select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    appearance: none;
+    /* Remove seta padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+.perfil-section .form-select:hover {
+    border-color: var(--cor-tema);
+}
+
+/* Focus */
+.perfil-section .form-select:focus {
+    border-color: var(--cor-tema);
+    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
+    outline: none;
+}
+
+/* Adicionando seta personalizada */
+.perfil-section .form-select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23017373" d="M0 0l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 5px;
+}

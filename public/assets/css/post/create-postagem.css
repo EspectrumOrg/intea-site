@@ -1,0 +1,104 @@
+/* ----------------------------- create posts ------------------------------- */
+.create-post {
+    background-color: var(--branco);
+    border: 2px solid var(--cinza-borda);
+    padding: 1rem 2rem;
+}
+
+.create-post .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* campo principal */
+.create-post .form .textfield {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.create-post .form .textfield img {
+    width: 75px;
+    border-radius: 50%;
+}
+
+.create-post .form .textfield input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--branco-light);
+    border-radius: 10px;
+    font-size: var(--texto-padrao);
+    background-color: var(--branco);
+    color: var(--preto);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.create-post .form .textfield input:focus {
+    border-color: var(--cor-tema);
+    box-shadow: 0 0 5px rgba(1, 115, 115, 0.3);
+    outline: none;
+}
+
+/* opções (upload etc) */
+.create-post .form .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 2rem;
+    margin-top: .5rem;
+}
+
+/* label customizada */
+.create-post .form .upload-label img {
+    width: 25px;
+}
+
+.create-post .form .upload-label img:hover {
+    transform: scale(1.05);
+}
+
+.create-post .form .upload-label {
+    cursor: pointer;
+    color: var(--cor-tema);
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.create-post .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.create-post .form .input-file {
+    display: none;
+}
+
+/* botão */
+.create-post .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.create-post .form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--cor-tema);
+    color: var(--branco);
+    font-size: var(--texto-padrao);
+    font-weight: bold;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.create-post .form .botao-postar:hover {
+    background-color: var(--azul);
+    transform: scale(1.03);
+}

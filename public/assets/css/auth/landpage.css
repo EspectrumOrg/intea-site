@@ -1,0 +1,268 @@
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  color: var(--cor-preto);
+  background: var(--cor-branco);
+  line-height: 1.6;
+}
+
+/* Header */
+header {
+  background: var(--branco); /* azul suave */
+  padding: 1rem 0;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: 100px; 
+  overflow: visible;
+}
+
+.nav-container {
+  width: 90%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+/* Logo */
+.logo-img {
+  height: 100px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.2));
+}
+
+/* Navegação */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: var(--cor-tema);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.7s ease;
+}
+
+.nav-links a:hover {
+  color: var(--azul);
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(to right, var(--azul), var(--cor-tema));
+  color: white;
+  padding: 7rem 2rem;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 2.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: auto;
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+/* Seções */
+.section {
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.alt-bg {
+  background: var(--cor-branco);
+}
+
+.section h3 {
+  font-size: 2rem;
+  color: var(--cor-tema);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.section p {
+  max-width: 750px;
+  margin: auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Layout texto + imagem */
+.text-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.text-img img {
+  width: 280px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.text-img p {
+  flex: 1;
+  text-align: left;
+}
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 3rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  justify-items: center; /* centraliza os cards na coluna */
+}
+
+/* Faz o terceiro card ocupar as duas colunas e ficar centralizado */
+.cards .card:nth-child(3) {
+  grid-column: 1 / span 2;
+}
+
+.card {
+  background: linear-gradient(145deg, #ffffff, #f0f4fa);
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  opacity: 0; /* invisível ao carregar */
+  transform: translateY(30px);
+}
+
+.card.show {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(74, 111, 165, 0.25);
+}
+
+/* Ícones */
+.card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Título e texto */
+.card h4 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+  color: var(--cor-tema);
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Card "Mais" */
+.card.mais {
+  background: linear-gradient(145deg, #e6efff, #f9fbff);
+  border: 2px dashed var(--cor-tema);
+}
+
+.card.mais h4 {
+  color: var(--azul);
+}
+
+/* Footer */
+footer {
+  background: var(--azul);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+  margin-top: 3rem;
+  font-size: 0.9rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: var(--cor-tema
+);
+    flex-direction: column;
+    width: 220px;
+    padding: 1.2rem;
+    display: none;
+    border-radius: 0 0 8px 8px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .logo-img {
+    height: 55px;
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
+  .text-img {
+    flex-direction: column;
+  }
+
+  .text-img p {
+    text-align: center;
+  }
+}

@@ -1,0 +1,287 @@
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --cinza-borda: #cfcfcf;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
+}
+
+/* Corpo */
+.container-post {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+/* ----------------------------- posts ------------------------------- */
+.container-post .content-post {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* post */
+.container-post .content-post .corpo-post {
+    max-width: 100%;
+    background-color: var(--branco);
+    padding: 1rem 2rem;
+    border: 2px solid var(--cinza-borda);
+}
+
+
+/* Imagem Post*/
+.container-post .content-post .corpo-post .conteudo-post .image-post img {
+    max-width: 100%;
+    padding: .5rem 1.5rem;
+}
+
+/* texto */
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais {
+    background: none;
+    border: none;
+    color: var(--cor-tema);
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0;
+    text-indent: .1rem;
+    margin-top: 5px;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .mostrar-mais:hover {
+    text-decoration: underline;
+}
+
+/* Dados e informações */
+.container-post .content-post .corpo-post .conteudo-post .dados-post {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.container-post .content-post .corpo-post .conteudo-post .dados-post h1 {
+    font-size: 1rem;
+    color: var(--cinza);
+}
+
+/* interações postagens ---*/
+.container-post .content-post .corpo-post .acoes-post {
+    border-top: 1px solid var(--branco-light);
+    margin-top: 1rem;
+    padding-top: .5rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* botões ---*/
+.container-post .content-post .corpo-post .acoes-post .options .botoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: .5rem 1.5rem;
+}
+
+/* comentarios form ---------------*/
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post {
+    margin-top: 10px;
+    width: 100%;
+    padding: 0rem 1rem;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post input {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options .comentario-post button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--cor-tema);
+    color: white;
+    cursor: pointer;
+}
+
+/* lista de comentários ------*/
+.lista-comentarios {
+    margin-top: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* espaçamento entre comentários */
+}
+
+.lista-comentarios .hidden {
+    display: none;
+}
+
+/* cada comentário */
+.lista-comentarios .comentario {
+    padding: 12px;
+    background: var(--branco);
+    border-radius: 10px;
+    border: 1px solid #eee;
+    transition: box-shadow 0.2s ease;
+}
+
+.lista-comentarios .comentario:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* cabeçalho perfil */
+.lista-comentarios .comentario .info-perfil {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+/* foto perfil */
+.lista-comentarios .comentario .info-perfil img {
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+}
+
+/* info do usuário */
+.lista-comentarios .comentario .info h1 {
+    font-size: 0.95rem;
+    color: var(--preto);
+    margin: 0;
+    font-weight: 600;
+}
+
+.lista-comentarios .comentario .info h2 {
+    font-size: 0.75rem;
+    color: var(--cinza);
+    margin: 2px 0;
+    font-weight: 400;
+}
+
+/* tempo (ex: "há 2 horas") */
+.lista-comentarios .comentario .info .tempo {
+    font-size: 0.7rem;
+    color: var(--branco-light);
+}
+
+/* texto do comentário */
+.lista-comentarios .comentario .texto-comentario {
+    font-size: 0.9rem;
+    color: var(--preto);
+    margin: 6px 0 0 52px;
+    /* alinhado com o texto ao lado da foto */
+    line-height: 1.4;
+}
+
+/* opcoes */
+.container-post .content-post .corpo-post .acoes-post .options a,
+.container-post .content-post .corpo-post .acoes-post .options button {
+    background: none;
+    border: none;
+    font-size: var(--texto-padrao);
+    color: var(--cinza);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    transition: color .2s, transform .1s;
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button:hover,
+.container-post .content-post .corpo-post .acoes-post .options a:hover {
+    color: var(--cor-tema);
+    transform: scale(1.05);
+}
+
+.container-post .content-post .corpo-post .acoes-post .options button {
+    font-weight: bold;
+}
+
+/* container do dropdown */
+.dropdown-content {
+    list-style: none;
+    margin: 0;
+    padding: .5rem;
+    background: var(--branco);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+/* estilo base para botões de ação */
+.btn-acao {
+    width: 100%;
+    text-align: left;
+    padding: .6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--texto-padrao);
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--preto);
+    transition: background-color .2s, color .2s, transform .1s;
+}
+
+/* hover geral */
+.btn-acao:hover {
+    transform: scale(1.02);
+}
+
+/* editar */
+.btn-acao.editar:hover {
+    background-color: var(--cor-tema);
+    color: var(--branco);
+}
+
+/* excluir */
+.btn-acao.excluir:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
+}
+
+/* denunciar */
+.btn-acao.denunciar:hover {
+    background-color: #ffcccb;
+    color: var(--vermelho);
+}
