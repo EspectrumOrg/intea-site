@@ -22,6 +22,17 @@
     padding-left: 2rem;
 }
 
+.container-post .content-post .corpo-post .topo .info-perfil a {
+    text-decoration: none;
+    transition: 0.3s;
+    text-decoration-color: var(--cor-preto);
+}
+
+.container-post .content-post .corpo-post .topo .info-perfil a:hover {
+    text-decoration-line: underline;
+    text-decoration-color: var(--cor-preto);
+}
+
 /* nome user */
 .container-post .content-post .corpo-post .topo .info-perfil h1 {
     font-size: var(--texto-secundario);

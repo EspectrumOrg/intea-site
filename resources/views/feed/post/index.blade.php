@@ -10,15 +10,19 @@
 
              <div class="topo"> <!-- info conta -->
                  <div class="foto-perfil">
-                     @if (!empty($postagem->usuario->foto))
-                     <a href="#"><img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil"></a>
-                     @else
-                     <a href="#"><img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto"></a>
-                     @endif
+                     <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
+                         @if (!empty($postagem->usuario->foto))
+                         <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
+                         @else
+                         <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
+                         @endif
+                     </a>
                  </div>
 
                  <div class="info-perfil">
-                     <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                     <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
+                         <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                     </a>
                      <h2>{{ Str::limit($postagem->usuario->descricao ?? '--', 75, '...') }}</h2>
                      <h3>{{ $postagem->created_at->format('d/m/y') }}</h3>
                  </div>

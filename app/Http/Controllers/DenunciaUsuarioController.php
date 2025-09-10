@@ -3,19 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Usuario;
-use App\Models\DenunciaPostagem;
-use App\Models\ImagemPostagem;
+use App\Models\DenunciaUsuario;
 use Illuminate\Http\Request;
 
-class DenunciaPostagemController extends Controller
+class DenunciaUsuarioController extends Controller
 {
-    private $denuncia;
-    private $imagem_postagem;
 
-    public function __construct(DenunciaPostagem $denuncia, ImagemPostagem $imagem_postagem)
+    private $denuncia;
+
+    public function __construct(DenunciaUsuario $denuncia)
     {
         $this->denuncia = $denuncia;
-        $this->imagem_postagem = $imagem_postagem;
     }
 
     public function index(Request $request)
@@ -48,10 +46,9 @@ class DenunciaPostagemController extends Controller
 
         $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens'])->paginate(10);
 
-        return view('admin.denuncia.index', compact('denuncias'));
+        return view('admin.usuario.index', compact('denuncias'));
     }
-
-    public function post(Request $request, $id_postagem, $id_usuario)
+    public function post(Request $request, $id_usuario_denunciado, $id_usuario_denunciante)
     {
         $request->validate([
             'motivo_denuncia' => 'required|string',
@@ -62,9 +59,9 @@ class DenunciaPostagemController extends Controller
             'texto_denuncia.max' => 'O campo texto só comporta até 555 caracteres',
         ]);
 
-        DenunciaPostagem::create([
-            'id_postagem' => $id_postagem,
-            'id_usuario' => $id_usuario,
+        DenunciaUsuario::create([
+            'id_usuario_denunciado' => $id_usuario_denunciado,
+            'id_usuario_denunciante' => $id_usuario_denunciante,
             'motivo_denuncia' => $request->motivo_denuncia,
             'texto_denuncia' => $request->texto_denuncia,
         ]);

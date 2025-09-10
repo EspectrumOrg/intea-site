@@ -98,6 +98,16 @@ class Usuario extends Authenticatable
     return $this->hasMany(FoneUsuario::class, 'usuario_id');
   }
 
+  public function postagens()
+  {
+    return $this->hasMany(Postagem::class, 'usuario_id');
+  }
+
+  public function getPostagensCountAttribute()
+  {
+    return $this->postagens()->count();
+  }
+
   public function denuncias()
   {
     return $this->hasMany(Denuncia::class, 'usuario_id');

@@ -4,9 +4,11 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
 use App\Http\Controllers\ComentarioPostagemController;
-use App\Http\Controllers\DenunciaPostagemController;
+use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaPostagemController;
+use App\Http\Controllers\DenunciaPostagemController;
+use App\Http\Controllers\DenunciaUsuarioController;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
@@ -80,10 +82,13 @@ Route::middleware('auth')->group(function () {
         return view('mensagens.painelmensagem');
     })->name('cadastro.index');
 
+    Route::get('/conta/{usuario_id}', [ContaController::class, 'index'])->name('conta.index');
+    // denuncia postagem
+    Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaUsuarioController::class, 'post'])->name('usuario.denuncia');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
 });
 
 

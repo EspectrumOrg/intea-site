@@ -1,4 +1,3 @@
-<div class="content-popular">
     <div class="container">
         <h1 class="titulo">O que está bombando</h1>
 
@@ -11,4 +10,3 @@
             @endforeach
         </div>
     </div>
-</div>
