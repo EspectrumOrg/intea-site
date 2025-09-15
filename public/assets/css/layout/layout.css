@@ -34,14 +34,6 @@ body {
     background-color: var(--branco);
 }
 
-/* navbar */
-.container-content-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 10;
-}
-
 /* conteúdo */
 .container-content {
     flex: 1;
@@ -53,5 +45,5 @@ body {
 }
 
 .container-main {
-    width: 50%;
+    width: 600px;
 }

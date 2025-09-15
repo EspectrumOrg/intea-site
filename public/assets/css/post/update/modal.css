@@ -99,8 +99,8 @@
 
 .form-editar .textfield-editar textarea {
     flex: 1;
-    padding: 10px 12px;
-    margin-top: 1.5rem;
+    padding: 1rem 0;
+    font-size: 18px;
     border: none;
     min-height: 50px;
     /* altura inicial */

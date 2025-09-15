@@ -22,7 +22,7 @@
 
 /* container da sidebar */
 .container-sidebar {
-    border-right: 2px solid var(--branco-light);
+    border-right: 1px solid var(--branco-light);
 }
 
 .container-sidebar .content {
@@ -32,9 +32,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    width: 300px;
+    width: 290px;
     height: 100vh;
-    padding: 0 1rem;
+    padding: 0 1rem 1rem 0;
     background-color: var(--branco);
 }
 
@@ -50,11 +50,11 @@
     width: 50px;
 }
 
-/* container de info do usuário */
+/* container de info do usuário ---------------------------------*/
 .container-sidebar .info {
     display: flex;
     flex-direction: row;
-    border: 2px solid var(--cinza-borda);
+    border: 1px solid var(--cinza-borda);
     padding: 1rem;
     border-radius: 15px;
     width: 100%;
@@ -80,25 +80,26 @@
 .container-sidebar .info .text h5 {
     font-size: 18px;
     font-weight: bold;
-    color: var(--cor-fundo);
+    color: var(--cor-preto);
 }
 
 .container-sidebar .info .text h4 {
     font-size: 14px;
-    color: var(--cinza-font);
+    color: var(--cor-fundo);
 }
 
 .dropdown-checar-perfil {
     position: absolute;
-    top: -120%; /* aparece pra cima */
+    top: -120%;
+    /* aparece pra cima */
     left: 0;
-    background: white;
-    border: 1px solid var(--cinza-borda);
-    border-radius: 10px;
-    padding: .5rem;
+    background: var(--branco);
+    border: .1px solid var(--cinza-font);
+    border-radius: 15px;
+    padding: .75rem 0;
     list-style: none;
-    width: 150px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    width: 275px;
+    box-shadow: 0 .8rem 1rem 0 rgba(0, 0, 0, 0.7);
 }
 
 .dropdown-checar-perfil.hidden {
@@ -106,12 +107,23 @@
 }
 
 .dropdown-checar-perfil li {
-    margin: .3rem 0;
+    transition: .7s;
+    padding: 1rem;
+}
+
+
+.dropdown-checar-perfil #li-checar-perfil-siedebar-01:hover {
+    background-color: var(--cinza-font);
+}
+
+.dropdown-checar-perfil #li-checar-perfil-siedebar-02:hover {
+    background-color: var(--cinza-font);
 }
 
 .dropdown-checar-perfil li a {
-    color: black;
     text-decoration: none;
+    font-size: 18px;
+    color: black;
 }
 
 /* links */
@@ -130,7 +142,7 @@
     flex-direction: row;
     align-items: center;
     padding: 0.8rem 1rem;
-    border-radius: 8px;
+    border-radius: 50px / 100%;
     font-size: 16px;
     color: var(--preto);
     text-decoration: none;
@@ -176,7 +188,7 @@
     font-weight: bold;
     padding: .6rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 50px / 100%;
     cursor: pointer;
     transition: background-color .2s, transform .1s;
     width: 100%;

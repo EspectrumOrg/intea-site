@@ -63,7 +63,7 @@
                      </div>
 
                      <!-- Modal de denúncia (um para cada postagem) -->
-                     <div id="modal-denuncia-{{ $postagem->id }}" class="modal-denuncia hidden">
+                     <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
                          <div class="modal-content">
                              <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
 

@@ -1,13 +1,18 @@
 <div class="form">
+    @if (!empty(Auth::user()->foto))
+    <img class="user-photo" src="{{ url('storage/'.Auth::user()->foto) }}" alt="conta">
+    @else
+    <img class="user-photo" src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
+    @endif
     <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="textfield">
-            @if (!empty(Auth::user()->foto))
-            <img src="{{ url('storage/'.Auth::user()->foto) }}" alt="conta">
-            @else
-            <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
-            @endif
-            <input name="texto_postagem" type="text" placeholder="Comece uma publicação" value="{{ old('texto_postagem') }}" required autofocus autocomplete="nome">
+            <textarea id="texto_postagem"
+                      name="texto_postagem"
+                      maxlength="280"
+                      rows="1"
+                      placeholder="Comece uma publicação"
+                      required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
         </div>
 
@@ -19,10 +24,15 @@
                 <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
             </div>
+
+            <div class="contador">
+                <span id="char-count">0</span>/280
+            </div>
+
+            <div class="botao-submit">
+                <button type="submit" class="botao-postar">Publicar</button>
+            </div>
         </div>
 
-        <div class="botao-submit">
-            <button type="submit" class="botao-postar">Publicar</button>
-        </div>
     </form>
 </div>

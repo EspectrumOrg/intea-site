@@ -11,14 +11,12 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}"> <!-- profile -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}"> <!-- profile -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> <!-- postagens -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/create-postagem.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('assets/css/post/edit-modal.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/post/postagem-modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/post/create/style.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/post/create/modal.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}"> 
 </head>
 
 <body>
@@ -43,6 +41,6 @@
 </body>
 
 <!-- sidebar links (esquerda)  -->
-<script src="{{ url('assets/js/sidebar/modal-postagem.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
 
 </html>

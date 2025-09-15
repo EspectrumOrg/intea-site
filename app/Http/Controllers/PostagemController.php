@@ -53,7 +53,7 @@ class PostagemController extends Controller
         $user = Auth::user();
 
         $request->validate([
-            'texto_postagem' => 'required|string|max:755',
+            'texto_postagem' => 'required|string|max:1000',
             'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
         ], [
             'texto_postagem.required' => 'O campo texto é obrigatório',

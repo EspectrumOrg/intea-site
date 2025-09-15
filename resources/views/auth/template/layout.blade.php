@@ -13,7 +13,7 @@
 
     <!-- parte form-outer e form -->
     <a href="{{ route('register') }}"><img class="logo-cadastro" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}"></a>
-    
+
     <main class="container-cadastro">
         @yield("main")
 

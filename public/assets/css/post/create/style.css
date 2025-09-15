@@ -1,14 +1,24 @@
 /* ----------------------------- create posts ------------------------------- */
 .create-post {
     background-color: var(--branco);
-    border: 2px solid var(--cinza-borda);
     padding: 1rem 2rem;
+    border-bottom: 1px solid var(--cinza-borda);
 }
 
 .create-post .form {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1rem;
+}
+
+.create-post .form .user-photo{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.create-post .form form{
+    width: 100%;
 }
 
 /* campo principal */
@@ -19,25 +29,18 @@
     gap: 1rem;
 }
 
-.create-post .form .textfield img {
-    width: 75px;
-    border-radius: 50%;
-}
-
-.create-post .form .textfield input {
-    flex: 1;
-    padding: 12px 16px;
-    border: 1px solid var(--branco-light);
-    border-radius: 10px;
-    font-size: var(--texto-padrao);
+.create-post .form .textfield textarea {
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
     background-color: var(--branco);
     color: var(--preto);
-    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: none;
+    overflow-y: hidden;
 }
 
-.create-post .form .textfield input:focus {
-    border-color: var(--cor-tema);
-    box-shadow: 0 0 5px rgba(1, 115, 115, 0.3);
+.create-post .form .textfield textarea:focus {
     outline: none;
 }
 
@@ -45,14 +48,23 @@
 .create-post .form .content {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    gap: 2rem;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-top: 1px solid var(--cinza-borda);
+    margin: auto;
     margin-top: .5rem;
+}
+
+.create-post .form .content .extras {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 /* label customizada */
 .create-post .form .upload-label img {
-    width: 25px;
+    width: 20px;
 }
 
 .create-post .form .upload-label img:hover {
@@ -79,6 +91,14 @@
     display: none;
 }
 
+.create-post .form .contador {
+    font-size: 16px;
+    color: var(--cinza);
+    align-self: center;
+    margin-left: auto; /* joga pro lado direito */
+    margin-right: 1rem;
+}
+
 /* botão */
 .create-post .form .botao-submit {
     display: flex;
@@ -87,18 +107,18 @@
 
 .create-post .form .botao-postar {
     align-self: flex-end;
-    background-color: var(--cor-tema);
+    background-color: var(--cor-fundo);
     color: var(--branco);
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     font-weight: bold;
-    padding: .6rem 1.5rem;
+    padding: .3rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 25% / 100%;
     cursor: pointer;
     transition: background-color .2s, transform .1s;
 }
 
 .create-post .form .botao-postar:hover {
-    background-color: var(--azul);
+    background-color: var(--cor-tema);
     transform: scale(1.03);
 }

@@ -14,11 +14,10 @@
     <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}"> <!-- profile -->
     <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> <!-- postagens -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/create-postagem.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('assets/css/post/create-modal.css') }}"> 
-    <link rel="stylesheet" href="{{ asset('assets/css/post/edit-modal.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/post/create/style.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/post/create/modal.css') }}"> 
+    <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}"> 
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
 </head>
 
@@ -45,9 +44,10 @@
 
 <!-- postagens  -->
 <script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
-<script src="{{ url('assets/js/posts/modal-create.js') }}"></script>
 <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
-<script src="{{ url('assets/js/posts/modal-update.js') }}"></script>
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
+<script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
 
 </html>

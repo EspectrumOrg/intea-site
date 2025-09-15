@@ -37,14 +37,15 @@
 
         @can("visualizar-admin")
         <a href="{{ route('usuario.index') }}" class="nav-link">
+             <img src="{{ asset('assets/images/logos/symbols/site-claro/admin.png') }}"/>
             <h1>Admin</h1>
         </a>
         @endcan
-    </div>
 
-    <!-- Modal de criação de postagem -->
-    <div class="post-button">
-        <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
+        <!-- Modal de criação de postagem -->
+        <div class="post-button">
+            <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
+        </div>
     </div>
 
     <div class="info dropdown-container" id="userDropdown">
@@ -55,8 +56,8 @@
         </div>
 
         <ul class="dropdown-checar-perfil hidden">
-            <li><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
-            <li>
+            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
+            <li id="li-checar-perfil-siedebar-02">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair {{ Auth::user()->user}}</a>
@@ -82,7 +83,6 @@
             });
         });
     </script>
-
 
 
 </div>
