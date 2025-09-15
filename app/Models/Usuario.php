@@ -67,6 +67,7 @@ class Usuario extends Authenticatable
     return $this->senha;
   }
 
+
   // Relacionamentos
   public function admin()
   {
@@ -116,5 +117,23 @@ class Usuario extends Authenticatable
   public function genero()
   {
     return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
+  }
+  public function seguindo()
+{
+    return $this->belongsToMany(
+        Usuario::class,     
+        'follows',         
+        'segue_id',          
+        'seguindo_id'       
+    )->withTimestamps();
+}
+  public function seguidores()
+  {
+      return $this->belongsToMany(
+          self::class,
+          'follows',
+          'seguindo_id',    // Foreign key do usuário atual na tabela follows (quem é seguido)
+          'segue_id'        // Foreign key do usuário que está seguindo
+      )->withTimestamps();
   }
 }

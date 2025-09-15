@@ -27,9 +27,12 @@
                      <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                  </div>
 
+                <form action="{{ route('seguir.store') }}" method="POST">
                  <div class="acoes-perfil">
-                     <button class="seguir-btn">Seguir</button>
-
+                 @csrf
+                 <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                 <button type="submit" class="seguir-btn">+Seguir</button>
+                     </form>
                      <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">...</button>
                          <ul class="dropdown-content">
