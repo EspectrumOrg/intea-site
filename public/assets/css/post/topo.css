@@ -29,6 +29,7 @@
 .container-post .topo .info-perfil h1 {
     font-size: 15px;
     color: var(--cor-preto);
+    margin-right: 10px;
 }
 
 /* descricao e data */
@@ -46,100 +47,91 @@
     height: 100%;
 }
 
-/* +seguir */
-.container-post .acoes-perfil {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-}
-
-.container-post .acoes-perfil .seguir-btn {
-    font-size: .9rem;
-    padding: .4rem 1rem;
-    font-weight: bold;
-    border-radius: 20px;
-    color: var(--cor-tema);
-    background-color: transparent;
-    border: 1px solid var(--cor-tema);
-    cursor: pointer;
-    transition: all .3s ease;
-}
-
-.container-post .acoes-perfil .seguir-btn:hover {
-    background-color: var(--cor-tema);
-    color: var(--branco);
-}
-
-.container-post .acoes-perfil .menu-opcoes {
+.container-post .menu-opcoes {
     font-size: 1.5rem;
     color: var(--cinza);
     cursor: pointer;
-    padding: .3rem .6rem;
+    padding: .3rem .3rem;
     border-radius: 50%;
     transition: background .2s;
+    display: flex;
+    align-items: center;
+    border: none;
 }
 
-.container-post .acoes-perfil .menu-opcoes:hover {
+.container-post .menu-opcoes:hover {
     background-color: var(--branco-light);
 }
 
 /* container do dropdown */
-.container-post .acoes-perfil .dropdown {
+.container-post .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* botão do dropdown */
-.container-post .acoes-perfil .dropdown .menu-opcoes {
-    font-size: 1.5rem;
-    color: var(--cinza);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: .3rem .6rem;
-    border-radius: 50%;
-    transition: background .2s;
+.container-post .dropdown .menu-opcoes img {
+    width: 25px;
 }
 
-.container-post .acoes-perfil .dropdown .menu-opcoes:hover {
+.container-post .dropdown .menu-opcoes img:hover {
     background-color: var(--branco-light);
 }
 
-/* conteúdo do dropdown (inicialmente escondido) */
-.container-post .acoes-perfil .dropdown .dropdown-content {
+/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
+.container-post .dropdown .dropdown-content {
     display: none;
     position: absolute;
     right: 0;
     background-color: var(--branco);
-    min-width: 150px;
-    border-radius: 10px;
+    width: 275px;
+    border-radius: 15px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     z-index: 10;
-    padding: .5rem 0;
+    padding: 0;
 }
 
 /* cada item do dropdown */
-.container-post .acoes-perfil .dropdown .dropdown-content li {
+.container-post .dropdown .dropdown-content li {
     list-style: none;
 }
 
-.container-post .acoes-perfil .dropdown .dropdown-content li a {
+.container-post .dropdown .dropdown-content img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.container-post .dropdown .dropdown-content li a {
     display: block;
-    padding: .5rem 1rem;
+    padding: 1rem;
+    font-weight: 600;
     color: var(--preto);
     text-decoration: none;
     transition: background .2s, color .2s;
 }
 
-.container-post .acoes-perfil .dropdown .dropdown-content li a:hover {
-    background-color: var(--cor-tema);
-    color: var(--branco);
-    border-radius: 10px;
+.container-post .dropdown .dropdown-content li a:hover {
+    background-color: var(--cinza-font);
+}
+
+.container-post .seguir-btn {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 0 0 15px 15px;
+    color: var(--preto);
+    cursor: pointer;
+    transition: all .3s ease;
+    text-align: start;
+}
+
+.container-post .seguir-btn:hover {
+    background-color: var(--cinza-font);
 }
 
 /* mostrar dropdown ao passar o mouse */
-.container-post .acoes-perfil .dropdown:hover .dropdown-content {
+.container-post .dropdown:hover .dropdown-content {
     display: block;
 }
 

@@ -41,7 +41,7 @@
 }
 
 /* post */
-.container-post  .corpo-post {
+.container-post .corpo-post {
     max-width: 100%;
     background-color: var(--branco);
     padding: 1rem;
@@ -51,20 +51,22 @@
 }
 
 /* foto perfil -----+ */
-.container-post  .corpo-post .foto-perfil {
+.container-post .corpo-post .foto-perfil {
     height: 100%;
     display: flex;
     align-items: flex-start;
 }
-.container-post  .corpo-post .foto-perfil img {
+
+.container-post .corpo-post .foto-perfil img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
 }
 
 /* conteúdo postagem */
-.container-post  .corpo-content {
+.container-post .corpo-content {
     padding-left: 1rem;
+    width: 100%;
 }
 
 /* texto */
@@ -99,13 +101,24 @@
     margin: 1rem 0;
 }
 
-.container-post .dados-post h1 {
-    font-size: 1rem;
-    color: var(--cinza);
+.dados-post .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
 }
 
 .container-post .dados-post img {
-    width: 40px;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.container-post .dados-post h1 {
+    font-size: 20px;
+    color: var(--cinza);
 }
 
 /* lista de comentários ------*/

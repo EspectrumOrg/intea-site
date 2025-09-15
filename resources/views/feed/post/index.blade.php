@@ -7,7 +7,6 @@
      <div class="content-post">
          @foreach($postagens as $postagem)
          <div class="corpo-post">
-
              <div class="foto-perfil">
                  <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                      @if (!empty($postagem->usuario->foto))
@@ -19,22 +18,18 @@
              </div>
 
              <div class="corpo-content">
-                <div class="topo"> <!-- info conta -->
-                 <div class="info-perfil">
-                     <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                         <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
-                     </a>
-                     <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
-                 </div>
+                 <div class="topo"> <!-- info conta -->
+                     <div class="info-perfil">
+                         <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
+                             <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                         </a>
+                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
+                     </div>
 
-                <form action="{{ route('seguir.store') }}" method="POST">
-                 <div class="acoes-perfil">
-                 @csrf
-                 <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                 <button type="submit" class="seguir-btn">+Seguir</button>
-                     </form>
                      <div class="dropdown"> <!-- opções postagem -->
-                         <button class="menu-opcoes">...</button>
+                         <button class="menu-opcoes">
+                            <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
+                        </button>
                          <ul class="dropdown-content">
                              @if(Auth::id() === $postagem->usuario_id)
                              <li>
@@ -50,7 +45,16 @@
                                  </form>
                              </li>
                              @else
-                             <li><a href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">Denunciar</a></li>
+                             <li><a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/flag.png') }}">Denunciar</a></li>
+                             <li>
+                                 <form action="{{ route('seguir.store') }}" method="POST">
+                                     @csrf
+                                     <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                                     <button type="submit" class="seguir-btn">
+                                        <img src="{{ asset('assets/images/logos/symbols/site-claro/follow.png') }}">Seguir {{ $postagem->usuario->user }}
+                                    </button>
+                                 </form>
+                             </li>
                              @endif
                          </ul>
                      </div>
@@ -94,50 +98,46 @@
                              </form>
                          </div>
                      </div>
-
                  </div>
-             </div>
 
-             <div class="conteudo-post"> <!-- conteudo postagem -->
-                 <div class="coment-perfil">
-                     <p class="texto-curto" id="texto-{{ $postagem->id }}">
-                         {{ Str::limit($postagem->texto_postagem, 150, '') }}
-                         @if (strlen($postagem->texto_postagem) > 150)
-                         <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
+                 <div class="conteudo-post"> <!-- conteudo postagem -->
+                     <div class="coment-perfil">
+                         <p class="texto-curto" id="texto-{{ $postagem->id }}">
+                             {{ Str::limit($postagem->texto_postagem, 150, '') }}
+                             @if (strlen($postagem->texto_postagem) > 150)
+                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
+                             @endif
+                         </p>
+
+                         <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
+                             {{ $postagem->texto_postagem }}
+                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
+                         </p>
+                     </div>
+
+                     <div class="image-post">
+                         @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
+                         <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
                          @endif
-                     </p>
-
-                     <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
-                         {{ $postagem->texto_postagem }}
-                         <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
-                     </p>
-                 </div>
-
-                 <div class="image-post">
-                     @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
-                     <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
-                     @endif
-                 </div>
+                     </div>
 
 
-                 <div class="dados-post"> <!-- bottom ---------------------------------------------------------------------------------->
-                     <h1>
-                         <button type="button" onclick="toggleForm('{{ $postagem->id }}')" style="background: none; border: none; cursor: pointer;">
-                             <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">({{ $postagem->comentarios_count }})
-                         </button>
-                     </h1>
-                     <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
-                         @csrf
+                     <div class="dados-post"> <!-- bottom ---------------------------------------------------------------------------------->
                          <h1>
-                             <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">({{ $postagem->curtidas_count }})
+                             <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
+                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"><h1>{{ $postagem->comentarios_count }}</h1>
                              </button>
                          </h1>
-                     </form>
+                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                             @csrf
+                                 <button type="submit" class="button">
+                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}"><h1>{{ $postagem->curtidas_count }}</h1>
+                                 </button>
+                         </form>
+                     </div>
                  </div>
-             </div>
 
-             <!-- <div class="acoes-post">
+                 <!-- <div class="acoes-post">
                  <div class="options">
 
                      <div class="botoes">
@@ -186,9 +186,8 @@
 
                  </div>
              </div>-->
-         </div>
              </div>
-
+         </div>
          @endforeach
      </div>
  </div>

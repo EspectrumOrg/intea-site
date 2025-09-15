@@ -9,7 +9,7 @@
             <h1>Home</h1>
         </a>
 
-        <a href="mensagem" class="nav-link" id="message">
+        <a href="{{ route('conta.index', [Auth::user()->id]) }}" class="nav-link" id="message">
             <img src="{{ asset('assets/images/logos/symbols/site-claro/email.png') }}" alt="Mensagens">
             <h1>Mensagens</h1>
         </a>
