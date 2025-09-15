@@ -8,27 +8,27 @@
          @foreach($postagens as $postagem)
          <div class="corpo-post">
 
-             <div class="topo"> <!-- info conta -->
-                 <div class="foto-perfil">
-                     <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                         @if (!empty($postagem->usuario->foto))
-                         <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
-                         @else
-                         <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
-                         @endif
-                     </a>
-                 </div>
+             <div class="foto-perfil">
+                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
+                     @if (!empty($postagem->usuario->foto))
+                     <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
+                     @else
+                     <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
+                     @endif
+                 </a>
+             </div>
 
+             <div class="corpo-content">
+                <div class="topo"> <!-- info conta -->
                  <div class="info-perfil">
                      <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                          <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
                      </a>
-                     <h2>{{ Str::limit($postagem->usuario->descricao ?? '--', 75, '...') }}</h2>
-                     <h3>{{ $postagem->created_at->format('d/m/y') }}</h3>
+                     <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                  </div>
 
                  <div class="acoes-perfil">
-                     <button class="seguir-btn">+Seguir</button>
+                     <button class="seguir-btn">Seguir</button>
 
                      <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">...</button>
@@ -95,8 +95,6 @@
                  </div>
              </div>
 
-
-
              <div class="conteudo-post"> <!-- conteudo postagem -->
                  <div class="coment-perfil">
                      <p class="texto-curto" id="texto-{{ $postagem->id }}">
@@ -119,13 +117,24 @@
                  </div>
 
 
-                 <div class="dados-post">
-                     <h1>({{ $postagem->curtidas_count }}) curtidas</h1>
-                     <h1>({{ $postagem->comentarios_count }}) comentários</h1>
+                 <div class="dados-post"> <!-- bottom ---------------------------------------------------------------------------------->
+                     <h1>
+                         <button type="button" onclick="toggleForm('{{ $postagem->id }}')" style="background: none; border: none; cursor: pointer;">
+                             <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">({{ $postagem->comentarios_count }})
+                         </button>
+                     </h1>
+                     <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                         @csrf
+                         <h1>
+                             <button type="submit" style="background: none; border: none; cursor: pointer;">
+                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">({{ $postagem->curtidas_count }})
+                             </button>
+                         </h1>
+                     </form>
                  </div>
              </div>
 
-             <div class="acoes-post">
+             <!-- <div class="acoes-post">
                  <div class="options">
 
                      <div class="botoes">
@@ -135,17 +144,6 @@
                                  Comentar
                              </button>
                          </div>
-
-
-                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
-                             @csrf
-                             <button type="submit" style="background: none; border: none; cursor: pointer;">
-                                 {!! $postagem->curtidas_usuario
-                                 ? '<span class="material-symbols-outlined" style="color:red;">favorite</span>Curtido'
-                                 : '<span class="material-symbols-outlined">favorite</span>Curtir'
-                                 !!}
-                             </button>
-                         </form>
 
                      </div>
 
@@ -184,8 +182,9 @@
                      @endif
 
                  </div>
-             </div>
+             </div>-->
          </div>
+             </div>
 
          @endforeach
      </div>

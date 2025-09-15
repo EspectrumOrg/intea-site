@@ -1,59 +1,44 @@
 /* topo ---*/
-.container-post .content-post .corpo-post .topo {
+.container-post .topo {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 1rem;
 }
 
-/* foto perfil */
-.container-post .content-post .corpo-post .topo .foto-perfil img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
 /* info perfil */
-.container-post .content-post .corpo-post .topo .info-perfil {
+.container-post .topo .info-perfil {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-start;
     width: 100%;
-    padding-left: 2rem;
 }
 
-.container-post .content-post .corpo-post .topo .info-perfil a {
+.container-post .topo .info-perfil a {
     text-decoration: none;
     transition: 0.3s;
     text-decoration-color: var(--cor-preto);
 }
 
-.container-post .content-post .corpo-post .topo .info-perfil a:hover {
+.container-post .topo .info-perfil a:hover {
     text-decoration-line: underline;
     text-decoration-color: var(--cor-preto);
 }
 
 /* nome user */
-.container-post .content-post .corpo-post .topo .info-perfil h1 {
-    font-size: var(--texto-secundario);
+.container-post .topo .info-perfil h1 {
+    font-size: 15px;
     color: var(--cor-preto);
 }
 
-/* descricao */
-.container-post .content-post .corpo-post .topo .info-perfil h2 {
-    font-size: .75rem;
-    color: var(--cinza);
-    margin: .2rem 0;
-}
-
-/* data */
-.container-post .content-post .corpo-post .topo .info-perfil h3 {
-    font-size: .75rem;
+/* descricao e data */
+.container-post .topo .info-perfil h2 {
+    font-size: 15px;
     color: var(--cinza);
 }
 
 /* opcoes perfil */
-.container-post .content-post .corpo-post .topo .opcoes-perfil {
+.container-post .topo .opcoes-perfil {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -62,14 +47,14 @@
 }
 
 /* +seguir */
-.container-post .content-post .corpo-post .acoes-perfil {
+.container-post .acoes-perfil {
     display: flex;
     flex-direction: row;
     gap: 1rem;
     align-items: center;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .seguir-btn {
+.container-post .acoes-perfil .seguir-btn {
     font-size: .9rem;
     padding: .4rem 1rem;
     font-weight: bold;
@@ -81,12 +66,12 @@
     transition: all .3s ease;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .seguir-btn:hover {
+.container-post .acoes-perfil .seguir-btn:hover {
     background-color: var(--cor-tema);
     color: var(--branco);
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .menu-opcoes {
+.container-post .acoes-perfil .menu-opcoes {
     font-size: 1.5rem;
     color: var(--cinza);
     cursor: pointer;
@@ -95,18 +80,18 @@
     transition: background .2s;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .menu-opcoes:hover {
+.container-post .acoes-perfil .menu-opcoes:hover {
     background-color: var(--branco-light);
 }
 
 /* container do dropdown */
-.container-post .content-post .corpo-post .acoes-perfil .dropdown {
+.container-post .acoes-perfil .dropdown {
     position: relative;
     display: inline-block;
 }
 
 /* botão do dropdown */
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .menu-opcoes {
+.container-post .acoes-perfil .dropdown .menu-opcoes {
     font-size: 1.5rem;
     color: var(--cinza);
     background: none;
@@ -117,12 +102,12 @@
     transition: background .2s;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .menu-opcoes:hover {
+.container-post .acoes-perfil .dropdown .menu-opcoes:hover {
     background-color: var(--branco-light);
 }
 
 /* conteúdo do dropdown (inicialmente escondido) */
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content {
+.container-post .acoes-perfil .dropdown .dropdown-content {
     display: none;
     position: absolute;
     right: 0;
@@ -135,11 +120,11 @@
 }
 
 /* cada item do dropdown */
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li {
+.container-post .acoes-perfil .dropdown .dropdown-content li {
     list-style: none;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li a {
+.container-post .acoes-perfil .dropdown .dropdown-content li a {
     display: block;
     padding: .5rem 1rem;
     color: var(--preto);
@@ -147,14 +132,14 @@
     transition: background .2s, color .2s;
 }
 
-.container-post .content-post .corpo-post .acoes-perfil .dropdown .dropdown-content li a:hover {
+.container-post .acoes-perfil .dropdown .dropdown-content li a:hover {
     background-color: var(--cor-tema);
     color: var(--branco);
     border-radius: 10px;
 }
 
 /* mostrar dropdown ao passar o mouse */
-.container-post .content-post .corpo-post .acoes-perfil .dropdown:hover .dropdown-content {
+.container-post .acoes-perfil .dropdown:hover .dropdown-content {
     display: block;
 }
 

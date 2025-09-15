@@ -41,24 +41,34 @@
 }
 
 /* post */
-.container-post .content-post .corpo-post {
+.container-post  .corpo-post {
     max-width: 100%;
     background-color: var(--branco);
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-bottom: 1px solid var(--cinza-borda);
+    display: flex;
+    flex-direction: row;
 }
 
+/* foto perfil -----+ */
+.container-post  .corpo-post .foto-perfil {
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+.container-post  .corpo-post .foto-perfil img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 
-/* Imagem Post*/
-.container-post .content-post .corpo-post .conteudo-post .image-post img {
-    max-width: 100%;
-    margin: .5rem 1.5rem;
-    border-radius: 7.5%;
-    border: 1px solid var(--cinza-borda);
+/* conteúdo postagem */
+.container-post  .corpo-content {
+    padding-left: 1rem;
 }
 
 /* texto */
-.container-post .content-post .corpo-post .conteudo-post .mostrar-mais {
+.container-post .mostrar-mais {
     background: none;
     border: none;
     color: var(--cor-tema);
@@ -69,74 +79,33 @@
     margin-top: 5px;
 }
 
-.container-post .content-post .corpo-post .conteudo-post .mostrar-mais:hover {
+.container-post .mostrar-mais:hover {
     text-decoration: underline;
 }
 
-/* Dados e informações */
-.container-post .content-post .corpo-post .conteudo-post .dados-post {
+/* Imagem Post*/
+.container-post .image-post img {
+    max-width: 100%;
+    border-radius: 7.5%;
+    margin-top: .5rem;
+    border: 1px solid var(--cinza-borda);
+}
+
+/* Dados e informações ------------------------------------*/
+.container-post .dados-post {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin: 1rem 0;
 }
 
-.container-post .content-post .corpo-post .conteudo-post .dados-post h1 {
+.container-post .dados-post h1 {
     font-size: 1rem;
     color: var(--cinza);
 }
 
-/* interações postagens ---*/
-.container-post .content-post .corpo-post .acoes-post {
-    border-top: 1px solid var(--branco-light);
-    margin-top: 1rem;
-    padding-top: .5rem;
-}
-
-.container-post .content-post .corpo-post .acoes-post .options {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    gap: 2rem;
-}
-
-/* botões ---*/
-.container-post .content-post .corpo-post .acoes-post .options .botoes {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: .5rem 1.5rem;
-}
-
-/* comentarios form ---------------*/
-.container-post .content-post .corpo-post .acoes-post .options .comentario-post {
-    margin-top: 10px;
-    width: 100%;
-    padding: 0rem 1rem;
-}
-
-.container-post .content-post .corpo-post .acoes-post .options .comentario-post form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.container-post .content-post .corpo-post .acoes-post .options .comentario-post input {
-    flex: 1;
-    padding: 8px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.container-post .content-post .corpo-post .acoes-post .options .comentario-post button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 10px;
-    background: var(--cor-tema);
-    color: white;
-    cursor: pointer;
+.container-post .dados-post img {
+    width: 40px;
 }
 
 /* lista de comentários ------*/
@@ -211,30 +180,6 @@
     margin: 6px 0 0 52px;
     /* alinhado com o texto ao lado da foto */
     line-height: 1.4;
-}
-
-/* opcoes */
-.container-post .content-post .corpo-post .acoes-post .options a,
-.container-post .content-post .corpo-post .acoes-post .options button {
-    background: none;
-    border: none;
-    font-size: var(--texto-padrao);
-    color: var(--cinza);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: .4rem;
-    transition: color .2s, transform .1s;
-}
-
-.container-post .content-post .corpo-post .acoes-post .options button:hover,
-.container-post .content-post .corpo-post .acoes-post .options a:hover {
-    color: var(--cor-tema);
-    transform: scale(1.05);
-}
-
-.container-post .content-post .corpo-post .acoes-post .options button {
-    font-weight: bold;
 }
 
 /* container do dropdown */
