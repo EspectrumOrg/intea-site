@@ -130,9 +130,10 @@
 
                      <div class="image-post">
                          @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
-                         <img src="{{ asset('storage/'.$postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
+                         <img src="{{ asset('storage/' . $postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
                          @endif
                      </div>
+
 
                      <!-- bottom ---------------------------------------------------------------------------------->
                      <div class="dados-post">
@@ -147,13 +148,13 @@
                          <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}">ver</a>
 
 
-                             <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
-                                 @csrf
-                                 <button type="submit" class="button">
-                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
-                                     <h1>{{ $postagem->curtidas_count }}</h1>
-                                 </button>
-                             </form>
+                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                             @csrf
+                             <button type="submit" class="button">
+                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                                 <h1>{{ $postagem->curtidas_count }}</h1>
+                             </button>
+                         </form>
                      </div>
                  </div>
              </div>
