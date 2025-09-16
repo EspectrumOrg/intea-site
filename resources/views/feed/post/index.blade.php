@@ -28,20 +28,22 @@
 
                      <div class="dropdown"> <!-- opções postagem -->
                          <button class="menu-opcoes">
-                            <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
-                        </button>
+                             <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
+                         </button>
                          <ul class="dropdown-content">
                              @if(Auth::id() === $postagem->usuario_id)
                              <li>
                                  <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
-                                     Editar
+                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/write.png') }}">Editar
                                  </button>
                              </li>
                              <li>
                                  <form action="{{ route('post.destroy', $postagem->id) }}" method="POST" style="display:inline">
                                      @csrf
                                      @method('DELETE')
-                                     <button type="submit" class="btn-acao excluir">Excluir</button>
+                                     <button type="submit" class="btn-acao excluir">
+                                         <img src="{{ asset('assets/images/logos/symbols/site-claro/trash.png') }}">Excluir
+                                     </button>
                                  </form>
                              </li>
                              @else
@@ -51,8 +53,8 @@
                                      @csrf
                                      <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
                                      <button type="submit" class="seguir-btn">
-                                        <img src="{{ asset('assets/images/logos/symbols/site-claro/follow.png') }}">Seguir {{ $postagem->usuario->user }}
-                                    </button>
+                                         <img src="{{ asset('assets/images/logos/symbols/site-claro/follow.png') }}">Seguir {{ $postagem->usuario->user }}
+                                     </button>
                                  </form>
                              </li>
                              @endif
@@ -65,6 +67,16 @@
                              <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
                              <div class="modal-content-content">
                                  @include('feed.post.edit', ['postagem' => $postagem])
+                             </div>
+                         </div>
+                     </div>
+
+                     <!-- Modal Criação de comentário ($postagem->id) -->
+                     <div id="modal-comentar" class="modal hidden">
+                         <div class="modal-content">
+                             <button type="button" class="close" onclick="fecharModalComentar()">&times;</button>
+                             <div class="modal-content-content">
+                                 @include('feed.post.create-comentario-modal')
                              </div>
                          </div>
                      </div>
@@ -100,7 +112,8 @@
                      </div>
                  </div>
 
-                 <div class="conteudo-post"> <!-- conteudo postagem -->
+                 <!-- conteudo postagem -->
+                 <div class="conteudo-post">
                      <div class="coment-perfil">
                          <p class="texto-curto" id="texto-{{ $postagem->id }}">
                              {{ Str::limit($postagem->texto_postagem, 150, '') }}
@@ -121,71 +134,28 @@
                          @endif
                      </div>
 
-
-                     <div class="dados-post"> <!-- bottom ---------------------------------------------------------------------------------->
+                     <!-- bottom ---------------------------------------------------------------------------------->
+                     <div class="dados-post">
                          <h1>
                              <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
-                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"><h1>{{ $postagem->comentarios_count }}</h1>
+                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">
+                                 <h1>{{ $postagem->comentarios_count }}</h1>
                              </button>
                          </h1>
-                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
-                             @csrf
+
+                         <li><a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/flag.png') }}">Cometnar</a></li>
+                         <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}">ver</a>
+
+
+                             <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                                 @csrf
                                  <button type="submit" class="button">
-                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}"><h1>{{ $postagem->curtidas_count }}</h1>
+                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                                     <h1>{{ $postagem->curtidas_count }}</h1>
                                  </button>
-                         </form>
+                             </form>
                      </div>
                  </div>
-
-                 <!-- <div class="acoes-post">
-                 <div class="options">
-
-                     <div class="botoes">
-                         <div class="botao">
-                             <button type="button" onclick="toggleForm('{{ $postagem->id }}')">
-                                 <span class="material-symbols-outlined">chat</span>
-                                 Comentar
-                             </button>
-                         </div>
-
-                     </div>
-
-                     <div class="comentario-post" id="form-comentario-{{ $postagem->id }}" style="display: none;">
-                         <form method="POST" action="{{ route('post.comentario', $postagem->id) }}">
-                             @csrf
-                             <input type="text" name="comentario" placeholder="Adicionar comentário" required>
-                             <div style="display: flex; justify-content: end;">
-                                 <button type="submit">Comentar</button>
-                             </div>
-                         </form>
-                     </div>
-
-                     <div class="lista-comentarios" id="comentarios-{{ $postagem->id }}">
-                         @foreach($postagem->comentarios as $index => $comentario)
-                         <div class="comentario {{ $index >= 2 ? 'hidden' : '' }}">
-                             <div class="info-perfil">
-                                 <a href="#">
-                                     <img src="{{ asset('storage/'.$comentario->usuario->foto) }}" alt="foto perfil">
-                                 </a>
-                                 <div class="info">
-                                     <h1>{{ $comentario->usuario->user }}</h1>
-                                     <h2>{{ Str::limit($comentario->usuario->descricao ?? '--', 75, '...') }}</h2>
-                                     <span class="tempo">{{ $comentario->created_at->diffForHumans() }}</span>
-                                 </div>
-                             </div>
-                             <p class="texto-comentario">{{ $comentario->comentario}}</p>
-                         </div>
-                         @endforeach
-                     </div>
-
-                     @if($postagem->comentarios->count() > 2)
-                     <button type="button" class="carregar-mais" onclick="carregarMais('{{ $postagem->id }}')">
-                         Carregar mais
-                     </button>
-                     @endif
-
-                 </div>
-             </div>-->
              </div>
          </div>
          @endforeach

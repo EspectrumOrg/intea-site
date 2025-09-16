@@ -76,7 +76,8 @@ Route::middleware('auth')->group(function () {
     // curtida postagem
     Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     // comentario postagem
-    Route::post('/feed/{id}/comentario', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    Route::post('/feed/{id_postagem}', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
     
@@ -86,7 +87,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/seguir', [SeguirController::class, 'store'])->name('seguir.store');
 
 
-    
     //Mensagem
     Route::get('/mensagem', function () {
         return view('mensagens.painelmensagem');

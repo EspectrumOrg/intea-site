@@ -27,6 +27,11 @@ class ComentarioPostagem extends Model
         return $this->belongsTo(Postagem::class, 'id_postagem');
     }
 
+    public function image ()
+    {
+        return $this->hasOne(ImagemComentarioPostagem::class, 'id_comentario');
+    }
+
     public function curtidas_comentario ()
     {
         return $this->hasMany(CurtidaComentario::class);

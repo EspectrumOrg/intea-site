@@ -1,0 +1,140 @@
+/* form dentro do modal */
+.form-comentar {
+    display: flex;
+    flex-direction: row;
+    background: transparent;
+    /* sem fundo extra */
+    box-shadow: none;
+    padding: 0;
+}
+
+.form-comentar .textfield-comentar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.form-comentar .user-photo{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.form-comentar .textfield-comentar textarea {
+    flex: 1;
+    padding: 1rem;
+    font-size: 18px;
+    border: none;
+    min-height: 50px;
+    /* altura inicial */
+    max-height: 300px;
+    /* limite de crescimento */
+    resize: none;
+    /* impede redimensionamento manual */
+    background-color: var(--branco);
+}
+
+.form-comentar .textfield-comentar textarea:focus {
+    outline: none;
+}
+
+.form-comentar .upload-label-comentar {
+    cursor: pointer;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.form-comentar .upload-label-comentar:hover {
+    color: #0056b3;
+}
+
+.form-comentar .input-file-comentar {
+    display: none;
+}
+
+.form-comentar .form {
+    width: 100%;
+}
+
+/* opções (upload etc) */
+.form-comentar .form .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-top: 1px solid var(--cinza-borda);
+    margin: auto;
+    margin-top: .5rem;
+}
+
+.form-comentar .form .content .extras {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* label customizada */
+.form-comentar .form .upload-label img {
+    width: 20px;
+}
+
+.form-comentar .form .upload-label img:hover {
+    transform: scale(1.05);
+}
+
+.form-comentar .form .upload-label {
+    cursor: pointer;
+    color: var(--cor-tema);
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.form-comentar .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.form-comentar .form .input-file {
+    display: none;
+}
+
+.form-comentar .form .contador {
+    font-size: 16px;
+    color: var(--cinza);
+    align-self: center;
+    margin-left: auto;
+    /* joga pro lado direito */
+    margin-right: 1rem;
+}
+
+/* botão */
+
+.form-comentar .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.form-comentar .form .botao-comentar {
+    align-self: flex-end;
+    background-color: var(--cor-fundo);
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: bold;
+    padding: .3rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.form-comentar .form .botao-comentar:hover {
+    background-color: var(--cor-tema);
+    transform: scale(1.03);
+}

@@ -1,7 +1,7 @@
 /* ----------------------------- create posts ------------------------------- */
 .create-post {
     background-color: var(--branco);
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-bottom: 1px solid var(--cinza-borda);
 }
 

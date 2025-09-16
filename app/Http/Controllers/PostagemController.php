@@ -66,7 +66,7 @@ class PostagemController extends Controller
             'texto_postagem' => $request->texto_postagem,
         ]);
 
-        // Criar Imagens Ligadas à imagem
+        // Criar Imagens Ligadas à postagem
         if ($request->hasFile('caminho_imagem')) {
             $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
 
@@ -81,9 +81,18 @@ class PostagemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($postagem)
     {
-        //
+        $postagem = Postagem::withCount('curtidas')
+            ->with(['comentarios.usuario', 'comentarios.image'])
+            ->findOrFail($postagem);
+
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
+
+        return view('feed.post.read', compact('postagem', 'posts'));
     }
 
     /**

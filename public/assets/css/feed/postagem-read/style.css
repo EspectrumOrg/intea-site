@@ -1,0 +1,98 @@
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+
+    /* cores para tema
+    antiga(ciano) - #017373*
+    azul claro - #048ABF/
+    */
+}
+
+/* topo */
+.topo {
+    display: flex;
+    flex-direction: row;
+    padding: 0 1rem;
+}
+
+.topo .voltar {
+    display: flex;
+    align-items: center;
+}
+
+.topo img {
+    width: 20px;
+}
+
+.topo .text {
+    margin-left: 10%;
+}
+
+.topo h1 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cor-fundo);
+}
+
+.topo h2 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cinza);
+}
+
+.postagem-foco {
+    background-color: var(--branco);
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 15px;
+}
+
+.usuario {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--texto-secundario);
+    color: var(--cinza);
+}
+
+.interacoes {
+    margin-top: 0.5rem;
+    font-size: var(--texto-pequeno);
+    color: var(--cinza);
+    display: flex;
+    gap: 1rem;
+}
+
+.form-comentario textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid var(--cinza);
+}
+
+.comentario {
+    border-top: 1px solid var(--cinza);
+    padding: 0.5rem 0;
+}
+
+.comentario img {
+    max-width: 150px;
+    margin-top: 0.3rem;
+    border-radius: 10px;
+}

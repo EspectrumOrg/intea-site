@@ -9,16 +9,22 @@
     <title>Intea - feed</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
-    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
+    <!-- css geral -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> 
+    <!-- layout geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> 
     <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> <!-- postagens -->
+    <!-- postagens -->
+    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}"> 
     <link rel="stylesheet" href="{{ asset('assets/css/post/create/style.css') }}"> 
     <link rel="stylesheet" href="{{ asset('assets/css/post/create/modal.css') }}"> 
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}"> 
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
+    <!-- comentario -->
+    <link rel="stylesheet" href="{{ asset('assets/css/post/comentario/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/style.css') }}">
 </head>
 
 <body>
@@ -49,5 +55,6 @@
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
 <script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
-
+<!-- comentario -->
+<script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>
 </html>
