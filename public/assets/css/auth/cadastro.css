@@ -70,7 +70,7 @@ body {
     flex: 1;
 }
 
-.register-content .logo{
+.register-content .logo {
     position: absolute;
     width: 250px;
     top: 2.5rem;
@@ -95,6 +95,7 @@ body {
     text-align: center;
     margin-bottom: 1.5rem;
     color: var(--cor-tema);
+    font-size: 1.5rem;
 }
 
 .register-container .options .descricao p {
@@ -138,7 +139,7 @@ body {
 
 .alert-mensage {
     color: var(--cor--vermelho);
-    font-size: var(--texto-pequeno);
+    font-size: .8rem;
 }
 
 /* Link para registro */
@@ -169,7 +170,7 @@ body {
     background: var(--branco);
 }
 
-.logo-cadastro{
+.logo-cadastro {
     position: absolute;
     width: 100px;
     top: 1rem;
@@ -192,6 +193,7 @@ body {
     text-align: center;
     margin-bottom: 0.8rem;
     color: var(--cor-fundo);
+    font-size: 1.5rem;
 }
 
 .form-outer .descricao p {
@@ -328,6 +330,7 @@ body {
     border-color: var(--cor-tema);
     box-shadow: 0 0 4px rgba(1, 115, 115, 0.3);
 }
+
 .btn-telefone {
     display: flex;
     margin: 15px 0;

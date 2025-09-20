@@ -15,7 +15,11 @@ function adicionarTelefone() {
     const novoCampo = document.createElement('div');
     novoCampo.classList.add('input-box-cadastro');
     novoCampo.innerHTML = `
-        <input type="tel" name="numero_telefone[]" required>`;
+        <input type="tel" class="telefone-input" name="numero_telefone[]" placeholder="(DD) 12345-6789">
+    `;
 
     container.appendChild(novoCampo);
+
+    // aplica a máscara só no novo input
+    $(novoCampo).find('.telefone-input').mask('(00) 00000-0000')
 }

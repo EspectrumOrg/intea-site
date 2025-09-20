@@ -53,10 +53,10 @@ class AutistaController extends Controller
             'apelido' => 'nullable|string|max:255',
             'email' => 'required|email|unique:tb_usuario,email',
             'senha' => 'required|string|min:6',
-            'cpf' => 'required|string',
+            'cpf' => 'required|max:20|unique:tb_usuario,cpf', // retirar pontuação posteriormente
             'genero' => 'required|string',
             'data_nascimento' => 'required|date',
-            'cep' => 'nullable|string',
+            'cep' => 'nullable|string|max:20', // retirar pontuação posteriormente
             'logradouro' => 'nullable|string',
             'endereco' => 'nullable|string',
             'rua' => 'nullable|string',
@@ -70,7 +70,7 @@ class AutistaController extends Controller
             'tipo_usuario' => 'required|in:2',
             'status_conta' => 'required|in:1',
             'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20'
+            'numero_telefone.*' => 'required|string|max:20' // retirar pontuação posteriormente
         ]);
 
         // Se a validação falhar, retorna erros com status 422
@@ -168,9 +168,10 @@ class AutistaController extends Controller
             // Se o request tem telefones e é array, cadastra todos na tabela tb_foneusuario
             if ($request->has('numero_telefone') && is_array($request->numero_telefone)) {
                 foreach ($request->numero_telefone as $telefone) {
+                    $telefone_limpo = preg_replace('/\D/', '', $telefone); //tira tudo que não for números do telefone
                     \App\Models\FoneUsuario::create([
                         'usuario_id' => $usuario->id,
-                        'numero_telefone' => $telefone,
+                        'numero_telefone' => $telefone_limpo,
                     ]);
                 }
                 Log::info('Telefones cadastrados para usuário ID: ' . $usuario->id);
