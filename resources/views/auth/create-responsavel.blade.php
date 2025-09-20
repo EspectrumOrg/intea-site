@@ -47,7 +47,11 @@
             <div class="title">Seu Nome:</div>
             <div class="field">
                 <label>Nome Completo *</label>
-                <input type="text" name="nome" value="{{ $usuario->nome ?? old('nome') }}">
+                <input
+                    type="text"
+                    name="nome"
+                    value="{{ $usuario->nome ?? old('nome') }}"
+                    placeholder="Nome Sobrenome">
 
                 @if ($errors->has('nome'))
                 <div class="alert alert-danger">
@@ -57,8 +61,12 @@
             </div>
 
             <div class="field">
-                <label>Como quer ser chamado no site</label>
-                <input type="text" name="apelido" value="{{ $usuario->apelido ?? old('apelido') }}">
+                <label>Nome Conta</label>
+                <input
+                    type="text"
+                    name="apelido"
+                    value="{{ $usuario->apelido ?? old('apelido') }}"
+                    placeholder="nomeConta">
             </div>
 
             <div class="field">
@@ -75,7 +83,11 @@
             <div class="title">Contato:</div>
             <div class="field">
                 <label>Email *</label>
-                <input type="email" name="email" value="{{ $usuario->email ?? old('email') }}">
+                <input
+                    type="email"
+                    name="email"
+                    value="{{ $usuario->email ?? old('email') }}"
+                    placeholder="name@example.com">
 
                 @if ($errors->has('email'))
                 <div class="alert alert-danger">
@@ -93,7 +105,12 @@
                 <label>Telefone(s) - até 5</label>
                 @foreach ($telefones as $index => $tel)
                 <div class="input-box-cadastro">
-                    <input type="tel" name="numero_telefone[]" value="{{ $tel }}">
+                    <input
+                        type="tel"
+                        class="telefone-input"
+                        name="numero_telefone[]"
+                        value="{{ $tel }}"
+                        placeholder="(DD) 12345-6789">
                 </div>
                 @endforeach
 
@@ -120,7 +137,12 @@
             <div class="title">Informações:</div>
             <div class="field">
                 <label>CPF *</label>
-                <input type="text" name="cpf" value="{{ $usuario->cpf ?? old('cpf') }}">
+                <input
+                    type="text"
+                    name="cpf"
+                    value="{{ $usuario->cpf ?? old('cpf') }}"
+                    class="cpf-input"
+                    placeholder="123.456.789-10">
 
                 @if ($errors->has('cpf'))
                 <div class="alert alert-danger">
@@ -166,7 +188,12 @@
             <div class="title">Conta:</div>
             <div class="field">
                 <label>Seu USER *</label>
-                <input type="text" name="user" value="{{ $usuario->user ?? old('user') }}">
+                <input
+                    type="text"
+                    name="user"
+                    value="{{ $usuario->user ?? old('user') }}"
+                    class="user-input"
+                    placeholder="@exemploNome">
 
                 @if ($errors->has('user'))
                 <div class="alert alert-danger">
@@ -176,7 +203,7 @@
             </div>
             <div class="field">
                 <label>Senha *</label>
-                <input type="password" name="senha" placeholder="minimo 6 caracteres">
+                <input type="password" name="senha">
 
                 @if ($errors->has('senha'))
                 <div class="alert alert-danger">
