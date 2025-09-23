@@ -125,6 +125,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
+
+    Route::get('/dashboard', function () {
+        return view('admin/dashboard/index');
+    })
+        ->name('dashboard.index');
+    
 });
 
 require __DIR__ . '/auth.php';
