@@ -15,7 +15,7 @@ use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
-
+use App\Http\Controllers\DashboardController;
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 
@@ -132,10 +132,9 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 
-    Route::get('/dashboard', function () {
-        return view('admin/dashboard/index');
-    })
-        ->name('dashboard.index');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware('auth') 
+    ->name('dashboard.index');
     
 });
 
