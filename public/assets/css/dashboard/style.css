@@ -1,0 +1,106 @@
+ :root{
+        --bg: #f4f6f9;
+        --card: #ffffff;
+        --muted: #6b7280;
+        --accent: #2563eb;
+        --shadow: rgba(16,24,40,0.06);
+    }
+
+    .dashboard-root {
+        background: var(--bg);
+        padding: 28px 16px;
+        min-height: 100%;
+    }
+
+    .dashboard-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .dashboard-title {
+        font-size: 24px;
+        text-align: left;
+        margin: 0 0 18px;
+        color: #111827;
+    }
+
+    /* Cards grid */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .card {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 6px 18px var(--shadow);
+        text-align: left;
+    }
+
+    .card h5 {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+        font-weight: 600;
+    }
+
+    .card h3 {
+        margin: 8px 0 0;
+        font-size: 22px;
+        color: var(--accent);
+    }
+
+    /* Charts grid */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        align-items: start;
+    }
+
+    .chart-box {
+        background: var(--card);
+        border-radius: 10px;
+        padding: 14px;
+        box-shadow: 0 6px 18px var(--shadow);
+        display: flex;
+        flex-direction: column;
+        min-height: 360px;
+    }
+
+    .chart-box--wide { min-height: 420px; }
+    .chart-box--narrow { min-height: 360px; }
+
+    .chart-title {
+        margin: 0 0 8px;
+        text-align: center;
+        color: #111827;
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .chart-canvas-wrap {
+        flex: 1;
+        /* Faz o canvas preencher tudo */
+        position: relative;
+        min-height: 240px;
+    }
+
+    .chart-canvas-wrap canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+    }
+
+    /* Responsividade em telas menores*/
+    @media (max-width: 900px) {
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+        .chart-box--wide, .chart-box--narrow {
+            min-height: 360px;
+        }
+    }
