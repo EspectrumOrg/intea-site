@@ -9,6 +9,7 @@ use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaPostagemController;
 use App\Http\Controllers\DenunciaPostagemController;
 use App\Http\Controllers\DenunciaUsuarioController;
+use App\Http\Controllers\GruposControler;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
 use App\Http\Controllers\ResponsavelController;
@@ -44,6 +45,11 @@ Route::get('/login', function () {
 Route::get('/cadastro', function () {
     return view('auth.register');
 })->name('cadastro.index');
+Route::get('/grupo', function () {
+    return view('grupos');
+})->name('grupo.index');
+
+
 
 // Cadastro de Admin
 Route::resource("admin", AdminController::class)->names("admin");
@@ -80,7 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
-    
+
     
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store')->middleware('auth');
 
@@ -132,5 +138,10 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->name('dashboard.index');
     
 });
+
+
+
+Route::post('/grupo/inserir', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
+
 
 require __DIR__ . '/auth.php';

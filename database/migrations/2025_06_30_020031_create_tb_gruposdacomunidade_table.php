@@ -20,6 +20,8 @@ return new class extends Migration
    
         Schema::create('tb_gruposdacomunidade', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('idLider');
+            $table->foreign('idLider')->references('id')->on('tb_usuario')->onDelete('cascade');            
             $table->string('nomeGrupo');
             $table->string('descGrupo');
             $table->timestamps();
