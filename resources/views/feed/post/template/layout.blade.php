@@ -57,4 +57,6 @@
 <script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
 <!-- comentario -->
 <script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>
+<!-- read comentários -->
+<script src="{{ url('assets/js/posts/read/char-count.js') }}"></script>
 </html>

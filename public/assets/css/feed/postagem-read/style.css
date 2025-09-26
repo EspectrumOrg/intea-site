@@ -7,6 +7,7 @@
 
     --preto: #0D0D0D;
     --cinza: #404040;
+    --cinza-borda: #2f3336;
     --branco: #F2F2F2;
     --branco-light: #ccc;
     --azul: #1d3e55;
@@ -15,84 +16,310 @@
 
     --texto-pequeno: .75rem;
     --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-    /* cores para tema
-    antiga(ciano) - #017373*
-    azul claro - #048ABF/
-    */
+    --texto-secundario: 1.1rem;
+    --texto-titulo: 1.4rem;
 }
 
 /* topo */
-.topo {
+.container-read .topo {
     display: flex;
-    flex-direction: row;
-    padding: 0 1rem;
+    align-items: center;
+    padding: 1rem;
 }
 
-.topo .voltar {
+.container-read .topo .voltar {
     display: flex;
     align-items: center;
 }
 
-.topo img {
-    width: 20px;
+.container-read .topo .voltar img {
+    width: 22px;
+    cursor: pointer;
 }
 
-.topo .text {
-    margin-left: 10%;
-}
-
-.topo h1 {
-    font-size: 24px;
+.container-read .topo .text h1 {
+    margin-left: 1rem;
+    font-size: var(--texto-titulo);
     font-weight: 700;
-    color: var(--cor-fundo);
+    color: var(--preto);
 }
 
-.topo h2 {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--cinza);
+/* informações do usuário da postagem */
+.container-read .info-conta {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    padding: .75rem 1rem;
+    font-size: var(--texto-pequeno);
+    color: var(--branco-light);
 }
 
-.postagem-foco {
+/* bloco topo da postagem ----------------------------------------------------------------------------------*/
+.container-read .postagem-foco {
     background-color: var(--branco);
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 15px;
-}
-
-.usuario {
     display: flex;
     justify-content: space-between;
+    padding: 1rem;
+}
+
+.container-read .foto-perfil {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.container-read .foto-perfil img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.container-read .foto-perfil h1 {
     font-size: var(--texto-secundario);
+    font-weight: 700;
+    color: var(--preto);
+}
+
+.container-read .foto-perfil h2 {
+    font-size: var(--texto-pequeno);
     color: var(--cinza);
 }
 
-.interacoes {
-    margin-top: 0.5rem;
+/*dropdown -----------+  */
+.container-read .dropdown {
+    display: flex;
+    align-items: center;
+}
+
+.container-read .dropdown button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.container-read .menu-opcoes img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+
+
+/* postagem ----------------------------------------------------------------------------------------------*/
+/* texto da postagem */
+.container-read p {
+    font-size: 14px;
+    color: var(--preto);
+    line-height: 1.5;
+    text-indent: 1px;
+    padding: 0 .5rem;
+}
+
+/* imagem da postagem */
+.container-read .image {
+    padding: 0 1rem;
+}
+
+.container-read .image img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--cinza-borda);
+}
+
+/* texto dados */
+.container-read .dados h3 {
+    font-size: 14px;
+    color: var(--cinza);
+    font-weight: 400;
+}
+
+/* interações------------------------------------------------*/
+.container-read .interacoes {
+    margin-top: .75rem;
     font-size: var(--texto-pequeno);
     color: var(--cinza);
+    margin: auto;
+    gap: 2rem;
+    padding: 0rem 1rem;
+}
+
+.container-read .interacoes .corpo {
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
+    width: 100%;
+    border-top: 1px solid var(--cinza-borda);
+    border-bottom: 1px solid var(--cinza-borda);
+    padding: .5rem 0rem;
+}
+
+.container-read .comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.interacoes .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.container-read .interacoes img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.container-read .interacoes h1 {
+    font-size: 20px;
+    color: var(--cinza);
+}
+
+/* formulário de comentário ------------------------------------------*/
+.form-comentario {
+    padding: 1rem;
+}
+
+.form-comentario form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-comentario form .foto-perfil img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 
 .form-comentario textarea {
     width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border-radius: 10px;
-    border: 1px solid var(--cinza);
+    padding: .75rem;
+    margin-bottom: .5rem;
+    border-radius: 12px;
+    background: transparent;
+    border: none;
+    color: var(--preto);
+    font-size: 15px;
+}
+
+.form-comentario textarea:focus {
+    outline: none;
+}
+
+/* label customizada */
+.form-comentario form img {
+    width: 20px;
+}
+
+.form-comentario form img:hover {
+    transform: scale(1.05);
+}
+
+.form-comentario form .upload-label {
+    cursor: pointer;
+    color: var(--cor-tema);
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.form-comentario form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.form-comentario form .input-file {
+    display: none;
+}
+
+.form-comentario form .contador {
+    font-size: 16px;
+    color: var(--cinza);
+    align-self: center;
+    margin-left: auto; /* joga pro lado direito */
+    margin-right: 1rem;
+}
+
+/* botão */
+.form-comentario form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.form-comentario form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--preto);
+    color: var(--branco);
+    font-size: 14px;
+    font-weight: bold;
+    padding: .3rem 1.5rem;
+    border: none;
+    border-radius: 25% / 100%;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.form-comentario form .botao-postar:hover {
+    background-color: var(--cor-tema);
+    transform: scale(1.03);
+}
+
+/* comentários ---------------------------------------------------------------------------------------*/
+.comentarios {
+    background-color: var(--branco);
 }
 
 .comentario {
-    border-top: 1px solid var(--cinza);
-    padding: 0.5rem 0;
+    border-top: 1px solid var(--cinza-borda);
+    padding: .75rem 1rem;
+    font-size: var(--texto-padrao);
+    color: var(--preto);
+    display: flex;
+    flex-direction: row;
+}
+
+/* foto */
+.comentario .foto-comentario {
+    display: flex;
+    align-items: flex-start;
+}
+
+.comentario .foto-comentario img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.comentario .dados {
+    padding: 1rem;
+}
+
+.comentario strong {
+    font-weight: 700;
+    color: var(--preto);
+}
+
+.comentario span {
+    font-size: var(--texto-pequeno);
+    color: var(--cinza);
+    margin-left: .5rem;
 }
 
 .comentario img {
-    max-width: 150px;
-    margin-top: 0.3rem;
-    border-radius: 10px;
+    max-width: 200px;
+    margin-top: .5rem;
+    border-radius: 12px;
+    border: 1px solid var(--cinza-borda);
 }

@@ -107,7 +107,7 @@
 
 .create-post .form .botao-postar {
     align-self: flex-end;
-    background-color: var(--cor-fundo);
+    background-color: var(--preto);
     color: var(--branco);
     font-size: 14px;
     font-weight: bold;

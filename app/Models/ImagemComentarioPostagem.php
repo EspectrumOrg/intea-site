@@ -13,7 +13,7 @@ class ImagemComentarioPostagem extends Model
 
     protected $fillable = [
         'id_comentario',
-        'caminho_postagem',
+        'caminho_imagem',
     ];
 
     public function comentarioPostagem()

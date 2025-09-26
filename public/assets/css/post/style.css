@@ -7,7 +7,7 @@
 
     --preto: #0D0D0D;
     --cinza: #404040;
-    --cinza-borda: #cfcfcf;
+    --cinza-borda: #2f3336;
     --branco: #F2F2F2;
     --branco-light: #ccc;
     --azul: #1d3e55;
@@ -34,6 +34,12 @@
 }
 
 /* ----------------------------- posts ------------------------------- */
+.container-post  .link-post {
+    color: inherit;        /* mantém cor do texto */
+    text-decoration: none; /* tira sublinhado */
+    display: block;        /* faz ocupar toda a largura */
+}
+
 .container-post .content-post {
     display: flex;
     flex-direction: column;

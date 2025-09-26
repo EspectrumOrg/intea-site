@@ -35,7 +35,6 @@ class ComentarioPostagemController extends Controller
             ImagemComentarioPostagem::create([
                 'id_comentario' => $comentario->id,
                 'caminho_imagem' => $imagem,
-                'id_postagem' => $id_postagem,
             ]);
         }
 

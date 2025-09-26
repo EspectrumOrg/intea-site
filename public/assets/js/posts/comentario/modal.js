@@ -1,5 +1,5 @@
-function abrirModalComentar() {
-    document.getElementById('modal-comentar').classList.remove('hidden');
+function abrirModalComentar(postId) {
+    document.getElementById('modal-comentar-' + postId).classList.remove('hidden');
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function fecharModalComentar() {
-    const modalComentar = document.getElementById('modal-comentar');
+function fecharModalComentar(postId) {
+    const modalComentar = document.getElementById('modal-comentar-' + postId);
     modalComentar.classList.add('hidden');
 
     const form = modalComentar.querySelector("form");
