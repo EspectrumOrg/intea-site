@@ -111,7 +111,7 @@ class Usuario extends Authenticatable
 
   public function denuncias()
   {
-    return $this->hasMany(Denuncia::class, 'usuario_id');
+    return $this->hasMany(DenunciaUsuario::class, 'usuario_id');
   }
 
   public function genero()
@@ -122,16 +122,27 @@ class Usuario extends Authenticatable
 {
     return $this->belongsToMany(
         Usuario::class,     
-        'follows',         
+        'tb_seguir',         
         'segue_id',          
         'seguindo_id'       
     )->withTimestamps();
+}
+
+
+public function grupos()
+{
+    return $this->belongsToMany(
+        GruposModel::class,
+        'tb_gruposdacomunidade_usuarios',
+        'idusuario',
+        'idGruposComunidade'
+    );
 }
   public function seguidores()
   {
       return $this->belongsToMany(
           self::class,
-          'follows',
+          'tb_seguir',
           'seguindo_id',    // Foreign key do usuário atual na tabela follows (quem é seguido)
           'segue_id'        // Foreign key do usuário que está seguindo
       )->withTimestamps();

@@ -33,6 +33,17 @@ class GruposControler extends Controller
  
 
     }
+
+
+    public function entrarNoGrupo($grupoId)
+    {
+        $usuarioId = Auth::id(); 
+        $grupo = GruposModel::findOrFail($grupoId);
+        $grupo->usuarios()->syncWithoutDetaching([$usuarioId]);
+
+        return redirect()->back()->with('success', 'Você entrou no grupo com sucesso!');
+    }
+    
     public function criarGrupo(Request $request)
     {
         //  
@@ -41,9 +52,15 @@ class GruposControler extends Controller
         $grupo ->nomeGrupo = $request->input('nomeGrupo');
         $grupo ->descGrupo = $request->input('descGrupo');
         $grupo->save();
+        $grupo->usuarios()->syncWithoutDetaching([Auth::id()]);
+
         return redirect('feed')->with('success', 'Mangá inserido com sucesso!');
 
     }
+
+
+
+
     /**
      * Display the specified resource.
      */

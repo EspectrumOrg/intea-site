@@ -12,4 +12,15 @@ class GruposModel extends Model
     public $fillable=['id','idLider','nomeGrupo','descGrupo'];
 
 
+
+public function usuarios()
+{
+    return $this->belongsToMany(
+        Usuario::class,
+        'tb_gruposdacomunidade_usuarios',
+        'idGruposComunidade',
+        'idusuario'
+    );
+}
+
 }

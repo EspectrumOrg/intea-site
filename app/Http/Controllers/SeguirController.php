@@ -33,13 +33,13 @@ class SeguirController extends Controller
 
  
          public function store(Request $request)
-                {
-                         /** @var \App\Models\Usuario $user */
+        {
+            /** @var \App\Models\Usuario $user */
 
-    $user = auth()->user();
-    $userIdToFollow = $request->input('user_id');
+     $user = auth()->user();
+        $userIdToFollow = $request->input('user_id');
 
-    if ($user->id != $userIdToFollow) {
+     if ($user->id != $userIdToFollow) {
         $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
 
         if (!$isAlreadyFollowing) {
