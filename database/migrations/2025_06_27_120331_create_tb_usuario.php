@@ -60,7 +60,12 @@ return new class extends Migration
         Schema::dropIfExists('tb_comentario_postagem');
         Schema::dropIfExists('tb_curtida_postagem');
         Schema::dropIfExists('tb_denuncia_postagem');
+<<<<<<< HEAD
         Schema::dropIfExists('tb_follows');
+=======
+        Schema::dropIfExists('follows');
+>>>>>>> 47cbf5876a81f62f6e7cf69fb0fd3707a32b815e
         Schema::dropIfExists('tb_usuario');
+        
     }
 };
