@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class seguirModel extends Model
 {
     use HasFactory;
-    protected $table = 'follows';  // Nome da tabela
+    protected $table = 'tb_seguir';  // Nome da tabela
 
     protected $fillable = [
         'segue_id',
