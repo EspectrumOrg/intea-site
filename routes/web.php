@@ -45,10 +45,8 @@ Route::get('/login', function () {
 Route::get('/cadastro', function () {
     return view('auth.register');
 })->name('cadastro.index');
-Route::get('/grupo', function () {
-    return view('grupos');
-})->name('grupo.index');
-
+Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
+Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
 
 // Cadastro de Admin

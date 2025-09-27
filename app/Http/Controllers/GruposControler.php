@@ -34,6 +34,12 @@ class GruposControler extends Controller
 
     }
 
+    
+    public function exibirGrupos() {
+        $grupo = GruposModel::all(); 
+        return view('grupos', compact('grupo'));
+    }
+
 
     public function entrarNoGrupo($grupoId)
     {
@@ -51,10 +57,17 @@ class GruposControler extends Controller
         $grupo->idLider = Auth::id();
         $grupo ->nomeGrupo = $request->input('nomeGrupo');
         $grupo ->descGrupo = $request->input('descGrupo');
+        $image=$request->file('foto');
+        if($image==null){
+            $path="";
+        }else{
+        $path = $image->store('arquivosGrupo', 'public');
+        }
+        $grupo->imagemGrupo = $path;
         $grupo->save();
         $grupo->usuarios()->syncWithoutDetaching([Auth::id()]);
 
-        return redirect('feed')->with('success', 'Mangá inserido com sucesso!');
+        return redirect('grupo')->with('success', 'Mangá inserido com sucesso!');
 
     }
 

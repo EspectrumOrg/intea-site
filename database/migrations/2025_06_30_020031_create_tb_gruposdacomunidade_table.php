@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreign('idLider')->references('id')->on('tb_usuario')->onDelete('cascade');            
             $table->string('nomeGrupo');
             $table->string('descGrupo');
+            $table->string('imagemGrupo');
             $table->timestamps();
         });
     }
