@@ -24,7 +24,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
     <!-- comentario -->
     <link rel="stylesheet" href="{{ asset('assets/css/post/comentario/modal.css') }}">
+    <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
 </head>
 
 <body>

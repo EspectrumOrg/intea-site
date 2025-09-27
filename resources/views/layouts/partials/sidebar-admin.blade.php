@@ -6,7 +6,7 @@
         </div>
 
         <a href="{{ route('dashboard.index')}}" class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="dashboard"> 
-        <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('dashboard.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="usuarios">
+        <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('dashboard.index') ? 'statisctics-preenchido.png' : 'statisctics.png')) }}" alt="usuarios">
             <h1>Estatísticas</h1>
         </a>
 

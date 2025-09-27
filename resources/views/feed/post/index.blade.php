@@ -138,14 +138,12 @@
 
                          <!-- bottom ---------------------------------------------------------------------------------->
                          <div class="dados-post">
-                             <h1>
+                             <div>
                                  <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
-                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">
+                                     <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
                                      <h1>{{ $postagem->comentarios_count }}</h1>
                                  </button>
-                             </h1>
-
-                             <li><a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/flag.png') }}">Comentar</a></li>
+                             </div>
 
 
                              <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">

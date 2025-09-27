@@ -6,7 +6,7 @@
 
 <div class="dashboard-root">
     <div class="dashboard-inner">
-        <h1 class="dashboard-title">📊 Dashboard</h1>
+        <h1 class="dashboard-title"><img src="{{ asset('assets/images/logos/symbols/dashboard.png') }}"> Dashboard</h1>
 
         {{-- Cards estatísticos --}}
         <div class="cards-grid">

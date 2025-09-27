@@ -207,6 +207,7 @@
     border-radius: 12px;
     background: transparent;
     border: none;
+    resize: none;
     color: var(--preto);
     font-size: 15px;
 }

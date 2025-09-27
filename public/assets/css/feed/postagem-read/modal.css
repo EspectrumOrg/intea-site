@@ -1,0 +1,257 @@
+/* topo ---*/
+.container-read .topo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* info perfil */
+.container-read .topo .info-perfil {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.container-read .topo .info-perfil a {
+    text-decoration: none;
+    transition: 0.3s;
+    text-decoration-color: var(--cor-preto);
+}
+
+.container-read .topo .info-perfil a:hover {
+    text-decoration-line: underline;
+    text-decoration-color: var(--cor-preto);
+}
+
+/* nome user */
+.container-read .topo .info-perfil h1 {
+    font-size: 15px;
+    color: var(--cor-preto);
+    margin-right: 10px;
+}
+
+/* descricao e data */
+.container-read .topo .info-perfil h2 {
+    font-size: 15px;
+    color: var(--cinza);
+}
+
+/* opcoes perfil */
+.container-read .topo .opcoes-perfil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.container-read .menu-opcoes {
+    font-size: 1.5rem;
+    color: var(--cinza);
+    cursor: pointer;
+    padding: .3rem .3rem;
+    border-radius: 50%;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    border: none;
+}
+
+.container-read .menu-opcoes:hover {
+    background-color: var(--branco-light);
+}
+
+/* container do dropdown */
+.container-read .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.container-read .dropdown .menu-opcoes img {
+    width: 25px;
+}
+
+.container-read .dropdown .menu-opcoes img:hover {
+    background-color: var(--branco-light);
+}
+
+/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
+.container-read .dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--branco);
+    width: 275px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    padding: 0;
+}
+
+/* cada item do dropdown */
+.container-read .dropdown .dropdown-content li {
+    list-style: none;
+}
+
+.container-read .dropdown .dropdown-content img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.container-read .dropdown .dropdown-content li a {
+    display: block;
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--preto);
+    text-decoration: none;
+    transition: background .2s, color .2s;
+}
+
+.container-read .dropdown .dropdown-content li a:hover {
+    background-color: var(--cinza-font);
+}
+
+.container-read .seguir-btn {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 0 0 15px 15px;
+    color: var(--preto);
+    cursor: pointer;
+    transition: all .3s ease;
+    text-align: start;
+}
+
+.container-read .seguir-btn:hover {
+    background-color: var(--cinza-font);
+}
+
+/* mostrar dropdown ao passar o mouse */
+.container-read .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* fundo do modal --------------(modal)*/
+.modal-denuncia {
+    display: none;
+    /* escondido por padrão */
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+}
+
+/* conteúdo da caixa do modal */
+.modal-denuncia .modal-content {
+    background: var(--branco);
+    padding: 4rem 1rem 1rem 1rem;
+    border-radius: 15px;
+    width: 600px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Espaçamento */
+.modal-denuncia .form {
+    margin-bottom: 1rem;
+}
+
+/* campos */
+.modal-denuncia .form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--cor-preto);
+    margin-bottom: 0.3rem;
+}
+
+/* input */
+.modal-denuncia .form-control {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.modal-denuncia .form-control:focus {
+    border-color: var(--cor-vermelho);
+    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
+    outline: none;
+}
+
+/* Form Select */
+.modal-denuncia .form-select {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 0.95rem;
+    appearance: none;
+    /* Remove seta padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+.modal-denuncia .form-select:hover {
+    border-color: var(--cor-vermelho);
+}
+
+/* Focus */
+.modal-denuncia .form-select:focus {
+    border-color: var(--cor-vermelho);
+    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
+    outline: none;
+}
+
+/* Adicionando seta personalizada */
+.modal-denuncia .form-select {
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23017373" d="M0 0l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 10px 5px;
+}
+
+/* botão de fechar */
+.modal-denuncia .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* botão de denunciar */
+.modal-denuncia button {
+    background-color: var(--cor-vermelho);
+    color: var(--branco);
+    font-size: var(--texto-padrao);
+    font-weight: bold;
+    padding: .6rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .2s, transform .1s;
+}
+
+.modal-denuncia button:hover {
+    background-color: red;
+}
