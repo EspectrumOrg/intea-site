@@ -9,7 +9,7 @@ class GruposModel extends Model
 {
     use HasFactory;
     protected $table='tb_gruposdacomunidade';
-    public $fillable=['id','idLider','nomeGrupo','descGrupo'];
+    public $fillable=['id','idLider','nomeGrupo','descGrupo','imagemGrupo'];
 
 
 

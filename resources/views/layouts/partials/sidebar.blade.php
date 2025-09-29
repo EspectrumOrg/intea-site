@@ -24,6 +24,11 @@
             <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
             <h1>Configurações</h1>
         </a>
+    <a href="{{ route('grupo.index') }}" class="nav-link" id="config">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
+            <h1>Grupos</h1>
+        </a>
+
 
         <!--@if (Auth::user()->tipo_usuario === 4)
         <a href="{{ route('pagina_saude') }}" class="nav-link">
