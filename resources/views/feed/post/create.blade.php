@@ -1,18 +1,28 @@
 <div class="form">
     @if (!empty(Auth::user()->foto))
-    <img class="user-photo" src="{{ url('storage/'.Auth::user()->foto) }}" alt="conta">
+    <img src="{{ url('storage/'.Auth::user()->foto) }}"
+        alt="conta"
+        style="border-radius: 50%;"
+        width="40"
+        height="40"
+        loading="lazy">
     @else
-    <img class="user-photo" src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
+    <img src="{{ url('assets/images/logos/contas/user.png') }}"
+        alt="foto perfil"
+        style="border-radius: 50%;"
+        width="40"
+        height="40"
+        loading="lazy">
     @endif
     <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="textfield">
             <textarea id="texto_postagem"
-                      name="texto_postagem"
-                      maxlength="280"
-                      rows="1"
-                      placeholder="Comece uma publicação"
-                      required></textarea>
+                name="texto_postagem"
+                maxlength="280"
+                rows="1"
+                placeholder="Comece uma publicação"
+                required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
         </div>
 

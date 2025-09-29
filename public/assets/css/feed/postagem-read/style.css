@@ -7,6 +7,7 @@
 
     --preto: #0D0D0D;
     --cinza: #404040;
+    --cinza-texto: #888686;
     --cinza-borda: #2f3336;
     --branco: #F2F2F2;
     --branco-light: #ccc;
@@ -23,8 +24,9 @@
 /* topo */
 .container-read .topo {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    padding: 1rem;
+    padding: 1rem 0 0 1rem;
 }
 
 .container-read .topo .voltar {
@@ -39,8 +41,8 @@
 
 .container-read .topo .text h1 {
     margin-left: 1rem;
-    font-size: var(--texto-titulo);
-    font-weight: 700;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--preto);
 }
 
@@ -70,21 +72,26 @@
 }
 
 .container-read .foto-perfil img {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
 }
 
+.container-read .foto-perfil a {
+    text-decoration: none;
+}
+
 .container-read .foto-perfil h1 {
-    font-size: var(--texto-secundario);
-    font-weight: 700;
+    font-size: 15px;
+    font-weight: 600;
     color: var(--preto);
 }
 
 .container-read .foto-perfil h2 {
-    font-size: var(--texto-pequeno);
-    color: var(--cinza);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cinza-texto);
 }
 
 /*dropdown -----------+  */
@@ -105,7 +112,6 @@
 .container-read .menu-opcoes img {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
 }
 
 
@@ -113,7 +119,7 @@
 /* postagem ----------------------------------------------------------------------------------------------*/
 /* texto da postagem */
 .container-read p {
-    font-size: 14px;
+    font-size: 18px;
     color: var(--preto);
     line-height: 1.5;
     text-indent: 1px;

@@ -7,12 +7,20 @@
      <div class="content-post">
          @foreach($postagens as $postagem)
          <div class="corpo-post">
+             <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
+
              <div class="foto-perfil">
                  <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                      @if (!empty($postagem->usuario->foto))
-                     <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
+                     <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" 
+                        alt="foto perfil"
+                        style="width: 40; height: 50px; border-radius: 50%;"
+                        loading="lazy">
                      @else
-                     <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
+                     <img src="{{ url('assets/images/logos/contas/user.png') }}" 
+                        alt="sem-foto"
+                        style="width: 40; height: 50px; border-radius: 50%;"
+                        loading="lazy">
                      @endif
                  </a>
              </div>
@@ -114,47 +122,45 @@
 
                  <!-- conteudo postagem -->
                  <div class="conteudo-post">
-                     <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="link-post">
-                         <div class="coment-perfil">
-                             <p class="texto-curto" id="texto-{{ $postagem->id }}">
-                                 {{ Str::limit($postagem->texto_postagem, 150, '') }}
-                                 @if (strlen($postagem->texto_postagem) > 150)
-                                 <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
-                                 @endif
-                             </p>
-
-                             <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
-                                 {{ $postagem->texto_postagem }}
-                                 <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
-                             </p>
-                         </div>
-
-                         <div class="image-post">
-                             @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
-                             <img src="{{ asset('storage/' . $postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
+                     <div class="coment-perfil">
+                         <p class="texto-curto" id="texto-{{ $postagem->id }}">
+                             {{ Str::limit($postagem->texto_postagem, 150, '') }}
+                             @if (strlen($postagem->texto_postagem) > 150)
+                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
                              @endif
+                         </p>
+
+                         <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
+                             {{ $postagem->texto_postagem }}
+                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
+                         </p>
+                     </div>
+
+                     <div class="image-post">
+                         @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
+                         <img src="{{ asset('storage/' . $postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
+                         @endif
+                     </div>
+
+
+                     <!-- bottom ---------------------------------------------------------------------------------->
+                     <div class="dados-post">
+                         <div>
+                             <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
+                                 <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
+                                 <h1>{{ $postagem->comentarios_count }}</h1>
+                             </button>
                          </div>
 
 
-                         <!-- bottom ---------------------------------------------------------------------------------->
-                         <div class="dados-post">
-                             <div>
-                                 <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
-                                     <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
-                                     <h1>{{ $postagem->comentarios_count }}</h1>
-                                 </button>
-                             </div>
-
-
-                             <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
-                                 @csrf
-                                 <button type="submit" class="button">
-                                     <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
-                                     <h1>{{ $postagem->curtidas_count }}</h1>
-                                 </button>
-                             </form>
-                         </div>
-                     </a>
+                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                             @csrf
+                             <button type="submit" class="button">
+                                 <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                                 <h1>{{ $postagem->curtidas_count }}</h1>
+                             </button>
+                         </form>
+                     </div>
                  </div>
              </div>
          </div>

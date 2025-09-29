@@ -17,7 +17,7 @@ class FoneUsuarioFactory extends Factory
     public function definition(): array
     {
         return [
-            'numero_telefone' => fake()->phoneNumber(),
+            'numero_telefone' => fake()->regexify('[1-9]{2}9[0-9]{8}'),
         ];
     }
 }

@@ -1,11 +1,3 @@
-/* topo ---*/
-.container-read .topo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
 /* info perfil */
 .container-read .topo .info-perfil {
     display: flex;
@@ -67,14 +59,6 @@
 .container-read .dropdown {
     position: relative;
     display: inline-block;
-}
-
-.container-read .dropdown .menu-opcoes img {
-    width: 25px;
-}
-
-.container-read .dropdown .menu-opcoes img:hover {
-    background-color: var(--branco-light);
 }
 
 /* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
