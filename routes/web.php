@@ -48,9 +48,6 @@ Route::get('/cadastro', function () {
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
-
-// Cadastro de Admin
-Route::resource("admin", AdminController::class)->names("admin");
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
 // Cadastro de Comunidade
@@ -85,7 +82,7 @@ Route::middleware('auth')->group(function () {
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
 
-    
+
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store')->middleware('auth');
 
     Route::post('/seguir', [SeguirController::class, 'store'])->name('seguir.store');
@@ -97,7 +94,7 @@ Route::middleware('auth')->group(function () {
     })->name('cadastro.index');
 
     Route::get('/conta/{usuario_id}', [ContaController::class, 'index'])->name('conta.index');
-    // denuncia postagem
+    // denuncia usuário
     Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaUsuarioController::class, 'post'])->name('usuario.denuncia');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -119,21 +116,23 @@ Route::middleware('auth', 'is_profissional')->group(function () {
 // Apenas Admin
 Route::middleware(['auth', 'is_admin'])->group(function () {
 
+    // Cadastro de Admin
+    Route::resource("admin", AdminController::class)->names("admin");
+    // Usuário
     Route::resource("usuario", UsuarioController::class)
         ->names("usuario")
         ->parameters(["usuario" => "usuarios"]);
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
-
+    // Denúncia postagem
     Route::resource("denuncia", DenunciaPostagemController::class)
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth') 
-    ->name('dashboard.index');
-    
+        ->middleware('auth')
+        ->name('dashboard.index');
 });
 
 

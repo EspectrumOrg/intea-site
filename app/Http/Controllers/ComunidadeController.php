@@ -46,6 +46,11 @@ class ComunidadeController extends Controller
 
     public function store(Request $request)
     {
+        //retirar pontuação dos campos só com números
+        $request->merge([
+            'cpf' => preg_replace('/\D/', '', $request->cpf)
+        ]);
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
@@ -99,9 +104,6 @@ class ComunidadeController extends Controller
             abort(403, 'Tentativa de fraude no tipo de usuário.');
         }
 
-        //retirar pontuação dos campos só com números
-        $cpf_limpo = preg_replace('/\D/', '', $request->cpf);
-
         // Criar Usuário Padrão
         $usuario = Usuario::create([
             'nome' => $request->nome,
@@ -109,7 +111,7 @@ class ComunidadeController extends Controller
             'apelido' => $request->apelido,
             'email' => $request->email,
             'senha' => bcrypt($request->senha),
-            'cpf' => $cpf_limpo,
+            'cpf' => $request->cpf,
             'genero' => $request->genero,
             'data_nascimento' => $request->data_nascimento,
             'cep' => $request->cep,
@@ -142,7 +144,7 @@ class ComunidadeController extends Controller
         Auth::login($usuario);
 
         //return response()->json($request->all());
-        return redirect()->route('feed.index')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
+        return redirect()->route('post.index')->with('Sucesso', 'Usuário Tipo Comunidade cadastrado com sucesso!');
     }
 
     // Método para validar CPF

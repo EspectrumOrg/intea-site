@@ -41,7 +41,7 @@
         @endif-->
 
         @can("visualizar-admin")
-        <a href="{{ route('usuario.index') }}" class="nav-link">
+        <a href="{{ route('dashboard.index') }}" class="nav-link">
             <img src="{{ asset('assets/images/logos/symbols/site-claro/admin.png') }}" />
             <h1>Admin</h1>
         </a>
@@ -64,7 +64,7 @@
             <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
             <li id="li-checar-perfil-siedebar-02">
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="post" action="{{ route('logout') }}">
                     @csrf
                     <a
                         onclick="event.preventDefault(); this.closest('form').submit();"

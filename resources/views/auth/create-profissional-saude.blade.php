@@ -33,13 +33,9 @@
 
     <!-- No topo do formulário -->
     @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert-error">
         <ul>
-            @foreach ($errors->all() as $erro)
-            <li>
-                <h3 class="alert-mensage">{{ $erro }}</h3>
-            </li>
-            @endforeach
+            <li>erro na validação de dados</li>
         </ul>
     </div>
     @endif

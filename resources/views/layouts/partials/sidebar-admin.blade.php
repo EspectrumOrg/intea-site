@@ -10,18 +10,18 @@
             <h1>Estatísticas</h1>
         </a>
 
-        <a href="{{ route('usuario.index')}}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="usuario">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="usuarios">
+        <a href="{{ route('usuario.index')}}" class="nav-link {{ request()->routeIs('usuario.index') ? 'active' : '' }}" id="usuario">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('usuario.index') ? 'group-preenchido.png' : 'group.png')) }}" alt="usuarios">
             <h1>Usuários</h1>
         </a>
-        <a href="{{ route('denuncia.index')}}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="denuncia">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="denuncias">
+        <a href="{{ route('denuncia.index')}}" class="nav-link {{ request()->routeIs('denuncia.index') ? 'active' : '' }}" id="denuncia">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('denuncia.index') ? 'warning-preenchido.png' : 'warning.png')) }}" alt="denuncias">
             <h1>Denúncias</h1>
         </a>
 
         <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="feed">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="feed">
-            <h1>Feed</h1>
+            <img src="{{ asset('assets/images/logos/symbols/back-button.png') }}" alt="feed">
+            <h1>Voltar</h1>
         </a>
     </div>
     @endcan

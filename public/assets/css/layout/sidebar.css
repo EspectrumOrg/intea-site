@@ -107,6 +107,7 @@
 }
 
 .dropdown-checar-perfil li {
+    display: flex;
     transition: .3s;
     padding: 1rem;
 }
@@ -124,6 +125,16 @@
     text-decoration: none;
     font-size: 18px;
     color: black;
+    width: 100%;
+}
+
+.dropdown-checar-perfil li form {
+    display: flex;
+    width: 100%;
+}
+
+.dropdown-checar-perfil li form a{
+    width: 100%;
 }
 
 /* links */

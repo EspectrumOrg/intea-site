@@ -38,6 +38,15 @@
             <div class="check fas fa-check"></div>
         </div>
     </div>
+
+    @if ($errors->any())
+    <div class="alert-error">
+        <ul>
+            <li>erro na validação de dados</li>
+        </ul>
+    </div>
+    @endif
+    
     <form class="form-cadastro" method="post" action="{{ route('responsavel.store') }}">
         @csrf
         <input type="hidden" name="tipo_usuario" value="5">
