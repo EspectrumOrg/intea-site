@@ -28,7 +28,7 @@ class UsuarioSeeder extends Seeder
             'senha' => bcrypt('123456'),
             'data_nascimento' => '2001-01-01',
             'tipo_usuario' => 1,
-            'foto' => 'arquivos/perfil/fotos/admin-pick.avif',
+            'foto' => 'arquivos/perfil/fotos/admin-pick.jpg',
             'descricao' => 'Administrador do sistema, responsável pelo gerenciamento e supervisão de usuários.'
         ]);
 
@@ -40,7 +40,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'autista@site.com',
             'senha' => bcrypt('123456'),
             'tipo_usuario' => 2,
-            'foto' => 'arquivos/perfil/fotos/autista-pick.avif',
+            'foto' => 'arquivos/perfil/fotos/autista-pick.jpg',
             'descricao' => 'Usuário do espectro autista, compartilhando experiências pessoais e conquistas diárias.'
         ]);
 
@@ -52,7 +52,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'comunidade@site.com',
             'senha' => bcrypt('123456'),
             'tipo_usuario' => 3,
-            'foto' => 'arquivos/perfil/fotos/comunidade-pick.avif',
+            'foto' => 'arquivos/perfil/fotos/comunidade-pick.jpg',
             'descricao' => 'Membro ativo da comunidade, interessado em apoio mútuo e inclusão social.'
         ]);
 
@@ -64,7 +64,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'profissionalsaude@site.com',
             'senha' => bcrypt('123456'),
             'tipo_usuario' => 4,
-            'foto' => 'arquivos/perfil/fotos/profissional-pick.avif',
+            'foto' => 'arquivos/perfil/fotos/profissional-pick.jpg',
             'descricao' => 'Psicólogo especializado em TEA, disponível para orientações e compartilhamento de conhecimento.'
         ]);
 
@@ -76,7 +76,7 @@ class UsuarioSeeder extends Seeder
             'email' => 'responsavel@site.com',
             'senha' => bcrypt('123456'),
             'tipo_usuario' => 5,
-            'foto' => 'arquivos/perfil/fotos/responsavel-pick.avif',
+            'foto' => 'arquivos/perfil/fotos/responsavel-pick.jpg',
             'descricao' => 'Responsável por um usuário do espectro autista, participando de atividades de suporte e acompanhamento.'
         ]);
 
