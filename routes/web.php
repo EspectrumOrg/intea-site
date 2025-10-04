@@ -16,6 +16,7 @@ use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PusherController;
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,17 @@ Route::get('/cadastro', function () {
 })->name('cadastro.index');
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+
+
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
+
+
+
+
+
+
 
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
