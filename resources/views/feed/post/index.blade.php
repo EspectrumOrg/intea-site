@@ -101,7 +101,7 @@
                                      <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
                                          <option value="">Tipo</option>
                                          <option value="spam">Spam</option>
-                                         <option value="desinformação">Desinformação</option>
+                                         <option value="desinformacao">Desinformação</option>
                                          <option value="conteudo_explicito">Conteúdo Explícito</option>
                                          <option value="discurso_de_odio">Discurso de Ódio</option>
                                      </select>

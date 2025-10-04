@@ -7,7 +7,7 @@
 
     <!-- Formulário de busca e filtros -->
     <form method="GET" action="{{ route('denuncia.index') }}" class="filtro-form">
-        <input type="text" name="search_denuncia" placeholder="Alguma ideia aqui?" value="{{ request('search_denuncia') }}">
+        <!-- <input type="text" name="search_denuncia" placeholder="Alguma ideia aqui?" value="{{ request('search_denuncia') }}"> -->
 
         <select name="motivo_denuncia">
             <option value="">Todos os motivos</option>
@@ -15,6 +15,11 @@
             <option value="falsidade" {{ request('motivo_denuncia') == "falsidade" ? 'selected' : '' }}>Desinformação</option>
             <option value="conteudo_explicito" {{ request('motivo_denuncia') == "conteudo_explicito" ? 'selected' : '' }}>Conteúdo Explícito</option>
             <option value="discurso_de_odio" {{ request('motivo_denuncia') == "discurso_de_odio" ? 'selected' : '' }}>Discurso de Ódio</option>
+        </select>
+
+        <select name="status_denuncia">
+            <option value="1" style="color: green;" {{ request('status_denuncia') == '1' ? 'selected' : '' }}>Pendente</option>
+            <option value="0" style="color: red;" {{ request('status_denuncia') == '0' ? 'selected' : '' }}>Resolvida</option>
         </select>
 
         <select name="ordem">
@@ -39,11 +44,10 @@
                         <th>Feito por</th>
                         <th>User</th>
                         <th>Usuario Denunciado</th>
-                        <th>motivo_denuncia</th>
+                        <th>Motivo</th>
                         <th>Texto</th>
                         <th>Data de Denuncia</th>
                         <th>Status Conta</th>
-                        <th>Visualizar</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -54,14 +58,30 @@
                         <td>{{ $item->usuario->nome }}</td>
                         <td>{{ $item->usuario->user }}</td>
                         <td>{{ $item->postagem->usuario->user }}</td>
-                        <td>{{ $item->motivo_denuncia }}</td>
+                        <td>
+                            @if( $item->motivo_denuncia == 'spam')
+                            <p class="motivo_denuncia red-text">Spam</p>
+                            @elseif( $item->motivo_denuncia == 'desinformacao')
+                            <p class="motivo_denuncia red-text">Desinformação</p>
+                            @elseif( $item->motivo_denuncia == 'conteudo_explicito')
+                            <p class="motivo_denuncia red-text">Conteúdo explícito</p>
+                            @elseif( $item->motivo_denuncia == 'discurso_de_odio')
+                            <p class="motivo_denuncia red-text">Discurso de ódio</p>
+                            @endif
+                        </td>
                         <td>{{ $item->texto_denuncia }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
-                        <td>{{ $item->usuario->status_conta }}</td>
                         <td>
+                            @if($item->usuario->status_conta == 1)
+                            ativo
+                            @else
+                            banido
+                            @endif
+                        </td>
+                        <td class="button-open-data">
                             <!-- Botão para abrir o modal -->
-                            <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
-                                Ver Postagem
+                            <button type="button" class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
+                                <img class="img-icons" src="{{ asset('assets/images/logos/symbols/share.png') }}">
                             </button>
 
                             <!-- Modal -->
@@ -95,16 +115,25 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                        <td>
-                            <!-- Usuário ativo → Mostrar botão de banir -->
-                            <form action="{{ route('denuncia.destroy', $item->postagem->usuario->id) }}" method="post">
-                                @csrf
-                                @method("delete")
-                                <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir">
-                                    Banir
-                                </button>
-                            </form>
+
+                            <div class="td-acoes">
+                                <!-- Usuário ativo → Desabilitar denúncia -->
+                                <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
+                                    @csrf
+                                    @method("put")
+                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja marcar a denúncia como resolvida?');" class="btn-desabilitar">
+                                        <img class="img-icons" src="{{ asset('assets/images/logos/symbols/check-mark.png') }}">
+                                    </button>
+                                </form>
+                                <!-- Usuário ativo → Mostrar botão de banir -->
+                                <form action="{{ route('denuncia.destroy', $item->postagem->usuario->id) }}" method="post">
+                                    @csrf
+                                    @method("delete")
+                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir">
+                                        <img class="img-icons" src="{{ asset('assets/images/logos/symbols/ban-circle-symbol.png') }}">
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty

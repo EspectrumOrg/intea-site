@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Postagem;
-use App\Models\ComentarioPostagem;
-use App\Models\ImagemComentarioPostagem;
+use App\Models\Comentario;
+use App\Models\ImagemComentario;
 use Illuminate\Http\Request;
 
-class ComentarioPostagemController extends Controller
+class ComentarioController extends Controller
 {
     public function store(Request $request, $id_postagem)
     {
@@ -22,7 +22,7 @@ class ComentarioPostagemController extends Controller
         );
 
         // Criar comentário
-        $comentario = ComentarioPostagem::create([
+        $comentario = Comentario::create([
             'id_postagem' => $id_postagem,
             'id_usuario' => auth()->id(), 
             'comentario' => $request->comentario,
@@ -32,7 +32,7 @@ class ComentarioPostagemController extends Controller
         if ($request->hasFile('caminho_imagem')) {
             $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
 
-            ImagemComentarioPostagem::create([
+            ImagemComentario::create([
                 'id_comentario' => $comentario->id,
                 'caminho_imagem' => $imagem,
             ]);

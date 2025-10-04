@@ -22,7 +22,7 @@ class DenunciaPostagemController extends Controller
     {
         $query = $this->denuncia->query();
 
-        // Busca por nome, user ou email
+        /* Busca por nome, user ou email
         if ($request->filled('search_denuncia')) {
             $search = $request->search;
             $query->whereHas('usuario', function ($q) use ($search) {
@@ -30,16 +30,16 @@ class DenunciaPostagemController extends Controller
                     ->orWhere('user', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
-        }
+        }*/
 
         // Filtro por motivo_denuncia
         if ($request->filled('motivo_denuncia')) {
             $query->where('motivo_denuncia', $request->motivo_denuncia);
         }
 
-        // Filtro por status_conta
-        if ($request->filled('status_conta')) {
-            $query->where('status_conta', $request->status_conta);
+        // Filtro por status_denuncia
+        if ($request->filled('status_denuncia')) {
+            $query->where('status_denuncia', $request->status_denuncia);
         }
 
         // Ordenação
@@ -67,12 +67,28 @@ class DenunciaPostagemController extends Controller
             'id_usuario' => $id_usuario,
             'motivo_denuncia' => $request->motivo_denuncia,
             'texto_denuncia' => $request->texto_denuncia,
+            'status_denuncia' => 1,
         ]);
 
         return back();
     }
 
-    public function destroy($id)
+    public function resolve($id)
+    {
+        $denuncia = DenunciaPostagem::findOrFail($id);
+
+        if ($denuncia->status_denuncia == 0) {
+            return redirect()->back()->with('info', 'Essa denúncia já foi marcada como resolvida.');
+        }
+
+        $denuncia->status_denuncia = 0; // 0 = resolvida, 1 = pendente
+        $denuncia->save();
+
+        return redirect()->back()->with('successo', 'Denúncia marcada como resolvida com sucesso.');
+    }
+
+
+    public function destroy($id) //Banir usuário
     {
         $usuario = Usuario::findOrFail($id);
         $usuario->status_conta = 0;

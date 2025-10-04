@@ -11,8 +11,12 @@
     --branco-light: #ccc;
     --azul: #1d3e55;
     --verde: #03A64A;
+    --cor-verde: #1dc967;
     --vermelho: #F26D6D;
-    
+    --roxo: #4B1C8C;
+    --laranja: #D92B04;
+    --amarelo: #F2B705;
+
     --border-radius: 8px;
     --padding-card: 1.5rem;
 }
@@ -71,7 +75,7 @@ body {
 }
 
 .btn-novo:hover {
-    background-color: #036f99;
+    background-color: var(--cor-tema);
 }
 
 /* Tabela */
@@ -86,14 +90,66 @@ body {
 
 .table-usuarios th,
 .table-usuarios td {
-    border: 1px solid #ddd;
-    padding: 0.75rem 1rem;
+    border: 1px solid var(--branco-light);
+    padding: 0.25rem;
     font-size: .8rem;
     text-align: left;
 }
 
-.table-usuarios th {
-    background-color: var(--cor-fundo);
+.table-usuarios .motivo_denuncia {
+    font-size: .8rem;
+}
+
+/* Cor texto*/
+.table-usuarios td .red-text {
+    color: var(--cor-vermelho);
+}
+
+.table-usuarios td .purple-text {
+    color: var(--roxo);
+}
+
+.table-usuarios td .yellow-text {
+    color: var(--amarelo);
+}
+
+.table-usuarios td .orange-text {
+    color: var(--laranja);
+}
+
+.table-usuarios .button-open-data {
+    display: flex;
+    padding: 0;
+    flex-direction: row-reverse;
+}
+
+.table-usuarios .td-acoes {
+    padding: 1rem 0;
+}
+
+.table-usuarios .button-open-data .img-icons {
+    width: 30px;
+    padding: .2rem;
+}
+
+/* Botão Visualizar*/
+.table-usuarios .button-open-data .btn-visualizar {
+    color: var(--branco);
+    background-color: var(--cinza);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    outline: none;
+    transition: .7s;
+}
+
+.table-usuarios .btn-visualizar:hover {
+    background-color: var(--cor-tema);
+}
+
+/* Botão Ações*/
+.table-usuarios .td-acoes {
+    display: flex;
+    flex-direction: row;
     color: var(--branco);
 }
 
@@ -102,18 +158,22 @@ body {
 }
 
 /* Botão Excluir */
-.btn-excluir {
-    background-color: var(--cor-fundo);
-    color: var(--cor-branco);
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background 0.2s;
+.btn-excluir:hover {
+    background-color: var(--cor-vermelho);
 }
 
-.btn-excluir:hover {
-    background-color: #c11717;
+.btn-excluir,
+.btn-desabilitar {
+    color: var(--cor-branco);
+    border: none;
+    margin: 0.4rem 0.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: .7s;
+}
+
+.btn-desabilitar:hover {
+    background-color: var(--verde);
 }
 
 /* Botão desbanir */
@@ -157,14 +217,15 @@ body {
 .btn-filtrar {
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    background-color: #048ABF;
+    background-color: var(--cor-fundo);
+    transition: .7s;
     color: #fff;
     border: none;
     cursor: pointer;
 }
 
 .btn-filtrar:hover {
-    background-color: #036f99;
+    background-color: var(--cor-tema);
 }
 
 /* Responsividade */

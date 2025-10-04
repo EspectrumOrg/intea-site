@@ -76,10 +76,10 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         $usuario = Usuario::findOrFail($id);
-        $usuario->status_conta = 0;
+        $usuario->status_conta = 2;
         $usuario->save();
 
-        session()->flash("success", "Usuário banido");
+        session()->flash("success", "Usuário excluido");
         return redirect()->back();
     }
 

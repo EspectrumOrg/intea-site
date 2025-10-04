@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curtida_comentario', function (Blueprint $table) {
+        Schema::create('tb_denuncia_comentario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
             $table->foreignId('id_comentario')->constrained('tb_comentario')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
+            $table->string('motivo_denuncia');
+            $table->text('texto_denuncia')->nullable();
+            $table->enum('status_denuncia', [1, 0]); //1 = pendente; 0 = resolvida
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curtida_comentario');
+        Schema::dropIfExists('tb_denuncia_comentario');
     }
 };

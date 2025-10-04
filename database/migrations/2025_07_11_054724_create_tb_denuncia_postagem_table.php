@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
             $table->string('motivo_denuncia');
             $table->text('texto_denuncia')->nullable();
+            $table->enum('status_denuncia', [1, 0]); //1 = pendente; 0 = resolvida
             $table->timestamps();
         });
     }

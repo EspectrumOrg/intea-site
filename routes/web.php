@@ -3,7 +3,7 @@
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
-use App\Http\Controllers\ComentarioPostagemController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaPostagemController;
@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
     // curtida postagem
     Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     // comentario postagem
-    Route::post('/feed/{id_postagem}', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    Route::post('/feed/{id_postagem}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
@@ -129,7 +129,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
-
+    Route::put('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'resolve'])->name('denuncia.resolve');
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('auth')
         ->name('dashboard.index');
