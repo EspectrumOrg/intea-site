@@ -1,4 +1,4 @@
 <div class="left message">
-    <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">
+    <img src="{{ asset('storage/' . $remetente->foto) }}" alt="Avatar" width="40" height="40" style="border-radius:50%;">
     <p>{{ $message ?? '' }}</p>
 </div>

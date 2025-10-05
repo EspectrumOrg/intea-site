@@ -3,6 +3,7 @@
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
+use App\Http\Controllers\ChatPrivadoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
@@ -46,7 +47,17 @@ Route::get('/login', function () { // Login
 
 Route::get('/cadastro', function () { // Tipo Conta
     return view('auth.register');
-})->middleware('guest')->name('cadastro.index');
+})->name('cadastro.index');
+Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
+Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
+Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
+
+
+
 
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");

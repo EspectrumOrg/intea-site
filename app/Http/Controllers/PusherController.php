@@ -6,15 +6,35 @@ use App\Events\PusherBroadcast;
 use Illuminate\Http\Request;
 
 class PusherController extends Controller
-{
+{   
     /**
      * Display a listing of the resource.
      */
-      public function index()
-    {
-        return view('chat');
+public function index()
+{
+    $usuario1 = auth()->id();  
+    $usuario2 = $usuario1 == 1 ? 2 : 1; // Ajuste dinâmico para teste
+
+    $conversa = \App\Models\ChatPrivadoModel::where(function ($query) use ($usuario1, $usuario2) {
+            $query->where('usuario1_id', $usuario1)
+                  ->where('usuario2_id', $usuario2);
+        })
+        ->orWhere(function ($query) use ($usuario1, $usuario2) {
+            $query->where('usuario1_id', $usuario2)
+                  ->where('usuario2_id', $usuario1);
+        })
+        ->first();
+
+    $mensagens = [];
+
+    if ($conversa) {
+        $mensagens = \App\Models\MensagemPrivadaModel::where('conversa_id', $conversa->id)
+            ->orderBy('created_at', 'asc')
+            ->get();
     }
 
+return view('chat', compact('mensagens', 'usuario2'));
+}
     public function broadcast(Request $request)
     {
         broadcast(new PusherBroadcast($request->get('message')))->toOthers();

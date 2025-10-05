@@ -13,65 +13,96 @@
 <body>
     <div class="chat">
         <div class="top">
-            <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">
-            <!-- Pelo que entendi seria como o avatar do nosso usuário, teriamos que puxar a imagem do banco, tlgd? -->
+<img src="{{ asset('storage/' . Auth::user()->foto) }}" alt="Avatar" width="40" height="40">
             <div>
                 <p>Guilherme Fermino</p>
                 <small>Online</small>
             </div>
         </div>
 
-        <div class="messages">
-            @if (!empty($message))
-                @include('receive', ['message' => $message])
-            @endif
+            <div class="messages">
+            @foreach ($mensagens as $msg)
+                @if ($msg->remetente_id == auth()->id())
+                    @include('broadcast', ['message' => $msg->texto])
+                @else
+                    @php
+                        $remetente = App\Models\Usuario::find($msg->remetente_id);
+                    @endphp
+                    @include('receive', ['message' => $msg->texto, 'remetente' => $remetente])
+                @endif
+            @endforeach
         </div>
 
         <div class="bottom">
-            <form>
+            <form id="chatForm">
                 <input type="text" id="message" placeholder="Insira a Mensagem..." autocomplete="off">
                 <button type="submit"></button>
             </form>
         </div>
     </div>
+
+    <!-- Input hidden para passar o usuário 2 dinamicamente -->
+    <input type="hidden" id="usuario2_id" value="{{ $usuario2 }}">
+
+    <script>
+        const pusher = new Pusher("{{ config('broadcasting.connections.pusher.key') }}", {
+            cluster: "sa1"
+        });
+
+        const channel = pusher.subscribe("public");
+
+        channel.bind("chat", function(data) {
+            $.post("/receive", {
+                    _token: "{{ csrf_token() }}",
+                    message: data.message,
+                })
+                .done(function(res) {
+                    $(".messages").append(res);
+                    $(document).scrollTop($(document).height());
+                });
+        });
+
+        $("#chatForm").submit(function(event) {
+            event.preventDefault();
+
+            const texto = $("#message").val().trim();
+            if (texto === "") return;
+
+            const usuario2_id = $("#usuario2_id").val();
+
+            // Envia para broadcast
+            $.ajax({
+                url: "/broadcast",
+                method: "POST",
+                headers: {
+                    "X-Socket-Id": pusher.connection.socket_id
+                },
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    usuario1_id: "{{ auth()->id() }}",
+                    usuario2_id: usuario2_id,
+                    message: texto,
+                },
+            }).done(function(res) {
+                $(".messages").append(res);
+                $(document).scrollTop($(document).height());
+            });
+
+            // Salva no banco
+            $.ajax({
+                url: "/enviar-mensagem",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    usuario1_id:" {{ auth()->id() }}",
+                    usuario2_id: usuario2_id,
+                    texto: texto,
+                },
+            });
+
+            $("#message").val("");
+        });
+    </script>
 </body>
-
-<script>
-    const pusher = new Pusher("{{ config('broadcasting.connections.pusher.key') }}", { cluster: "sa1" });
-    const channel = pusher.subscribe("public");
-
-    // Receber mensagens
-    channel.bind("chat", function (data) {
-        $.post("/receive", {
-            _token: "{{ csrf_token() }}",
-            message: data.message,
-        })
-        .done(function (res) {
-            $(".messages").append(res);
-            $(document).scrollTop($(document).height());
-        });
-    });
-
-    // Enviar mensagens
-    $("form").submit(function (event) {
-        event.preventDefault();
-
-        $.ajax({
-            url: "/broadcast",
-            method: "POST",
-            headers: {
-                "X-Socket-Id": pusher.connection.socket_id
-            },
-            data: {
-                _token: "{{ csrf_token() }}",
-                message: $("form #message").val(),
-            },
-        }).done(function (res) {
-            $(".messages").append(res);
-            $("form #message").val("");
-            $(document).scrollTop($(document).height());
-        });
-    });
-</script>
 
 </html>
