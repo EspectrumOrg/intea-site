@@ -54,24 +54,25 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    background-color: var(--cor-fundo);
 }
 
 .card-header h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: var(--cor-fundo);
+    color: var(--branco);
 }
 
 /* Botão Novo */
 .btn-novo {
-    background-color: var(--cor-tema);
+    background-color: var(--cor-fundo);
     color: var(--branco);
-    padding: 0.5rem 1rem;
-    border-radius: var(--border-radius);
+    padding: .75rem;
+    border: .05rem solid var(--branco-light);
+    border-radius: 50px / 100%;
     text-decoration: none;
     font-weight: bold;
-    transition: background 0.2s;
+    transition: background 0.7s;
 }
 
 .btn-novo:hover {
@@ -80,7 +81,7 @@ body {
 
 /* Tabela */
 .card-body {
-    padding: 0 .2rem;
+    padding: 0;
 }
 
 .table-usuarios {
@@ -88,12 +89,28 @@ body {
     border-collapse: collapse;
 }
 
-.table-usuarios th,
+.table-usuarios th {
+    border-left: .0 solid var(--branco-light);
+    padding: 0.5rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
 .table-usuarios td {
-    border: 1px solid var(--branco-light);
+    border-top: 1px solid var(--branco-light);
     padding: 0.25rem;
     font-size: .8rem;
     text-align: left;
+}
+
+/* Topo tabela*/
+.card-header {
+    background-color: var(--cor-fundo);
+}
+
+.table-usuarios thead {
+    background-color: var(--cor-fundo);
+    color: var(--branco);
 }
 
 .table-usuarios .motivo_denuncia {
@@ -117,25 +134,24 @@ body {
     color: var(--laranja);
 }
 
+.table-usuarios td .black-text {
+    color: var(--cor-preto);
+}
+
 .table-usuarios .button-open-data {
     display: flex;
     padding: 0;
     flex-direction: row-reverse;
 }
 
-.table-usuarios .td-acoes {
-    padding: 1rem 0;
-}
-
-.table-usuarios .button-open-data .img-icons {
-    width: 30px;
-    padding: .2rem;
+.table-usuarios .img-icons {
+    width: 25px;
 }
 
 /* Botão Visualizar*/
 .table-usuarios .button-open-data .btn-visualizar {
     color: var(--branco);
-    background-color: var(--cinza);
+    background-color: var(--branco-light);
     border: none;
     padding: 0.4rem 0.8rem;
     outline: none;
@@ -158,16 +174,16 @@ body {
 }
 
 /* Botão Excluir */
-.btn-excluir:hover {
+.btn-excluir-usuario:hover {
     background-color: var(--cor-vermelho);
 }
 
-.btn-excluir,
+.btn-excluir-usuario,
 .btn-desabilitar {
-    color: var(--cor-branco);
+    background-color: var(--branco);
     border: none;
-    margin: 0.4rem 0.8rem;
-    border-radius: 50%;
+    flex: 1;
+    padding: 1.5rem .75rem;
     cursor: pointer;
     transition: .7s;
 }
@@ -227,6 +243,8 @@ body {
 .btn-filtrar:hover {
     background-color: var(--cor-tema);
 }
+
+/* ------------------------ Modal Denúncia*/
 
 /* Responsividade */
 @media (max-width: 768px) {

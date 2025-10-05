@@ -38,27 +38,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
-// Login
-Route::get('/login', function () {
+
+// somente para quem não está logado
+Route::get('/login', function () { // Login
     return view('auth.login');
-})->name('login');
-// Tipo Conta
-Route::get('/cadastro', function () {
+})->middleware('guest')->name('login');
+
+Route::get('/cadastro', function () { // Tipo Conta
     return view('auth.register');
-})->name('cadastro.index');
-Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
-Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
-
-
-Route::post('/broadcast', [PusherController::class, 'broadcast']);
-Route::post('/receive', [PusherController::class, 'receive']);
-Route::get('/chat', [PusherController::class, 'index']);
-
-
-
-
-
-
+})->middleware('guest')->name('cadastro.index');
 
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
@@ -68,6 +56,16 @@ Route::resource("comunidade", ComunidadeController::class)->names("comunidade");
 Route::resource("profissional", ProfissionalSaudeController::class)->names("profissional");
 // Cadastro de Responsável
 Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
+
+
+//arrumar rotas depois 
+Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
+Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+
+
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
 
 /* Sua Parte Nicola ------------------ 
 Route::get('/cadastro/responsavel', function () {
@@ -141,7 +139,7 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
-    Route::put('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'resolve'])->name('denuncia.resolve');
+    Route::put('/denuncia/{denuncia}/resolve', [DenunciaPostagemController::class, 'resolve'])->name('denuncia.resolve');
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('auth')

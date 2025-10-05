@@ -46,7 +46,7 @@ class DenunciaPostagemController extends Controller
         $ordem = $request->input('ordem', 'desc'); // padrão: mais recente
         $query->orderBy('created_at', $ordem);
 
-        $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens'])->paginate(10);
+        $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens', 'postagem.denuncias'])->paginate(10);
 
         return view('admin.denuncia.index', compact('denuncias'));
     }
@@ -67,7 +67,7 @@ class DenunciaPostagemController extends Controller
             'id_usuario' => $id_usuario,
             'motivo_denuncia' => $request->motivo_denuncia,
             'texto_denuncia' => $request->texto_denuncia,
-            'status_denuncia' => 1,
+            'status_denuncia' => '1',
         ]);
 
         return back();
@@ -77,16 +77,18 @@ class DenunciaPostagemController extends Controller
     {
         $denuncia = DenunciaPostagem::findOrFail($id);
 
-        if ($denuncia->status_denuncia == 0) {
-            return redirect()->back()->with('info', 'Essa denúncia já foi marcada como resolvida.');
-        }
-
-        $denuncia->status_denuncia = 0; // 0 = resolvida, 1 = pendente
+        // Resolver principal
+        $denuncia->status_denuncia = 0;
         $denuncia->save();
 
-        return redirect()->back()->with('successo', 'Denúncia marcada como resolvida com sucesso.');
-    }
+        // Resolver todas relacionadas à mesma postagem
+        DenunciaPostagem::where('id_postagem', $denuncia->id_postagem)
+            ->where('id', '!=', $denuncia->id)
+            ->update(['status_denuncia' => 0]);
 
+        session()->flash("successo", "Denúncia resolvida junto com relacionadas.");
+        return redirect()->back();
+    }
 
     public function destroy($id) //Banir usuário
     {
