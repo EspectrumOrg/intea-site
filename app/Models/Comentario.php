@@ -35,7 +35,7 @@ class Comentario extends Model
 
     public function image ()
     {
-        return $this->hasOne(ImagemComentario::class, 'id_comentario');
+        return $this->hasOne(ImagemComentario::class, 'id_comentario', 'id');
     }
 
     public function curtidas_comentario ()

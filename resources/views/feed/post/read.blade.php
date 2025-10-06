@@ -158,29 +158,33 @@
                 @endif
             </div>
             @csrf
-            <textarea
-                id="texto_comentario"
-                name="comentario"
-                maxlength="280"
-                rows="4"
-                placeholder="Responda a publicação de {{ $postagem->usuario->user }}" required></textarea>
-        </div>
+            <div style="width: 100%;">
+                <div>
+                    <textarea
+                        id="texto_comentario"
+                        name="comentario"
+                        maxlength="280"
+                        rows="4"
+                        placeholder="Responda a publicação de {{ $postagem->usuario->user }}" required></textarea>
+                </div>
 
-        <div style="display: flex; justify-content:space-between;">
-            <div class="extras">
-                <label for="caminho_imagem" class="upload-label">
-                    <img src="{{ url('assets/images/logos/symbols/image.png') }}" class="card-img-top" alt="adicionar imagem">
-                </label>
-                <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
-                <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
-            </div>
+                <div style="display: flex; justify-content:space-between; padding: 0 1rem">
+                    <div class="extras">
+                        <label for="caminho_imagem" class="upload-label">
+                            <img src="{{ url('assets/images/logos/symbols/image.png') }}" class="card-img-top" alt="adicionar imagem">
+                        </label>
+                        <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
+                        <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
+                    </div>
 
-            <div class="contador">
-                <span id="char-count-comentario">0</span>/280
-            </div>
+                    <div class="contador">
+                        <span id="char-count-comentario">0</span>/280
+                    </div>
 
-            <div class="botao-submit">
-                <button type="submit" class="botao-postar">Publicar</button>
+                    <div class="botao-submit">
+                        <button type="submit" class="botao-postar">Publicar</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -191,7 +195,9 @@
 <div class="comentarios">
     @foreach($postagem->comentarios->whereNull('id_comentario_pai') as $comentario)
     <div class="comentario">
-        <div class="foto-comentario">
+        <a href="{{ route('comentario.focus', ['id' => $comentario->id]) }}" class="post-overlay"></a>
+
+        <div class="foto-comentario"> <!--foto-->
             @if (!empty($comentario->usuario->foto))
             <img src="{{ asset('storage/' . $comentario->usuario->foto) }}" alt="foto perfil">
             @else
@@ -199,7 +205,7 @@
             @endif
         </div>
 
-        <div class="dados">
+        <div class="dados"> <!--dados-->
             <strong>{{ $comentario->usuario->nome }}</strong>
             <span>{{ $comentario->created_at->diffForHumans() }}</span>
             <p>{{ $comentario->comentario }}</p>
@@ -207,27 +213,29 @@
             @if(!empty($comentario->image))
             <img src="{{ asset('storage/' . $comentario->image->caminho_imagem) }}" alt="Imagem comentário">
             @endif
-        </div>
 
-        <div class="interacoes">
-            <div>
-                <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button">
-                    <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
-                    <h1>{{ $comentario->comentarios_count }}</h1>
-                </button>
+            <div class="interacoes">
+                <div class="corpo">
+                    <div>
+                        <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button">
+                            <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
+                            <h1>{{ $comentario->comentarios_count }}</h1>
+                        </button>
+                    </div>
+
+                    <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
+                        @csrf
+                        <button type="submit" class="button">
+                            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $comentario->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                            <h1>{{ $comentario->curtidas_count }}</h1>
+                        </button>
+                    </form>
+                </div>
+
             </div>
-
-
-            <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
-                @csrf
-                <button type="submit" class="button">
-                    <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $comentario->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
-                    <h1>{{ $comentario->curtidas_count }}</h1>
-                </button>
-            </form>
         </div>
 
-        @if($comentario->respostas->isNotEmpty())
+        @if($comentario->respostas->isNotEmpty()) <!--resposta-->
         <div class="respostas ms-4 mt-2 border-start ps-3">
             @foreach($comentario->respostas as $resposta)
             <div class="resposta mb-2">

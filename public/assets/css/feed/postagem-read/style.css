@@ -146,25 +146,28 @@
 }
 
 /* interações------------------------------------------------*/
-.container-read .interacoes {
+.interacoes {
     margin-top: .75rem;
     font-size: var(--texto-pequeno);
     color: var(--cinza);
     margin: auto;
+    display: flex;
+    flex-direction: row;
     gap: 2rem;
     padding: 0rem 1rem;
 }
 
-.container-read .interacoes .corpo {
+.interacoes .corpo{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    border-top: 1px solid var(--cinza-borda);
-    border-bottom: 1px solid var(--cinza-borda);
+    border-top: 1px solid var(--branco-light);
+    border-bottom: 1px solid var(--branco-light);
     padding: .5rem 0rem;
 }
 
-.container-read .comment {
+.comment {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -179,13 +182,13 @@
     flex-direction: row;
 }
 
-.container-read .interacoes img {
+.interacoes img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-.container-read .interacoes h1 {
+.interacoes h1 {
     font-size: 20px;
     color: var(--cinza);
 }
@@ -255,7 +258,8 @@
     font-size: 16px;
     color: var(--cinza);
     align-self: center;
-    margin-left: auto; /* joga pro lado direito */
+    margin-left: auto;
+    /* joga pro lado direito */
     margin-right: 1rem;
 }
 
@@ -307,9 +311,11 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    border: none;
 }
 
 .comentario .dados {
+    width: 100%;
     padding: 1rem;
 }
 

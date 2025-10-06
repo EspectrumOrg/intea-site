@@ -1,4 +1,4 @@
-/* form dentro do modal */
+/* form dentro do modal ---------------------------------------*/
 .form-comentar {
     display: flex;
     flex-direction: row;
@@ -8,6 +8,7 @@
     padding: 0;
 }
 
+
 .form-comentar .textfield-comentar {
     display: flex;
     flex-direction: column;
@@ -16,7 +17,7 @@
     margin-bottom: 12px;
 }
 
-.form-comentar .user-photo{
+.form-comentar .user-photo {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -129,7 +130,7 @@
     font-weight: bold;
     padding: .3rem 1.5rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 25% / 100%;
     cursor: pointer;
     transition: background-color .2s, transform .1s;
 }
@@ -137,4 +138,48 @@
 .form-comentar .form .botao-comentar:hover {
     background-color: var(--cor-tema);
     transform: scale(1.03);
+}
+
+/* form dentro do modal (resposta --------------------------------------*/
+.resposta {
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+    /* sem fundo extra */
+    box-shadow: none;
+    padding: 0;
+}
+
+.resposta .user-photo {
+    width: 40px;
+    height: 40px;
+}
+
+.resposta .reply {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.reply .info-reply {
+    display: flex;
+    flex-direction: row;
+    gap: 0 1rem;
+}
+
+/* dados*/
+.reply .dados-reply {
+    display: flex;
+    flex-direction: row;
+    gap: 0 .5rem;
+}
+
+.reply .dados-reply h1 {
+    font-size: 14px;
+    color: var(--cor-fundo);
+}
+
+.reply .dados-reply p {
+    font-size: 14px;
+    color: var(--cinza-texto);
 }

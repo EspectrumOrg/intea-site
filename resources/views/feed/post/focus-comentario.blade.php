@@ -4,7 +4,7 @@
 <div class="container-read">
     <div class="content">
         <div class="topo">
-            <a class="voltar" href="{{ route('post.read', $comentario->postagem_id) }}">
+            <a class="voltar" href="{{ route('post.read', ['postagem' => $comentario->id_postagem]) }}">
                 <img src="{{ asset('assets/images/logos/symbols/back-button.png') }}">
             </a>
             <h1>Comentário em Foco</h1>
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <p>{{ $comentario->comentario }}</p>
-            @if($comentario->imagens->isNotEmpty())
+            @if($comentario->image)
                 <img src="{{ asset('storage/'.$comentario->imagens->first()->caminho_imagem) }}" class="img-fluid rounded">
             @endif
         </div>

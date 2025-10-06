@@ -57,12 +57,17 @@ class ComentarioController extends Controller
     {
         $comentario = Comentario::with([
             'usuario',
-            'imagens',
+            'image',
             'postagem.usuario',
             'respostas.usuario',
             'respostas.imagens'
         ])->findOrFail($id);
 
-        return view('feed.post.focus-comentario', compact('comentario'));
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count') // mais curtidas primeiro
+            ->take(5) // pega só os 5 mais curtidos
+            ->get();
+
+        return view('feed.post.focus-comentario', compact('comentario', 'posts'));
     }
 }

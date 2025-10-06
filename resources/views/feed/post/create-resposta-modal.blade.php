@@ -1,24 +1,25 @@
-<div class="form-comentar">
+<div class="form-comentar resposta">
     {{-- Exibir comentário que será respondido --}}
-    <div class="comentario-alvo border p-2 mb-3 rounded">
-        <div class="d-flex align-items-center">
-            <img src="{{ asset('storage/'.$comentario->usuario->foto ?? 'assets/images/logos/contas/user.png') }}"
-                alt="foto perfil" class="rounded-circle" width="40" height="40">
-            <div class="ms-2">
-                <strong>{{ $comentario->usuario->user }}</strong>
-                <p class="text-muted mb-0" style="font-size: 0.9rem">{{ $comentario->created_at->diffForHumans() }}</p>
+    <div class="reply">
+        <img src="{{ asset('storage/'.$comentario->usuario->foto ?? 'assets/images/logos/contas/user.png') }}"
+            alt="foto perfil" class="user-photo">
+        <div class="info-reply">
+            <div class="dados-reply">
+                <h1>{{ $comentario->usuario->nome }}</h1>
+                <p>{{ $comentario->usuario->user }}</p>
+                <p>{{ $comentario->created_at->diffForHumans() }}</p>
             </div>
         </div>
         <p class="mt-2">{{ $comentario->comentario }}</p>
     </div>
-    
+
     @if (!empty(Auth::user()->foto))
     <img class="user-photo" src="{{ url('storage/'.Auth::user()->foto) }}" alt="conta">
     @else
     <img class="user-photo" src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
     @endif
 
-    <h1> {{ $postagem->titulo}} </h1>
+    <h1> {{ $comentario->postagem->titulo}} </h1>
 
     <form action="{{ route('post.comentario', ['tipo' => 'comentario','id' => $comentario->id]) }}" method="POST" class="form" enctype="multipart/form-data">
         @csrf
@@ -27,7 +28,7 @@
                 name="comentario"
                 maxlength="280"
                 rows="3"
-                placeholder="Responda a publicação de {{ $postagem->usuario->user }}" required
+                placeholder="Responda a publicação de {{ $comentario->postagem->usuario->user }}" required
                 style="width: 100%;"></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('comentario')" />
         </div>
