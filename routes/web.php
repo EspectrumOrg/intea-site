@@ -47,7 +47,8 @@ Route::get('/login', function () { // Login
 
 Route::get('/cadastro', function () { // Tipo Conta
     return view('auth.register');
-})->name('cadastro.index');
+})->middleware('guest')->name('cadastro.index');
+
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
@@ -97,8 +98,9 @@ Route::middleware('auth')->group(function () {
         ->parameters(["feed" => "post"]);
     // curtida postagem
     Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
-    // comentario postagem
-    Route::post('/feed/{id_postagem}', [ComentarioController::class, 'store'])->name('post.comentario');
+    // comentario postagem e reply comentário
+    Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
+    Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');

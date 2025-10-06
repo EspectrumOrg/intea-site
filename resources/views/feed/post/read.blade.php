@@ -148,7 +148,7 @@
 
 <!-------------------------------------------- Form de comentário ---------------------------->
 <div class="form-comentario">
-    <form action="{{ route('post.comentario', $postagem->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" enctype="multipart/form-data">
         <div style="display: flex;">
             <div class="foto-perfil">
                 @if (!empty(Auth::user()->foto))
@@ -189,9 +189,8 @@
 
 <!------------------------------ Lista de comentários ----------------------------------------------------------->
 <div class="comentarios">
-    @foreach($postagem->comentarios as $comentario)
+    @foreach($postagem->comentarios->whereNull('id_comentario_pai') as $comentario)
     <div class="comentario">
-
         <div class="foto-comentario">
             @if (!empty($comentario->usuario->foto))
             <img src="{{ asset('storage/' . $comentario->usuario->foto) }}" alt="foto perfil">
@@ -208,6 +207,47 @@
             @if(!empty($comentario->image))
             <img src="{{ asset('storage/' . $comentario->image->caminho_imagem) }}" alt="Imagem comentário">
             @endif
+        </div>
+
+        <div class="interacoes">
+            <div>
+                <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button">
+                    <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
+                    <h1>{{ $comentario->comentarios_count }}</h1>
+                </button>
+            </div>
+
+
+            <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
+                @csrf
+                <button type="submit" class="button">
+                    <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $comentario->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                    <h1>{{ $comentario->curtidas_count }}</h1>
+                </button>
+            </form>
+        </div>
+
+        @if($comentario->respostas->isNotEmpty())
+        <div class="respostas ms-4 mt-2 border-start ps-3">
+            @foreach($comentario->respostas as $resposta)
+            <div class="resposta mb-2">
+                <a href="{{ route('comentario.focus', $resposta->id) }}">
+                    <strong>{{ $resposta->usuario->user }}</strong>
+                </a>
+                <p>{{ $resposta->comentario }}</p>
+            </div>
+            @endforeach
+        </div>
+        @endif
+    </div>
+
+    <!-- modal resposta comentário-->
+    <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
+        <div class="modal-content">
+            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">&times;</button>
+            <div class="modal-content-content">
+                @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
+            </div>
         </div>
     </div>
     @endforeach

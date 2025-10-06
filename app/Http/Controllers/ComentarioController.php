@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class ComentarioController extends Controller
 {
-    public function store(Request $request, $id_postagem)
+    public function store(Request $request, $tipo, $id)
     {
         $request->validate(
             [
@@ -21,12 +21,23 @@ class ComentarioController extends Controller
             ]
         );
 
-        // Criar comentário
-        $comentario = Comentario::create([
-            'id_postagem' => $id_postagem,
-            'id_usuario' => auth()->id(), 
+        // salvar dados gerais
+        $dados = [
+            'id_usuario' => auth()->id(),
             'comentario' => $request->comentario,
-        ]);
+        ];
+
+        // salvar como post coment ou post reply
+        if ($tipo === 'postagem') {
+            $dados['id_postagem'] = $id;
+        } elseif ($tipo === 'comentario') {
+            $dados['id_comentario_pai'] = $id;
+        } else {
+            abort(400, 'Tipo inválido de comentário.');
+        }
+
+        // salvar bd
+        $comentario = Comentario::create($dados);
 
         // Criar imagem
         if ($request->hasFile('caminho_imagem')) {
@@ -38,8 +49,20 @@ class ComentarioController extends Controller
             ]);
         }
 
-        return redirect()
-            ->route('post.read', $id_postagem)
-            ->with('success', 'Comentário publicado!');
+
+        return back()->with('success', 'Comentário publicado!');
+    }
+
+    public function focus($id)
+    {
+        $comentario = Comentario::with([
+            'usuario',
+            'imagens',
+            'postagem.usuario',
+            'respostas.usuario',
+            'respostas.imagens'
+        ])->findOrFail($id);
+
+        return view('feed.post.focus-comentario', compact('comentario'));
     }
 }

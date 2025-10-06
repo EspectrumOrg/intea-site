@@ -25,7 +25,7 @@ class Comentario extends Model
 
     public function comentarioPai ()
     {
-        return $this->belongsTo(Comentario::class, 'id_comentario_pai');
+        return $this->belongsTo(Comentario::class, 'id_comentario_pai', 'id');
     }
 
     public function postagem ()
@@ -45,6 +45,6 @@ class Comentario extends Model
 
     public function respostas ()
     {
-        return $this->hasMany(Comentario::class, 'id_comentario');
+        return $this->hasMany(Comentario::class, 'id_comentario_pai', 'id');
     }
 }
