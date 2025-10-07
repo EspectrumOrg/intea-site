@@ -54,7 +54,7 @@ class PostagemController extends Controller
 
         $request->validate([
             'texto_postagem' => 'required|string|max:1000',
-            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
         ], [
             'texto_postagem.required' => 'O campo texto é obrigatório',
             'texto_postagem.max' => 'O campo texto só comporta até 755 caracteres',
