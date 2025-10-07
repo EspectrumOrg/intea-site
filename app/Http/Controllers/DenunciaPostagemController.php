@@ -22,7 +22,7 @@ class DenunciaPostagemController extends Controller
     {
         $query = $this->denuncia->query();
 
-        // Busca por nome, user ou email
+        /* Busca por nome, user ou email
         if ($request->filled('search_denuncia')) {
             $search = $request->search;
             $query->whereHas('usuario', function ($q) use ($search) {
@@ -30,23 +30,23 @@ class DenunciaPostagemController extends Controller
                     ->orWhere('user', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
-        }
+        }*/
 
         // Filtro por motivo_denuncia
         if ($request->filled('motivo_denuncia')) {
             $query->where('motivo_denuncia', $request->motivo_denuncia);
         }
 
-        // Filtro por status_conta
-        if ($request->filled('status_conta')) {
-            $query->where('status_conta', $request->status_conta);
+        // Filtro por status_denuncia
+        if ($request->filled('status_denuncia')) {
+            $query->where('status_denuncia', $request->status_denuncia);
         }
 
         // Ordenação
         $ordem = $request->input('ordem', 'desc'); // padrão: mais recente
         $query->orderBy('created_at', $ordem);
 
-        $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens'])->paginate(10);
+        $denuncias = $query->with(['usuario', 'postagem.usuario', 'postagem.imagens', 'postagem.denuncias'])->paginate(10);
 
         return view('admin.denuncia.index', compact('denuncias'));
     }
@@ -67,12 +67,30 @@ class DenunciaPostagemController extends Controller
             'id_usuario' => $id_usuario,
             'motivo_denuncia' => $request->motivo_denuncia,
             'texto_denuncia' => $request->texto_denuncia,
+            'status_denuncia' => '1',
         ]);
 
         return back();
     }
 
-    public function destroy($id)
+    public function resolve($id)
+    {
+        $denuncia = DenunciaPostagem::findOrFail($id);
+
+        // Resolver principal
+        $denuncia->status_denuncia = 0;
+        $denuncia->save();
+
+        // Resolver todas relacionadas à mesma postagem
+        DenunciaPostagem::where('id_postagem', $denuncia->id_postagem)
+            ->where('id', '!=', $denuncia->id)
+            ->update(['status_denuncia' => 0]);
+
+        session()->flash("successo", "Denúncia resolvida junto com relacionadas.");
+        return redirect()->back();
+    }
+
+    public function destroy($id) //Banir usuário
     {
         $usuario = Usuario::findOrFail($id);
         $usuario->status_conta = 0;

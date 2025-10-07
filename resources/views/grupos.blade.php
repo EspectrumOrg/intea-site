@@ -22,8 +22,9 @@
                 <label for="imagem">Imagem do grupo</label>
                 <input type="file" name="foto" id="foto" class="form-control" required>
             </div>
-
 <button class="botao"type="submit" class="btn btn-primary">Cadastrar Manga</button>
+                </form>
+
 
 @foreach($grupo as $g)
     <h2>{{ $g->nomeGrupo }}</h2>

@@ -37,6 +37,11 @@ class ResponsavelController extends Controller
      */
     public function store(Request $request)
     {
+        //retirar pontuação dos campos só com números
+        $request->merge([
+            'cpf' => preg_replace('/\D/', '', $request->cpf)
+        ]);
+
         // 0. Validar Dados com regras básicas
         $request->validate([
             'nome' => 'required|string|max:255',
@@ -84,9 +89,6 @@ class ResponsavelController extends Controller
             abort(403, 'Tentativa de fraude no tipo de usuário.');
         }
 
-        //retirar pontuação dos campos só com números
-        $cpf_limpo = preg_replace('/\D/', '', $request->cpf);
-
         // Cria usuário e demais dados
         $usuario = Usuario::create([
             'nome' => $request->nome,
@@ -94,7 +96,7 @@ class ResponsavelController extends Controller
             'apelido' => $request->apelido,
             'email' => $request->email,
             'senha' => bcrypt($request->senha),
-            'cpf' => $request->cpf_limpo,
+            'cpf' => $request->cpf,
             'genero' => $request->genero,
             'data_nascimento' => $request->data_nascimento,
             'tipo_usuario' => $request->tipo_usuario,

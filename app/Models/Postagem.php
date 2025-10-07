@@ -29,7 +29,7 @@ class Postagem extends Model
 
     public function comentarios()
     {
-        return $this->hasMany(ComentarioPostagem::class, 'id_postagem');
+        return $this->hasMany(Comentario::class, 'id_postagem');
     }
 
     public function imagens()
@@ -44,7 +44,7 @@ class Postagem extends Model
 
     public function denuncias()
     {
-        return $this->hasMany(DenunciaPostagem::class, 'postagem_id');
+        return $this->hasMany(DenunciaPostagem::class, 'id_postagem');
     }
 
     public function getCurtidasCountAttribute()

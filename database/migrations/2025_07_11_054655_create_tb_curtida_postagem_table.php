@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('id_postagem')->constrained('tb_postagem')->onDelete('cascade');
             $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
-            $table->timestamps();
-
             $table->unique(['id_postagem', 'id_usuario']); // evita curtir duas vezes
+            $table->timestamps();
         });
     }
 

@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ImagemComentarioPostagem extends Model
+class ImagemComentario extends Model
 {
     use HasFactory;
 
-    protected $table = "tb_imagem_comentario_postagem";
+    protected $table = "tb_imagem_comentario";
 
     protected $fillable = [
         'id_comentario',
@@ -18,6 +18,6 @@ class ImagemComentarioPostagem extends Model
 
     public function comentarioPostagem()
     {
-        return $this->belongsTo(ComentarioPostagem::class, 'id_comentario');
+        return $this->belongsTo(Comentario::class, 'id_comentario');
     }
 }

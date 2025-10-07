@@ -3,7 +3,8 @@
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
-use App\Http\Controllers\ComentarioPostagemController;
+use App\Http\Controllers\ChatPrivadoController;
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaPostagemController;
@@ -16,6 +17,7 @@ use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PusherController;
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 
@@ -37,20 +39,27 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
-// Login
-Route::get('/login', function () {
+
+// somente para quem não está logado
+Route::get('/login', function () { // Login
     return view('auth.login');
-})->name('login');
-// Tipo Conta
-Route::get('/cadastro', function () {
+})->middleware('guest')->name('login');
+
+Route::get('/cadastro', function () { // Tipo Conta
     return view('auth.register');
-})->name('cadastro.index');
+})->middleware('guest')->name('cadastro.index');
+
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
+Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
 
-// Cadastro de Admin
-Route::resource("admin", AdminController::class)->names("admin");
+
+
+
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
 // Cadastro de Comunidade
@@ -59,6 +68,16 @@ Route::resource("comunidade", ComunidadeController::class)->names("comunidade");
 Route::resource("profissional", ProfissionalSaudeController::class)->names("profissional");
 // Cadastro de Responsável
 Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
+
+
+//arrumar rotas depois 
+Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
+Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+
+
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
 
 /* Sua Parte Nicola ------------------ 
 Route::get('/cadastro/responsavel', function () {
@@ -79,13 +98,14 @@ Route::middleware('auth')->group(function () {
         ->parameters(["feed" => "post"]);
     // curtida postagem
     Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
-    // comentario postagem
-    Route::post('/feed/{id_postagem}', [ComentarioPostagemController::class, 'store'])->name('post.comentario');
+    // comentario postagem e reply comentário
+    Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
+    Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // denuncia postagem
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
 
-    
+
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store')->middleware('auth');
 
     Route::post('/seguir', [SeguirController::class, 'store'])->name('seguir.store');
@@ -97,7 +117,7 @@ Route::middleware('auth')->group(function () {
     })->name('cadastro.index');
 
     Route::get('/conta/{usuario_id}', [ContaController::class, 'index'])->name('conta.index');
-    // denuncia postagem
+    // denuncia usuário
     Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaUsuarioController::class, 'post'])->name('usuario.denuncia');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -119,26 +139,34 @@ Route::middleware('auth', 'is_profissional')->group(function () {
 // Apenas Admin
 Route::middleware(['auth', 'is_admin'])->group(function () {
 
+    // Cadastro de Admin
+    Route::resource("admin", AdminController::class)->names("admin");
+    // Usuário
     Route::resource("usuario", UsuarioController::class)
         ->names("usuario")
         ->parameters(["usuario" => "usuarios"]);
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
-
+    // Denúncia postagem
     Route::resource("denuncia", DenunciaPostagemController::class)
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
-
+    Route::put('/denuncia/{denuncia}/resolve', [DenunciaPostagemController::class, 'resolve'])->name('denuncia.resolve');
+    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware('auth') 
-    ->name('dashboard.index');
-    
+        ->middleware('auth')
+        ->name('dashboard.index');
 });
 
 
 
 Route::post('/grupo/inserir', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
+
+/*Rota para o novo sistema de perfil com 3 abas (usa ContaController)*/
+Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
+
+
 
 
 require __DIR__ . '/auth.php';

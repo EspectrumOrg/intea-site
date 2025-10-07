@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('senha');
             $table->string('cpf')->unique();
-            $table->integer('genero'); //FK
+            $table->unsignedBigInteger('genero');  
+            $table->foreign('genero')->references('id')->on('tb_genero')->onDelete('cascade');
             $table->date('data_nascimento');
             $table->string('imagem')->nullable();
             $table->string('cep')->nullable();

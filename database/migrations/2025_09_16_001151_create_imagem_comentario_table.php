@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_imagem_comentario_postagem', function (Blueprint $table) {
+        Schema::create('tb_imagem_comentario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_comentario')->constrained('tb_comentario_postagem')->onDelete('cascade');
+            $table->foreignId('id_comentario')->constrained('tb_comentario')->onDelete('cascade');
             $table->string('caminho_imagem')->nullable();
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_imagem_comentario_postagem');
+        Schema::dropIfExists('tb_imagem_comentario');
     }
 };

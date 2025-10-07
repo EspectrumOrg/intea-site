@@ -40,8 +40,7 @@ class AdminController extends Controller
     {
         $generos = $this->genero->all();
 
-        return view('#', compact('generos'));
-
+        return view('auth.create-admin', compact('generos'));
     }
 
     /**
@@ -49,7 +48,11 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        // 0. Validar Dados
+        //retirar pontuação dos campos só com números
+        $request->merge([
+            'cpf' => preg_replace('/\D/', '', $request->cpf)
+        ]);
+
         $request->validate([
             'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
@@ -57,13 +60,22 @@ class AdminController extends Controller
             'email' => 'required|lowercase|email|unique:tb_usuario,email',
             'senha' => 'required|string|min:6|max:255',
             'senha_confirmacao' => 'required|same:senha',
-            'cpf' => 'required|digits:11',
-            'genero' => 'required|string|max:255',
+            'cpf' => 'required|max:20|unique:tb_usuario,cpf', // retirar pontuação posteriormente
+            'genero' => 'required|integer',
             'data_nascimento' => 'required|date',
+            'cep' => 'nullable|string|max:20', // retirar pontuação posteriormente
+            'logradouro' => 'nullable|string|max:255',
+            'endereco' => 'nullable|string|max:255',
+            'rua' => 'nullable|string|max:255',
+            'bairro' => 'nullable|string|max:255',
+            'numero' => 'nullable|string|max:255',
+            'cidade' => 'nullable|string|max:255',
+            'estado' => 'nullable|string|max:255',
+            'complemento' => 'nullable|string|max:255',
             'tipo_usuario' => 'required|in:1',
             'status_conta' => 'required|in:1',
             'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20'
+            'numero_telefone.*' => 'required|string|max:20' // retirar pontuação posteriormente
         ], [
             'nome.required' => 'O campo nome é obrigatório',
             'user.required' => 'O campo user é obrigatório',
@@ -76,18 +88,25 @@ class AdminController extends Controller
             'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
             'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
             'cpf.required' => 'O campo cpf é obrigatório',
-            'cpf.digits' => 'O CPF deve conter exatamente 11 dígitos numéricos',
+            'cpf.unique' => 'CPF á cadastrado',
             'genero.required' => 'O campo gênero é obrigatório',
             'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
             'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
             'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
         ]);
 
-        if ($request->tipo_usuario != 1) { // 0.5 Define tipo Admin = 1
+        /* Validação customizada do CPF 
+        if (!self::validaCPF($request->cpf)) {
+            return back()
+                ->withErrors(['cpf' => 'CPF inválido. Por favor, verifique e tente novamente.'])
+                ->withInput();
+        }*/
+
+        if ($request->tipo_usuario != 1) {
             abort(403, 'Tentativa de fraude no tipo de usuário.');
         }
 
-        // 1. Criar Usuário Padrão
+        // Criar Usuário Padrão
         $usuario = Usuario::create([
             'nome' => $request->nome,
             'user' => $request->user,
@@ -97,25 +116,59 @@ class AdminController extends Controller
             'cpf' => $request->cpf,
             'genero' => $request->genero,
             'data_nascimento' => $request->data_nascimento,
+            'cep' => $request->cep,
+            'logradouro' => $request->logradouro,
+            'endereco' => $request->endereco,
+            'rua' => $request->rua,
+            'bairro' => $request->bairro,
+            'numero' => $request->numero,
+            'cidade' => $request->cidade,
+            'estado' => $request->estado,
+            'complemento' => $request->complemento,
             'tipo_usuario' => $request->tipo_usuario,
             'status_conta' => $request->status_conta,
         ]);
 
-        // 2. Criar Dados Específicos Admin
+        // Criar Dados Específicos Admin
         Admin::create([
             'usuario_id' => $usuario->id,
         ]);
-        // 3. Criar Telefone(s)
+
+        // Criar Telefone(s)
         foreach ($request->numero_telefone as $telefone) {
+            $telefone_limpo = preg_replace('/\D/', '', $telefone);
             FoneUsuario::create([
                 'usuario_id' => $usuario->id,
-                'numero_telefone' => $telefone,
+                'numero_telefone' => $telefone_limpo,
             ]);
         }
 
-        Auth::login($usuario); //entra direto nessa bagaça
+        Auth::login($usuario);
 
-        return redirect()->route('dashboard')->with('Sucesso', 'Usuário Tipo Admin cadastrado com sucesso!');
+        //return response()->json($request->all());
+        return redirect()->route('dashboard.index')->with('Sucesso', 'Usuário Tipo Admin cadastrado com sucesso!');
+    }
+
+    // Método para validar CPF
+    private static function validaCPF($cpf)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $cpf);
+
+        if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf)) {
+            return false;
+        }
+
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++) {
+                $d += $cpf[$c] * (($t + 1) - $c);
+            }
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

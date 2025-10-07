@@ -36,7 +36,7 @@
     <div class="card">
         <div class="card-header">
             <h2>Usuários Cadastrados</h2>
-            <a href="#" class="btn-novo">Novo Admin</a>
+            <a href="{{ route('admin.create') }}" class="btn-novo">Novo Admin</a>
         </div>
 
         <div class="card-body">
@@ -62,17 +62,47 @@
                         <td>{{ $item->user }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->data_nascimento)->format('d/m/Y') }}</td>
-                        <td>{{ $item->tipo_usuario }}</td>
+                        <td>
+                            @if($item->tipo_usuario === 1)
+                            Admin
+                            @elseif($item->tipo_usuario === 2)
+                            Autista
+                            @elseif($item->tipo_usuario === 3)
+                            Comunidade
+                            @elseif($item->tipo_usuario === 4)
+                            Profissional de Saúde
+                            @else
+                            Responsável
+                            @endif
+                        </td>
                         <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
-                        <td>{{ $item->status_conta }}</td>
+                        <td>
+                            @switch($item->status_conta)
+                            @case(0)
+                            Banido
+                            @break
+
+                            @case(1)
+                            Ativo
+                            @break
+
+                            @case(2)
+                            Conta excluída
+                            @break
+
+                            @default
+                            Desconhecido
+                            @endswitch
+                        </td>
+                        </td>
                         <td>
                             @if($item->status_conta == 1)
                             <!-- Usuário ativo → Mostrar botão de banir -->
                             <form action="{{ route('usuario.destroy', $item->id) }}" method="post" class="form-excluir">
                                 @csrf
                                 @method("delete")
-                                <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir">
-                                    Banir
+                                <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                                    <img class="img-icons" src="{{ asset('assets/images/logos/symbols/block.png') }}" alt="banir usuário">
                                 </button>
                             </form>
                             @else

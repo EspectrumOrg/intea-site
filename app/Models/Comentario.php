@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ComentarioPostagem extends Model
+class Comentario extends Model
 {
     use HasFactory;
 
-    protected $table = 'tb_comentario_postagem';
+    protected $table = 'tb_comentario';
 
     protected $fillable = [
         'id_postagem',
+        'id_comentario_pai',
         'id_usuario',
         'comentario',
     ];
@@ -22,6 +23,11 @@ class ComentarioPostagem extends Model
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
+    public function comentarioPai ()
+    {
+        return $this->belongsTo(Comentario::class, 'id_comentario_pai', 'id');
+    }
+
     public function postagem ()
     {
         return $this->belongsTo(Postagem::class, 'id_postagem');
@@ -29,11 +35,16 @@ class ComentarioPostagem extends Model
 
     public function image ()
     {
-        return $this->hasOne(ImagemComentarioPostagem::class, 'id_comentario');
+        return $this->hasOne(ImagemComentario::class, 'id_comentario', 'id');
     }
 
     public function curtidas_comentario ()
     {
         return $this->hasMany(CurtidaComentario::class);
+    }
+
+    public function respostas ()
+    {
+        return $this->hasMany(Comentario::class, 'id_comentario_pai', 'id');
     }
 }

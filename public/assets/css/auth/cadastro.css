@@ -207,7 +207,7 @@ body {
 .progress-bar {
     display: flex;
     justify-content: space-between;
-    margin: 20px 0 30px 0;
+    margin: 15px 0 15px 0;
 }
 
 .progress-bar .step {
@@ -387,12 +387,21 @@ body {
 }
 
 /* --------- Mensagens de erro  form-outer form .page .field --------- */
+.alert-error {
+    background: #fdd;
+    color: #900;
+    padding: 0 2rem;
+    margin: .5rem 0;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
 .alert-danger {
     background: #fdd;
     color: #900;
     padding: 0.2rem .4rem;
     border-radius: 6px;
-    font-size: 0.5rem;
+    font-size: 12px;
 }
 
 /* --------- Links abaixo --------- */

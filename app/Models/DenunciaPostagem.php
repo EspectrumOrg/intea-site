@@ -16,14 +16,15 @@ class DenunciaPostagem extends Model
         'id_usuario',
         'motivo_denuncia',
         'texto_denuncia',
+        'status_denuncia',
     ];
 
-    public function postagem()
+    public function postagem() //postagem denunciada
     {
         return $this->belongsTo(Postagem::class, 'id_postagem');
     }
 
-    public function usuario()
+    public function usuario() //usuário que fez a denúncia
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }

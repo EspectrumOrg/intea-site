@@ -7,7 +7,7 @@
 
     <h1> {{ $postagem->titulo}} </h1>
 
-    <form action="{{ route('post.comentario', $postagem->id) }}" method="POST" class="form" enctype="multipart/form-data">
+    <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" class="form" enctype="multipart/form-data">
         @csrf
         <div class="textfield-comentar">
             <textarea class="post-textarea-comentar" 

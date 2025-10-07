@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('curtida_comentario', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
-            $table->foreignId('id_comentario')->constrained('tb_comentario_postagem')->onDelete('cascade');
+            $table->foreignId('id_comentario')->constrained('tb_comentario')->onDelete('cascade');
             $table->timestamps();
         });
     }
