@@ -14,9 +14,9 @@
             <h1>Mensagens</h1>
         </a>
 
-        <a href="{{ route('profile.edit') }}"
-            class="nav-link {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.edit') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
+        <a href="{{ route('profile.show') }}"
+            class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.shpw') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
             <h1>Perfil</h1>
         </a>
 

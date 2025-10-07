@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
-use App\Models\Postagem;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Postagem;
 
 class ProfileController extends Controller
 {
@@ -49,7 +49,7 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
+        return view('profile.show', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
     }
 
     /**
@@ -76,7 +76,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit', compact('generos'))->with('status', 'profile-updated');
+        return Redirect::route('profile.show', compact('generos'))->with('status', 'profile-updated');
     }
 
     /**
