@@ -163,5 +163,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
 Route::post('/grupo/inserir', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
 
+Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/perfil/{id}', [ProfileController::class, 'show'])->name('profile.user');
+
 
 require __DIR__ . '/auth.php';

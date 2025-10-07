@@ -175,3 +175,60 @@
     background-position: right 0.75rem center;
     background-size: 10px 5px;
 }
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.profile-header .foto-perfil img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #1f2937;
+}
+
+.username {
+    color: #6b7280;
+    margin: 0.5rem 0;
+}
+
+.bio {
+    color: #4b5563;
+    margin: 1rem 0 0 0;
+}
+
+.post-image {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-top: 1rem;
+}
+
+.post-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.like-avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
