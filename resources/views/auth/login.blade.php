@@ -77,6 +77,24 @@
                 </div>
             </form>
         </div>
+
+        <!-- Modal de Erro -->
+        @if(session('conta_status'))
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p>{{ session('conta_status') }}</p>
+            </div>
+        </div>
+        @endif
+
+
+        <!-- Modal de Erro JS -->
+        <script>
+            function closeModal() {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        </script>
     </div>
 </body>
 
