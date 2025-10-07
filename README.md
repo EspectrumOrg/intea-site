@@ -8,7 +8,7 @@
 
 ## 💙 Sobre o Projeto  
 O **INTEA** é uma rede social inclusiva criada para fortalecer o vínculo entre **toda a comunidade autista**.  
-Nosso foco é o **acolhimento, privacidade e interação saudável** entre os usuários, a plataforma oferece um ambiente seguro e intuitivo para troca de experiências e apoio mútuo.
+Nosso foco é o **acolhimento, privacidade e interação saudável** entre os usuários. A plataforma oferece um ambiente seguro e intuitivo para troca de experiências e apoio mútuo.
 
 ## ✨ Funcionalidades
 
@@ -114,4 +114,4 @@ Em seguida, vá até:
 `public/storage/arquivos/`
 E adicione as imagens contidas no seguinte `.rar` acima.
 
-<p align="center"> <b>Feito por INTEA</b></p> 
+<p align="center"> <b>Feito por ESPECTRUM</b><br> <b>Tornando Vísivel o Invísivel</b></p> 
