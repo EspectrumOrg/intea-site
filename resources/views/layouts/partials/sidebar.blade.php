@@ -16,18 +16,26 @@
 
         <a href="{{ route('profile.show') }}"
             class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.shpw') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.show') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
             <h1>Perfil</h1>
         </a>
+
+        <a href="{{ route('grupo.index') }}" id="config"
+            class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}">
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('grupo.index') ? 'grup-preenchido.png' : 'group.png')) }}" alt="Perfil">
+            <h1>Grupos</h1>
+        </a>
+
+        <!--<a href="{{ route('grupo.index') }}" class="nav-link" >
+            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
+            <h1>Grupos</h1>
+        </a>-->
 
         <a href="{{ route('post.index') }}" class="nav-link" id="config">
             <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
             <h1>Configurações</h1>
         </a>
-    <a href="{{ route('grupo.index') }}" class="nav-link" id="config">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
-            <h1>Grupos</h1>
-        </a>
+
 
 
         <!--@if (Auth::user()->tipo_usuario === 4)

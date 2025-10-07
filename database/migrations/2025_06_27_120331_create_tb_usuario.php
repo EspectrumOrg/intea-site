@@ -40,6 +40,7 @@ return new class extends Migration
             $table->string('descricao')->nullable(); //descrição perfil
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
