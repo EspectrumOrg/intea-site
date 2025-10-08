@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('curtida_comentario', function (Blueprint $table) {
+        Schema::create('tb_curtida_comentario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
             $table->foreignId('id_comentario')->constrained('tb_comentario')->onDelete('cascade');
+            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
+            $table->unique(['id_comentario', 'id_usuario']); // evita curtir duas vezes
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('curtida_comentario');
+        Schema::dropIfExists('tb_curtida_comentario');
     }
 };
