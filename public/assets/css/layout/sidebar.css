@@ -1,5 +1,6 @@
 :root {
     --cor-tema: #048ABF;
+    --cor-tema-apagado: #016d98;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
@@ -154,10 +155,13 @@
     align-items: center;
     padding: 0.8rem 1rem;
     border-radius: 50px / 100%;
-    font-size: 16px;
     color: var(--preto);
     text-decoration: none;
     transition: all 0.3s ease-in-out;
+}
+
+.container-sidebar .links .nav-link h1{
+    font-size: 16px;
 }
 
 /* hover e ativo */
@@ -207,4 +211,88 @@
 
 .container-sidebar .post-button button:hover {
     background-color: var(--cor-tema);
+}
+
+/* Parte Admin -----------------------------------------+*/
+.admin .content {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem 0 2rem 0;
+    width: 290px;
+    height: 100vh;
+    padding: 1rem 0rem 1rem 0;
+    background-color: var(--cor-fundo);
+}
+
+/* Topo Texto --*/
+.admin .texto-superior {
+    width: 100%;
+    padding: 0 2rem;
+    margin-bottom: 2rem;
+}
+.admin .texto-superior h1{
+    font-size: 22px;
+    text-align: left;
+    letter-spacing: 1.5px;
+    font-weight: 400;
+    color: var(--branco-light);
+}
+
+/* Topo Admin --*/
+.admin .admin-topo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.admin .text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .1rem;
+}
+
+.admin .admin-topo h1{
+    font-size: 16px;
+    color: var(--branco);
+}
+
+.admin .admin-topo h2{
+    font-size: 14px;
+    color: var(--cor-tema);
+}
+
+/* links --*/
+/* estilo individual dos links */
+.admin .links .nav-link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px / 100%;
+    color: var(--branco);
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.admin .links .nav-link h1{
+    font-size: 16px;
+}
+
+/* hover e ativo */
+.admin .links .nav-link:hover {
+    transform: translateX(5px);
+    background-color: var(--cor-fundo);
+    color: var(--cor-tema-apagado);
+}
+
+.admin .links .active {
+    color: var(--cor-tema);
+    transform: translateX(5px);
+
 }

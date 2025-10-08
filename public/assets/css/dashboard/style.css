@@ -22,12 +22,11 @@
 
  .dashboard-root {
      background: var(--branco);
-     padding: 28px 16px;
+     padding: 1rem 2rem;
      min-height: 100%;
  }
 
  .dashboard-inner {
-     max-width: 1200px;
      margin: 0 auto;
  }
 

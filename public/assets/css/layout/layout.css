@@ -48,3 +48,12 @@ body {
 .container-main {
     width: 600px;
 }
+
+/* Parte Admin */
+.admin {
+    max-width: 100%;
+}
+
+.admin .main {
+    width: 100%;
+}
