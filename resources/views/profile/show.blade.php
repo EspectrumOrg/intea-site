@@ -36,7 +36,7 @@
                         </div>
                         <div class="profile-info">
                             <h1>{{ $user->nome }}</h1>
-                            <p class="username">@{{ $user->user }}</p>
+                            <p class="username">@ {{ $user->user }}</p>
                             <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
                             <p class="tipo-usuario">
                                 @switch($user->tipo_usuario)
