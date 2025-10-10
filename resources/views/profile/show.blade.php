@@ -58,11 +58,11 @@
                         </button>
                         <button class="tab-button" data-tab="posts">
                             <span class="material-symbols-outlined">article</span>
-                            Postagens ({{ $userPosts->count() }})
+                            Postagens ({{ $userPosts->count()?? 0  }})
                         </button>
                         <button class="tab-button" data-tab="likes">
                             <span class="material-symbols-outlined">favorite</span>
-                            Curtidas ({{ $likedPosts->count() }})
+                            Curtidas ({{ $likedPosts->count()?? 0  }})
                         </button>
                         
                         <!-- Nova aba: Configurações (apenas para o próprio usuário) -->
