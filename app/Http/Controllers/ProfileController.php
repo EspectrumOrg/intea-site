@@ -25,32 +25,51 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
-    {
-        $generos = $this->genero->all();
-        $user = Auth::user();
-        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-        $dadosespecificos = null;
+public function edit(Request $request): View
+{
+    $generos = $this->genero->all();
+    $user = Auth::user();
+    $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+    $dadosespecificos = null;
 
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count') // mais curtidas primeiro
-            ->take(5) // pega só os 5 mais curtidos
-            ->get();
+    // 🔥 Postagens populares (as mais curtidas)
+    $postsPopulares = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
 
-        switch ($user->tipo_usuario) {
-            case 2:
-                $dadosespecificos = $user->autista;
-                break;
-            case 4:
-                $dadosespecificos = $user->profissional_saude;
-                break;
-            case 5:
-                $dadosespecificos = $user->responsavel;
-                break;
-        }
+    // 📜 Postagens do usuário logado
+    $userPosts = Postagem::where('usuario_id', $user->id)->get();
 
-        return view('profile.show', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
+    // ❤️ Postagens curtidas pelo usuário
+    $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
+        $q->where('usuario_id', $user->id);
+    })->get();
+
+    // 🔍 Dados específicos por tipo de usuário
+    switch ($user->tipo_usuario) {
+        case 2:
+            $dadosespecificos = $user->autista;
+            break;
+        case 4:
+            $dadosespecificos = $user->profissional_saude;
+            break;
+        case 5:
+            $dadosespecificos = $user->responsavel;
+            break;
     }
+
+    // ✅ Retorna para a view com todas as variáveis necessárias
+    return view('profile.show', compact(
+        'dadosespecificos',
+        'generos',
+        'telefones',
+        'user',
+        'userPosts',
+        'likedPosts',
+        'postsPopulares'
+    ));
+}
 
     /**
      * Update the user's profile information.
