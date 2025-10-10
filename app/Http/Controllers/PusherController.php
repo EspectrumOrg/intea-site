@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\PusherBroadcast;
+use App\Models\ChatPrivadoModel;
+use App\Models\MensagemPrivadaModel;
 use Illuminate\Http\Request;
 
 class PusherController extends Controller
@@ -35,19 +37,41 @@ public function index()
 
 return view('chat', compact('mensagens', 'usuario2'));
 }
-    public function broadcast(Request $request)
-    {
-        broadcast(new PusherBroadcast($request->get('message')))->toOthers();
-        return view('broadcast', ['message' => $request->get('message')]);
+  public function broadcast(Request $request)
+{
+    $usuario1 = auth()->id();
+    $usuario2 = $request->usuario2_id;
+    $texto = $request->message;
+
+    // Busca ou cria conversa
+    $conversa = \App\Models\ChatPrivadoModel::where(function($q) use ($usuario1, $usuario2){
+        $q->where('usuario1_id', $usuario1)->where('usuario2_id', $usuario2);
+    })->orWhere(function($q) use ($usuario1, $usuario2){
+        $q->where('usuario1_id', $usuario2)->where('usuario2_id', $usuario1);
+    })->first();
+
+    if(!$conversa){
+        $conversa = \App\Models\ChatPrivadoModel::create([
+            'usuario1_id' => $usuario1,
+            'usuario2_id' => $usuario2,
+        ]);
     }
 
-    public function receive(Request $request)
-    {
-        return view('receive', ['message' => $request->get('message')]);
-    }
+    // Salva mensagem
+    $mensagem = \App\Models\MensagemPrivadaModel::create([
+        'conversa_id' => $conversa->id,
+        'remetente_id' => $usuario1,
+        'texto' => $texto,
+    ]);
 
+    // Dispara Pusher
+    broadcast(new \App\Events\PusherBroadcast($texto, $usuario1))->toOthers();
 
-
+    return response()->json([
+        'message' => $texto,
+        'remetente_id' => $usuario1
+    ]);
+}
     /**
      * Show the form for creating a new resource.
      */
