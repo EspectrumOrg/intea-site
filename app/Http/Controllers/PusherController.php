@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\PusherBroadcast;
-use App\Models\ChatPrivadoModel;
-use App\Models\MensagemPrivadaModel;
+use App\Models\ChatPrivado;
+use App\Models\MensagemPrivada;
 use Illuminate\Http\Request;
 
 class PusherController extends Controller
@@ -12,60 +12,63 @@ class PusherController extends Controller
     /**
      * Display a listing of the resource.
      */
-public function index()
-{
-    $usuario1 = auth()->id();  
-    $usuario2 = $usuario1 == 1 ? 2 : 1; // Ajuste dinâmico para teste
+    public function index($usuario2)
+    {
+        $usuario1 = auth()->id(); // usuário logado
 
-    $conversa = \App\Models\ChatPrivadoModel::where(function ($query) use ($usuario1, $usuario2) {
-            $query->where('usuario1_id', $usuario1)
-                  ->where('usuario2_id', $usuario2);
-        })
-        ->orWhere(function ($query) use ($usuario1, $usuario2) {
-            $query->where('usuario1_id', $usuario2)
-                  ->where('usuario2_id', $usuario1);
-        })
-        ->first();
+        // Buscar conversa existente ou criar depois ao enviar mensagem
+        $conversa = ChatPrivado::where(function ($query) use ($usuario1, $usuario2) {
+                $query->where('usuario1_id', $usuario1)
+                    ->where('usuario2_id', $usuario2);
+            })
+            ->orWhere(function ($query) use ($usuario1, $usuario2) {
+                $query->where('usuario1_id', $usuario2)
+                    ->where('usuario2_id', $usuario1);
+            })
+            ->first();
 
-    $mensagens = [];
+        $mensagens = [];
+        if ($conversa) {
+            $mensagens = MensagemPrivada::where('conversa_id', $conversa->id)
+                ->orderBy('created_at', 'asc')
+                ->get();
+        }
 
-    if ($conversa) {
-        $mensagens = \App\Models\MensagemPrivadaModel::where('conversa_id', $conversa->id)
-            ->orderBy('created_at', 'asc')
-            ->get();
+        return view('chat', compact('mensagens', 'usuario2'));
     }
-
-return view('chat', compact('mensagens', 'usuario2'));
-}
-  public function broadcast(Request $request)
+ public function broadcast(Request $request)
 {
     $usuario1 = auth()->id();
     $usuario2 = $request->usuario2_id;
     $texto = $request->message;
 
     // Busca ou cria conversa
-    $conversa = \App\Models\ChatPrivadoModel::where(function($q) use ($usuario1, $usuario2){
+    $conversa = \App\Models\ChatPrivado::where(function($q) use ($usuario1, $usuario2){
         $q->where('usuario1_id', $usuario1)->where('usuario2_id', $usuario2);
     })->orWhere(function($q) use ($usuario1, $usuario2){
         $q->where('usuario1_id', $usuario2)->where('usuario2_id', $usuario1);
     })->first();
 
     if(!$conversa){
-        $conversa = \App\Models\ChatPrivadoModel::create([
+        $conversa = \App\Models\ChatPrivado::create([
             'usuario1_id' => $usuario1,
             'usuario2_id' => $usuario2,
         ]);
     }
 
     // Salva mensagem
-    $mensagem = \App\Models\MensagemPrivadaModel::create([
+    $mensagem = \App\Models\MensagemPrivada::create([
         'conversa_id' => $conversa->id,
         'remetente_id' => $usuario1,
         'texto' => $texto,
     ]);
 
-    // Dispara Pusher
-    broadcast(new \App\Events\PusherBroadcast($texto, $usuario1))->toOthers();
+    // Busca a foto do usuário remetente
+    $remetente = \App\Models\Usuario::find($usuario1);
+    $foto = $remetente->foto ?? 'default.jpg';
+
+    // Dispara Pusher passando a foto
+    broadcast(new \App\Events\PusherBroadcast($texto, $usuario1, $foto))->toOthers();
 
     return response()->json([
         'message' => $texto,

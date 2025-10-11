@@ -89,9 +89,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+        // teste
+
+
+      Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
+
 
     // Rotas do Chat (Pusher)
-    Route::get('/chat', [PusherController::class, 'index'])->name('chat');
+    Route::get('/chat/{usuario2}', [PusherController::class, 'index'])->name('chat.usuario');
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
     Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
     Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);

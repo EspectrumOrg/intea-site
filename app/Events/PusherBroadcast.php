@@ -12,14 +12,16 @@ class PusherBroadcast implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $message;
-    public int $remetente_id;
+  public $message;
+public $remetente_id;
+public $foto;
 
-    public function __construct(string $message, int $remetente_id)
-    {
-        $this->message = $message;
-        $this->remetente_id = $remetente_id;
-    }
+public function __construct(string $message, int $remetente_id, string $foto)
+{
+    $this->message = $message;
+    $this->remetente_id = $remetente_id;
+    $this->foto = $foto; 
+}
 
     public function broadcastOn(): Channel
     {
