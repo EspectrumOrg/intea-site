@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
+    Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
 
