@@ -18,8 +18,6 @@
         </div>
     </div>
 
-    <!--<img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('dashboard.index') ? 'statisctics-preenchido.png' : 'statisctics.png')) }}" alt="usuarios">-->
-
     <div class="links">
         <a href="{{ route('dashboard.index')}}" class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="dashboard">
             <span class="material-symbols-outlined">monitoring</span>

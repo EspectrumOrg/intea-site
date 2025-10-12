@@ -1,6 +1,10 @@
+<!-- style -->
+<link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/style.css') }}">
+
 @extends('feed.post.template.layout')
 
 @section('main')
+
 <div class="container-read">
     <div class="content">
         <div class="topo">

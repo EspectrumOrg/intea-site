@@ -5,13 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intea - grupos</title>
-     <!-- css geral -->
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> 
+    <!-- css geral -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- layout geral -->
-    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> 
+    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
     <!-- css grupos -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/grupos/style.css') }}">
 </head>

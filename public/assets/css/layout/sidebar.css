@@ -21,6 +21,7 @@
     --texto-titulo: 2.5rem;
 }
 
+
 /* container da sidebar */
 .container-sidebar {
     border-right: 1px solid var(--branco-light);
@@ -134,12 +135,12 @@
     width: 100%;
 }
 
-.dropdown-checar-perfil li form a{
+.dropdown-checar-perfil li form a {
     width: 100%;
 }
 
-/* links */
-.container-sidebar .links {
+/* links -----------------------------------------------------------------------------------*/
+.links {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -149,7 +150,7 @@
 }
 
 /* estilo individual dos links */
-.container-sidebar .links .nav-link {
+.links .nav-link {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -160,35 +161,34 @@
     transition: all 0.3s ease-in-out;
 }
 
-.container-sidebar .links .nav-link h1{
+.links .nav-link h1 {
     font-size: 16px;
 }
 
 /* hover e ativo */
-.container-sidebar .links .nav-link:hover {
+.links .nav-link:hover {
     background-color: var(--branco-light);
     transform: translateX(5px);
 }
 
 /* icons */
-.container-sidebar .links .nav-link img {
-    width: 25px;
-}
-
-/* icons */
-.container-sidebar .links .nav-link h1 {
+.links .nav-link h1 {
     font-size: 20px;
     padding-left: 1.5rem;
     font-weight: 400;
 }
 
-/* active * */
-.container-sidebar .links .active h1 {
-    font-weight: 700;
+.links .nav-link span {
+    font-size: 2rem;
 }
 
+/* active ----------------------------------*/
+.links .active h1,
+.links .active span {
+    color: var(--cor-tema);
+}
 /* Post Button --------------------------------------------------------- */
-.container-sidebar .post-button {
+.post-button {
     display: flex;
     width: 100%;
     align-items: flex-start;
@@ -196,7 +196,7 @@
     margin: 2rem 0;
 }
 
-.container-sidebar .post-button button {
+.post-button button {
     background-color: var(--cor-fundo);
     color: var(--branco);
     font-size: 18px;
@@ -209,11 +209,11 @@
     width: 100%;
 }
 
-.container-sidebar .post-button button:hover {
+.post-button button:hover {
     background-color: var(--cor-tema);
 }
 
-/* Parte Admin -----------------------------------------+*/
+/* Parte Admin -----------------------------------------------------------------------+*/
 .admin .content {
     position: sticky;
     top: 0;
@@ -234,7 +234,8 @@
     padding: 0 2rem;
     margin-bottom: 2rem;
 }
-.admin .texto-superior h1{
+
+.admin .texto-superior h1 {
     font-size: 22px;
     text-align: left;
     letter-spacing: 1.5px;
@@ -257,12 +258,12 @@
     gap: .1rem;
 }
 
-.admin .admin-topo h1{
+.admin .admin-topo h1 {
     font-size: 16px;
     color: var(--branco);
 }
 
-.admin .admin-topo h2{
+.admin .admin-topo h2 {
     font-size: 14px;
     color: var(--cor-tema);
 }
@@ -280,7 +281,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.admin .links .nav-link h1{
+.admin .links .nav-link h1 {
     font-size: 16px;
 }
 

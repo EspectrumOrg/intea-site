@@ -1,3 +1,6 @@
+<!-- style -->
+<link rel="stylesheet" href="{{ asset('assets/css/post/create/style.css') }}">
+
 <div class="form">
     @if (!empty(Auth::user()->foto))
     <img src="{{ url('storage/'.Auth::user()->foto) }}"

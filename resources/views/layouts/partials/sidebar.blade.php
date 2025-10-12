@@ -1,3 +1,8 @@
+<!-- icons and style -->
+<link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+
 <div class="content">
     <div class="links">
         <div class="logo">
@@ -5,55 +10,46 @@
         </div>
 
         <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="home">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="Home">
+            <span class="material-symbols-outlined">home</span>
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('conta.index', [Auth::user()->id]) }}" class="nav-link" id="message">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/email.png') }}" alt="Mensagens">
+        <a href="{{ route('conta.index', [Auth::user()->id]) }}"
+            class="nav-link {{ request()->routeIs('conta.index') ? 'active' : '' }}"
+            id="message">
+            <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
 
         <a href="{{ route('profile.show') }}"
-            class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.show') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
+            class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
+            id="profile">
+            <span class="material-symbols-outlined">person</span>
             <h1>Perfil</h1>
         </a>
 
-        <a href="{{ route('grupo.index') }}" id="config"
-            class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('grupo.index') ? 'grup-preenchido.png' : 'group.png')) }}" alt="Perfil">
+        <a href="{{ route('grupo.index') }}"
+            class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
+            id="config">
+            <span class="material-symbols-outlined">group</span>
             <h1>Grupos</h1>
         </a>
 
-        <!--<a href="{{ route('grupo.index') }}" class="nav-link" >
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
-            <h1>Grupos</h1>
-        </a>-->
-
-        <a href="{{ route('post.index') }}" class="nav-link" id="config">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
+        <a href="{{ route('post.index') }}"
+            class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
+            id="settings">
+            <span class="material-symbols-outlined">settings</span>
             <h1>Configurações</h1>
         </a>
 
-
-
-        <!--@if (Auth::user()->tipo_usuario === 4)
-        <a href="{{ route('pagina_saude') }}" class="nav-link">
-            <h1>Profissionais</h1>
-        </a>
-        @else
-        <a href="" class="nav-link">
-            <h1>Especialistas</h1>
-        </a>
-        @endif-->
-
         @can("visualizar-admin")
-        <a href="{{ route('dashboard.index') }}" class="nav-link">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/admin.png') }}" />
+        <a href="{{ route('dashboard.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+            <span class="material-symbols-outlined">manage_accounts</span>
             <h1>Admin</h1>
         </a>
         @endcan
+
 
         <!-- Modal de criação de postagem -->
         <div class="post-button">

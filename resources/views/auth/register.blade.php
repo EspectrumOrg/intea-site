@@ -32,10 +32,11 @@
                     <a href="{{ route('comunidade.create') }}"><button class="botao-opcao">Comunidade</button></a>
                 </div>
 
-                <!-- create profissional-->
+                <!-- create profissional
                 <div class="option-group">
                     <a href="{{ route('profissional.create') }}"><button class="botao-opcao">Profissional Saúde</button></a>
                 </div>
+                -->
 
                 <!-- create responsavel -->
                 <div class="option-group">
