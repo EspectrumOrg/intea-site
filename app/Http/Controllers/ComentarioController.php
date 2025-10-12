@@ -49,7 +49,6 @@ class ComentarioController extends Controller
             ]);
         }
 
-
         return back()->with('success', 'Comentário publicado!');
     }
 
