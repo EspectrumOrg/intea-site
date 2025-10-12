@@ -33,8 +33,7 @@ class PusherController extends Controller
                 ->orderBy('created_at', 'asc')
                 ->get();
         }
-
-        return view('chat', compact('mensagens', 'usuario2'));
+        return view('feed.chats.chat', compact('mensagens', 'usuario2'));
     }
  public function broadcast(Request $request)
 {

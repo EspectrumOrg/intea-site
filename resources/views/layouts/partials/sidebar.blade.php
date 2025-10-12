@@ -14,12 +14,12 @@
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('conta.index', [Auth::user()->id]) }}"
-            class="nav-link {{ request()->routeIs('conta.index') ? 'active' : '' }}"
+                <a href="{{ route('teste') }}" 
+            class="nav-link {{ request()->routeIs('teste') ? 'active' : '' }}"
             id="message">
             <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
-        </a>
+            </a>
 
         <a href="{{ route('profile.show') }}"
             class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"

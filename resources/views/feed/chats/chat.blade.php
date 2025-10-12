@@ -59,7 +59,7 @@
 
         // Receber mensagens em tempo real
         channel.bind("chat", function(data) {
-            const classe = data.remetente_id == usuarioLogado ? 'left' : 'right';
+    const classe = data.remetente_id == usuarioLogado ? 'right' : 'left';
             let avatarHtml = '';                               
             if(data.foto) {
                 avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar" width="40" height="40">`;
