@@ -36,7 +36,7 @@
                         </div>
                         <div class="profile-info">
                             <h1>{{ $user->nome }}</h1>
-                            <p class="username">@ {{ $user->user }}</p>
+                            <p class="username"> {{ $user->user }}</p>
                             <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
                             <p class="tipo-usuario">
                                 @switch($user->tipo_usuario)
@@ -50,33 +50,54 @@
                         </div>
                     </div>
 
-                    <!-- Navegação por abas -->
-                    <div class="profile-tabs">
-                        <button class="tab-button active" data-tab="profile">
-                            <span class="material-symbols-outlined">person</span>
-                            Perfil
-                        </button>
-                        <button class="tab-button" data-tab="posts">
-                            <span class="material-symbols-outlined">article</span>
-                            Postagens ({{ $userPosts->count()?? 0  }})
-                        </button>
-                        <button class="tab-button" data-tab="likes">
-                            <span class="material-symbols-outlined">favorite</span>
-                            Curtidas ({{ $likedPosts->count()?? 0  }})
+                    <!-- Navegação por abas DINÂMICA -->
+                    <div class="profile-tabs-container">
+                        <button class="tab-scroll-btn tab-scroll-prev" aria-label="Abas anteriores">
+                            <span class="material-symbols-outlined">chevron_left</span>
                         </button>
                         
-                        <!-- Nova aba: Configurações (apenas para o próprio usuário) -->
-                        @if(auth()->id() == $user->id)
-                        <button class="tab-button" data-tab="settings">
-                            <span class="material-symbols-outlined">settings</span>
-                            Configurações
+                        <div class="profile-tabs-wrapper">
+                            <div class="profile-tabs">
+                                <!-- Aba Perfil (SEMPRE existe) -->
+                                <button class="tab-button active" data-tab="profile">
+                                    <span class="material-symbols-outlined">person</span>
+                                    <span class="tab-text">Perfil</span>
+                                </button>
+
+                                <!-- Aba Postagens (só mostra se tiver postagens) -->
+                                @if($userPosts->count() > 0)
+                                <button class="tab-button" data-tab="posts">
+                                    <span class="material-symbols-outlined">article</span>
+                                    <span class="tab-text">Postagens ({{ $userPosts->count() }})</span>
+                                </button>
+                                @endif
+
+                                <!-- Aba Curtidas (só mostra se tiver curtidas) -->
+                                @if($likedPosts->count() > 0)
+                                <button class="tab-button" data-tab="likes">
+                                    <span class="material-symbols-outlined">favorite</span>
+                                    <span class="tab-text">Curtidas ({{ $likedPosts->count() }})</span>
+                                </button>
+                                @endif
+                                
+                                <!-- Aba Configurações (apenas para o próprio usuário) -->
+                                @if(auth()->id() == $user->id)
+                                <button class="tab-button" data-tab="settings">
+                                    <span class="material-symbols-outlined">settings</span>
+                                    <span class="tab-text">Configurações</span>
+                                </button>
+                                @endif
+                            </div>
+                        </div>
+
+                        <button class="tab-scroll-btn tab-scroll-next" aria-label="Próximas abas">
+                            <span class="material-symbols-outlined">chevron_right</span>
                         </button>
-                        @endif
                     </div>
 
                     <!-- Conteúdo das abas -->
                     
-                    <!-- Aba 1: Perfil (Informações) -->
+                    <!-- Aba 1: Perfil (Informações) - SEMPRE existe -->
                     <div class="tab-content active" id="profile-tab">
                         <section class="perfil-section">
                             <header class="header">
@@ -132,7 +153,8 @@
                         </section>
                     </div>
 
-                    <!-- Aba 2: Postagens -->
+                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) -->
+                    @if($userPosts->count() > 0)
                     <div class="tab-content" id="posts-tab">
                         <h3>Minhas Postagens</h3>
                         <div class="posts-grid">
@@ -155,14 +177,12 @@
                                     </div>
                                 </div>
                             @endforeach
-                            
-                            @if($userPosts->count() == 0)
-                                <p>Nenhuma postagem encontrada.</p>
-                            @endif
                         </div>
                     </div>
+                    @endif
 
-                    <!-- Aba 3: Curtidas -->
+                    <!-- Aba 3: Curtidas (só mostra se tiver conteúdo) -->
+                    @if($likedPosts->count() > 0)
                     <div class="tab-content" id="likes-tab">
                         <h3>Postagens Curtidas</h3>
                         <div class="likes-list">
@@ -182,12 +202,9 @@
                                     </div>
                                 </div>
                             @endforeach
-                            
-                            @if($likedPosts->count() == 0)
-                                <p>Nenhuma curtida encontrada.</p>
-                            @endif
                         </div>
                     </div>
+                    @endif
 
                     <!-- Aba 4: Configurações (apenas para o próprio usuário) -->
                     @if(auth()->id() == $user->id)
@@ -196,6 +213,13 @@
                         @include('profile.partials.update-profile-information-form')
                         @include('profile.partials.update-password-form')
                         @include('profile.partials.delete-user-form')
+                    </div>
+                    @endif
+
+                    <!-- Mensagem quando não há conteúdo nas abas opcionais -->
+                    @if($userPosts->count() == 0 && $likedPosts->count() == 0 && auth()->id() != $user->id)
+                    <div class="no-content-message">
+                        <p>Este usuário ainda não tem atividades para mostrar.</p>
                     </div>
                     @endif
                 </div>
@@ -208,110 +232,88 @@
         </div>
     </div>
 
-    <style>
-        .profile-tabs {
-            display: flex;
-            border-bottom: 2px solid #e5e7eb;
-            margin-bottom: 2rem;
-            background: white;
-            border-radius: 8px 8px 0 0;
-            padding: 0 1rem;
-        }
-        
-        .tab-button {
-            padding: 1rem 2rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            color: #6b7280;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .tab-button:hover {
-            color: #4f46e5;
-            background-color: #f8fafc;
-        }
-        
-        .tab-button.active {
-            color: #4f46e5;
-            border-bottom-color: #4f46e5;
-            background-color: #f8fafc;
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .posts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-        
-        .post-card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            border: 1px solid #e5e7eb;
-        }
-        
-        .likes-list {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        
-        .like-item {
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .post-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-            border-radius: 4px;
-            margin-top: 1rem;
-        }
-        
-        .like-avatar img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-    </style>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
-            
+            const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
+            const prevBtn = document.querySelector('.tab-scroll-prev');
+            const nextBtn = document.querySelector('.tab-scroll-next');
+            const tabsContainer = document.querySelector('.profile-tabs');
+
+            // Controle das abas
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
                     
+                    // Remove classe active de todos os botões e conteúdos
                     tabButtons.forEach(btn => btn.classList.remove('active'));
                     tabContents.forEach(content => content.classList.remove('active'));
                     
+                    // Adiciona classe active ao botão clicado e conteúdo correspondente
                     this.classList.add('active');
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    const targetContent = document.getElementById(`${tabId}-tab`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
                 });
+            });
+
+            // Controle do scroll horizontal
+            function updateScrollButtons() {
+                if (!tabsWrapper || !prevBtn || !nextBtn) return;
+
+                const scrollLeft = tabsWrapper.scrollLeft;
+                const scrollWidth = tabsWrapper.scrollWidth;
+                const clientWidth = tabsWrapper.clientWidth;
+
+                // Mostra/oculta botões baseado no scroll
+                prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
+                nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' : 'none';
+
+                // Ativa/desativa botões
+                prevBtn.disabled = scrollLeft <= 0;
+                nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
+            }
+
+            // Eventos dos botões de scroll
+            if (prevBtn && nextBtn && tabsWrapper) {
+                prevBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({ left: -200, behavior: 'smooth' });
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({ left: 200, behavior: 'smooth' });
+                });
+
+                // Atualiza botões quando scrollar
+                tabsWrapper.addEventListener('scroll', updateScrollButtons);
+
+                // Atualiza botões no carregamento e redimensionamento
+                window.addEventListener('resize', updateScrollButtons);
+                updateScrollButtons();
+            }
+
+            // Scroll suave para a aba ativa se estiver fora da view
+            function scrollToActiveTab() {
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab && tabsWrapper) {
+                    const tabRect = activeTab.getBoundingClientRect();
+                    const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+                    if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
+                        activeTab.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'nearest', 
+                            inline: 'center' 
+                        });
+                    }
+                }
+            }
+
+            // Recalcula scroll quando mudar de aba
+            tabButtons.forEach(button => {
+                button.addEventListener('click', scrollToActiveTab);
             });
         });
     </script>
