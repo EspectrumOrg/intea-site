@@ -29,6 +29,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_tendencias');
+                Schema::dropIfExists('tb_tendencia_postagem');
+                Schema::dropIfExists('tb_tendencias');
+
     }
 };
