@@ -33,10 +33,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    gap: 1rem;
+    padding-left: 1rem;
     width: 290px;
     height: 100vh;
-    padding: 0 1rem 1rem 0;
     background-color: var(--branco);
 }
 
@@ -45,29 +45,40 @@
     width: 100%;
     display: flex;
     align-items: flex-start;
-    padding: 0 1rem;
 }
 
 .container-sidebar .logo img {
-    width: 50px;
+    width: 65px;
+    border-radius: 50%;
+    padding: .75rem;
+    transition: .7s;
+    cursor: pointer;
 }
 
-/* container de info do usuário ---------------------------------*/
+.container-sidebar .logo img:hover {
+    background-color: var(--cinza-font);
+}
+
+/* container de info do usuário ---------------------------------------------------------------*/
 .container-sidebar .info {
     display: flex;
     flex-direction: row;
-    border: 1px solid var(--cinza-borda);
-    padding: 1rem;
-    border-radius: 15px;
+    padding: .5rem 1rem;
+    border-radius: 50px / 100%;
     width: 100%;
     position: relative;
     /* necessário pro dropdown */
     cursor: pointer;
+    transition: .7s;
+}
+
+.container-sidebar .info:hover {
+    background-color: var(--cinza-font);
 }
 
 /* imagem usuário */
 .container-sidebar .info img {
-    width: 50px;
+    width: 40px;
     border-radius: 50%;
 }
 
@@ -144,7 +155,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 1rem;
     gap: 1rem;
     width: 100%;
 }
@@ -187,13 +197,13 @@
 .links .active span {
     color: var(--cor-tema);
 }
+
 /* Post Button --------------------------------------------------------- */
 .post-button {
     display: flex;
     width: 100%;
     align-items: flex-start;
-    padding: 0.8rem 1rem;
-    margin: 2rem 0;
+    padding: 1rem;
 }
 
 .post-button button {
@@ -201,7 +211,7 @@
     color: var(--branco);
     font-size: 18px;
     font-weight: bold;
-    padding: .6rem 1.5rem;
+    padding: 1rem;
     border: none;
     border-radius: 50px / 100%;
     cursor: pointer;

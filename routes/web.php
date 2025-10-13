@@ -90,10 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-        // teste
-
-
-      Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
+    // teste
+    Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
 
 
     // Rotas do Chat (Pusher)

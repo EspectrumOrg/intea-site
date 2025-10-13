@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Autista;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
@@ -190,7 +191,12 @@ class AutistaController extends Controller
 
             // Retorna sucesso com status 201
             //return redirect()->route('dashboard')->with('Sucesso', 'Usuário e autista cadastrados com sucesso!');
-            return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);
+            //return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);
+
+            Auth::login($usuario);
+
+            //return response()->json($request->all());
+            return redirect()->route('post.index')->with('Sucesso', 'Usuário Tipo Autista cadastrado com sucesso!');
         } catch (\Exception $e) {
             // Em caso de erro, loga e retorna erro interno 500
             Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());
