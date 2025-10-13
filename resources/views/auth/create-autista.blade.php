@@ -158,8 +158,8 @@
             </div>
 
             <div class="field">
-                <label>RG *</label>
-                <input type="text" name="rg_autista" required>
+                <label>Cipteia *</label>
+                <input type="text" name="CipteiaAutista" required>
             </div>
 
             <div class="field">

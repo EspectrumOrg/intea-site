@@ -66,7 +66,6 @@ class AutistaController extends Controller
             'cidade' => 'nullable|string',
             'estado' => 'nullable|string',
             'complemento' => 'nullable|string',
-            'rg_autista' => 'required|string',
             'cpf_responsavel' => 'nullable|string', // novo campo, obrigatório para menores de 18 anos
             'tipo_usuario' => 'required|in:2',
             'status_conta' => 'required|in:1',
@@ -179,16 +178,17 @@ class AutistaController extends Controller
             }
 
             // Cria o registro na tabela autista, relacionando ao usuário e cuidador (se houver)
-            Autista::create([
-                'cipteia_autista' => 'Existente',
+           Autista::create([
+                'cipteia_autista' =>$request->CipteiaAutista,
                 'status_cipteia_autista' => 'Ativo',
-                'rg_autista' => $request->rg_autista,
                 'usuario_id' => $usuario->id,
                 'responsavel_id' => $idCuidador,
             ]);
 
-            Log::info('Autista criado para usuário ID: ' . $usuario->id);
 
+
+            
+            Log::info('Autista criado para usuário ID: ' . $usuario->id);
             // Retorna sucesso com status 201
             //return redirect()->route('dashboard')->with('Sucesso', 'Usuário e autista cadastrados com sucesso!');
             //return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);

@@ -17,8 +17,7 @@ class AutistaFactory extends Factory
     public function definition(): array
     {
         return [
-            'cipteia_autista' => 'Existente',
-            'rg_autista' => fake()->numerify('##.###.###-#'),
+            'cipteia_autista' => fake()->numerify('##.###.###-#'),
             'status_cipteia_autista' => 'Ativo',
             'responsavel_id' => null,
             'usuario_id' => 2,
