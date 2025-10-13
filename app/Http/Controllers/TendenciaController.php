@@ -8,9 +8,7 @@ use Illuminate\Http\Request;
 
 class TendenciaController extends Controller
 {
-    /**
-     * Exibe posts de uma tendência específica
-     */
+    /* Exibe posts de uma tendência específica */
     public function show($slug)
     {
         $tendencia = Tendencia::where('slug', $slug)->firstOrFail();
@@ -24,12 +22,10 @@ class TendenciaController extends Controller
 
         $tendenciasPopulares = Tendencia::populares(10)->get();
 
-        return view('tendencias.show', compact('tendencia', 'postagens', 'tendenciasPopulares'));
+        return view('feed.tendencias.show', compact('tendencia', 'postagens', 'tendenciasPopulares'));
     }
 
-    /**
-     * API para buscar tendências (usado no frontend)
-     */
+    /* "API" - Obviamente está pegando do banco - para buscar tendências (usado no frontend)*/
     public function apiTendencias()
     {
         $tendencias = Tendencia::populares(10)->get();
@@ -39,15 +35,13 @@ class TendenciaController extends Controller
         ]);
     }
 
-    /**
-     * Lista todas as tendências
-     */
+    /* Lista todas as tendências */
     public function index()
     {
         $tendencias = Tendencia::orderBy('contador_uso', 'desc')
                             ->orderBy('ultimo_uso', 'desc')
                             ->paginate(20);
 
-        return view('tendencias.index', compact('tendencias'));
+        return view('feed.tendencias.index', compact('tendencias'));
     }
 }

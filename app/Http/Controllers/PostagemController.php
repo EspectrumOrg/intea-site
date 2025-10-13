@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Postagem;
 use App\Models\ImagemPostagem;
+use App\Models\Tendencia;
 use Faker\Core\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,9 @@ class PostagemController extends Controller
             ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-        return view('feed', compact('postagens', 'posts'));
+          $tendenciasPopulares = Tendencia::populares(5)->get();
+
+        return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
 
     /**
