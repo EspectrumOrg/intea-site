@@ -32,5 +32,7 @@
                 {{ $slot }}
             </main>
         </div>
+        <!-- Hashtags JS/EU AINDA NÃO SEI ONDE COLOCAR, FERMINO -->
+        <script src="{{ asset('js/hashtags.js') }}"></script>
     </body>
 </html>

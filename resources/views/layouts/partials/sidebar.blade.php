@@ -4,18 +4,45 @@
 
 
 <div class="content">
-    <div class="links">
-        <div class="logo">
-            <img src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+
+    <!-- Logo -->
+    <div class="logo">
+        <a href="{{ route('landpage') }}">
+            <img src="{{ asset('assets/images/logos/intea/41.png') }}">
+        </a>
+    </div>
+
+    <!-- User info -->
+    <div class="info dropdown-container" id="userDropdown">
+        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
+        <div class="text">
+            <h5>{{ Auth::user()->user }}</h5>
+            <h4>{{ Auth::user()->email }}</h4>
         </div>
 
+        <ul class="dropdown-checar-perfil hidden">
+            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
+            <li id="li-checar-perfil-siedebar-02">
+                <!-- Authentication -->
+                <form method="post" action="{{ route('logout') }}">
+                    @csrf
+                    <a
+                        onclick="event.preventDefault(); this.closest('form').submit();"
+                        href="#">Sair {{ Auth::user()->user}}</a>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Links sidebar-->
+    <div class="links">
         <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="home">
             <span class="material-symbols-outlined">home</span>
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('conta.index', [Auth::user()->id]) }}"
-            class="nav-link {{ request()->routeIs('conta.index') ? 'active' : '' }}"
+        <a href="{{ route('teste') }}"
+            class="nav-link {{ request()->routeIs('teste') ? 'active' : '' }}"
             id="message">
             <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
@@ -55,27 +82,6 @@
         <div class="post-button">
             <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
         </div>
-    </div>
-
-    <div class="info dropdown-container" id="userDropdown">
-        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
-        <div class="text">
-            <h5>{{ Auth::user()->user }}</h5>
-            <h4>{{ Auth::user()->email }}</h4>
-        </div>
-
-        <ul class="dropdown-checar-perfil hidden">
-            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
-            <li id="li-checar-perfil-siedebar-02">
-                <!-- Authentication -->
-                <form method="post" action="{{ route('logout') }}">
-                    @csrf
-                    <a
-                        onclick="event.preventDefault(); this.closest('form').submit();"
-                        href="#">Sair {{ Auth::user()->user}}</a>
-                </form>
-            </li>
-        </ul>
     </div>
 
     <script>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TendenciaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
 use App\Http\Controllers\ChatPrivadoController;
@@ -90,10 +91,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
-        // teste
-
-
-      Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
+    // teste
+    Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
 
 
     // Rotas do Chat (Pusher)
@@ -138,5 +137,11 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 
 // Novo sistema de perfil (3 abas)
 Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
+
+// Certifique-se de que estas rotas existem:
+Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
+Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
+
+Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 
 require __DIR__ . '/auth.php';
