@@ -119,7 +119,7 @@
     border: 1px solid var(--cinza-borda);
 }
 
-/* Dados e informações ------------------------------------*/
+/* Dados e informações ----------------------------------------------------------*/
 .container-post .dados-post {
     display: flex;
     flex-direction: row;
@@ -133,21 +133,52 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    flex-direction: row;
 }
 
-.container-post .dados-post img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.dados-post .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.container-post .dados-post span {
+    font-size: 25px;
+    padding: .5rem;
+    color: var(--preto);
+    border-radius: 50%;
+    transition: .3s;
 }
 
 .container-post .dados-post h1 {
-    font-size: 20px;
-    color: var(--cinza);
+    font-size: 14px;
+    color: var(--preto);
+    transition: .3s;
 }
 
-/* lista de comentários ------*/
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--cor-tema);
+}
+
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
+}
+
+/* curtir */
+.btn-curtir .curtido {
+    color: var(--cor-vermelho);
+}
+.btn-curtir:hover h1 {
+    color: var(--cor-vermelho);
+}
+
+.btn-curtir:hover span{
+    background-color: rgba(242, 34, 34, 0.50);
+    color: var(--cor-vermelho);
+}
+
+/* lista de comentários -------------------------------------------------------------------------------------*/
 .lista-comentarios {
     margin-top: 12px;
     width: 100%;
@@ -270,4 +301,34 @@
 .btn-acao.denunciar:hover {
     background-color: #ffcccb;
     color: var(--vermelho);
+}
+
+.hashtag {
+    color: var(--cor-tema);
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.hashtag:hover {
+    text-decoration: underline;
+}
+
+/* Força o dropdown a ficar sempre acima de qualquer outro conteúdo do post */
+.container-post .dropdown {
+    position: relative;
+    z-index: 2000;
+}
+
+.container-post .dropdown .dropdown-content {
+    position: absolute;
+    right: 0;
+    z-index: 9999 !important;
+}
+
+/* Garante que o overlay e botões fiquem abaixo */
+.corpo-post .post-overlay,
+.corpo-post button,
+.corpo-post form {
+    z-index: 1;
 }

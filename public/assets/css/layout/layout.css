@@ -49,6 +49,10 @@ body {
     width: 600px;
 }
 
+.content-popular{
+    border-left: 1px solid var(--branco-light);
+}
+
 /* Parte Admin */
 .admin {
     max-width: 100%;

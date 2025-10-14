@@ -21,7 +21,7 @@
     --texto-titulo: 1.4rem;
 }
 
-/* topo */
+/* topo -----------------------------------------------------------*/
 .container-read .topo {
     display: flex;
     flex-direction: row;
@@ -32,16 +32,24 @@
 .container-read .topo .voltar {
     display: flex;
     align-items: center;
+    text-decoration: none;
 }
 
-.container-read .topo .voltar img {
-    width: 22px;
-    cursor: pointer;
+.container-read .topo .voltar span {
+    font-size: 1.5rem;
+    color: var(--preto);
+    padding: .5rem;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.container-read .topo .voltar span:hover {
+    background-color: var(--cinza-texto);
 }
 
 .container-read .topo .text h1 {
     margin-left: 1rem;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 600;
     color: var(--preto);
 }

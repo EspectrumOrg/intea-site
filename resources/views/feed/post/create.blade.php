@@ -2,21 +2,14 @@
 <link rel="stylesheet" href="{{ asset('assets/css/post/create/style.css') }}">
 
 <div class="form">
-    @if (!empty(Auth::user()->foto))
-    <img src="{{ url('storage/'.Auth::user()->foto) }}"
-        alt="conta"
+    <img
+        src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
+        alt="foto de perfil"
         style="border-radius: 50%;"
         width="40"
         height="40"
         loading="lazy">
-    @else
-    <img src="{{ url('assets/images/logos/contas/user.png') }}"
-        alt="foto perfil"
-        style="border-radius: 50%;"
-        width="40"
-        height="40"
-        loading="lazy">
-    @endif
+
     <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="textfield">

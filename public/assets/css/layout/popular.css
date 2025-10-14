@@ -1,13 +1,14 @@
 :root {
     --cor-tema: #048ABF;
+    --cor-tema-apagado: #016d98;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
 
     --preto: #0D0D0D;
-    --cinza: #404040;
     --cinza-borda: #2f3336;
+    --cinza-font: #b3b3b3;
     --branco: #F2F2F2;
     --branco-light: #ccc;
     --azul: #1d3e55;
@@ -23,28 +24,32 @@
 .sidebar-tendencias {
     background: var(--branco);
     border-radius: 15px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    padding-top: 1rem;
+    margin: 0 0 0 2rem;
+    width: 350px;
+    border: 1px solid var(--branco-light);
+    position: sticky;
+    top: 1rem;
 }
 
 .sidebar-header h3 {
     color: var(--preto);
     margin: 0 0 1rem 0;
-    font-size: 1.1rem;
+    font-size: 24px;
     font-weight: 600;
+    text-indent: 1rem;
 }
 
 .tendencias-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
 }
 
 .tendencia-item {
     display: block;
-    padding: 0.75rem;
-    border-radius: 8px;
+    padding: 1rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
     text-decoration: none;
     transition: background-color 0.3s ease;
 }

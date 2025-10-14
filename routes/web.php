@@ -36,7 +36,9 @@ Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
 
-// somente para quem não está logado
+
+
+// somente para quem não está logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::get('/login', function () { // Login
     return view('auth.login');
 })->middleware('guest')->name('login');
@@ -59,7 +61,9 @@ Route::resource("profissional", ProfissionalSaudeController::class)->names("prof
 // Cadastro de Responsável
 Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
 
-// Usuário Logado PADRÃO
+
+
+// Usuário Logado PADRÃO --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::middleware('auth')->group(function () {
 
     // Feed e postagens
@@ -102,14 +106,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
 });
 
-// Profissional de Saúde Logado 
+
+
+// Profissional de Saúde Logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::middleware('auth', 'is_profissional')->group(function () {
     Route::get('/pagina_saude', function () {
         return view('paginas/profissional_saude/inicio_profissional_saude');
     })->name('pagina_saude');
 });
 
-// Apenas Admin
+
+
+// Apenas Admin --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::middleware(['auth', 'is_admin'])->group(function () {
 
     // Cadastro de Admin

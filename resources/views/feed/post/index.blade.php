@@ -2,6 +2,33 @@
 <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
 
+@php
+use App\Models\Tendencia;
+
+if (!function_exists('formatarHashtags')) {
+function formatarHashtags($texto) {
+return preg_replace_callback(
+'/#(\w+)/u',
+function ($matches) {
+$tag = e($matches[1]);
+
+// Busca no banco se a hashtag existe
+$tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
+
+// Define a URL final
+$url = $tendencia
+? route('tendencias.show', $tendencia->slug)
+: url('/hashtags/' . $tag);
+
+return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
+},
+e($texto)
+);
+}
+}
+@endphp
+
+
 <!-- Conteúdo principal com scroll -->
 <div class="container-post">
     <div class="create-post">
@@ -15,17 +42,13 @@
 
             <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                    @if (!empty($postagem->usuario->foto))
-                    <img src="{{ asset('storage/'.$postagem->usuario->foto) }}"
-                        alt="foto perfil"
-                        style="width: 40; height: 50px; border-radius: 50%;"
+                    <img
+                        src="{{ $postagem->usuario->foto ? url('storage/' . $postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
+                        alt="foto de perfil"
+                        style="border-radius: 50%;"
+                        width="40"
+                        height="40"
                         loading="lazy">
-                    @else
-                    <img src="{{ url('assets/images/logos/contas/user.png') }}"
-                        alt="sem-foto"
-                        style="width: 40; height: 50px; border-radius: 50%;"
-                        loading="lazy">
-                    @endif
                 </a>
             </div>
 
@@ -39,8 +62,8 @@
                     </div>
 
                     <div class="dropdown"> <!-- opções postagem -->
-                        <button class="menu-opcoes">
-                            <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
+                        <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                            <span class="material-symbols-outlined">more_horiz</span>
                         </button>
                         <ul class="dropdown-content">
                             @if(Auth::id() === $postagem->usuario_id)
@@ -126,16 +149,17 @@
 
                 <!-- conteudo postagem -->
                 <div class="conteudo-post">
+
                     <div class="coment-perfil">
                         <p class="texto-curto" id="texto-{{ $postagem->id }}">
-                            {{ Str::limit($postagem->texto_postagem, 150, '') }}
+                            {!! formatarHashtags(Str::limit($postagem->texto_postagem, 150, '')) !!}
                             @if (strlen($postagem->texto_postagem) > 150)
                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...mais</span>
                             @endif
                         </p>
 
                         <p class="texto-completo" id="texto-completo-{{ $postagem->id }}" style="display: none;">
-                            {{ $postagem->texto_postagem }}
+                            {!! formatarHashtags($postagem->texto_postagem) !!}
                             <span class="mostrar-mais" onclick="toggleTexto('{{ $postagem->id }}', this)">...menos</span>
                         </p>
                     </div>
@@ -150,17 +174,18 @@
                     <!-- bottom ---------------------------------------------------------------------------------->
                     <div class="dados-post">
                         <div>
-                            <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button">
-                                <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
-                                <h1>{{ $postagem->comentarios_count }}</h1>
+                            <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button btn-comentar">
+                                <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $postagem->id }}')">
+                                    <span class="material-symbols-outlined">chat_bubble</span>
+                                    <h1>{{ $postagem->comentarios_count }}</h1>
+                                </a>
                             </button>
                         </div>
 
-
                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
                             @csrf
-                            <button type="submit" class="button">
-                                <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                            <button type="submit" class="button btn-curtir">
+                                <span class="material-symbols-outlined {{ $postagem->curtidas_usuario ? 'curtido' : '' }}">favorite</span>
                                 <h1>{{ $postagem->curtidas_count }}</h1>
                             </button>
                         </form>

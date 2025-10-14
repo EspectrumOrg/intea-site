@@ -3,7 +3,7 @@
 
 <div class="sidebar-tendencias">
     <div class="sidebar-header">
-        <h3>🔥 O que está bombando</h3>
+        <h3>Tendências</h3>
     </div>
 
     <div class="tendencias-list">
