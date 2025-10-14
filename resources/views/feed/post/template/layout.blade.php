@@ -49,6 +49,7 @@
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/hashtag-estilo.js') }}"></script>
 <script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
 <!-- comentario -->
 <script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>

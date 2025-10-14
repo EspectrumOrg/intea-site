@@ -6,28 +6,28 @@
 use App\Models\Tendencia;
 
 if (!function_exists('formatarHashtags')) {
-function formatarHashtags($texto) {
-return preg_replace_callback(
-'/#(\w+)/u',
-function ($matches) {
-$tag = e($matches[1]);
+    function formatarHashtags($texto) {
+        return preg_replace_callback(
+            '/#(\w+)/u',
+            function ($matches) {
+                $tag = e($matches[1]);
 
-// Busca no banco se a hashtag existe
-$tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
+                // Busca a hashtag no banco
+                $tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
 
-// Define a URL final
-$url = $tendencia
-? route('tendencias.show', $tendencia->slug)
-: url('/hashtags/' . $tag);
+                // Define a URL final (se existir a tendência no banco, vai pra rota certa)
+                $url = $tendencia
+                    ? route('tendencias.show', $tendencia->slug)
+                    : url('/hashtags/' . $tag);
 
-return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
-},
-e($texto)
-);
-}
+                // Retorna o link formatado
+                return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
+            },
+            e($texto)
+        );
+    }
 }
 @endphp
-
 
 <!-- Conteúdo principal com scroll -->
 <div class="container-post">

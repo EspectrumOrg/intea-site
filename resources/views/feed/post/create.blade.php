@@ -13,12 +13,9 @@
     <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="textfield">
-            <textarea id="texto_postagem"
-                name="texto_postagem"
-                maxlength="280"
-                rows="1"
-                placeholder="Comece uma publicação"
-                required></textarea>
+            <div id="hashtag-preview" class="hashtag-preview"></div>
+            <textarea id="texto_postagem" name="texto_postagem" maxlength="280"
+                rows="1" placeholder="Comece uma publicação" required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
         </div>
 

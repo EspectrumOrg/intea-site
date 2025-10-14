@@ -55,8 +55,8 @@
     /* necessário para o overlay */
     max-width: 100%;
     background-color: var(--branco);
-    padding: 1rem;
-    border-bottom: 1px solid var(--cinza-borda);
+    padding: 1rem 1rem 0 1rem;
+    border-bottom: 1px solid var(--branco-light);
     display: flex;
     flex-direction: row;
 }
@@ -142,8 +142,8 @@
 }
 
 .container-post .dados-post span {
-    font-size: 25px;
-    padding: .5rem;
+    font-size: 20px;
+    padding: .25rem;
     color: var(--preto);
     border-radius: 50%;
     transition: .3s;
@@ -282,10 +282,14 @@
 
 /* hover geral */
 .btn-acao:hover {
-    transform: scale(1.02);
+    transform: scale(1);
 }
 
 /* editar */
+.container-post .editar {
+    border-radius: 15px 15px 0 0;
+}
+
 .btn-acao.editar:hover {
     background-color: var(--cor-tema);
     color: var(--branco);
@@ -297,6 +301,10 @@
     color: var(--branco);
 }
 
+.container-post .excluir {
+    border-radius: 0 0 15px 15px;
+}
+
 /* denunciar */
 .btn-acao.denunciar:hover {
     background-color: #ffcccb;
@@ -304,13 +312,16 @@
 }
 
 .hashtag {
+    position: relative; /* cria um novo contexto de empilhamento */
+    z-index: 9999; /* fica acima do overlay */
     color: var(--cor-tema);
-    font-weight: 500;
+    font-weight: 600;
     text-decoration: none;
-    cursor: pointer;
+    transition: 0.3s;
 }
 
 .hashtag:hover {
+    color: var(--cor-tema-apagado);
     text-decoration: underline;
 }
 

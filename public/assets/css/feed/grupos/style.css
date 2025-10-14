@@ -28,14 +28,10 @@
   }
 
   .grupos-style form {
-      background: var(--cinza);
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      background: var(--branco);
+      padding: 1rem 2rem;
       width: 100%;
-      max-width: 400px;
-      margin-top: 20px;
-      border: 1px solid var(--cinza-borda);
+      border: 1px solid var(--branco-light);
   }
 
   .grupos-style .form-group {
@@ -45,7 +41,7 @@
   .grupos-style label {
       display: block;
       font-weight: 600;
-      color: var(--branco-light);
+      color: var(--preto);
       margin-bottom: 5px;
   }
 
@@ -53,11 +49,11 @@
   .grupos-style input[type="file"] {
       width: 100%;
       padding: 10px;
-      background-color: var(--preto);
-      color: var(--branco);
-      border: 1px solid var(--cinza-borda);
+      background-color: var(--branco-light);
+      color: var(--preto);
+      border: 1px solid var(--branco-light);
       border-radius: 8px;
-      font-size: var(--texto-padrao);
+      font-size: 14px;
       transition: border 0.2s ease;
   }
 
