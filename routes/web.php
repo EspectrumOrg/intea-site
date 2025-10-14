@@ -36,6 +36,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Início
+
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
@@ -57,7 +58,11 @@ Route::post('/receive', [PusherController::class, 'receive']);
 Route::get('/chat', [PusherController::class, 'index']);
 Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
 
-
+Route::get('/chat-test', function () {
+    return view('chat-test'); // Se tiver uma view
+    // ou
+    return file_get_contents(resource_path('views/chat-test.php'));
+});
 
 
 // Cadastro de Autista

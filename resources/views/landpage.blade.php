@@ -10,7 +10,6 @@
     <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
 </head>
 <body>
-<body>
   <!-- NAVBAR OTIMIZADA -->
   <nav class="navbar">
     <div class="navbar-container">
