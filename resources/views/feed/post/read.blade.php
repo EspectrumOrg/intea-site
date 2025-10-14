@@ -1,11 +1,15 @@
+<!-- style -->
+<link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/style.css') }}">
+
 @extends('feed.post.template.layout')
 
 @section('main')
+
 <div class="container-read">
     <div class="content">
         <div class="topo">
             <a class="voltar" href="{{ route('post.index') }}">
-                <img src="{{ asset('assets/images/logos/symbols/back-button.png') }}">
+                <span class="material-symbols-outlined">arrow_back</span>
             </a>
             <div class="text">
                 <h1>Postagem</h1>

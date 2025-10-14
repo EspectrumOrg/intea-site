@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatPrivadoModel extends Model
+class ChatPrivado extends Model
 {
     use HasFactory;
    protected $table = 'tb_chatprivado';
@@ -22,7 +22,7 @@ class ChatPrivadoModel extends Model
      */
     public function mensagens()
     {
-        return $this->hasMany(MensagemPrivadaModel::class, 'conversa_id');
+        return $this->hasMany(MensagemPrivada::class, 'conversa_id');
     }
 
     /**

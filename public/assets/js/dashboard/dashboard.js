@@ -88,11 +88,11 @@ document.addEventListener('DOMContentLoaded', function () {
             datasets: [{
                 data: tipoValues,
                 backgroundColor: [
-                    'rgba(54,162,235,0.85)',
-                    'rgba(255,159,64,0.85)',
-                    'rgba(255,205,86,0.85)',
-                    'rgba(75,192,192,0.85)',
-                    'rgba(153,102,255,0.85)'
+                    '#048ABF',
+                    '#1d3e55',
+                    '#349dff',
+                    'rgba(99, 102, 241, 0.2)',
+                    'rgba(0, 83, 238, 0.3)'
                 ],
                 borderColor: '#ffffff',
                 borderWidth: 2

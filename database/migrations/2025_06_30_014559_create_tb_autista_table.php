@@ -19,7 +19,6 @@ return new class extends Migration
         Schema::create('tb_autista', function (Blueprint $table) {
         $table->id();
         $table->string('cipteia_autista');
-        $table->string('rg_autista');
         $table->string('status_cipteia_autista');
         $table->unsignedBigInteger('usuario_id');
         $table->foreign('usuario_id')->references('id')->on('tb_usuario');

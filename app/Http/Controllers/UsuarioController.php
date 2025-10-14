@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Admin;
 use App\Models\Autista;
+use App\Models\ChatPrivado;
+use App\Models\ChatPrivadoModel;
 use App\Models\Comunidade;
 use App\Models\ProfissionalSaude;
 use App\Models\Responsavel;
+use App\Models\seguirModel;
 
 class UsuarioController extends Controller
 {
@@ -38,6 +41,40 @@ class UsuarioController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+
+
+
+    public function Conversas()
+    {
+        $usuarioLogado = Auth::id();
+
+        $conversas = ChatPrivado::where('usuario1_id', $usuarioLogado)
+                        ->orWhere('usuario2_id', $usuarioLogado)
+                        ->orderBy('updated_at', 'desc')
+                        ->get();
+
+        return view('conversas', compact('conversas', 'usuarioLogado'));
+    }
+
+public function teste()
+{
+    $usuarioLogado = Auth::id();
+
+    // Busca todas as conversas que envolvem o usuário logado
+    $conversas = ChatPrivado::where('usuario1_id', $usuarioLogado)
+                    ->orWhere('usuario2_id', $usuarioLogado)
+                    ->orderBy('updated_at', 'desc')
+                    ->get();
+
+    // Busca todos os IDs dos usuários que o logado está seguindo
+    $seguindoIds = seguirModel::where('segue_id', $usuarioLogado)
+                        ->pluck('seguindo_id');
+
+    // Busca os dados desses usuários
+    $usuariosSeguindo = Usuario::whereIn('id', $seguindoIds)->get();
+
+        return view('feed.chats.conversas', compact('conversas', 'usuariosSeguindo', 'usuarioLogado'));
+}
 
     public function index(Request $request)
     {

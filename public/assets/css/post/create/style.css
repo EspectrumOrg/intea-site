@@ -2,7 +2,7 @@
 .create-post {
     background-color: var(--branco);
     padding: 1rem;
-    border-bottom: 1px solid var(--cinza-borda);
+    border-bottom: 1px solid var(--branco-light);
 }
 
 .create-post .form {
@@ -15,21 +15,36 @@
     width: 100%;
 }
 
-/* campo principal */
-.create-post .form .textfield {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
+.textfield {
+    position: relative;
+    width: 100%;
 }
 
-.create-post .form .textfield textarea {
+.hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none; /* permite clicar no textarea em cima */
+}
+
+.textfield textarea {
+    position: relative;
+    background: transparent;
     width: 100%;
     border: none;
     padding: 1rem;
     font-size: 18px;
-    background-color: var(--branco);
-    color: var(--preto);
+    font-family: inherit;
+    color: transparent; /* texto invisível, mas cursor visível */
+    caret-color: var(--preto); /* deixa o cursor preto */
     resize: none;
     overflow-y: hidden;
 }
@@ -38,13 +53,19 @@
     outline: none;
 }
 
+.hashtag {
+    color: var(--cor-tema);
+    font-weight: 600;
+}
+
+
 /* opções (upload etc) */
 .create-post .form .content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: .5rem 0;
-    border-top: 1px solid var(--cinza-borda);
+    border-top: 1px solid var(--branco-light);
     margin: auto;
     margin-top: .5rem;
 }

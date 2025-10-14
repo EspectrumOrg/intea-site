@@ -14,12 +14,14 @@
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/admin/style.css') }}"> <!-- css geral -->
+    <!-- icones-->
+    <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
 <body>
 
     <div class="layout">
-        <div class="container-content">
+        <div class="container-content admin">
             <!-- conteúdo sidebar  -->
             <div class="container-sidebar">
                 @include("layouts.partials.sidebar-admin")

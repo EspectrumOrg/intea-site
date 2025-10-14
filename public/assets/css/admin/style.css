@@ -28,21 +28,29 @@ body {
     margin: 0;
 }
 
-/* Container principal */
+/* Container principal ----------------(Usuário)-------------*/
 .usuario-gerenciamento {
-    max-width: 1200px;
     margin: 2rem auto;
-    padding: 0 1rem;
+    padding: 0 2rem;
 }
 
-/* Título */
-.usuario-gerenciamento h1 {
-    font-size: 2rem;
-    color: var(--cor-fundo);
+.usuario-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* título */
+.usuario-title {
+    display: flex;
+    color: var(--preto);
+}
+
+.usuario-title span {
+    font-size: 3rem;
 }
 
 /* Card */
-.card {
+.usuario-gerenciamento .card {
     background-color: var(--branco);
     border-radius: var(--border-radius);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -50,21 +58,21 @@ body {
 }
 
 /* Header do card */
-.card-header {
+.usuario-gerenciamento .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--cor-fundo);
 }
 
-.card-header h2 {
+.usuario-gerenciamento .card-header h2 {
     margin: 0;
     font-size: 1.5rem;
     color: var(--branco);
 }
 
 /* Botão Novo */
-.btn-novo {
+.usuario-gerenciamento .btn-novo {
     background-color: var(--cor-fundo);
     color: var(--branco);
     padding: .75rem;
@@ -75,28 +83,28 @@ body {
     transition: background 0.7s;
 }
 
-.btn-novo:hover {
+.usuario-gerenciamento .btn-novo:hover {
     background-color: var(--cor-tema);
 }
 
 /* Tabela */
-.card-body {
+.usuario-gerenciamento .card-body {
     padding: 0;
 }
 
-.table-usuarios {
+.usuario-gerenciamento .table-usuarios {
     width: 100%;
     border-collapse: collapse;
 }
 
-.table-usuarios th {
+.usuario-gerenciamento .table-usuarios th {
     border-left: .0 solid var(--branco-light);
     padding: 0.5rem;
     font-size: .8rem;
     text-align: left;
 }
 
-.table-usuarios td {
+.usuario-gerenciamento .table-usuarios td {
     border-top: 1px solid var(--branco-light);
     padding: 0.25rem;
     font-size: .8rem;
@@ -104,7 +112,7 @@ body {
 }
 
 /* Topo tabela*/
-.card-header {
+.usuario-gerenciamento .card-header {
     background-color: var(--cor-fundo);
 }
 
@@ -148,71 +156,57 @@ body {
     width: 25px;
 }
 
-/* Botão Visualizar*/
-.table-usuarios .button-open-data .btn-visualizar {
-    color: var(--branco);
-    background-color: var(--branco-light);
-    border: none;
-    padding: 0.4rem 0.8rem;
-    outline: none;
-    transition: .7s;
-}
-
-.table-usuarios .btn-visualizar:hover {
-    background-color: var(--cor-tema);
-}
-
 /* Botão Ações*/
 .table-usuarios .td-acoes {
     display: flex;
     flex-direction: row;
-    color: var(--branco);
+}
+
+
+.table-usuarios .td-acoes span {
+    color: var(--preto);
 }
 
 .table-usuarios tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-/* Botão Excluir */
-.btn-excluir-usuario:hover {
-    background-color: var(--cor-vermelho);
+    background-color: var(--branco-light);
 }
 
 .btn-excluir-usuario,
-.btn-desabilitar {
-    background-color: var(--branco);
+.btn-desabilitar,
+.btn-desbanir,
+.btn-visualizar {
+    background-color: transparent;
     border: none;
     flex: 1;
-    padding: 1.5rem .75rem;
-    cursor: pointer;
-    transition: .7s;
+    padding: 0.4rem 0.8rem;
 }
 
-.btn-desabilitar:hover {
-    background-color: var(--verde);
+/* Botão Excluir */
+.btn-excluir-usuario span:hover {
+    color: var(--cor-vermelho);
+}
+
+.btn-desabilitar span:hover {
+    color: var(--verde);
+}
+
+/* Botão Visualizar*/
+.table-usuarios .btn-visualizar span:hover {
+    transition: .3s;
+    color: var(--cor-tema);
 }
 
 /* Botão desbanir */
-.btn-desbanir {
-    background-color: var(--cor-fundo);
-    color: var(--cor-branco);
-    border: none;
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
 .btn-desbanir:hover {
-    background-color: var(--azul);
+    color: var(--azul);
 }
 
-/* Paginação */
-.paginacao {
-    margin-top: .5rem;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
+.btn-excluir-usuario span,
+.btn-desabilitar span,
+.btn-desbanir span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .3s;
 }
 
 /* Filtros */
@@ -257,4 +251,56 @@ body {
         font-size: 0.85rem;
         padding: 0.4rem 0.8rem;
     }
+}
+
+
+/* ================= PAGINAÇÃO ================= */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.paginacao ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 5px;
+}
+
+.paginacao li {
+    display: inline-block;
+}
+
+.paginacao li a,
+.paginacao li span {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--preto);
+    background-color: var(--branco);
+    border: 1px solid var(--cor-tema-apagado);
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+.paginacao li a:hover {
+    background-color: var(--cor-tema);
+    border-color: var(--cor-tema);
+    color: var(--branco);
+}
+
+.paginacao li span {
+    background-color: var(--cor-tema);
+    border-color: var(--cor-tema);
+    font-weight: 700;
+}
+
+/* Desativado */
+.paginacao li.disabled span {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
