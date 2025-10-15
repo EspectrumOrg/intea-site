@@ -1,0 +1,37 @@
+
+    /* ===== VARIÁVEIS CSS UNIFICADAS ===== */
+:root {
+    --cor-tema: #048ABF;
+    --cor-fundo: #262626;
+    --cor-branco: #D0D6D9;
+    --cor-preto: #000000;
+    --cor-vermelho: #F22222;
+
+    --preto: #0D0D0D;
+    --cinza: #404040;
+    --branco: #F2F2F2;
+    --branco-light: #ccc;
+    --azul: #1d3e55;
+    --verde: #03A64A;
+    --vermelho: #F26D6D;
+
+    --texto-pequeno: .75rem;
+    --texto-padrao: 1rem;
+    --texto-secundario: 1.4rem;
+    --texto-titulo: 2.5rem;
+}
+
+    /* ===== RESET E ESTILOS GLOBAIS OTIMIZADOS ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--preto);
+      background-color: var(--branco);
+      overflow-x: hidden;
+    }

@@ -37,7 +37,7 @@
         Um espaço seguro, compreensivo e construído com a comunidade, onde você pode ser verdadeiramente você. Conecte-se, compartilhe experiências e encontre suporte que entende suas necessidades.
       </p>
       <div class="hero-buttons">
-        <a href="{{ route('login') }}"><button class="btn-primary">Teste agora</button></a>
+        <a href="{{ route('login') }}"><button class="btn-primary">Entrar</button></a>
         <button class="btn-secondary">
           <i class="fas fa-play"></i>
           <span>Assista à demo</span>
@@ -289,6 +289,16 @@
         observer.observe(el);
       });
     });
+
+    // JavaScript navbar scroll
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    if (window.scrollY > 480) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
   </script>
 </body>
 </html>
