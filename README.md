@@ -1,6 +1,6 @@
 # 🧩 INTEA — Uma Rede Social para a Comunidade Autista
 
-![Banner INTEA](https://media.discordapp.net/attachments/1117948645053059204/1428149304660463686/Imagem_do_WhatsApp_de_2025-10-15_as_19.17.56_4e4b495c.jpg?ex=68f1732f&is=68f021af&hm=83aedeea087708bf037c8d83eb493fa6a46d5fbd0aef924450344b2c55ae4d92&=&format=webp)  
+![Banner INTEA](https://media.discordapp.net/attachments/1117948645053059204/1428149925971234967/banner_intea.jpg?ex=68f173c4&is=68f02244&hm=32907c969048a649dcb461bfa7573891942b504471e6a0625a3c97d01818527f&=&format=webp)  
 
 ![Status](https://img.shields.io/badge/Status-🚧_Em_Desenvolvimento-yellow?style=for-the-badge)
 ![Laravel](https://img.shields.io/badge/Laravel-v10-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
