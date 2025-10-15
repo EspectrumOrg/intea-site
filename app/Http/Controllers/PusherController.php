@@ -74,6 +74,66 @@ class PusherController extends Controller
         'remetente_id' => $usuario1
     ]);
 }
+
+public function webzap()
+{
+    $usuarioLogado = auth()->id();
+
+    // Pega apenas os IDs dos usuários que você segue
+    $usuariosSeguindoIds = \App\Models\seguirModel::where('segue_id', $usuarioLogado)
+        ->pluck('seguindo_id')
+        ->toArray();
+
+    // Busca os usuários que você segue
+    $usuariosSeguindo = \App\Models\Usuario::whereIn('id', $usuariosSeguindoIds)->get();
+
+    // Conversas existentes (para manter o chat funcional)
+    $conversas = \App\Models\ChatPrivado::where('usuario1_id', $usuarioLogado)
+        ->orWhere('usuario2_id', $usuarioLogado)
+        ->get();
+
+    return view('feed.chats.testechat', compact('usuariosSeguindo', 'conversas', 'usuarioLogado'));
+}
+/**
+ * Rota AJAX para carregar chat
+ */
+public function carregarChat(Request $request)
+{
+    $usuario1 = auth()->id();
+    $usuario2 = $request->usuario2;
+
+    $usuario = \App\Models\Usuario::find($usuario2);
+
+    $conversa = \App\Models\ChatPrivado::where(function($q) use ($usuario1, $usuario2){
+        $q->where('usuario1_id', $usuario1)->where('usuario2_id', $usuario2);
+    })->orWhere(function($q) use ($usuario1, $usuario2){
+        $q->where('usuario1_id', $usuario2)->where('usuario2_id', $usuario1);
+    })->first();
+
+    $mensagens = [];
+    if($conversa){
+        $mensagens = \App\Models\MensagemPrivada::where('conversa_id', $conversa->id)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->map(function($msg){
+                $remetente = \App\Models\Usuario::find($msg->remetente_id);
+                return [
+                    'remetente_id' => $msg->remetente_id,
+                    'message' => $msg->texto,
+                    'foto' => $remetente->foto ?? 'default.jpg',
+                ];
+            });
+    }
+
+    return response()->json([
+        'usuario' => [
+            'id' => $usuario->id,
+            'nome' => $usuario->nome,
+            'foto' => $usuario->foto ?? 'default.jpg',
+        ],
+        'mensagens' => $mensagens
+    ]);
+}
     /**
      * Show the form for creating a new resource.
      */

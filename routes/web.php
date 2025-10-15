@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PusherController;
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,11 +110,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
 
 
-    // Rotas do Chat (Pusher)
-    Route::get('/chat/{usuario2}', [PusherController::class, 'index'])->name('chat.usuario');
+ 
+    Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
+
+// Rota AJAX para carregar mensagens de um usuário
+    Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
+
+// Rota para enviar mensagem via Pusher
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
-    Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
-    Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
 });
 
 

@@ -41,7 +41,7 @@
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('teste') }}" class="nav-link {{ request()->routeIs('teste') ? 'active' : '' }}" id="message">
+    <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
             <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
