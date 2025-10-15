@@ -36,6 +36,16 @@ Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
 
+Route::get('/feed/configuracao/config', function () {
+    $user = Auth::user();
+    return view(
+        'feed.configuracao.config',
+        compact('user' )
+    );
+})->name('configuracao.config');
+
+
+
 
 
 // somente para quem não está logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -94,7 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // teste
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
 

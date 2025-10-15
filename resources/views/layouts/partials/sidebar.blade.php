@@ -14,7 +14,7 @@
 
     <!-- User info -->
     <div class="info dropdown-container" id="userDropdown">
-        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
+        <a href="#"><img src="{{ asset('storage/' . Auth::user()->foto) }}"></a>
         <div class="text">
             <h5>{{ Auth::user()->user }}</h5>
             <h4>{{ Auth::user()->email }}</h4>
@@ -26,9 +26,8 @@
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">
                     @csrf
-                    <a
-                        onclick="event.preventDefault(); this.closest('form').submit();"
-                        href="#">Sair {{ Auth::user()->user}}</a>
+                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair
+                        {{ Auth::user()->user}}</a>
                 </form>
             </li>
         </ul>
@@ -36,45 +35,43 @@
 
     <!-- Links sidebar-->
     <div class="links">
-        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="home">
+        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
+            id="home">
             <span class="material-symbols-outlined">home</span>
             <h1>Home</h1>
         </a>
 
-        <a href="{{ route('teste') }}"
-            class="nav-link {{ request()->routeIs('teste') ? 'active' : '' }}"
-            id="message">
+        <a href="{{ route('teste') }}" class="nav-link {{ request()->routeIs('teste') ? 'active' : '' }}" id="message">
             <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
 
-        <a href="{{ route('profile.show') }}"
-            class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
+        <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
             id="profile">
             <span class="material-symbols-outlined">person</span>
             <h1>Perfil</h1>
         </a>
 
-        <a href="{{ route('grupo.index') }}"
-            class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
+        <a href="{{ route('grupo.index') }}" class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
             id="config">
             <span class="material-symbols-outlined">group</span>
             <h1>Grupos</h1>
         </a>
 
-        <a href="{{ route('post.index') }}"
-            class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
-            id="settings">
+        <a href="{{ route('configuracao.config') }}"
+            class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}">
             <span class="material-symbols-outlined">settings</span>
             <h1>Configurações</h1>
         </a>
 
+
+
         @can("visualizar-admin")
-        <a href="{{ route('dashboard.index') }}"
-            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-            <span class="material-symbols-outlined">manage_accounts</span>
-            <h1>Admin</h1>
-        </a>
+            <a href="{{ route('dashboard.index') }}"
+                class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+                <span class="material-symbols-outlined">manage_accounts</span>
+                <h1>Admin</h1>
+            </a>
         @endcan
 
 
