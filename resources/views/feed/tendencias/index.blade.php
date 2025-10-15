@@ -21,7 +21,7 @@
                     type="text" 
                     name="search" 
                     id="searchInput"
-                    placeholder="Pesquisar tendências (ex: #laravel, #php)..."
+                    placeholder="Pesquisar tendências..."
                     value="{{ request('search') }}"
                     class="search-input"
                     autocomplete="off"
