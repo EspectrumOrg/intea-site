@@ -7,7 +7,7 @@
     <!-- Cabeçalho da Página -->
     <div class="tendencias-header">
         <div class="tendencias-info">
-            <h1>🔥 Todas as Tendências</h1>
+            <h1> Todas as Tendências</h1>
             <p class="tendencias-subtitle">Descubra o que está sendo comentado na comunidade</p>
         </div>
     </div>
@@ -37,7 +37,7 @@
             </div>
         </form>
 
-        <!--  Resultados em tempo real -->
+        <!-- Resultados em tempo real -->
         <div class="search-results" id="searchResults"></div>
     </div>
 
@@ -86,7 +86,13 @@
     @if($tendencias->count() == 0)
         <div class="no-tendencias">
             <div class="no-tendencias-content">
-                <span class="material-symbols-outlined">search_off</span>
+                <span class="material-symbols-outlined">
+                    @if(request('search'))
+                        search_off
+                    @else
+                        trending_up
+                    @endif
+                </span>
                 <h3>
                     @if(request('search'))
                         Nenhuma tendência encontrada para "{{ request('search') }}"
@@ -182,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
         searchResults.style.display = 'block';
     }
 
-    // Submeter formulário ao pressionar Enter (sem buscar em tempo real)
+    // Submeter form ao pressionar Enter
     searchInput.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
             e.preventDefault();
