@@ -88,13 +88,13 @@
         </div>
         @endif
 
-
-        <!-- Modal de Erro JS -->
         <script>
             function closeModal() {
                 document.getElementById('loginModal').style.display = 'none';
             }
         </script>
+
+        
     </div>
 </body>
 

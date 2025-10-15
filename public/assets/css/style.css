@@ -32,3 +32,23 @@
     azul claro - #048ABF/
     */
 }
+
+/* Estilo para hashtags no texto -- LOCAL TEMPORÁRIO, POIS NÃO SEI ONDE FICA O ESTILO DE TODA A FEED, FERMINO BROTHER */
+.post-content {
+    color: var(--preto);
+    line-height: 1.5;
+    white-space: pre-wrap;      /* Mantém quebras de linha */
+    word-wrap: break-word;      /* Quebra palavras longas */
+}
+
+.hashtag {
+    color: var(--cor-tema);     /* Azul do seu tema (#048ABF) */
+    font-weight: 600;           /* Texto em negrito */
+    text-decoration: none;      /* Sem sublinhado */
+    transition: color 0.3s ease; /* Transição suave de cor */
+}
+
+.hashtag:hover {
+    color: var(--azul);         /* Azul mais escuro no hover */
+    text-decoration: underline; /* Sublinhado ao passar mouse */
+}

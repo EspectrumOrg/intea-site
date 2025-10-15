@@ -23,7 +23,7 @@ class UsuarioFactory extends Factory
             'apelido' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             //'email_verified_at' => now(),
-            'senha' => bcrypt('senha'), // password
+            'senha' => bcrypt('123456'), // todas as senha são 123456
             //'remember_token' => Str::random(10),
 
             'cpf' => fake()->numerify('###########'),

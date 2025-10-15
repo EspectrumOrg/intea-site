@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Usuario;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Autista;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
@@ -65,7 +66,6 @@ class AutistaController extends Controller
             'cidade' => 'nullable|string',
             'estado' => 'nullable|string',
             'complemento' => 'nullable|string',
-            'rg_autista' => 'required|string',
             'cpf_responsavel' => 'nullable|string', // novo campo, obrigatório para menores de 18 anos
             'tipo_usuario' => 'required|in:2',
             'status_conta' => 'required|in:1',
@@ -178,19 +178,25 @@ class AutistaController extends Controller
             }
 
             // Cria o registro na tabela autista, relacionando ao usuário e cuidador (se houver)
-            Autista::create([
-                'cipteia_autista' => 'Existente',
+           Autista::create([
+                'cipteia_autista' =>$request->CipteiaAutista,
                 'status_cipteia_autista' => 'Ativo',
-                'rg_autista' => $request->rg_autista,
                 'usuario_id' => $usuario->id,
                 'responsavel_id' => $idCuidador,
             ]);
 
-            Log::info('Autista criado para usuário ID: ' . $usuario->id);
 
+
+            
+            Log::info('Autista criado para usuário ID: ' . $usuario->id);
             // Retorna sucesso com status 201
             //return redirect()->route('dashboard')->with('Sucesso', 'Usuário e autista cadastrados com sucesso!');
-            return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);
+            //return response()->json(['message' => 'Usuário e autista cadastrados com sucesso.'], 201);
+
+            Auth::login($usuario);
+
+            //return response()->json($request->all());
+            return redirect()->route('post.index')->with('Sucesso', 'Usuário Tipo Autista cadastrado com sucesso!');
         } catch (\Exception $e) {
             // Em caso de erro, loga e retorna erro interno 500
             Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());

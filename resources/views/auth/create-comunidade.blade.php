@@ -73,12 +73,18 @@
             </div>
 
             <div class="field">
-                <label>Nome Conta</label>
+                <label>Nome Conta *</label>
                 <input
                     type="text"
                     name="apelido"
                     value="{{ $usuario->apelido ?? old('apelido') }}"
                     placeholder="nomeConta">
+
+                @if ($errors->has('apelido'))
+                <div class="alert alert-danger">
+                    <h3 class="alert-mensage">{{ $errors->first('apelido') }}</h3>
+                </div>
+                @endif
             </div>
 
             <div class="field nextBtn"> <!-- btns -->
@@ -118,6 +124,9 @@
                         name="numero_telefone[]"
                         value="{{ $tel }}"
                         placeholder="(DD) 12345-6789">
+                    <div class="alert alert-danger">
+                        <h3 class="alert-mensage"></h3>
+                    </div>
                 </div>
                 @endforeach
 
@@ -170,7 +179,7 @@
             </div>
 
             <div class="field">
-                <label>Gênero</label>
+                <label>Gênero *</label>
                 <select type="text" id="genero" name="genero">
                     <option value="">Opções</option>
                     @foreach($generos as $item)
@@ -202,11 +211,11 @@
                     class="user-input"
                     placeholder="@exemploNome">
 
-                @if ($errors->has('user'))
-                <div class="alert alert-danger">
-                    <h3 class="alert-mensage">{{ $errors->first('user') }}</h3>
+                <div class="alert alert-danger {{ $errors->has('user') ? 'visible' : '' }}">
+                    <h3 class="alert-mensage">
+                        {{ $errors->first('user') ?? 'Insira um user (mínimo 4 caracteres)' }}
+                    </h3>
                 </div>
-                @endif
             </div>
             <div class="field">
                 <label>Senha *</label>

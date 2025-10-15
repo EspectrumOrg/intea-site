@@ -27,18 +27,18 @@
  }
 
  .dashboard-inner {
+     max-width: 1200px;
      margin: 0 auto;
  }
 
+ /* título */
  .dashboard-title {
-     font-size: 24px;
-     text-align: left;
-     margin: 0 0 18px;
-     color: #111827;
+     display: flex;
+     color: var(--preto);
  }
 
- .dashboard-title img {
-     width: 75px;
+ .dashboard-title span {
+     font-size: 3rem;
  }
 
  /* Cards grid */

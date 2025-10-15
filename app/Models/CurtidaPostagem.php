@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Http\Controllers\PostagemController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +23,6 @@ class CurtidaPostagem extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(USuario::class, 'id_usuario');
+        return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 }
