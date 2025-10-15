@@ -12,10 +12,9 @@
         @else
         <ul id="usuarios-seguindo">
             @foreach ($usuariosSeguindo as $usuario)
-            <li style="margin-bottom:10px;">
+            <li class="usuario-item" data-id="{{ $usuario->id }}" style="margin-bottom:10px; cursor:pointer;">
                 <img src="{{ $usuario->foto ? asset('storage/' . $usuario->foto) : asset('storage/default.jpg') }}" width="40" height="40" alt="{{ $usuario->nome }}">
                 <span>{{ $usuario->nome }} ({{ $usuario->user }})</span>
-                <button class="abrir-chat" data-id="{{ $usuario->id }}" style="margin-left:10px; padding:2px 5px;">Abrir Chat</button>
             </li>
             @endforeach
         </ul>
@@ -31,10 +30,9 @@
                 $outroUsuarioId = $conversa->usuario1_id == $usuarioLogado ? $conversa->usuario2_id : $conversa->usuario1_id;
                 $outroUsuario = \App\Models\Usuario::find($outroUsuarioId);
             @endphp
-            <li style="margin-bottom:10px;">
+            <li class="usuario-item" data-id="{{ $outroUsuario->id }}" style="margin-bottom:10px; cursor:pointer;">
                 <img src="{{ $outroUsuario->foto ? asset('storage/' . $outroUsuario->foto) : asset('storage/default.jpg') }}" width="40" height="40" alt="{{ $outroUsuario->nome }}">
                 <span>{{ $outroUsuario->nome }} ({{ $outroUsuario->user }})</span>
-                <button class="abrir-chat" data-id="{{ $outroUsuario->id }}" style="margin-left:10px; padding:2px 5px;">Abrir Chat</button>
             </li>
             @endforeach
         </ul>
@@ -105,8 +103,8 @@ function appendMensagem(data){
     $("#messages").scrollTop($("#messages")[0].scrollHeight);
 }
 
-// Botão Abrir Chat
-$(document).on('click', '.abrir-chat', function(){
+// Clique no usuário abre o chat diretamente
+$(document).on('click', '.usuario-item', function(){
     usuarioSelecionado = $(this).data('id');
 
     $.ajax({
