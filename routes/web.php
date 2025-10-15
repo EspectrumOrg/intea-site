@@ -151,5 +151,7 @@ Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('te
 Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
 
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+
 
 require __DIR__ . '/auth.php';
