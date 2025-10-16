@@ -19,14 +19,11 @@
 
     <!--------------------------------- Conteúdo Postagem -------------------------------------->
     <div class="postagem-foco">
+        <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}" class="foto-user">
+            <img src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}" alt="foto perfil">
+        </a>
+        
         <div class="foto-perfil">
-            <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                @if (!empty($postagem->usuario->foto))
-                <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
-                @else
-                <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
-                @endif
-            </a>
             <div>
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                     <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>

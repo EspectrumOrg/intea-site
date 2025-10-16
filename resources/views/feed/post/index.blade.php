@@ -6,26 +6,26 @@
 use App\Models\Tendencia;
 
 if (!function_exists('formatarHashtags')) {
-    function formatarHashtags($texto) {
-        return preg_replace_callback(
-            '/#(\w+)/u',
-            function ($matches) {
-                $tag = e($matches[1]);
+function formatarHashtags($texto) {
+return preg_replace_callback(
+'/#(\w+)/u',
+function ($matches) {
+$tag = e($matches[1]);
 
-                // Busca a hashtag no banco
-                $tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
+// Busca a hashtag no banco
+$tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
 
-                // Define a URL final (se existir a tendência no banco, vai pra rota certa)
-                $url = $tendencia
-                    ? route('tendencias.show', $tendencia->slug)
-                    : url('/hashtags/' . $tag);
+// Define a URL final (se existir a tendência no banco, vai pra rota certa)
+$url = $tendencia
+? route('tendencias.show', $tendencia->slug)
+: url('/hashtags/' . $tag);
 
-                // Retorna o link formatado
-                return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
-            },
-            e($texto)
-        );
-    }
+// Retorna o link formatado
+return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
+},
+e($texto)
+);
+}
 }
 @endphp
 
@@ -184,8 +184,8 @@ if (!function_exists('formatarHashtags')) {
 
                         <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
                             @csrf
-                            <button type="submit" class="button btn-curtir">
-                                <span class="material-symbols-outlined {{ $postagem->curtidas_usuario ? 'curtido' : '' }}">favorite</span>
+                            <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
+                                <span class="material-symbols-outlined">favorite</span>
                                 <h1>{{ $postagem->curtidas_count }}</h1>
                             </button>
                         </form>
