@@ -14,7 +14,7 @@ class ComentarioController extends Controller
         $request->validate(
             [
                 'comentario' => 'required|string|max:500',
-                'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
+                'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif',
             ],
             [
                 'comentario.required' => 'É necessário escrever alguma coisa',
@@ -41,12 +41,7 @@ class ComentarioController extends Controller
 
         // Criar imagem
         if ($request->hasFile('caminho_imagem')) {
-            $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
-
-            ImagemComentario::create([
-                'id_comentario' => $comentario->id,
-                'caminho_imagem' => $imagem,
-            ]);
+    dd($request->file('caminho_imagem'));
         }
 
         return back()->with('success', 'Comentário publicado!');

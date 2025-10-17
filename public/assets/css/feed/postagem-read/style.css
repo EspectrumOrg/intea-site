@@ -232,6 +232,7 @@
 .container-read .dados {
     padding: 1rem 0;
 }
+
 .container-read .dados h3 {
     font-size: 14px;
     color: var(--cinza);
@@ -250,7 +251,7 @@
     padding: 0rem 1rem;
 }
 
-.interacoes .corpo{
+.interacoes .corpo {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -318,10 +319,12 @@
     color: var(--cor-vermelho);
 }
 
-.btn-curtir:hover span{
+.btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
     color: var(--cor-vermelho);
 }
+
+
 
 /* formulário de comentário ------------------------------------------*/
 .form-comentario {
@@ -454,23 +457,93 @@
     color: var(--preto);
 }
 
-.comentario span {
+/* comentário ------------------------------------------*/
+.interacoes-comentarios {
+    margin-top: .75rem;
     font-size: var(--texto-pequeno);
     color: var(--cinza);
-    margin-left: .5rem;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
 }
 
-.comentario img {
-    max-width: 200px;
-    margin-top: .5rem;
-    border-radius: 12px;
-    border: 1px solid var(--cinza-borda);
+.interacoes-comentarios .corpo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: .5rem 0rem;
+}
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.interacoes-comentarios .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes-comentarios .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes-comentarios span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+/* curtido ou normal*/
+.interacoes-comentarios .normal span {
+    color: var(--cinza);
+}
+
+.interacoes-comentarios .curtido span {
+    color: var(--cor-vermelho);
+}
+
+.interacoes-comentarios h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--cor-tema);
+}
+
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--cor-vermelho);
+}
+
+.btn-curtir:hover span {
+    background-color: rgba(242, 34, 34, 0.50);
+    color: var(--cor-vermelho);
 }
 
 /*adicionais ---------------------------------------------*/
 .hashtag {
-    position: relative; /* cria um novo contexto de empilhamento */
-    z-index: 1; /* fica acima do overlay */
+    position: relative;
+    /* cria um novo contexto de empilhamento */
+    z-index: 1;
+    /* fica acima do overlay */
     color: var(--cor-tema);
     font-weight: 600;
     text-decoration: none;

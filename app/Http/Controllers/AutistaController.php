@@ -196,7 +196,7 @@ class AutistaController extends Controller
             Auth::login($usuario);
 
             //return response()->json($request->all());
-            return redirect()->route('post.index')->with('Sucesso', 'Usuário Tipo Autista cadastrado com sucesso!');
+            return redirect()->route('post.index')->with('success', 'Usuário Tipo Autista cadastrado com sucesso!');
         } catch (\Exception $e) {
             // Em caso de erro, loga e retorna erro interno 500
             Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());
