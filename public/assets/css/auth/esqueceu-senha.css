@@ -331,3 +331,9 @@ color: var(--cor-preto);
 .contact1-form-btn:hover i {
   transform: translateX(10px);
 }
+
+.material-symbols-outlined{
+margin-top: 20px; 
+margin-left:20px;
+color: var(--cor-preto);
+}

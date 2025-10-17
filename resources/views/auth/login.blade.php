@@ -31,6 +31,9 @@
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
 
+                              <h2>Entrar</h2>
+
+
                             <!-- Email -->
                             <div class="form-group">
                                 <label for="email">Email</label>
@@ -77,7 +80,6 @@
                                 </div>
                             </div>
                             <!-- Criar conta -->
-
 
                             <div class="register-link">
                                 <p>Não tem conta? <a href="{{ route('register') }}">Criar conta</a></p>

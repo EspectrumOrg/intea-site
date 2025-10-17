@@ -262,3 +262,9 @@
     justify-content: space-between;
     flex-direction: row;
 }
+
+.material-symbols-outlined{
+margin-top: 20px; 
+margin-left:20px;
+color: var(--cor-preto);
+}
