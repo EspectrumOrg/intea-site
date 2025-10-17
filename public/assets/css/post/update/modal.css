@@ -1,7 +1,18 @@
 /* Quando a classe "hidden" NÃO está presente */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+}
+
 .modal:not(.hidden),
 .modal-denuncia:not(.hidden) {
-    display: flex;
+    display: flex !important; /* força aparecer */
 }
 
 /* Conteúdo do modal */
@@ -16,7 +27,7 @@
 }
 
 .hidden {
-    display: none !important;
+    display: none;
 }
 
 /* ---------- BOTÃO FECHAR ---------- */
@@ -51,22 +62,6 @@
 }
 
 /* ================= MODAL EDIT POST ================ */
-.modal {
-    display: none;
-    /* escondido por padrão */
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-    align-items: flex-start;
-    padding-top: 2.5rem;
-}
-
 /* form dentro do modal */
 .form-editar {
     background: transparent;

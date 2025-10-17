@@ -31,24 +31,24 @@ class SeguirController extends Controller
      * Store a newly created resource in storage.
      */
 
- 
-         public function store(Request $request)
-        {
-            /** @var \App\Models\Usuario $user */
 
-     $user = auth()->user();
+    public function store(Request $request)
+    {
+        /** @var \App\Models\Usuario $user */
+
+        $user = auth()->user();
         $userIdToFollow = $request->input('user_id');
 
-     if ($user->id != $userIdToFollow) {
-        $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
+        if ($user->id != $userIdToFollow) {
+            $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
 
-        if (!$isAlreadyFollowing) {
-            $user->seguindo()->attach($userIdToFollow);
+            if (!$isAlreadyFollowing) {
+                $user->seguindo()->attach($userIdToFollow);
+            }
         }
-    }
 
-    return redirect()->back()->with('success', 'Você está seguindo o usuário!');
-}
+        return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+    }
     /**
      * Display the specified resource.
      */

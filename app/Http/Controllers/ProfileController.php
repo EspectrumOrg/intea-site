@@ -25,51 +25,51 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-public function edit(Request $request): View
-{
-    $generos = $this->genero->all();
-    $user = Auth::user();
-    $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-    $dadosespecificos = null;
+    public function edit(Request $request): View
+    {
+        $generos = $this->genero->all();
+        $user = Auth::user();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        $dadosespecificos = null;
 
-    // 🔥 Postagens populares (as mais curtidas)
-    $postsPopulares = Postagem::withCount('curtidas')
-        ->orderByDesc('curtidas_count')
-        ->take(5)
-        ->get();
+        // 🔥 Postagens populares (as mais curtidas)
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
 
-    // 📜 Postagens do usuário logado
-    $userPosts = Postagem::where('usuario_id', $user->id)->get();
+        // 📜 Postagens do usuário logado
+        $userPosts = Postagem::where('usuario_id', $user->id)->get();
 
-    // ❤️ Postagens curtidas pelo usuário
-    $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
-        $q->where('usuario_id', $user->id);
-    })->get();
+        // ❤️ Postagens curtidas pelo usuário
+        $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
+            $q->where('usuario_id', $user->id);
+        })->get();
 
-    // 🔍 Dados específicos por tipo de usuário
-    switch ($user->tipo_usuario) {
-        case 2:
-            $dadosespecificos = $user->autista;
-            break;
-        case 4:
-            $dadosespecificos = $user->profissional_saude;
-            break;
-        case 5:
-            $dadosespecificos = $user->responsavel;
-            break;
+        // 🔍 Dados específicos por tipo de usuário
+        switch ($user->tipo_usuario) {
+            case 2:
+                $dadosespecificos = $user->autista;
+                break;
+            case 4:
+                $dadosespecificos = $user->profissional_saude;
+                break;
+            case 5:
+                $dadosespecificos = $user->responsavel;
+                break;
+        }
+
+        // ✅ Retorna para a view com todas as variáveis necessárias
+        return view('profile.show', compact(
+            'dadosespecificos',
+            'generos',
+            'telefones',
+            'user',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares'
+        ));
     }
-
-    // ✅ Retorna para a view com todas as variáveis necessárias
-    return view('profile.show', compact(
-        'dadosespecificos',
-        'generos',
-        'telefones',
-        'user',
-        'userPosts',
-        'likedPosts',
-        'postsPopulares'
-    ));
-}
 
     /**
      * Update the user's profile information.

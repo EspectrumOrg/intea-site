@@ -19,12 +19,11 @@
 
     <!--------------------------------- Conteúdo Postagem -------------------------------------->
     <div class="postagem-foco">
-        <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}" class="foto-user">
-            <img src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}" alt="foto perfil">
-        </a>
-        
-        <div class="foto-perfil">
-            <div>
+        <div style="display: flex; gap: 1rem;">
+            <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}" class="foto-user">
+                <img src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}" alt="foto perfil">
+            </a>
+            <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                     <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                 </a>
@@ -33,8 +32,8 @@
         </div>
 
         <div class="dropdown"> <!--------- Dropdown --------->
-            <button class="menu-opcoes">
-                <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
+            <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                <span class="material-symbols-outlined">more_horiz</span>
             </button>
             <ul class="dropdown-content">
                 @if(Auth::id() === $postagem->usuario_id)
@@ -132,14 +131,18 @@
     <div class="interacoes">
         <div class="corpo">
             <div class="comment">
-                <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">
-                <h1>{{ $postagem->comentarios_count }}</h1>
+                <button type="button" class="button btn-comentar">
+                    <a>
+                        <span class="material-symbols-outlined">chat_bubble</span>
+                        <h1>{{ $postagem->comentarios_count }}</h1>
+                    </a>
+                </button>
             </div>
 
             <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
                 @csrf
-                <button type="submit" class="button">
-                    <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
+                    <span class="material-symbols-outlined">favorite</span>
                     <h1>{{ $postagem->curtidas_count }}</h1>
                 </button>
             </form>

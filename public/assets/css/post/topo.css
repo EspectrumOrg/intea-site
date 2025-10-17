@@ -18,6 +18,7 @@
     text-decoration: none;
     transition: 0.3s;
     text-decoration-color: var(--cor-preto);
+    z-index: 9998 !important;
 }
 
 .container-post .topo .info-perfil a:hover {
@@ -114,6 +115,8 @@
 }
 
 .container-post .seguir-btn {
+    display: flex;
+    gap: 1rem;
     font-size: 15px;
     font-weight: 600;
     padding: 1rem;
@@ -127,14 +130,8 @@
 }
 
 .container-post .seguir-btn:hover {
-    background-color: var(--cinza-font);
+    background-color: var(--branco-light);
 }
-
-/* mostrar dropdown ao passar o mouse 
-.container-post .dropdown:hover .dropdown-content {
-    display: block;
-}
-*/
 
 .container-post .dropdown .dropdown-content {
     display: none;

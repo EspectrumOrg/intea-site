@@ -18,19 +18,11 @@ class DenunciaPostagemController extends Controller
         $this->imagem_postagem = $imagem_postagem;
     }
 
-    public function index(Request $request)
+
+    
+    public function index(Request $request) // retornar dados
     {
         $query = $this->denuncia->query();
-
-        /* Busca por nome, user ou email
-        if ($request->filled('search_denuncia')) {
-            $search = $request->search;
-            $query->whereHas('usuario', function ($q) use ($search) {
-                $q->where('nome', 'like', "%{$search}%")
-                    ->orWhere('user', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%");
-            });
-        }*/
 
         // Filtro por motivo_denuncia
         if ($request->filled('motivo_denuncia')) {
@@ -50,6 +42,8 @@ class DenunciaPostagemController extends Controller
 
         return view('admin.denuncia.index', compact('denuncias'));
     }
+
+
 
     public function post(Request $request, $id_postagem, $id_usuario)
     {
@@ -73,7 +67,9 @@ class DenunciaPostagemController extends Controller
         return back();
     }
 
-    public function resolve($id)
+
+
+    public function resolve($id) // marcar denúncia como resolvida
     {
         $denuncia = DenunciaPostagem::findOrFail($id);
 
@@ -90,13 +86,20 @@ class DenunciaPostagemController extends Controller
         return redirect()->back();
     }
 
-    public function destroy($id) //Banir usuário
-    {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->status_conta = 0;
-        $usuario->save();
 
-        session()->flash("successo", "Usuário banido");
-        return redirect()->back();
+
+    public function destroy($id) // banir usuário
+    {
+        if ($id = !1) {  //ID diferente de 1
+            $usuario = Usuario::findOrFail($id);
+            $usuario->status_conta = 2;
+            $usuario->save();
+
+            session()->flash("successo", "Usuário banido");
+            return redirect()->back();
+        } else {
+            session()->flash("aviso", "O usuário principal não pode ser banido!");
+            return redirect()->back();
+        }
     }
 }

@@ -31,7 +31,7 @@ class PostagemController extends Controller
             ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-          $tendenciasPopulares = Tendencia::populares(5)->get();
+        $tendenciasPopulares = Tendencia::populares(5)->get();
 
         return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
@@ -154,10 +154,10 @@ class PostagemController extends Controller
     public function destroy($id)
     {
         $postagem = Postagem::findOrFail($id);
-        
+
         // Remover associações com tendências antes de deletar
         $postagem->tendencias()->detach();
-        
+
         $postagem->delete();
 
         session()->flash("successo", "Postagem excluído");

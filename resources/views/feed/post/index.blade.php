@@ -69,7 +69,7 @@ e($texto)
                             @if(Auth::id() === $postagem->usuario_id)
                             <li>
                                 <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
-                                    <img src="{{ asset('assets/images/logos/symbols/site-claro/write.png') }}">Editar
+                                    <span class="material-symbols-outlined">edit</span>Editar
                                 </button>
                             </li>
                             <li>
@@ -77,73 +77,28 @@ e($texto)
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-acao excluir">
-                                        <img src="{{ asset('assets/images/logos/symbols/site-claro/trash.png') }}">Excluir
+                                        <span class="material-symbols-outlined">delete</span>Excluir
                                     </button>
                                 </form>
                             </li>
+                            <!-- Caso não tenha sido quem postou --------------------->
                             @else
-                            <li><a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/flag.png') }}">Denunciar</a></li>
+                            <li>
+                                <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
+                                    <span class="material-symbols-outlined">flag_2</span>Denunciar
+                                </a>
+                            </li>
                             <li>
                                 <form action="{{ route('seguir.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
                                     <button type="submit" class="seguir-btn">
-                                        <img src="{{ asset('assets/images/logos/symbols/site-claro/follow.png') }}">Seguir {{ $postagem->usuario->user }}
+                                        <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
                                     </button>
                                 </form>
                             </li>
                             @endif
                         </ul>
-                    </div>
-
-                    <!-- Modal Edição dessa postagem -->
-                    <div id="modal-editar-{{ $postagem->id }}" class="modal hidden">
-                        <div class="modal-content">
-                            <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
-                            <div class="modal-content-content">
-                                @include('feed.post.edit', ['postagem' => $postagem])
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal Criação de comentário ($postagem->id) -->
-                    <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
-                        <div class="modal-content">
-                            <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
-                            <div class="modal-content-content">
-                                @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal de denúncia (um para cada postagem) -->
-                    <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
-                        <div class="modal-content">
-                            <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
-
-                            <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
-                                @csrf
-                                <div class="form">
-                                    <label class="form-label">Motivo Denúncia</label>
-                                    <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
-                                        <option value="">Tipo</option>
-                                        <option value="spam">Spam</option>
-                                        <option value="desinformacao">Desinformação</option>
-                                        <option value="conteudo_explicito">Conteúdo Explícito</option>
-                                        <option value="discurso_de_odio">Discurso de Ódio</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-label">
-                                    <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
-                                    <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
-                                </div>
-
-                                <div style="display: flex; justify-content: end;">
-                                    <button type="submit">Denunciar</button>
-                                </div>
-                            </form>
-                        </div>
                     </div>
                 </div>
 
@@ -171,7 +126,7 @@ e($texto)
                     </div>
 
 
-                    <!-- bottom ---------------------------------------------------------------------------------->
+                    <!-- curtidas e comentários ---------------------------------------------------------------------------------->
                     <div class="dados-post">
                         <div>
                             <button type="button" onclick="toggleForm('{{ $postagem->id }}')" class="button btn-comentar">
@@ -191,6 +146,56 @@ e($texto)
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Modal Edição dessa postagem -->
+        <div id="modal-editar-{{ $postagem->id }}" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
+                <div class="modal-content-content">
+                    @include('feed.post.edit', ['postagem' => $postagem])
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Criação de comentário ($postagem->id) -->
+        <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
+            <div class="modal-content">
+                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
+                <div class="modal-content-content">
+                    @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de denúncia (um para cada postagem) -->
+        <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
+
+                <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
+                    @csrf
+                    <div class="form">
+                        <label class="form-label">Motivo Denúncia</label>
+                        <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                            <option value="">Tipo</option>
+                            <option value="spam">Spam</option>
+                            <option value="desinformacao">Desinformação</option>
+                            <option value="conteudo_explicito">Conteúdo Explícito</option>
+                            <option value="discurso_de_odio">Discurso de Ódio</option>
+                        </select>
+                    </div>
+
+                    <div class="form-label">
+                        <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
+                        <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
+                    </div>
+
+                    <div style="display: flex; justify-content: end;">
+                        <button type="submit">Denunciar</button>
+                    </div>
+                </form>
             </div>
         </div>
         @endforeach

@@ -49,32 +49,32 @@ class UsuarioController extends Controller
         $usuarioLogado = Auth::id();
 
         $conversas = ChatPrivado::where('usuario1_id', $usuarioLogado)
-                        ->orWhere('usuario2_id', $usuarioLogado)
-                        ->orderBy('updated_at', 'desc')
-                        ->get();
+            ->orWhere('usuario2_id', $usuarioLogado)
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
         return view('conversas', compact('conversas', 'usuarioLogado'));
     }
 
-public function teste()
-{
-    $usuarioLogado = Auth::id();
+    public function teste()
+    {
+        $usuarioLogado = Auth::id();
 
-    // Busca todas as conversas que envolvem o usuário logado
-    $conversas = ChatPrivado::where('usuario1_id', $usuarioLogado)
-                    ->orWhere('usuario2_id', $usuarioLogado)
-                    ->orderBy('updated_at', 'desc')
-                    ->get();
+        // Busca todas as conversas que envolvem o usuário logado
+        $conversas = ChatPrivado::where('usuario1_id', $usuarioLogado)
+            ->orWhere('usuario2_id', $usuarioLogado)
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-    // Busca todos os IDs dos usuários que o logado está seguindo
-    $seguindoIds = seguirModel::where('segue_id', $usuarioLogado)
-                        ->pluck('seguindo_id');
+        // Busca todos os IDs dos usuários que o logado está seguindo
+        $seguindoIds = seguirModel::where('segue_id', $usuarioLogado)
+            ->pluck('seguindo_id');
 
-    // Busca os dados desses usuários
-    $usuariosSeguindo = Usuario::whereIn('id', $seguindoIds)->get();
+        // Busca os dados desses usuários
+        $usuariosSeguindo = Usuario::whereIn('id', $seguindoIds)->get();
 
         return view('feed.chats.conversas', compact('conversas', 'usuariosSeguindo', 'usuarioLogado'));
-}
+    }
 
     public function index(Request $request)
     {
@@ -109,16 +109,29 @@ public function teste()
         return view('admin.usuario.index', compact('usuario'));
     }
 
-
-    public function destroy($id)
+    public function destroy($id) // Usuário 2 = banido
     {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->status_conta = 2;
-        $usuario->save();
+        if ($id != 1) {
+            $usuario = Usuario::findOrFail($id);
 
-        session()->flash("success", "Usuário excluido");
-        return redirect()->back();
+            // Exclui comentários do usuário
+            $usuario->comentarios()->delete();
+
+            // Exclui postagens do usuário
+            $usuario->postagens()->delete();
+
+            // Marca como banido
+            $usuario->status_conta = 2;
+            $usuario->save();
+
+            session()->flash("success", "Usuário banido e conteúdo removido.");
+            return redirect()->back();
+        } else {
+            session()->flash("aviso", "O usuário principal não pode ser banido!");
+            return redirect()->back();
+        }
     }
+
 
 
     public function desbanir($id)

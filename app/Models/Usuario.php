@@ -105,6 +105,11 @@ class Usuario extends Authenticatable
     return $this->hasMany(Postagem::class, 'usuario_id');
   }
 
+    public function comentarios()
+  {
+    return $this->hasMany(Comentario::class, 'usuario_id');
+  }
+
   public function getPostagensCountAttribute()
   {
     return $this->postagens()->count();
