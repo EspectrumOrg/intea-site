@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Início
+
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
@@ -61,7 +62,17 @@ Route::get('/cadastro', function () { // Tipo Conta
 // Grupo
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
-Route::post('/grupo/inserir', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
+
+Route::post('/broadcast', [PusherController::class, 'broadcast']);
+Route::post('/receive', [PusherController::class, 'receive']);
+Route::get('/chat', [PusherController::class, 'index']);
+Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
+
+Route::get('/chat-test', function () {
+    return view('chat-test'); // Se tiver uma view
+    // ou
+    return file_get_contents(resource_path('views/chat-test.php'));
+});
 
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
