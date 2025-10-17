@@ -33,15 +33,22 @@
 /* ---------- BOTÃO FECHAR ---------- */
 .modal-content .close {
     position: absolute;
-    top: 0px;
-    left: 20px;
+    top: 10px;
+    right: 20px;
     font-size: 2rem;
+    padding: .5rem;
     font-weight: bold;
-    color: var(--cinza);
+    color: var(--preto);
     background: none;
     border: none;
+    border-radius: 50%;
     cursor: pointer;
-    transition: 0.2s;
+    transition: 0.3s;
+}
+
+.modal-content .close:hover {
+    background-color: var(--branco-light);
+    color: var(--cor-tema);
 }
 
 /* Animação de entrada */
@@ -68,6 +75,10 @@
     /* sem fundo extra */
     box-shadow: none;
     padding: 0;
+}
+
+.form-editar .form .content {
+    border-top: 1px solid var(--branco-light);
 }
 
 .form-editar .textfield-editar {

@@ -427,7 +427,7 @@
 
 .comentario {
     border-top: 1px solid var(--cinza-borda);
-    padding: .75rem 1rem;
+    padding: 1rem;
     font-size: var(--texto-padrao);
     color: var(--preto);
     display: flex;
@@ -449,7 +449,7 @@
 
 .comentario .dados {
     width: 100%;
-    padding: 1rem;
+    padding: 0 1rem;
 }
 
 .comentario strong {
@@ -472,7 +472,6 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    padding: .5rem 0rem;
 }
 
 .comment {
@@ -565,4 +564,52 @@
     position: absolute;
     right: 0;
     z-index: 9999 !important;
+}
+
+/* estilo base para botões de ação */
+.btn-acao {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    text-align: left;
+    padding: .6rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--texto-padrao);
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--preto);
+    transition: background-color .3s, color .3s, transform .1s;
+}
+
+/* hover geral */
+.btn-acao:hover {
+    transform: scale(1);
+}
+
+/* editar */
+.container-post .editar {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-acao.editar:hover {
+    background-color: var(--branco-light);
+    color: var(--cor-tema);
+}
+
+/* excluir */
+.btn-acao.excluir:hover {
+    background-color: var(--branco-light);
+    color: var(--cor-vermelho);
+}
+
+.container-post .excluir {
+    border-radius: 0 0 15px 15px;
+}
+
+/* denunciar */
+.btn-acao.denunciar:hover {
+    background-color: #ffcccb;
+    color: var(--vermelho);
 }

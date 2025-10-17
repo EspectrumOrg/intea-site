@@ -69,6 +69,6 @@ class DenunciaUsuarioController extends Controller
             'texto_denuncia' => $request->texto_denuncia,
         ]);
 
-        return back();
+        return back()->with('warning', 'usuário denunciado');
     }
 }

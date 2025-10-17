@@ -79,7 +79,9 @@
         <!-- Modal Criação de comentário ($postagem->id) -->
         <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
             <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
+                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
                 <div class="modal-content-content">
                     @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
                 </div>
@@ -89,8 +91,7 @@
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
-                <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
-
+                <span class="close material-symbols-outlined" onclick="fecharModalDenuncia('{{$postagem->id}}')">close</span>
                 <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
                     @csrf
                     <div class="form">
@@ -256,7 +257,9 @@
     <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
     <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
         <div class="modal-content">
-            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">&times;</button>
+            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
             <div class="modal-content-content">
                 @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
             </div>

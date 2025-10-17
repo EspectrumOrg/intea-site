@@ -5,7 +5,7 @@
     <div class="content">
         <div class="topo">
             <a class="voltar" href="{{ route('post.read', ['postagem' => $comentario->id_postagem]) }}">
-                <img src="{{ asset('assets/images/logos/symbols/back-button.png') }}">
+                <span class="material-symbols-outlined">arrow_back</span>
             </a>
             <div class="text">
                 <h1>Postagem</h1>

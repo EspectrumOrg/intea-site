@@ -64,7 +64,7 @@ class DenunciaPostagemController extends Controller
             'status_denuncia' => '1',
         ]);
 
-        return back()->with('success_report', 'usuário denunciado');
+        return back()->with('warning', 'usuário denunciado');
     }
 
 
@@ -82,7 +82,7 @@ class DenunciaPostagemController extends Controller
             ->where('id', '!=', $denuncia->id)
             ->update(['status_denuncia' => 0]);
 
-        session()->flash("successo", "Denúncia resolvida junto com relacionadas.");
+        session()->flash("success", "Denúncia resolvida junto com relacionadas.");
         return redirect()->back();
     }
 
@@ -95,10 +95,10 @@ class DenunciaPostagemController extends Controller
             $usuario->status_conta = 2;
             $usuario->save();
 
-            session()->flash("successo", "Usuário banido");
+            session()->flash("warning", "Usuário banido");
             return redirect()->back();
         } else {
-            session()->flash("aviso", "O usuário principal não pode ser banido!");
+            session()->flash("warning", "O usuário principal não pode ser banido!");
             return redirect()->back();
         }
     }

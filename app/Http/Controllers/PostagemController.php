@@ -81,7 +81,7 @@ class PostagemController extends Controller
                 'id_postagem' => $postagem->id,
             ]);
         }
-        return redirect()->route('post.index')->with('Sucesso', 'Postado, confira já!');
+        return redirect()->route('post.index')->with('success', 'Postado, confira já!');
     }
 
     /**
