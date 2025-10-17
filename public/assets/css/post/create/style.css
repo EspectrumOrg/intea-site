@@ -59,7 +59,7 @@
 }
 
 
-/* opções (upload etc) */
+/* opções (upload etc) ----------------------------------*/
 .create-post .form .content {
     display: flex;
     flex-direction: row;
@@ -126,9 +126,9 @@
     color: var(--branco);
     font-size: 14px;
     font-weight: bold;
-    padding: .3rem 1.5rem;
+    padding: .75rem;
     border: none;
-    border-radius: 25% / 100%;
+    border-radius: 25% / 50%;
     cursor: pointer;
     transition: background-color .2s, transform .1s;
 }
@@ -136,4 +136,44 @@
 .create-post .form .botao-postar:hover {
     background-color: var(--cor-tema);
     transform: scale(1.03);
+}
+
+/* ----------------------------- preview imagem ------------------------------- */
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.image-preview img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--branco-light);
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: var(--branco);
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.image-preview .remove-image:hover {
+    background-color: var(--cor-tema-apagado);
+}
+
+.image-preview .remove-image span {
+    color: var(--branco);
 }

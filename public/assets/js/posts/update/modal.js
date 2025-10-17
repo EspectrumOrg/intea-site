@@ -1,14 +1,24 @@
 function abrirModalEditar(id) {
-    document.getElementById('modal-editar-' + id).classList.remove('hidden');
+    const modal = document.getElementById('modal-editar-' + id);
+    if (modal) modal.classList.remove('hidden');
 }
+
 function fecharModalEditar(id) {
-    const modalEditar = document.getElementById("modal-editar-" + id);
-    modalEditar.classList.add("hidden");
-
-    const formEditar = modalEditar.querySelector("form");
-    if (formEditar) formEditar.reset();
+    const modal = document.getElementById('modal-editar-' + id);
+    if (modal) {
+        modal.classList.add('hidden');
+        const form = modal.querySelector('form');
+        if (form) form.reset();
+    }
 }
 
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.classList.add('hidden');
+        const form = event.target.querySelector('form');
+        if (form) form.reset();
+    }
+};
 
 const textarea = document.getElementById('post-textarea');
 const charCount = document.getElementById('char-count');
@@ -22,13 +32,3 @@ textarea.addEventListener('input', () => {
     const len = textarea.value.length;
     charCount.textContent = `${len}/255`;
 });
-
-// fecha clicando fora do modal
-window.onclick = function(event) {
-    if (event.target.classList.contains('modal-editar')) {
-        event.target.classList.add('hidden');
-
-        const formEditar = event.target.querySelector("form");
-        if (formEditar) formEditar.reset();
-    }
-}

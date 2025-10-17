@@ -104,7 +104,6 @@
                         </td>
                         <td class="button-open-data">
 
-
                             <div class="td-acoes">
                                 <!-- Usuário ativo → Desabilitar denúncia -->
                                 <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
@@ -116,22 +115,18 @@
                                         </span>
                                     </button>
                                 </form>
-                                <!-- Usuário ativo → Mostrar botão de banir -->
-                                <form action="{{ route('denuncia.destroy', $item->postagem->usuario->id) }}" method="post">
+                                <!-- Banir usuário que fez a postagem -->
+                                <form action="{{ route('usuario.destroy', $item->postagem->usuario->id) }}" method="post">
                                     @csrf
                                     @method("delete")
                                     <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
-                                        <span class="material-symbols-outlined">
-                                            person_off
-                                        </span>
+                                        <span class="material-symbols-outlined">person_off</span>
                                     </button>
                                 </form>
 
                                 <!-- Botão para abrir o modal -->
                                 <button type="button" class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
-                                    <span class="material-symbols-outlined">
-                                        open_in_full
-                                    </span>
+                                    <span class="material-symbols-outlined">open_in_full</span>
                                 </button>
                             </div>
 

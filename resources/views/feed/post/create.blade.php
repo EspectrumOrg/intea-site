@@ -14,9 +14,20 @@
         @csrf
         <div class="textfield">
             <div id="hashtag-preview" class="hashtag-preview"></div>
+
             <textarea id="texto_postagem" name="texto_postagem" maxlength="280"
                 rows="1" placeholder="Comece uma publicação" required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
+
+            {{-- Preview da imagem --}}
+            <div id="image-preview" class="image-preview" style="display: none;">
+                <img id="preview-img" src="" alt="Prévia da imagem">
+                <button type="button" id="remove-image" class="remove-image">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
+            </div>
         </div>
 
         <div class="content">
@@ -39,3 +50,28 @@
 
     </form>
 </div>
+
+<script>
+    const inputFile = document.getElementById('caminho_imagem');
+    const previewContainer = document.getElementById('image-preview');
+    const previewImage = document.getElementById('preview-img');
+    const removeButton = document.getElementById('remove-image');
+
+    inputFile.addEventListener('change', () => {
+        const file = inputFile.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = e => {
+                previewImage.src = e.target.result;
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removeButton.addEventListener('click', () => {
+        inputFile.value = ''; // limpa o input
+        previewImage.src = '';
+        previewContainer.style.display = 'none';
+    });
+</script>

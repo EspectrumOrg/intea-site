@@ -17,8 +17,8 @@ class CurtidaPostagemController extends Controller
 
         // verificar se já existe curtida
         $curtida = CurtidaPostagem::where('id_postagem', $postagem->id)
-                                  ->where('id_usuario', $usuarioId)
-                                  ->first();
+            ->where('id_usuario', $usuarioId)
+            ->first();
 
         if ($curtida) {
             // se já existe, remove

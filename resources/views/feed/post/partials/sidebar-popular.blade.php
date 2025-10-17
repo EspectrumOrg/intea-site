@@ -8,24 +8,28 @@
 
     <div class="tendencias-list">
         @isset($tendenciasPopulares)
-            @foreach($tendenciasPopulares as $tendencia)
-                <a href="{{ route('tendencias.show', $tendencia->slug) }}" class="tendencia-item">
-                    <div class="tendencia-content">
-                        <span class="tendencia-nome">{{ $tendencia->hashtag }}</span>
-                        <span class="tendencia-contador">{{ $tendencia->contador_uso }} posts</span>
-                    </div>
-                </a>
-            @endforeach
-            
-            @if($tendenciasPopulares->count() == 0)
-                <div class="no-tendencias">
-                    <p>Nenhuma tendência no momento</p>
-                </div>
-            @endif
-        @else
-            <div class="no-tendencias">
-                <p>Carregando tendências...</p>
+        @foreach($tendenciasPopulares as $tendencia)
+        <a href="{{ route('tendencias.show', $tendencia->slug) }}" class="tendencia-item">
+            <div class="tendencia-content">
+                <span class="tendencia-nome">{{ $tendencia->hashtag }}</span>
+                <span class="tendencia-contador">{{ $tendencia->contador_uso }} posts</span>
             </div>
+        </a>
+        @endforeach
+
+        @if($tendenciasPopulares->count() == 0)
+        <div class="no-tendencias">
+            <p>Nenhuma tendência no momento</p>
+        </div>
+        @endif
+
+        <div class="ver-mais">
+            <a href="{{ route('tendencias.index') }}">Ver mais</a>
+        </div>
+        @else
+        <div class="no-tendencias">
+            <p>Carregando tendências...</p>
+        </div>
         @endisset
     </div>
 </div>

@@ -30,45 +30,45 @@ class GruposControler extends Controller
     public function store(Request $request)
     {
         //  
- 
+
 
     }
 
-    
-    public function exibirGrupos() {
-        $grupo = GruposModel::all(); 
+
+    public function exibirGrupos()
+    {
+        $grupo = GruposModel::all();
         return view('grupos', compact('grupo'));
     }
 
 
     public function entrarNoGrupo($grupoId)
     {
-        $usuarioId = Auth::id(); 
+        $usuarioId = Auth::id();
         $grupo = GruposModel::findOrFail($grupoId);
         $grupo->usuarios()->syncWithoutDetaching([$usuarioId]);
 
         return redirect()->back()->with('success', 'Você entrou no grupo com sucesso!');
     }
-    
+
     public function criarGrupo(Request $request)
     {
         //  
         $grupo = new GruposModel();
         $grupo->idLider = Auth::id();
-        $grupo ->nomeGrupo = $request->input('nomeGrupo');
-        $grupo ->descGrupo = $request->input('descGrupo');
-        $image=$request->file('foto');
-        if($image==null){
-            $path="";
-        }else{
-        $path = $image->store('arquivosGrupo', 'public');
+        $grupo->nomeGrupo = $request->input('nomeGrupo');
+        $grupo->descGrupo = $request->input('descGrupo');
+        $image = $request->file('foto');
+        if ($image == null) {
+            $path = "";
+        } else {
+            $path = $image->store('arquivosGrupo', 'public');
         }
         $grupo->imagemGrupo = $path;
         $grupo->save();
         $grupo->usuarios()->syncWithoutDetaching([Auth::id()]);
 
         return redirect('grupo')->with('success', 'Mangá inserido com sucesso!');
-
     }
 
 
