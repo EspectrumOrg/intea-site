@@ -38,7 +38,7 @@ public function store(LoginRequest $request): RedirectResponse
             return back()->with('conta_status', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
 
         case 1: // login normal
-            return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Login realizado com sucesso!');
 
         case 2: // conta banida
             Auth::logout();

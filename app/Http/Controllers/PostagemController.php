@@ -155,10 +155,21 @@ class PostagemController extends Controller
     {
         $postagem = Postagem::findOrFail($id);
 
+        // guardar tendências
+        $tendencias = $postagem->tendencias()->get();
+
         // Remover associações com tendências antes de deletar
         $postagem->tendencias()->detach();
 
+        // Deletar postagem
         $postagem->delete();
+
+        // Deletar tendências sem postagens 🔥
+        foreach ($tendencias as $tendencia) {
+            if ($tendencia->postagens()->count() === 0) {
+                $tendencia->delete();
+            }
+        }
 
         session()->flash("successo", "Postagem excluído");
         return redirect()->back();

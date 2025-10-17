@@ -109,7 +109,7 @@ class UsuarioController extends Controller
         return view('admin.usuario.index', compact('usuario'));
     }
 
-    public function destroy($id) // Usuário 2 = banido
+    public function destroy($id)
     {
         if ($id != 1) {
             $usuario = Usuario::findOrFail($id);
@@ -117,10 +117,32 @@ class UsuarioController extends Controller
             // Exclui comentários do usuário
             $usuario->comentarios()->delete();
 
-            // Exclui postagens do usuário
-            $usuario->postagens()->delete();
+            // Busca todas as postagens do usuário
+            $postagens = $usuario->postagens()->with('tendencias')->get();
 
-            // Marca como banido
+            // Coleta todas as tendências ligadas às postagens
+            $tendenciasIds = [];
+            foreach ($postagens as $postagem) {
+                foreach ($postagem->tendencias as $tendencia) {
+                    $tendenciasIds[] = $tendencia->id;
+                }
+            }
+
+            // Exclui postagens do usuário (automático detach das pivot)
+            foreach ($postagens as $postagem) {
+                $postagem->tendencias()->detach();
+                $postagem->delete();
+            }
+
+            // Verifica tendências que ficaram sem postagens e apaga 🔥
+            $tendencias = \App\Models\Tendencia::whereIn('id', $tendenciasIds)->get();
+            foreach ($tendencias as $tendencia) {
+                if ($tendencia->postagens()->count() === 0) {
+                    $tendencia->delete();
+                }
+            }
+
+            // Marca usuário como banido
             $usuario->status_conta = 2;
             $usuario->save();
 
@@ -131,6 +153,7 @@ class UsuarioController extends Controller
             return redirect()->back();
         }
     }
+
 
 
 

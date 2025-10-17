@@ -64,7 +64,7 @@ class DenunciaPostagemController extends Controller
             'status_denuncia' => '1',
         ]);
 
-        return back();
+        return back()->with('success_report', 'usuário denunciado');
     }
 
 

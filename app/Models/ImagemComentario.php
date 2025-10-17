@@ -16,7 +16,7 @@ class ImagemComentario extends Model
         'caminho_imagem',
     ];
 
-    public function comentarioPostagem()
+    public function comentario()
     {
         return $this->belongsTo(Comentario::class, 'id_comentario');
     }
