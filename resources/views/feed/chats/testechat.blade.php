@@ -88,7 +88,7 @@ function appendMensagem(data){
     const classe = isRemetente ? 'right' : 'left';
 
     let avatarHtml = '';
-    if(!isRemetente && data.foto){ s// mostra foto apenas da outra pesoa
+    if(!isRemetente && data.foto){ // mostra foto apenas da outra pesoa
         avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar" width="40" height="40" style="margin-right:5px;">`;
     }
 
