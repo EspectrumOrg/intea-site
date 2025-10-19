@@ -178,8 +178,8 @@ Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->na
 // routes/web.php
 
 Route::middleware('auth')->group(function () {
-    Route::get('/autistas/{autista}/editar', [App\Http\Controllers\ResponsavelController::class, 'edit_autista'])->name('autistas.edit_autista');
-    Route::patch('/autistas/{autista}', [App\Http\Controllers\ResponsavelController::class, 'update_autista'])->name('autistas.update_autista');
+    Route::get('/autistas/{id}/editar', [App\Http\Controllers\ResponsavelController::class, 'edit_autista'])->name('autistas.edit_autista');
+    Route::patch('/autistas/{id}', [App\Http\Controllers\ResponsavelController::class, 'update_autista'])->name('autistas.update_autista');
 });
 
 

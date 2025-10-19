@@ -34,7 +34,7 @@ class ResponsavelController extends Controller
     }
 
 
-    public function update_autista(Request $request, $id)
+    public function update_autista(Request $request, $id) 
 {
     $usuario = auth()->user();
     $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
@@ -47,29 +47,31 @@ class ResponsavelController extends Controller
         return back()->withErrors(['Erro: Autista sem vínculo com usuário.']);
     }
 
-    $validatedUsuario = $request->validate([
+    // Validação dos dados do request (ajuste conforme suas regras)
+    $validated = $request->validate([
         'nome' => 'required|string|max:255',
         'user' => 'required|string|max:255',
         'apelido' => 'nullable|string|max:255',
-        'email' => 'required|lowercase|email|unique:tb_usuario,email,' . $autista->usuario->id,
-        'cpf' => 'required|max:20|unique:tb_usuario,cpf,' . $autista->usuario->id,
-        'data_nascimento' => 'required|date',
+        'email' => 'required|email|max:255',
+        'cpf' => 'required|string|max:14',
+        'data_nascimento' => 'nullable|date',
     ]);
 
-    $validatedAutista = $request->validate([
-        'cipteia_autista' => 'required|string|max:255',
-        'status_cipteia_autista' => 'required|string|max:255',
-        'rg_autista' => 'nullable|string|max:255',
-    ]);
+    // Atualiza os dados do usuário relacionado ao autista
+    $usuarioAutista = $autista->usuario;
+    $usuarioAutista->nome = $validated['nome'];
+    $usuarioAutista->user = $validated['user'];
+    $usuarioAutista->apelido = $validated['apelido'] ?? null;
+    $usuarioAutista->email = $validated['email'];
+    $usuarioAutista->cpf = $validated['cpf'];
+    $usuarioAutista->data_nascimento = $validated['data_nascimento'] ?? null;
 
-    $autista->usuario->update($validatedUsuario);
-    $autista->update($validatedAutista);
-    
+    $usuarioAutista->save();
 
-    return redirect()
-        ->route('autistas.edit_autista', $autista->id)
-        ->with('status', 'autista-updated');
+    return redirect()->route('profile.show') // ou qualquer outra rota que faça sentido
+                 ->with('status', 'autista-updated');
 }
+
 
 
     /**
