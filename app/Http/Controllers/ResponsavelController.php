@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\Autista;
 use App\Models\Responsavel;
+use App\Models\Usuario;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use Illuminate\Http\Request;
@@ -12,11 +13,65 @@ use Illuminate\Support\Facades\Auth;
 class ResponsavelController extends Controller
 {
     private $genero;
-
+    
     public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
     {
         $this->genero = $genero;
     }
+    public function edit_autista($id)
+    {
+        $usuario = auth()->user();
+
+        // Pega o responsável logado
+        $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
+
+        // Garante que o autista é do responsável
+        $autista = Autista::where('id', $id)
+                    ->where('responsavel_id', $responsavel->id)
+                    ->firstOrFail();
+
+       return view('profile.dados-autista-responsavel', compact('autista'));
+    }
+
+
+    public function update_autista(Request $request, $id)
+{
+    $usuario = auth()->user();
+    $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
+
+    $autista = Autista::where('id', $id)
+        ->where('responsavel_id', $responsavel->id)
+        ->firstOrFail();
+
+    if (!$autista->usuario) {
+        return back()->withErrors(['Erro: Autista sem vínculo com usuário.']);
+    }
+
+    $validatedUsuario = $request->validate([
+        'nome' => 'required|string|max:255',
+        'user' => 'required|string|max:255',
+        'apelido' => 'nullable|string|max:255',
+        'email' => 'required|lowercase|email|unique:tb_usuario,email,' . $autista->usuario->id,
+        'cpf' => 'required|max:20|unique:tb_usuario,cpf,' . $autista->usuario->id,
+        'data_nascimento' => 'required|date',
+    ]);
+
+    $validatedAutista = $request->validate([
+        'cipteia_autista' => 'required|string|max:255',
+        'status_cipteia_autista' => 'required|string|max:255',
+        'rg_autista' => 'nullable|string|max:255',
+    ]);
+
+    $autista->usuario->update($validatedUsuario);
+    $autista->update($validatedAutista);
+    
+
+    return redirect()
+        ->route('autistas.edit_autista', $autista->id)
+        ->with('status', 'autista-updated');
+}
+
+
     /**
      * Display a listing of the resource.
      */

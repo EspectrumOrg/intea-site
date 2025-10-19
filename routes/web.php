@@ -152,4 +152,13 @@ Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendenci
 
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 
+// rotas para edição dos dados do autista via responsavel
+// routes/web.php
+
+Route::middleware('auth')->group(function () {
+    Route::get('/autistas/{autista}/editar', [App\Http\Controllers\ResponsavelController::class, 'edit_autista'])->name('autistas.edit_autista');
+    Route::patch('/autistas/{autista}', [App\Http\Controllers\ResponsavelController::class, 'update_autista'])->name('autistas.update_autista');
+});
+
+
 require __DIR__ . '/auth.php';
