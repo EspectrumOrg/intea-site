@@ -145,7 +145,7 @@ class PostagemController extends Controller
             }
         }
 
-        return redirect()->route('post.index')->with('Sucesso', 'Postagem atualizada!');
+        return redirect()->route('post.index')->with('success', 'Postagem atualizada com êxito!');
     }
 
     /**
@@ -171,7 +171,6 @@ class PostagemController extends Controller
             }
         }
 
-        session()->flash("successo", "Postagem excluído");
-        return redirect()->back();
+        return redirect()->route('post.index')->with('success', 'Postagem exclúida com êxito!');
     }
 }

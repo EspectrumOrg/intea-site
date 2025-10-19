@@ -207,7 +207,7 @@
 }
 
 .post-button button {
-    background-color: var(--cor-fundo);
+    background-color: var(--preto);
     color: var(--branco);
     font-size: 18px;
     font-weight: bold;
@@ -215,7 +215,7 @@
     border: none;
     border-radius: 50px / 100%;
     cursor: pointer;
-    transition: background-color .2s, transform .1s;
+    transition: .3s;
     width: 100%;
 }
 

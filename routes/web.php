@@ -119,9 +119,6 @@ Route::middleware('auth')->group(function () {
 
     // teste
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
-
-
- 
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
 
 // Rota AJAX para carregar mensagens de um usuário

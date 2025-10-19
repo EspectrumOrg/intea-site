@@ -68,7 +68,9 @@ e($texto)
                         <ul class="dropdown-content">
                             @if(Auth::id() === $postagem->usuario_id)
                             <li>
-                                <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
+                                <button type="button"
+                                    class="btn-acao editar btn-abrir-modal-edit-postagem"
+                                    onclick="abrirModalEditar('{{ $postagem->id }}')">
                                     <span class="material-symbols-outlined">edit</span>Editar
                                 </button>
                             </li>
@@ -150,9 +152,13 @@ e($texto)
         </div>
 
         <!-- Modal Edição dessa postagem -->
-        <div id="modal-editar-{{ $postagem->id }}" class="modal hidden">
+        <div id="modal-editar-postagem-{{ $postagem->id }}" class="modal hidden">
             <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
+                <button type="button"
+                    class="close"
+                    onclick="fecharModalEditar('{{ $postagem->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
                 <div class="modal-content-content">
                     @include('feed.post.edit', ['postagem' => $postagem])
                 </div>
@@ -162,7 +168,11 @@ e($texto)
         <!-- Modal Criação de comentário ($postagem->id) -->
         <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
             <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
+                <button type="button"
+                    class="close"
+                    onclick="fecharModalComentar('{{ $postagem->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
                 <div class="modal-content-content">
                     @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
                 </div>
@@ -172,7 +182,10 @@ e($texto)
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
-                <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
+                <span class="close"
+                    onclick="fecharModalDenuncia('{{$postagem->id}}')">
+                    <span class="material-symbols-outlined">close</span>
+                </span>
 
                 <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
                     @csrf
@@ -202,12 +215,55 @@ e($texto)
     </div>
 </div>
 
-<!-- Modal Criação de postagem -->
-<div id="modal-postar" class="modal hidden">
-    <div class="modal-content">
-        <button type="button" class="close" onclick="fecharModalPostar()">&times;</button>
-        <div class="modal-content-content">
-            @include('feed.post.create-modal')
-        </div>
-    </div>
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.form-editar').forEach(form => {
+            const id = form.querySelector('form').action.split('/').pop(); // pega o ID do post
+
+            // Seleciona elementos com base no ID único
+            const textarea = document.getElementById(`texto_postagem_edit_${id}`);
+            const previewHashtag = document.getElementById(`hashtag-preview-postagem-edit-${id}`);
+            const inputFile = document.getElementById(`caminho_imagem_postagem_edit_${id}`);
+            const previewContainer = document.getElementById(`image-preview_postagem_edit_${id}`);
+            const previewImage = document.getElementById(`preview-img_postagem_edit_${id}`);
+            const removeButton = document.getElementById(`remove-image_postagem_edit_${id}`);
+
+            // Hashtags coloridas
+            if (textarea && previewHashtag) {
+                textarea.addEventListener('input', () => {
+                    const text = textarea.value
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+                    previewHashtag.innerHTML = text + '\n';
+                });
+            }
+
+            // Preview de imagem
+            if (inputFile && previewContainer && previewImage && removeButton) {
+                inputFile.addEventListener('change', () => {
+                    const file = inputFile.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            previewImage.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                removeButton.addEventListener('click', () => {
+                    inputFile.value = '';
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none';
+                });
+            }
+        });
+    });
+</script>
+
+
+<!-- JS -->
+<script src="{{ url('assets/js/posts/create/modal.js') }}"></script>

@@ -1,10 +1,13 @@
 function abrirModalEditar(id) {
-    const modal = document.getElementById('modal-editar-' + id);
-    if (modal) modal.classList.remove('hidden');
+    console.log("Abrindo modal", id); // <-- teste
+    const modal = document.getElementById('modal-editar-postagem-' + id);
+    if (modal) {
+        modal.classList.remove('hidden')
+    };
 }
 
 function fecharModalEditar(id) {
-    const modal = document.getElementById('modal-editar-' + id);
+    const modal = document.getElementById('modal-editar-postagem-' + id);
     if (modal) {
         modal.classList.add('hidden');
         const form = modal.querySelector('form');
@@ -20,7 +23,7 @@ window.onclick = function(event) {
     }
 };
 
-const textarea = document.getElementById('post-textarea');
+const textarea = document.getElementById('post-textarea_edit');
 const charCount = document.getElementById('char-count');
 
 textarea.addEventListener('input', () => {

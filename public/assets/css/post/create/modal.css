@@ -1,28 +1,46 @@
+.hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none; /* permite clicar no textarea em cima */
+}
+
 /* form dentro do modal */
+.modal-postar .modal-content {
+    padding: 2rem 1rem 1rem 1rem;
+}
+
 .form-postar {
     display: flex;
     flex-direction: row;
     background: transparent;
     /* sem fundo extra */
     box-shadow: none;
+    width: 100%;
     padding: 0;
 }
 
-.form-postar .textfield-postar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
+.textfield {
+    position: relative;
+    width: 100%;
 }
 
-.form-postar .user-photo{
-    width: 50px;
-    height: 50px;
+/* foto usuário */
+.form-postar .user-photo {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
 }
 
-.form-postar .textfield-postar textarea {
+.form-postar .textfield textarea {
     flex: 1;
     padding: 1rem;
     font-size: 18px;
@@ -34,24 +52,12 @@
     resize: none;
     /* impede redimensionamento manual */
     background-color: var(--branco);
+    color: var(--preto);
+    width: 100%;
 }
 
-.form-postar .textfield-postar textarea:focus {
+.form-postar .textfield textarea:focus {
     outline: none;
-}
-
-.form-postar .upload-label-postar {
-    cursor: pointer;
-    color: #007bff;
-    font-weight: 500;
-}
-
-.form-postar .upload-label-postar:hover {
-    color: #0056b3;
-}
-
-.form-postar .input-file-postar {
-    display: none;
 }
 
 .form-postar .form {
@@ -76,13 +82,18 @@
     gap: 1.5rem;
 }
 
-/* label customizada */
-.form-postar .form .upload-label img {
-    width: 20px;
+/* icon image -------------------*/
+.form-postar .form .upload-label span {
+    font-size: 20px;
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--preto);
+    transition: .3s;
 }
 
-.form-postar .form .upload-label img:hover {
-    transform: scale(1.05);
+.form-postar .form .upload-label:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
 }
 
 .form-postar .form .upload-label {
@@ -114,8 +125,7 @@
     margin-right: 1rem;
 }
 
-/* botão */
-
+/* botão postar ----------------*/
 .form-postar .form .botao-submit {
     display: flex;
     flex-direction: column-reverse;
@@ -123,18 +133,22 @@
 
 .form-postar .form .botao-postar {
     align-self: flex-end;
-    background-color: var(--cor-fundo);
+    background-color: var(--preto);
     color: var(--branco);
     font-size: 14px;
     font-weight: bold;
-    padding: .3rem 1.5rem;
+    padding: .75rem;
     border: none;
-    border-radius: 8px;
+    border-radius: 25% / 50%;
     cursor: pointer;
-    transition: background-color .2s, transform .1s;
+    transition: .3s;
 }
 
 .form-postar .form .botao-postar:hover {
     background-color: var(--cor-tema);
-    transform: scale(1.03);
+}
+
+/* ----------------------------- preview imagem modal------------------------------- */
+.form-postar .image-preview img {
+    max-height: 375px;
 }

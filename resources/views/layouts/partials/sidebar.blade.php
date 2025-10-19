@@ -41,7 +41,7 @@
             <h1>Home</h1>
         </a>
 
-    <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
+        <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
             <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
@@ -67,37 +67,20 @@
 
 
         @can("visualizar-admin")
-            <a href="{{ route('dashboard.index') }}"
-                class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-                <span class="material-symbols-outlined">manage_accounts</span>
-                <h1>Admin</h1>
-            </a>
+        <a href="{{ route('dashboard.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <h1>Admin</h1>
+        </a>
         @endcan
 
 
-        <!-- Modal de criação de postagem -->
+        <!-- Modal de criação de postagem --------------------------------------------------------------------------->
         <div class="post-button">
             <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const dropdownContainer = document.getElementById("userDropdown");
-            const dropdownMenu = dropdownContainer.querySelector(".dropdown-checar-perfil");
-
-            // Abre/fecha ao clicar na área .info
-            dropdownContainer.addEventListener("click", (e) => {
-                e.stopPropagation(); // evita fechar ao clicar dentro
-                dropdownMenu.classList.toggle("hidden");
-            });
-
-            // Fecha ao clicar fora
-            document.addEventListener("click", () => {
-                dropdownMenu.classList.add("hidden");
-            });
-        });
-    </script>
-
-
 </div>
+
+<!-- JS -->
+<script src="{{ url('assets/js/avisos/sidebar-user.js') }}"></script>
