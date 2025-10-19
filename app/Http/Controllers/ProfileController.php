@@ -56,6 +56,7 @@ class ProfileController extends Controller
                 break;
             case 5:
                 $dadosespecificos = $user->responsavel;
+                $autista = $user->responsavel->autista ?? null;
                 break;
         }
 
@@ -67,7 +68,8 @@ class ProfileController extends Controller
             'user',
             'userPosts',
             'likedPosts',
-            'postsPopulares'
+            'postsPopulares',
+            'autista'
         ));
     }
 
