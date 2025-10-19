@@ -34,12 +34,12 @@ class ChatPrivadoController extends Controller
 
         // Verifica se já existe conversa entre os dois usuários
         $conversa = ChatPrivado::where(function ($query) use ($usuario1, $usuario2) {
-                $query->where('usuario1_id', $usuario1)
-                      ->where('usuario2_id', $usuario2);
-            })
+            $query->where('usuario1_id', $usuario1)
+                ->where('usuario2_id', $usuario2);
+        })
             ->orWhere(function ($query) use ($usuario1, $usuario2) {
                 $query->where('usuario1_id', $usuario2)
-                      ->where('usuario2_id', $usuario1);
+                    ->where('usuario2_id', $usuario1);
             })
             ->first();
 

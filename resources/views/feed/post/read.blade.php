@@ -19,15 +19,11 @@
 
     <!--------------------------------- Conteúdo Postagem -------------------------------------->
     <div class="postagem-foco">
-        <div class="foto-perfil">
-            <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                @if (!empty($postagem->usuario->foto))
-                <img src="{{ asset('storage/'.$postagem->usuario->foto) }}" alt="foto perfil">
-                @else
-                <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
-                @endif
+        <div style="display: flex; gap: 1rem;">
+            <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}" class="foto-user">
+                <img src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}" alt="foto perfil">
             </a>
-            <div>
+            <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
                     <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                 </a>
@@ -36,8 +32,8 @@
         </div>
 
         <div class="dropdown"> <!--------- Dropdown --------->
-            <button class="menu-opcoes">
-                <img src="{{ asset('assets/images/logos/symbols/site-claro/three-dots.png') }}">
+            <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                <span class="material-symbols-outlined">more_horiz</span>
             </button>
             <ul class="dropdown-content">
                 @if(Auth::id() === $postagem->usuario_id)
@@ -83,7 +79,9 @@
         <!-- Modal Criação de comentário ($postagem->id) -->
         <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
             <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
+                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
                 <div class="modal-content-content">
                     @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
                 </div>
@@ -93,8 +91,7 @@
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
-                <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
-
+                <span class="close material-symbols-outlined" onclick="fecharModalDenuncia('{{$postagem->id}}')">close</span>
                 <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
                     @csrf
                     <div class="form">
@@ -131,18 +128,22 @@
         </div>
     </div>
 
-    <!----------------------------- Curtidas e comentários ----------------------------------->
+    <!----------------------------- Curtidas e comentários Postagem---------------------------->
     <div class="interacoes">
         <div class="corpo">
             <div class="comment">
-                <img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}">
-                <h1>{{ $postagem->comentarios_count }}</h1>
+                <button type="button" class="button btn-comentar">
+                    <a>
+                        <span class="material-symbols-outlined">chat_bubble</span>
+                        <h1>{{ $postagem->comentarios_count }}</h1>
+                    </a>
+                </button>
             </div>
 
             <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
                 @csrf
-                <button type="submit" class="button">
-                    <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $postagem->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
+                    <span class="material-symbols-outlined">favorite</span>
                     <h1>{{ $postagem->curtidas_count }}</h1>
                 </button>
             </form>
@@ -194,8 +195,7 @@
 
     </form>
 </div>
-
-<!------------------------------ Lista de comentários ----------------------------------------------------------->
+<!------------------------------ Lista de comentários ------------------------------------------------------------------------------------------------------------------------->
 <div class="comentarios">
     @foreach($postagem->comentarios->whereNull('id_comentario_pai') as $comentario)
     <div class="comentario">
@@ -217,25 +217,26 @@
             @if(!empty($comentario->image))
             <img src="{{ asset('storage/' . $comentario->image->caminho_imagem) }}" alt="Imagem comentário">
             @endif
-
-            <div class="interacoes">
+            <!----------------------------- Curtidas e comentários Comentários-------------------->
+            <div class="interacoes-comentarios">
                 <div class="corpo">
-                    <div>
-                        <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button">
-                            <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/coment.png') }}"></a>
-                            <h1>{{ $comentario->comentarios_count }}</h1>
+                    <div class="comment">
+                        <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button btn-comentar">
+                            <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                                <h1>{{ $comentario->comentarios_count }}</h1>
+                            </a>
                         </button>
                     </div>
 
                     <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
                         @csrf
-                        <button type="submit" class="button">
-                            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (!! $comentario->curtidas_usuario ? 'like-preenchido.png' : 'like.png')) }}">
+                        <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
+                            <span class="material-symbols-outlined">favorite</span>
                             <h1>{{ $comentario->curtidas_count }}</h1>
                         </button>
                     </form>
                 </div>
-
             </div>
         </div>
 
@@ -253,10 +254,12 @@
         @endif
     </div>
 
-    <!-- modal resposta comentário-->
+    <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
     <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
         <div class="modal-content">
-            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">&times;</button>
+            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
             <div class="modal-content-content">
                 @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
             </div>

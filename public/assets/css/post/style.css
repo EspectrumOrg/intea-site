@@ -89,6 +89,10 @@
     align-items: flex-start;
 }
 
+.container-post .corpo-post .foto-perfil a {
+    z-index: 9998 !important;
+}
+
 /* conteúdo postagem */
 .container-post .corpo-content {
     padding-left: 1rem;
@@ -116,7 +120,7 @@
     max-width: 100%;
     border-radius: 7.5%;
     margin-top: .5rem;
-    border: 1px solid var(--cinza-borda);
+    border: none;
 }
 
 /* Dados e informações ----------------------------------------------------------*/
@@ -143,15 +147,24 @@
 
 .container-post .dados-post span {
     font-size: 20px;
-    padding: .25rem;
-    color: var(--preto);
+    padding: .5rem;
+    color: var(--cinza);
     border-radius: 50%;
     transition: .3s;
 }
 
+/* curtido ou normal*/
+.container-post .dados-post .normal span {
+    color: var(--cinza);
+}
+
+.container-post .dados-post .curtido span {
+    color: var(--cor-vermelho);
+}
+
 .container-post .dados-post h1 {
     font-size: 14px;
-    color: var(--preto);
+    color: var(--cinza);
     transition: .3s;
 }
 
@@ -166,9 +179,6 @@
 }
 
 /* curtir */
-.btn-curtir .curtido {
-    color: var(--cor-vermelho);
-}
 .btn-curtir:hover h1 {
     color: var(--cor-vermelho);
 }
@@ -252,7 +262,7 @@
     line-height: 1.4;
 }
 
-/* container do dropdown */
+/* container do dropdown -----------------------------------------------------------------------------------------*/
 .dropdown-content {
     list-style: none;
     margin: 0;
@@ -268,6 +278,8 @@
 /* estilo base para botões de ação */
 .btn-acao {
     width: 100%;
+    display: flex;
+    gap: 1rem;
     text-align: left;
     padding: .6rem 1rem;
     border: none;
@@ -277,7 +289,7 @@
     cursor: pointer;
     background-color: transparent;
     color: var(--preto);
-    transition: background-color .2s, color .2s, transform .1s;
+    transition: background-color .3s, color .3s, transform .1s;
 }
 
 /* hover geral */
@@ -291,14 +303,14 @@
 }
 
 .btn-acao.editar:hover {
-    background-color: var(--cor-tema);
-    color: var(--branco);
+    background-color: var(--branco-light);
+    color: var(--cor-tema);
 }
 
 /* excluir */
 .btn-acao.excluir:hover {
-    background-color: var(--vermelho);
-    color: var(--branco);
+    background-color: var(--branco-light);
+    color: var(--cor-vermelho);
 }
 
 .container-post .excluir {
@@ -313,7 +325,7 @@
 
 .hashtag {
     position: relative; /* cria um novo contexto de empilhamento */
-    z-index: 9999; /* fica acima do overlay */
+    z-index: 1; /* fica acima do overlay */
     color: var(--cor-tema);
     font-weight: 600;
     text-decoration: none;

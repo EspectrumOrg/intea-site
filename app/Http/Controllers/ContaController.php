@@ -39,10 +39,10 @@ class ContaController extends Controller
             $autista = Autista::where('responsavel_id', $responsavel->id)->firstOrFail();
 
             $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
-            
+
             $generos = $this->genero->all();
             $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-            
+
             // Dados específicos do tipo de usuário
             $dadosespecificos = $this->getDadosEspecificos($user);
 
@@ -55,12 +55,12 @@ class ContaController extends Controller
 
             // Postagens curtidas pelo usuário
             $likedPosts = CurtidaPostagem::with([
-                'postagem.usuario', 
+                'postagem.usuario',
                 'postagem.imagens'
             ])
-            ->where('id_usuario', $user->id)
-            ->orderByDesc('created_at')
-            ->get();
+                ->where('id_usuario', $user->id)
+                ->orderByDesc('created_at')
+                ->get();
 
             // Posts populares para sidebar
             $postsPopulares = Postagem::withCount('curtidas')
@@ -70,17 +70,16 @@ class ContaController extends Controller
                 ->get();
 
             return view('profile.show', compact(
-                'user', 
-                'generos', 
-                'telefones', 
-                'dadosespecificos', 
-                'userPosts', 
+                'user',
+                'generos',
+                'telefones',
+                'dadosespecificos',
+                'userPosts',
                 'likedPosts',
                 'postsPopulares',
                 'autista',
                 'responsavel'
             ));
-
         } catch (\Exception $e) {
             Log::error('Erro no ContaController: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Erro ao carregar perfil.');

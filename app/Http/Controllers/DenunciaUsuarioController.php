@@ -16,7 +16,7 @@ class DenunciaUsuarioController extends Controller
         $this->denuncia = $denuncia;
     }
 
-    public function index(Request $request)
+    public function index(Request $request) // retornar dados
     {
         $query = $this->denuncia->query();
 
@@ -48,7 +48,10 @@ class DenunciaUsuarioController extends Controller
 
         return view('admin.usuario.index', compact('denuncias'));
     }
-    public function post(Request $request, $id_usuario_denunciado, $id_usuario_denunciante)
+
+
+
+    public function post(Request $request, $id_usuario_denunciado, $id_usuario_denunciante) // criar denúncia
     {
         $request->validate([
             'motivo_denuncia' => 'required|string',
@@ -66,16 +69,6 @@ class DenunciaUsuarioController extends Controller
             'texto_denuncia' => $request->texto_denuncia,
         ]);
 
-        return back();
-    }
-
-    public function destroy($id)
-    {
-        $usuario = Usuario::findOrFail($id);
-        $usuario->status_conta = 0;
-        $usuario->save();
-
-        session()->flash("successo", "Usuário banido");
-        return redirect()->back();
+        return back()->with('warning', 'usuário denunciado');
     }
 }

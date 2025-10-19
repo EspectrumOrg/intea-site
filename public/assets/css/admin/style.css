@@ -168,7 +168,7 @@ body {
 }
 
 .table-usuarios tr:nth-child(even) {
-    background-color: var(--branco-light);
+    background-color: #e9e8e8;
 }
 
 .btn-excluir-usuario,
@@ -198,7 +198,7 @@ body {
 
 /* Botão desbanir */
 .btn-desbanir:hover {
-    color: var(--azul);
+    color: var(--cor-tema);
 }
 
 .btn-excluir-usuario span,
@@ -217,16 +217,37 @@ body {
     margin-bottom: .5rem;
 }
 
+.filtro-form input:focus {
+    outline: none;
+    border-color: var(--cor-tema);
+}
+
 .filtro-form input,
 .filtro-form select {
     padding: 0.5rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    border-radius: 25% / 100%;
+    border: 1px solid var(--branco-light);
 }
+
+.filtro-form select {
+    padding: 0.5rem;
+    border: 1px solid var(--branco-light);
+}
+
+.filtro-form select:focus {
+    outline: none;
+}
+
+tr:hover,
+.table-usuarios tr:nth-child(even):hover {
+    transition: .3s;
+    background: var(--cor-branco);
+}
+
 
 .btn-filtrar {
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: 50% / 100%;
     background-color: var(--cor-fundo);
     transition: .7s;
     color: #fff;

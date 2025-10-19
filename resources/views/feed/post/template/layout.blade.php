@@ -40,6 +40,9 @@
                 @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
+        
+        <!-- modal de avisos -->
+        @include("layouts.partials.avisos")
     </div>
 </body>
 
@@ -51,10 +54,13 @@
 <script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/hashtag-estilo.js') }}"></script>
 <script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
+
 <!-- comentario -->
 <script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>
+
 <!-- read comentários -->
 <script src="{{ url('assets/js/posts/read/char-count.js') }}"></script>
+
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
 

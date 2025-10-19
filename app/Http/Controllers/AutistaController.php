@@ -178,8 +178,8 @@ class AutistaController extends Controller
             }
 
             // Cria o registro na tabela autista, relacionando ao usuário e cuidador (se houver)
-           Autista::create([
-                'cipteia_autista' =>$request->CipteiaAutista,
+            Autista::create([
+                'cipteia_autista' => $request->CipteiaAutista,
                 'status_cipteia_autista' => 'Ativo',
                 'usuario_id' => $usuario->id,
                 'responsavel_id' => $idCuidador,
@@ -187,7 +187,7 @@ class AutistaController extends Controller
 
 
 
-            
+
             Log::info('Autista criado para usuário ID: ' . $usuario->id);
             // Retorna sucesso com status 201
             //return redirect()->route('dashboard')->with('Sucesso', 'Usuário e autista cadastrados com sucesso!');
@@ -196,7 +196,7 @@ class AutistaController extends Controller
             Auth::login($usuario);
 
             //return response()->json($request->all());
-            return redirect()->route('post.index')->with('Sucesso', 'Usuário Tipo Autista cadastrado com sucesso!');
+            return redirect()->route('post.index')->with('success', 'Usuário Tipo Autista cadastrado com sucesso!');
         } catch (\Exception $e) {
             // Em caso de erro, loga e retorna erro interno 500
             Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());

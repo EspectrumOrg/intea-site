@@ -64,7 +64,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: .5rem 0;
-    border-top: 1px solid var(--cinza-borda);
+    border-top: 1px solid var(--branco-light);
     margin: auto;
     margin-top: .5rem;
 }

@@ -58,19 +58,19 @@ class DashboardController extends Controller
             ->groupBy('tipo_usuario')
             ->pluck('total', 'tipo_usuario');
 
-            // Mapeamento de nomes
-            $mapaTipos = [
-                1 => 'Administrador',
-                2 => 'Autista',
-                3 => 'Comunidade',
-                4 => 'Profissional de Saúde',
-                5 => 'Responsável',
-            ];
+        // Mapeamento de nomes
+        $mapaTipos = [
+            1 => 'Administrador',
+            2 => 'Autista',
+            3 => 'Comunidade',
+            4 => 'Profissional de Saúde',
+            5 => 'Responsável',
+        ];
 
-            // Substituir a chave numérica pelo nome
-            $usuariosPorTipoNomes = collect($usuariosPorTipo)->mapWithKeys(function ($total, $tipo) use ($mapaTipos) {
-                return [$mapaTipos[$tipo] ?? "Tipo {$tipo}" => $total];
-            });
+        // Substituir a chave numérica pelo nome
+        $usuariosPorTipoNomes = collect($usuariosPorTipo)->mapWithKeys(function ($total, $tipo) use ($mapaTipos) {
+            return [$mapaTipos[$tipo] ?? "Tipo {$tipo}" => $total];
+        });
 
         return view('admin.dashboard.index', compact(
             'totalUsuarios',

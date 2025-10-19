@@ -31,7 +31,7 @@ class PostagemController extends Controller
             ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-          $tendenciasPopulares = Tendencia::populares(5)->get();
+        $tendenciasPopulares = Tendencia::populares(5)->get();
 
         return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
@@ -81,7 +81,7 @@ class PostagemController extends Controller
                 'id_postagem' => $postagem->id,
             ]);
         }
-        return redirect()->route('post.index')->with('Sucesso', 'Postado, confira já!');
+        return redirect()->route('post.index')->with('success', 'Postado, confira já!');
     }
 
     /**
@@ -154,11 +154,22 @@ class PostagemController extends Controller
     public function destroy($id)
     {
         $postagem = Postagem::findOrFail($id);
-        
+
+        // guardar tendências
+        $tendencias = $postagem->tendencias()->get();
+
         // Remover associações com tendências antes de deletar
         $postagem->tendencias()->detach();
-        
+
+        // Deletar postagem
         $postagem->delete();
+
+        // Deletar tendências sem postagens 🔥
+        foreach ($tendencias as $tendencia) {
+            if ($tendencia->postagens()->count() === 0) {
+                $tendencia->delete();
+            }
+        }
 
         session()->flash("successo", "Postagem excluído");
         return redirect()->back();

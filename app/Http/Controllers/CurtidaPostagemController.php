@@ -17,20 +17,20 @@ class CurtidaPostagemController extends Controller
 
         // verificar se já existe curtida
         $curtida = CurtidaPostagem::where('id_postagem', $postagem->id)
-                                  ->where('id_usuario', $usuarioId)
-                                  ->first();
+            ->where('id_usuario', $usuarioId)
+            ->first();
 
         if ($curtida) {
             // se já existe, remove
             $curtida->delete();
-            return back()->with('success', 'Curtida removida!');
+            return back()->with('nada', 'Curtida removida!');
         } else {
             // se não existe, cria
             CurtidaPostagem::create([
                 'id_postagem' => $postagem->id,
                 'id_usuario' => $usuarioId,
             ]);
-            return back()->with('success', 'Curtida adicionada!');
+            return back()->with('nada', 'Curtida adicionada!');
         }
     }
 }

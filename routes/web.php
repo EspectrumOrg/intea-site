@@ -21,6 +21,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PusherController;
 use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +33,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Início
+
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
+
+Route::get('/feed/configuracao/config', function () {
+    $user = Auth::user();
+    return view(
+        'feed.configuracao.config',
+        compact('user' )
+    );
+})->name('configuracao.config');
+
+
 
 
 
@@ -50,7 +62,12 @@ Route::get('/cadastro', function () { // Tipo Conta
 // Grupo
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
-Route::post('/grupo/inserir', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
+
+Route::get('/chat-test', function () {
+    return view('chat-test'); // Se tiver uma view
+    // ou
+    return file_get_contents(resource_path('views/chat-test.php'));
+});
 
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
@@ -94,16 +111,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+
     // teste
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
 
 
-    // Rotas do Chat (Pusher)
-    Route::get('/chat/{usuario2}', [PusherController::class, 'index'])->name('chat.usuario');
+ 
+    Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
+
+// Rota AJAX para carregar mensagens de um usuário
+    Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
+
+// Rota para enviar mensagem via Pusher
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
-    Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
-    Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
 });
 
 
@@ -151,6 +171,8 @@ Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('te
 Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
 
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+
 
 // rotas para edição dos dados do autista via responsavel
 // routes/web.php

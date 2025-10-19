@@ -26,6 +26,7 @@
     justify-content: center;
     min-height: 100vh;
     background: var(--branco);
+    width: 100%;
 }
 
 /* botão voltar */
@@ -76,7 +77,7 @@
     padding: 2rem;
     border-radius: 10px;
     width: 100%;
-    max-width: 400px;
+    max-width: 450px;
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -116,9 +117,10 @@
 /* Labels */
 .form-group label {
     font-weight: bold;
-    color: #333;
+    color: #808080;
     display: block;
     margin-bottom: 0.3rem;
+    margin-top: 0.5rem;
 }
 
 /* Inputs */
@@ -128,7 +130,7 @@
     width: 100%;
     padding: 0.6rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid #ffffff;
     font-size: 1rem;
 }
 
@@ -223,10 +225,88 @@
     color: black;
 }
 
+.texto-esqueceu {
+    margin-top: 1rem;
+    color: var(--cor-preto);
+    font-size: 1rem;
+    width: 100%;
+    font-weight: bold;
+}
+
+.wrap-input1 {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+
+.input1 {
+  display: block;
+  width: 100%;
+  background: #e6e6e6;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #666666;
+  border-radius: 25px;
+  padding: 0 30px;
+  height: 50px;
+}
+
+textarea.input1 {
+  min-height: 150px;
+  padding: 12px 30px;
+  border-radius: 25px;
+}
+
+.shadow-input1 {
+  content: '';
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 0px 0px;
+  color: rgba(70, 133, 184, 0.5);
+  border-radius: 25px;
+}
+
+.input1:focus + .shadow-input1 {
+  animation: anim-shadow 0.5s ease-in-out forwards;
+}
+
+.material-symbols-outlined {
+color: var(--cor-preto);
+}
+
+.contact1 {
+  width: 100%;
+  min-height: 100%;
+  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-contact1 {
+  width: 1163px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 90px 130px 88px 148px;
+}
+
+
 .contact1-form-btn {
-  min-width: 123px;
-  height: 40px;
-  border-radius: 20px;
+  min-width: 193px;
+  height: 50px;
+  border-radius: 25px;
   background: #427dc0;
   font-size: 15px;
   line-height: 1.5;
@@ -250,17 +330,6 @@
 
 .contact1-form-btn:hover i {
   transform: translateX(10px);
-}
-
-.text-senha{
-    position: relative;
-
-}
-
-.beto{
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
 }
 
 .material-symbols-outlined{
