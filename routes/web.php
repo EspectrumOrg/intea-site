@@ -63,11 +63,6 @@ Route::get('/cadastro', function () { // Tipo Conta
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
-Route::post('/broadcast', [PusherController::class, 'broadcast']);
-Route::post('/receive', [PusherController::class, 'receive']);
-Route::get('/chat', [PusherController::class, 'index']);
-Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
-
 Route::get('/chat-test', function () {
     return view('chat-test'); // Se tiver uma view
     // ou

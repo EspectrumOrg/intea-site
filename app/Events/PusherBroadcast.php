@@ -16,7 +16,7 @@ class PusherBroadcast implements ShouldBroadcast
 public $remetente_id;
 public $foto;
 
-public function __construct(string $message, int $remetente_id, string $foto)
+public function __construct(string $message, int $remetente_id, ?string $foto = null)
 {
     $this->message = $message;
     $this->remetente_id = $remetente_id;
