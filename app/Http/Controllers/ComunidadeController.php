@@ -3,23 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Comunidade;
-use App\Models\Genero;
 use App\Models\FoneUsuario;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
-
-use function Laravel\Prompts\alert;
+use App\Models\Genero;
 
 class ComunidadeController extends Controller
 {
-    private $genero;
+    /**
+     * Exibe o formulário de cadastro.
+     */
+   private $genero;
 
     public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
     {
@@ -40,94 +36,130 @@ class ComunidadeController extends Controller
         return view('auth.create-comunidade', compact('generos'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
 
+    /**
+     * Salva um novo usuário do tipo Comunidade.
+     */
     public function store(Request $request)
     {
-        //retirar pontuação dos campos só com números
-        $request->merge([
-            'cpf' => preg_replace('/\D/', '', $request->cpf)
-        ]);
+        try {
+            // Limpa o CPF (remove pontos e traços)
+            $cpfLimpo = preg_replace('/\D/', '', $request->cpf);
+            $request->merge(['cpf' => $cpfLimpo]);
 
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'user' => 'required|string|max:255',
-            'apelido' => 'required|string|max:255',
-            'email' => 'required|lowercase|email|unique:tb_usuario,email',
-            'senha' => 'required|string|min:6|max:255',
-            'senha_confirmacao' => 'required|same:senha',
-            'cpf' => 'required|max:20|unique:tb_usuario,cpf', // retirar pontuação posteriormente
-            'genero' => 'required|integer',
-            'data_nascimento' => 'required|date',
-            'tipo_usuario' => 'required|in:3',
-            'status_conta' => 'required|in:1',
-            'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20' // retirar pontuação posteriormente
-        ], [
-            'nome.required' => 'O campo nome é obrigatório',
-            'apelido.required' => 'O campo nome é obrigatório',
-            'user.required' => 'O campo user é obrigatório',
-            'email.required' => 'O campo email é obrigatório',
-            'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
-            'email.email' => 'O campo email deve ser preenchido corretamente',
-            'email.unique' => 'este email já eestá cadastrado',
-            'senha.required' => 'O campo senha é obrigatório',
-            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
-            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
-            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
-            'cpf.required' => 'O campo cpf é obrigatório',
-            'cpf.unique' => 'CPF á cadastrado',
-            'genero.required' => 'O campo gênero é obrigatório',
-            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
-            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-        ]);
-
-        /* Validação customizada do CPF 
-        if (!self::validaCPF($request->cpf)) {
-            return back()
-                ->withErrors(['cpf' => 'CPF inválido. Por favor, verifique e tente novamente.'])
-                ->withInput();
-        }*/
-
-        if ($request->tipo_usuario != 3) {
-            abort(403, 'Tentativa de fraude no tipo de usuário.');
-        }
-
-        // Criar Usuário Padrão
-        $usuario = Usuario::create([
-            'nome' => $request->nome,
-            'user' => $request->user,
-            'apelido' => $request->apelido,
-            'email' => $request->email,
-            'senha' => bcrypt($request->senha),
-            'cpf' => $request->cpf,
-            'genero' => $request->genero,
-            'data_nascimento' => $request->data_nascimento,
-            'tipo_usuario' => $request->tipo_usuario,
-            'status_conta' => $request->status_conta,
-        ]);
-
-        // Criar Dados Específicos Comunidade
-        Comunidade::create([
-            'usuario_id' => $usuario->id,
-        ]);
-
-        // Criar Telefone(s)
-        foreach ($request->numero_telefone as $telefone) {
-            $telefone_limpo = preg_replace('/\D/', '', $telefone);
-            FoneUsuario::create([
-                'usuario_id' => $usuario->id,
-                'numero_telefone' => $telefone_limpo,
+            // Validação dos campos
+            $request->validate([
+                'nome' => 'required|string|max:255',
+                'user' => 'required|string|max:255',
+                'apelido' => 'required|string|max:255',
+                'email' => 'required|lowercase|email|unique:tb_usuario,email',
+                'senha' => 'required|string|min:6|max:255',
+                'senha_confirmacao' => 'required|same:senha',
+                'cpf' => 'required|max:20|unique:tb_usuario,cpf',
+                'genero' => 'required|integer',
+                'data_nascimento' => 'required|date',
+                'tipo_usuario' => 'required|in:3',
+                'status_conta' => 'required|in:1',
+                'numero_telefone' => 'required|array|min:1',
+                'numero_telefone.*' => 'required|string|max:20'
+            ], [
+                'nome.required' => 'O campo nome é obrigatório',
+                'apelido.required' => 'O campo apelido é obrigatório',
+                'user.required' => 'O campo user é obrigatório',
+                'email.required' => 'O campo email é obrigatório',
+                'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
+                'email.email' => 'O campo email deve ser preenchido corretamente',
+                'email.unique' => 'Este email já está cadastrado',
+                'senha.required' => 'O campo senha é obrigatório',
+                'senha.min' => 'Senha deve conter ao menos 6 caracteres',
+                'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
+                'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
+                'cpf.required' => 'O campo CPF é obrigatório',
+                'cpf.unique' => 'CPF já cadastrado',
+                'genero.required' => 'O campo gênero é obrigatório',
+                'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
+                'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+                'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
             ]);
+
+            // Validação lógica de CPF
+            if (!self::validaCPF($cpfLimpo)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'CPF inválido. Por favor, verifique e tente novamente.'
+                ], 400);
+            }
+
+            // Verifica o tipo de usuário
+            if ($request->tipo_usuario != 3) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tentativa de fraude no tipo de usuário.'
+                ], 403);
+            }
+
+            // Cria o usuário
+            $usuario = Usuario::create([
+                'nome' => $request->nome,
+                'user' => $request->user,
+                'apelido' => $request->apelido,
+                'email' => $request->email,
+                'senha' => bcrypt($request->senha),
+                'cpf' => $cpfLimpo,
+                'genero' => $request->genero,
+                'data_nascimento' => $request->data_nascimento,
+                'tipo_usuario' => $request->tipo_usuario,
+                'status_conta' => $request->status_conta,
+            ]);
+
+            // Cria registro na tabela Comunidade
+            Comunidade::create([
+                'usuario_id' => $usuario->id,
+            ]);
+
+            // Cria os telefones
+            foreach ($request->numero_telefone as $telefone) {
+                $telefone_limpo = preg_replace('/\D/', '', $telefone);
+                FoneUsuario::create([
+                    'usuario_id' => $usuario->id,
+                    'numero_telefone' => $telefone_limpo,
+                ]);
+            }
+
+            // Login automático (opcional)
+            Auth::login($usuario);
+
+            // Retorna sucesso em JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuário Tipo Comunidade cadastrado com sucesso!',
+                'redirect' => url('/login')
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Retorna erros de validação no formato JSON
+            return response()->json([
+                'success' => false,
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            // Loga o erro e retorna resposta genérica
+            Log::error('Erro ao criar comunidade: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'
+            ], 500);
         }
+<<<<<<< HEAD
 
         return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
+=======
+>>>>>>> c6a721b008c0b0b34a6c4e71cfbdac8e6c4661f4
     }
 
-    // Método para validar CPF
+    /**
+     * Função auxiliar para validar CPF.
+     */
     private static function validaCPF($cpf)
     {
         $cpf = preg_replace('/[^0-9]/', '', $cpf);
@@ -147,38 +179,5 @@ class ComunidadeController extends Controller
         }
 
         return true;
-    }
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

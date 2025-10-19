@@ -62,11 +62,6 @@ Route::get('/cadastro', function () { // Tipo Conta
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
 
-Route::post('/broadcast', [PusherController::class, 'broadcast']);
-Route::post('/receive', [PusherController::class, 'receive']);
-Route::get('/chat', [PusherController::class, 'index']);
-Route::post('/enviar-mensagem', [ChatPrivadoController::class, 'enviarMensagem']);
-
 Route::get('/chat-test', function () {
     return view('chat-test'); // Se tiver uma view
     // ou
@@ -173,6 +168,15 @@ Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendenci
 
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+
+
+// rotas para edição dos dados do autista via responsavel
+// routes/web.php
+
+Route::middleware('auth')->group(function () {
+    Route::get('/autistas/{id}/editar', [App\Http\Controllers\ResponsavelController::class, 'edit_autista'])->name('autistas.edit_autista');
+    Route::patch('/autistas/{id}', [App\Http\Controllers\ResponsavelController::class, 'update_autista'])->name('autistas.update_autista');
+});
 
 
 require __DIR__ . '/auth.php';

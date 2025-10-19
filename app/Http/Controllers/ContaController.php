@@ -35,6 +35,9 @@ class ContaController extends Controller
     {
         try {
             // Se não for passado ID, mostra o perfil do usuário logado
+            $responsavel = Responsavel::where('usuario_id', auth()->id())->firstOrFail();
+            $autista = Autista::where('responsavel_id', $responsavel->id)->firstOrFail();
+
             $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
 
             $generos = $this->genero->all();
@@ -73,7 +76,9 @@ class ContaController extends Controller
                 'dadosespecificos',
                 'userPosts',
                 'likedPosts',
-                'postsPopulares'
+                'postsPopulares',
+                'autista',
+                'responsavel'
             ));
         } catch (\Exception $e) {
             Log::error('Erro no ContaController: ' . $e->getMessage());
