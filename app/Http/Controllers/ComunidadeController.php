@@ -124,10 +124,7 @@ class ComunidadeController extends Controller
             ]);
         }
 
-        Auth::login($usuario);
-
-        //return response()->json($request->all());
-        return redirect()->route('post.index')->with('success', 'Usuário Tipo Comunidade cadastrado com sucesso!');
+        return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
     }
 
     // Método para validar CPF

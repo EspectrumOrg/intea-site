@@ -33,10 +33,11 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Início
-
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
+
+
 
 Route::get('/feed/configuracao/config', function () {
     $user = Auth::user();
@@ -45,8 +46,6 @@ Route::get('/feed/configuracao/config', function () {
         compact('user' )
     );
 })->name('configuracao.config');
-
-
 
 
 
