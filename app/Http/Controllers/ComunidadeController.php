@@ -132,9 +132,7 @@ class ComunidadeController extends Controller
             ]);
         }
 
-        // Login automático (opcional)
-        Auth::login($usuario);
-
+        
         return redirect()->route('login')
                          ->with('success', 'Usuário comunidade cadastrado com sucesso!');
 
