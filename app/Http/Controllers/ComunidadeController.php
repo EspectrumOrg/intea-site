@@ -130,11 +130,7 @@ class ComunidadeController extends Controller
             Auth::login($usuario);
 
             // Retorna sucesso em JSON
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuário Tipo Comunidade cadastrado com sucesso!',
-                'redirect' => url('/login')
-            ], 200);
+        return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
 
         } catch (\Illuminate\Validation\ValidationException $e) {
             // Retorna erros de validação no formato JSON
@@ -150,8 +146,6 @@ class ComunidadeController extends Controller
                 'message' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'
             ], 500);
         }
-
-        return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
     }
 
     /**
