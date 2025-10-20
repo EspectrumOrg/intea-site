@@ -9,6 +9,8 @@ use App\Models\Usuario;
 use App\Models\Comunidade;
 use App\Models\FoneUsuario;
 use App\Models\Genero;
+use Illuminate\Support\Facades\Validator;
+
 
 class ComunidadeController extends Controller
 {
@@ -40,48 +42,52 @@ class ComunidadeController extends Controller
     /**
      * Salva um novo usuário do tipo Comunidade.
      */
-    public function store(Request $request)
-    {
-        try {
-            // Limpa o CPF (remove pontos e traços)
-            $cpfLimpo = preg_replace('/\D/', '', $request->cpf);
-            $request->merge(['cpf' => $cpfLimpo]);
+   public function store(Request $request)
+{
+    try {
+        // Limpa o CPF
+        $cpfLimpo = preg_replace('/\D/', '', $request->cpf);
+        $request->merge(['cpf' => $cpfLimpo]);
 
-            // Validação dos campos
-            $request->validate([
-                'nome' => 'required|string|max:255',
-                'user' => 'required|string|max:255',
-                'apelido' => 'required|string|max:255',
-                'email' => 'required|lowercase|email|unique:tb_usuario,email',
-                'senha' => 'required|string|min:6|max:255',
-                'senha_confirmacao' => 'required|same:senha',
-                'cpf' => 'required|max:20|unique:tb_usuario,cpf',
-                'genero' => 'required|integer',
-                'data_nascimento' => 'required|date',
-                'tipo_usuario' => 'required|in:3',
-                'status_conta' => 'required|in:1',
-                'numero_telefone' => 'required|array|min:1',
-                'numero_telefone.*' => 'required|string|max:20'
-            ], [
-                'nome.required' => 'O campo nome é obrigatório',
-                'apelido.required' => 'O campo apelido é obrigatório',
-                'user.required' => 'O campo user é obrigatório',
-                'email.required' => 'O campo email é obrigatório',
-                'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
-                'email.email' => 'O campo email deve ser preenchido corretamente',
-                'email.unique' => 'Este email já está cadastrado',
-                'senha.required' => 'O campo senha é obrigatório',
-                'senha.min' => 'Senha deve conter ao menos 6 caracteres',
-                'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
-                'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
-                'cpf.required' => 'O campo CPF é obrigatório',
-                'cpf.unique' => 'CPF já cadastrado',
-                'genero.required' => 'O campo gênero é obrigatório',
-                'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
-                'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-                'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
-            ]);
+        // Validator no padrão do Autista
+        $validator = Validator::make($request->all(), [
+            'nome' => 'required|string|max:255',
+            'user' => 'required|string|max:255',
+            'apelido' => 'required|string|max:255',
+            'email' => 'required|email|unique:tb_usuario,email',
+            'senha' => 'required|string|min:6|max:255',
+            'senha_confirmacao' => 'required|same:senha',
+            'cpf' => 'required|max:20|unique:tb_usuario,cpf',
+            'genero' => 'required|integer',
+            'data_nascimento' => 'required|date',
+            'tipo_usuario' => 'required|in:3',
+            'status_conta' => 'required|in:1',
+            'numero_telefone' => 'required|array|min:1',
+            'numero_telefone.*' => 'required|string|max:20'
+        ], [
+            'nome.required' => 'O campo nome é obrigatório',
+            'apelido.required' => 'O campo apelido é obrigatório',
+            'user.required' => 'O campo user é obrigatório',
+            'email.required' => 'O campo email é obrigatório',
+            'email.email' => 'O campo email deve ser preenchido corretamente',
+            'email.unique' => 'Este email já está cadastrado',
+            'senha.required' => 'O campo senha é obrigatório',
+            'senha.min' => 'Senha deve conter ao menos 6 caracteres',
+            'senha_confirmacao.required' => 'O campo senha de confirmação é obrigatório',
+            'senha_confirmacao.same' => 'O campo senha de confirmação está diferente do campo senha',
+            'cpf.required' => 'O campo CPF é obrigatório',
+            'cpf.unique' => 'CPF já cadastrado',
+            'genero.required' => 'O campo gênero é obrigatório',
+            'data_nascimento.required' => 'O campo data de nascimento é obrigatório',
+            'numero_telefone.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+            'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
+        ]);
 
+        if ($validator->fails()) {
+            return redirect()->back()
+                             ->withErrors($validator)
+                             ->withInput();
+        }
             // Validação lógica de CPF
             if (!self::validaCPF($cpfLimpo)) {
                 return response()->json([

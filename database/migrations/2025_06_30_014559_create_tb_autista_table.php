@@ -23,7 +23,7 @@ return new class extends Migration
         $table->unsignedBigInteger('usuario_id');
         $table->foreign('usuario_id')->references('id')->on('tb_usuario');
         $table->unsignedBigInteger('responsavel_id')->nullable();
-        $table->foreign('responsavel_id')->references('id')->on('tb_responsavel');
+        $table->foreign('responsavel_id')->references('id')->on('tb_usuario');
         $table->timestamps();        
 });
     }
