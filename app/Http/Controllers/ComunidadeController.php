@@ -42,7 +42,7 @@ class ComunidadeController extends Controller
     /**
      * Salva um novo usuário do tipo Comunidade.
      */
-   public function store(Request $request)
+ public function store(Request $request)
 {
     try {
         // Limpa o CPF
@@ -83,77 +83,68 @@ class ComunidadeController extends Controller
             'numero_telefone.*.required' => 'O campo número de telefone é obrigatório (ao menos 1)',
         ]);
 
+        // Se falhar, retorna para o front igual no Autista
         if ($validator->fails()) {
             return redirect()->back()
                              ->withErrors($validator)
                              ->withInput();
         }
-            // Validação lógica de CPF
-            if (!self::validaCPF($cpfLimpo)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'CPF inválido. Por favor, verifique e tente novamente.'
-                ], 400);
-            }
 
-            // Verifica o tipo de usuário
-            if ($request->tipo_usuario != 3) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tentativa de fraude no tipo de usuário.'
-                ], 403);
-            }
-
-            // Cria o usuário
-            $usuario = Usuario::create([
-                'nome' => $request->nome,
-                'user' => $request->user,
-                'apelido' => $request->apelido,
-                'email' => $request->email,
-                'senha' => bcrypt($request->senha),
-                'cpf' => $cpfLimpo,
-                'genero' => $request->genero,
-                'data_nascimento' => $request->data_nascimento,
-                'tipo_usuario' => $request->tipo_usuario,
-                'status_conta' => $request->status_conta,
-            ]);
-
-            // Cria registro na tabela Comunidade
-            Comunidade::create([
-                'usuario_id' => $usuario->id,
-            ]);
-
-            // Cria os telefones
-            foreach ($request->numero_telefone as $telefone) {
-                $telefone_limpo = preg_replace('/\D/', '', $telefone);
-                FoneUsuario::create([
-                    'usuario_id' => $usuario->id,
-                    'numero_telefone' => $telefone_limpo,
-                ]);
-            }
-
-            // Login automático (opcional)
-            Auth::login($usuario);
-
-            // Retorna sucesso em JSON
-        return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Retorna erros de validação no formato JSON
-            return response()->json([
-                'success' => false,
-                'errors' => $e->errors()
-            ], 422);
-        } catch (\Exception $e) {
-            // Loga o erro e retorna resposta genérica
-            Log::error('Erro ao criar comunidade: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'
-            ], 500);
+        // Validação lógica de CPF
+        if (!self::validaCPF($cpfLimpo)) {
+            return redirect()->back()
+                             ->withErrors(['cpf' => 'CPF inválido. Por favor, verifique e tente novamente.'])
+                             ->withInput();
         }
-    }
 
+        // Verifica o tipo de usuário
+        if ($request->tipo_usuario != 3) {
+            return redirect()->back()
+                             ->withErrors(['tipo_usuario' => 'Tentativa de fraude no tipo de usuário.'])
+                             ->withInput();
+        }
+
+        // Cria o usuário
+        $usuario = Usuario::create([
+            'nome' => $request->nome,
+            'user' => $request->user,
+            'apelido' => $request->apelido,
+            'email' => $request->email,
+            'senha' => bcrypt($request->senha),
+            'cpf' => $cpfLimpo,
+            'genero' => $request->genero,
+            'data_nascimento' => $request->data_nascimento,
+            'tipo_usuario' => $request->tipo_usuario,
+            'status_conta' => $request->status_conta,
+        ]);
+
+        // Cria registro na tabela Comunidade
+        Comunidade::create([
+            'usuario_id' => $usuario->id,
+        ]);
+
+        // Cria os telefones
+        foreach ($request->numero_telefone as $telefone) {
+            $telefone_limpo = preg_replace('/\D/', '', $telefone);
+            FoneUsuario::create([
+                'usuario_id' => $usuario->id,
+                'numero_telefone' => $telefone_limpo,
+            ]);
+        }
+
+        // Login automático (opcional)
+        Auth::login($usuario);
+
+        return redirect()->route('login')
+                         ->with('success', 'Usuário comunidade cadastrado com sucesso!');
+
+    } catch (\Exception $e) {
+        Log::error('Erro ao criar comunidade: ' . $e->getMessage());
+        return redirect()->back()
+                         ->withErrors(['erro' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'])
+                         ->withInput();
+    }
+}
     /**
      * Função auxiliar para validar CPF.
      */

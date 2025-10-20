@@ -43,11 +43,13 @@
     </div>
 
     @if ($errors->any())
-    <div class="alert-error">
-        <ul>
-            <li>erro na validação de dados</li>
-        </ul>
-    </div>
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>  <!-- Aqui cada erro vai aparecer em uma linha -->
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <form class="form-cadastro" method="post" action="{{ route('comunidade.store') }}"> <!-- Formulário -->
