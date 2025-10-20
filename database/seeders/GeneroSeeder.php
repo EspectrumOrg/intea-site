@@ -29,5 +29,7 @@ class GeneroSeeder extends Seeder
         Genero::factory()->create([
             'titulo' => 'prefere não informar',
         ]);
+
+         $this->command->info('✅ Gêneros masculino, feminino, não-binário e "prefere não informar" criados!');
     }
 }

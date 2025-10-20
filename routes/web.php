@@ -8,7 +8,7 @@ use App\Http\Controllers\ChatPrivadoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
-use App\Http\Controllers\CurtidaPostagemController;
+use App\Http\Controllers\CurtidaController;
 use App\Http\Controllers\DenunciaPostagemController;
 use App\Http\Controllers\DenunciaUsuarioController;
 use App\Http\Controllers\GruposControler;
@@ -19,7 +19,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PusherController;
-use App\Models\ProfissionalSaude;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,7 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::resource("feed", PostagemController::class)
         ->names("post")
         ->parameters(["feed" => "post"]);
-    Route::post('/feed/{id}/curtida', [CurtidaPostagemController::class, 'toggleCurtida'])->name('post.curtida');
+    Route::post('/feed/curtida', [CurtidaController::class, 'toggleCurtida'])->name('curtida.toggle');
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');

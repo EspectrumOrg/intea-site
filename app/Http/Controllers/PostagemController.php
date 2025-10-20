@@ -25,6 +25,7 @@ class PostagemController extends Controller
      */
     public function index()
     {
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
@@ -93,6 +94,7 @@ class PostagemController extends Controller
             ->with(['comentarios.usuario', 'comentarios.image'])
             ->findOrFail($postagem);
 
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos

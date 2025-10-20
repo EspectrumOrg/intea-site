@@ -40,7 +40,7 @@ class Comentario extends Model
 
     public function curtidas_comentario ()
     {
-        return $this->hasMany(CurtidaComentario::class);
+        return $this->hasMany(Curtida::class);
     }
 
     public function respostas ()

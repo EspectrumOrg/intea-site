@@ -150,11 +150,8 @@ class ComunidadeController extends Controller
                 'message' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'
             ], 500);
         }
-<<<<<<< HEAD
 
         return redirect()->route('login')->with('success', 'Usuário comunidade cadastrado com sucesso!');
-=======
->>>>>>> c6a721b008c0b0b34a6c4e71cfbdac8e6c4661f4
     }
 
     /**

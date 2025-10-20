@@ -219,5 +219,7 @@ class UsuarioSeeder extends Seeder
                 'usuario_id' => $usuario->id,
             ]);
         }
+
+         $this->command->info('✅ usuário admin criado mais 14 usuários base');
     }
 }

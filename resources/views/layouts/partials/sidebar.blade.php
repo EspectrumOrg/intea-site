@@ -14,7 +14,15 @@
 
     <!-- User info -->
     <div class="info dropdown-container" id="userDropdown">
-        <a href="#"><img src="{{ asset('storage/' . Auth::user()->foto) }}"></a>
+        <a href="#">
+            <img
+                src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
+                alt="foto de perfil"
+                style="border-radius: 50%;"
+                width="40"
+                height="40"
+                loading="lazy">
+        </a>
         <div class="text">
             <h5>{{ Auth::user()->user }}</h5>
             <h4>{{ Auth::user()->email }}</h4>

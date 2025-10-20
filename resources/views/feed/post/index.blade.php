@@ -106,7 +106,6 @@ e($texto)
 
                 <!-- conteudo postagem -->
                 <div class="conteudo-post">
-
                     <div class="coment-perfil">
                         <p class="texto-curto" id="texto-{{ $postagem->id }}">
                             {!! formatarHashtags(Str::limit($postagem->texto_postagem, 150, '')) !!}
@@ -139,8 +138,10 @@ e($texto)
                             </button>
                         </div>
 
-                        <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+                        <form method="POST" action="{{ route('curtida.toggle') }}">
                             @csrf
+                            <input type="hidden" name="tipo" value="postagem">
+                            <input type="hidden" name="id" value="{{ $postagem->id}}">
                             <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
                                 <span class="material-symbols-outlined">favorite</span>
                                 <h1>{{ $postagem->curtidas_count }}</h1>

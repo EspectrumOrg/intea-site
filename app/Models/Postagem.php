@@ -39,7 +39,7 @@ class Postagem extends Model
 
     public function curtidas()
     {
-        return $this->hasMany(CurtidaPostagem::class, 'id_postagem');
+        return $this->hasMany(Curtida::class, 'id_postagem');
     }
 
     public function denuncias()

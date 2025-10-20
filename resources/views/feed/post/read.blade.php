@@ -140,8 +140,10 @@
                 </button>
             </div>
 
-            <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+            <form method="POST" action="{{ route('curtida.toggle') }}">
                 @csrf
+                <input type="hidden" name="tipo" value="postagem">
+                <input type="hidden" name="id" value="$postagem->id">
                 <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
                     <span class="material-symbols-outlined">favorite</span>
                     <h1>{{ $postagem->curtidas_count }}</h1>
@@ -229,8 +231,10 @@
                         </button>
                     </div>
 
-                    <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
+                    <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
+                        <input type="hidden" name="tipo" value="comentario">
+                        <input type="hidden" name="id" value="$comentario->id">
                         <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
                             <span class="material-symbols-outlined">favorite</span>
                             <h1>{{ $comentario->curtidas_count }}</h1>
