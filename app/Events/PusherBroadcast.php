@@ -4,8 +4,6 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -14,24 +12,23 @@ class PusherBroadcast implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $message;
-    
-    public function __construct(string $message)
+  public $message;
+public $remetente_id;
+public $foto;
+
+public function __construct(string $message, int $remetente_id, ?string $foto = null)
+{
+    $this->message = $message;
+    $this->remetente_id = $remetente_id;
+    $this->foto = $foto; 
+}
+
+    public function broadcastOn(): Channel
     {
-        $this->message =$message;
+        return new Channel('public');
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
-    public function broadcastOn(): array
-    {
-        return ['public'];
-    }
-
-    public function broadcastAs(): string 
+    public function broadcastAs(): string
     {
         return 'chat';
     }

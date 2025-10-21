@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Postagem;
 use App\Models\ImagemPostagem;
+use App\Models\Tendencia;
 use Faker\Core\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -24,13 +25,16 @@ class PostagemController extends Controller
      */
     public function index()
     {
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
             ->get();
         $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-        return view('feed', compact('postagens', 'posts'));
+        $tendenciasPopulares = Tendencia::populares(5)->get();
+
+        return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
 
     /**
@@ -57,7 +61,7 @@ class PostagemController extends Controller
             'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
         ], [
             'texto_postagem.required' => 'O campo texto é obrigatório',
-            'texto_postagem.max' => 'O campo texto só comporta até 755 caracteres',
+            'texto_postagem.max' => 'O campo texto só comporta até 1000 caracteres',
         ]);
 
         // Criar Postagem
@@ -65,6 +69,9 @@ class PostagemController extends Controller
             'usuario_id' => $user->id,
             'texto_postagem' => $request->texto_postagem,
         ]);
+
+        // Processar hashtags e vincular tendências
+        $postagem->processarHashtags($request->texto_postagem);
 
         // Criar Imagens Ligadas à postagem
         if ($request->hasFile('caminho_imagem')) {
@@ -75,7 +82,7 @@ class PostagemController extends Controller
                 'id_postagem' => $postagem->id,
             ]);
         }
-        return redirect()->route('post.index')->with('Sucesso', 'Postado, confira já!');
+        return redirect()->route('post.index')->with('success', 'Postado, confira já!');
     }
 
     /**
@@ -87,6 +94,7 @@ class PostagemController extends Controller
             ->with(['comentarios.usuario', 'comentarios.image'])
             ->findOrFail($postagem);
 
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
@@ -109,13 +117,17 @@ class PostagemController extends Controller
     public function update(Request $request, Postagem $post)
     {
         $request->validate([
-            'texto_postagem' => 'required|string|max:755',
-            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:2048',
+            'texto_postagem' => 'required|string|max:1000',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
         ]);
 
         $post->update([
             'texto_postagem' => $request->texto_postagem,
         ]);
+
+        // Reprocessar hashtags ao atualizar
+        $post->tendencias()->detach(); // Remove associações antigas
+        $post->processarHashtags($request->texto_postagem);
 
         if ($request->hasFile('caminho_imagem')) {
             $arquivo = $request->file('caminho_imagem');
@@ -135,8 +147,7 @@ class PostagemController extends Controller
             }
         }
 
-
-        return redirect()->route('post.index')->with('Sucesso', 'Postagem atualizada!');
+        return redirect()->route('post.index')->with('success', 'Postagem atualizada com êxito!');
     }
 
     /**
@@ -145,9 +156,23 @@ class PostagemController extends Controller
     public function destroy($id)
     {
         $postagem = Postagem::findOrFail($id);
+
+        // guardar tendências
+        $tendencias = $postagem->tendencias()->get();
+
+        // Remover associações com tendências antes de deletar
+        $postagem->tendencias()->detach();
+
+        // Deletar postagem
         $postagem->delete();
 
-        session()->flash("successo", "Postagem exclúido");
-        return redirect()->back();
+        // Deletar tendências sem postagens 🔥
+        foreach ($tendencias as $tendencia) {
+            if ($tendencia->postagens()->count() === 0) {
+                $tendencia->delete();
+            }
+        }
+
+        return redirect()->route('post.index')->with('success', 'Postagem exclúida com êxito!');
     }
 }

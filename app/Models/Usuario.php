@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\ResetPasswordNotification; // coloque esse use lá no topo, junto dos outros
 
 
 class Usuario extends Authenticatable
@@ -104,6 +105,11 @@ class Usuario extends Authenticatable
     return $this->hasMany(Postagem::class, 'usuario_id');
   }
 
+    public function comentarios()
+  {
+    return $this->hasMany(Comentario::class, 'usuario_id');
+  }
+
   public function getPostagensCountAttribute()
   {
     return $this->postagens()->count();
@@ -147,4 +153,8 @@ public function grupos()
           'segue_id'        // Foreign key do usuário que está seguindo
       )->withTimestamps();
   }
+  public function sendPasswordResetNotification($token)
+{
+    $this->notify(new ResetPasswordNotification($token));
+}
 }

@@ -2,7 +2,7 @@
 .create-post {
     background-color: var(--branco);
     padding: 1rem;
-    border-bottom: 1px solid var(--cinza-borda);
+    border-bottom: 1px solid var(--branco-light);
 }
 
 .create-post .form {
@@ -15,21 +15,36 @@
     width: 100%;
 }
 
-/* campo principal */
-.create-post .form .textfield {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
+.textfield {
+    position: relative;
+    width: 100%;
 }
 
-.create-post .form .textfield textarea {
+.hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none; /* permite clicar no textarea em cima */
+}
+
+.textfield textarea {
+    position: relative;
+    background: transparent;
     width: 100%;
     border: none;
     padding: 1rem;
     font-size: 18px;
-    background-color: var(--branco);
-    color: var(--preto);
+    font-family: inherit;
+    color: transparent; /* texto invisível, mas cursor visível */
+    caret-color: var(--preto); /* deixa o cursor preto */
     resize: none;
     overflow-y: hidden;
 }
@@ -38,13 +53,19 @@
     outline: none;
 }
 
-/* opções (upload etc) */
+.hashtag {
+    color: var(--cor-tema);
+    font-weight: 600;
+}
+
+
+/* opções (upload etc) ----------------------------------*/
 .create-post .form .content {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     padding: .5rem 0;
-    border-top: 1px solid var(--cinza-borda);
+    border-top: 1px solid var(--branco-light);
     margin: auto;
     margin-top: .5rem;
 }
@@ -93,6 +114,20 @@
     margin-right: 1rem;
 }
 
+/* icon image -------------------*/
+.form .upload-label span {
+    font-size: 20px;
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--preto);
+    transition: .3s;
+}
+
+.form .upload-label:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
+}
+
 /* botão */
 .create-post .form .botao-submit {
     display: flex;
@@ -105,14 +140,53 @@
     color: var(--branco);
     font-size: 14px;
     font-weight: bold;
-    padding: .3rem 1.5rem;
+    padding: .75rem;
     border: none;
-    border-radius: 25% / 100%;
+    border-radius: 25% / 50%;
     cursor: pointer;
-    transition: background-color .2s, transform .1s;
+    transition: .3s;
 }
 
 .create-post .form .botao-postar:hover {
     background-color: var(--cor-tema);
-    transform: scale(1.03);
+}
+
+/* ----------------------------- preview imagem ------------------------------- */
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.image-preview img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--branco-light);
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: var(--branco);
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.image-preview .remove-image:hover {
+    background-color: var(--cor-tema-apagado);
+}
+
+.image-preview .remove-image span {
+    color: var(--branco);
 }

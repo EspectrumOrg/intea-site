@@ -103,10 +103,34 @@
                             @endswitch
                         </td>
                         <td class="button-open-data">
-                            <!-- Botão para abrir o modal -->
-                            <button type="button" class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
-                                <img class="img-icons" src="{{ asset('assets/images/logos/symbols/open-folder.png') }}" alt="expandir">
-                            </button>
+
+                            <div class="td-acoes">
+                                <!-- Usuário ativo → Desabilitar denúncia -->
+                                <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
+                                    @csrf
+                                    @method("put")
+                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja marcar a denúncia como resolvida?');" class="btn-desabilitar">
+                                        <span class="material-symbols-outlined">
+                                            check
+                                        </span>
+                                    </button>
+                                </form>
+                                <!-- Banir usuário que fez a postagem -->
+                                <form action="{{ route('usuario.destroy', $item->postagem->usuario->id) }}" method="post">
+                                    @csrf
+                                    @method("delete")
+                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                                        <span class="material-symbols-outlined">person_off</span>
+                                    </button>
+                                </form>
+
+                                <!-- Botão para abrir o modal -->
+                                <button type="button" class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalPostagem{{ $item->id }}">
+                                    <span class="material-symbols-outlined">open_in_full</span>
+                                </button>
+                            </div>
+
+
 
                             <!-- Modal -->
                             <div class="modal fade" id="modalPostagem{{ $item->id }}" tabindex="-1" aria-labelledby="modalPostagemLabel{{ $item->id }}" aria-hidden="true">
@@ -196,29 +220,8 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                         </div>
-
                                     </div>
                                 </div>
-                            </div>
-
-
-                            <div class="td-acoes">
-                                <!-- Usuário ativo → Desabilitar denúncia -->
-                                <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
-                                    @csrf
-                                    @method("put")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja marcar a denúncia como resolvida?');" class="btn-desabilitar">
-                                        <img class="img-icons" src="{{ asset('assets/images/logos/symbols/check-mark.png') }}" alt="marcar resolvida">
-                                    </button>
-                                </form>
-                                <!-- Usuário ativo → Mostrar botão de banir -->
-                                <form action="{{ route('denuncia.destroy', $item->postagem->usuario->id) }}" method="post">
-                                    @csrf
-                                    @method("delete")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
-                                        <img class="img-icons" src="{{ asset('assets/images/logos/symbols/block.png') }}" alt="banir usuário">
-                                    </button>
-                                </form>
                             </div>
                         </td>
                     </tr>

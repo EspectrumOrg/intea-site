@@ -41,12 +41,14 @@
         </div>
     </div>
 
-    @if ($errors->any())
-    <div class="alert-error">
-        <ul>
-            <li>erro na validação de dados</li>
-        </ul>
-    </div>
+@if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>  <!-- Aqui cada erro vai aparecer em uma linha -->
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <form class="form-cadastro" method="post" action="{{ route('autista.store') }}"> <!-- Formulário -->
@@ -158,13 +160,18 @@
             </div>
 
             <div class="field">
-                <label>RG *</label>
-                <input type="text" name="rg_autista" required>
+                <label>Cipteia *</label>
+                <input type="text" name="CipteiaAutista" required>
             </div>
 
-            <div class="field">
+                    <div class="field">
                 <label>Data de Nascimento *</label>
-                <input type="date" name="data_nascimento" value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}">
+                <input
+                    type="date"
+                    id="data_nascimento"
+                    name="data_nascimento"
+                    value="{{ $usuario->data_nascimento ?? old('data_nascimento') }}"
+                    onchange="verificarIdade()">
 
                 @if ($errors->has('data_nascimento'))
                 <div class="alert alert-danger">
@@ -173,6 +180,16 @@
                 @endif
             </div>
 
+            <div class="field" id="cpf_responsavel_field">
+                <label>CPF do Responsável *</label>
+                <input
+                    type="text"
+                    name="cpf_responsavel"
+                    id="cpf_responsavel"
+                    class="cpf-input"
+                    placeholder="123.456.789-00">
+            </div>
+            
             <div class="field">
                 <label>Gênero</label>
                 <select type="text" id="genero" name="genero">
@@ -240,4 +257,36 @@
             </div>
         </div>
     </form>
+    <script>
+function verificarIdade() {
+    const inputData = document.getElementById('data_nascimento');
+    const cpfResponsavelField = document.getElementById('cpf_responsavel_field');
+    const dataValor = inputData.value;
+
+    if (!dataValor) {
+        cpfResponsavelField.style.display = 'none';
+        return;
+    }
+
+    const hoje = new Date();
+    const nascimento = new Date(dataValor);
+    let idade = hoje.getFullYear() - nascimento.getFullYear();
+    const mes = hoje.getMonth() - nascimento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoje.getDate() < nascimento.getDate())) {
+        idade--;
+    }
+
+    if (idade < 18) {
+        cpfResponsavelField.style.display = 'block';
+    } else {
+        cpfResponsavelField.style.display = 'none';
+    }
+}
+
+// Verifica também ao carregar a página (útil após erro de validação)
+window.addEventListener('DOMContentLoaded', verificarIdade);
+</script>
+    
     @endsection
+    

@@ -1,68 +1,28 @@
+<!-- icons and style -->
+<link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+
 <div class="content">
-    <div class="links">
-        <div class="logo">
-            <img src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
-        </div>
 
-        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}" id="home">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('post.index') ? 'home-preenchido.png' : 'home.png')) }}" alt="Home">
-            <h1>Home</h1>
+    <!-- Logo -->
+    <div class="logo">
+        <a href="{{ route('landpage') }}">
+            <img src="{{ asset('assets/images/logos/intea/41.png') }}">
         </a>
-
-        <a href="{{ route('conta.index', [Auth::user()->id]) }}" class="nav-link" id="message">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/email.png') }}" alt="Mensagens">
-            <h1>Mensagens</h1>
-        </a>
-
-        <a href="{{ route('profile.show') }}"
-            class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('profile.show') ? 'user-preenchido.png' : 'user.png')) }}" alt="Perfil">
-            <h1>Perfil</h1>
-        </a>
-
-        <a href="{{ route('grupo.index') }}" id="config"
-            class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/' . (request()->routeIs('grupo.index') ? 'grup-preenchido.png' : 'group.png')) }}" alt="Perfil">
-            <h1>Grupos</h1>
-        </a>
-
-        <!--<a href="{{ route('grupo.index') }}" class="nav-link" >
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
-            <h1>Grupos</h1>
-        </a>-->
-
-        <a href="{{ route('post.index') }}" class="nav-link" id="config">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/gear.png') }}">
-            <h1>Configurações</h1>
-        </a>
-
-
-
-        <!--@if (Auth::user()->tipo_usuario === 4)
-        <a href="{{ route('pagina_saude') }}" class="nav-link">
-            <h1>Profissionais</h1>
-        </a>
-        @else
-        <a href="" class="nav-link">
-            <h1>Especialistas</h1>
-        </a>
-        @endif-->
-
-        @can("visualizar-admin")
-        <a href="{{ route('dashboard.index') }}" class="nav-link">
-            <img src="{{ asset('assets/images/logos/symbols/site-claro/admin.png') }}" />
-            <h1>Admin</h1>
-        </a>
-        @endcan
-
-        <!-- Modal de criação de postagem -->
-        <div class="post-button">
-            <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
-        </div>
     </div>
 
+    <!-- User info -->
     <div class="info dropdown-container" id="userDropdown">
-        <a href="#"><img src="{{ asset('storage/'. Auth::user()->foto) }}"></a>
+        <a href="#">
+            <img
+                src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
+                alt="foto de perfil"
+                style="border-radius: 50%;"
+                width="40"
+                height="40"
+                loading="lazy">
+        </a>
         <div class="text">
             <h5>{{ Auth::user()->user }}</h5>
             <h4>{{ Auth::user()->email }}</h4>
@@ -74,31 +34,61 @@
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">
                     @csrf
-                    <a
-                        onclick="event.preventDefault(); this.closest('form').submit();"
-                        href="#">Sair {{ Auth::user()->user}}</a>
+                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair
+                        {{ Auth::user()->user}}</a>
                 </form>
             </li>
         </ul>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const dropdownContainer = document.getElementById("userDropdown");
-            const dropdownMenu = dropdownContainer.querySelector(".dropdown-checar-perfil");
+    <!-- Links sidebar-->
+    <div class="links">
+        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
+            id="home">
+            <span class="material-symbols-outlined">home</span>
+            <h1>Home</h1>
+        </a>
 
-            // Abre/fecha ao clicar na área .info
-            dropdownContainer.addEventListener("click", (e) => {
-                e.stopPropagation(); // evita fechar ao clicar dentro
-                dropdownMenu.classList.toggle("hidden");
-            });
+        <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
+            <span class="material-symbols-outlined">mail</span>
+            <h1>Mensagens</h1>
+        </a>
 
-            // Fecha ao clicar fora
-            document.addEventListener("click", () => {
-                dropdownMenu.classList.add("hidden");
-            });
-        });
-    </script>
+        <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
+            id="profile">
+            <span class="material-symbols-outlined">person</span>
+            <h1>Perfil</h1>
+        </a>
+
+        <a href="{{ route('grupo.index') }}" class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
+            id="config">
+            <span class="material-symbols-outlined">group</span>
+            <h1>Grupos</h1>
+        </a>
+
+        <a href="{{ route('configuracao.config') }}"
+            class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}">
+            <span class="material-symbols-outlined">settings</span>
+            <h1>Configurações</h1>
+        </a>
 
 
+
+        @can("visualizar-admin")
+        <a href="{{ route('dashboard.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <h1>Admin</h1>
+        </a>
+        @endcan
+
+
+        <!-- Modal de criação de postagem --------------------------------------------------------------------------->
+        <div class="post-button">
+            <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
+        </div>
+    </div>
 </div>
+
+<!-- JS -->
+<script src="{{ url('assets/js/avisos/sidebar-user.js') }}"></script>

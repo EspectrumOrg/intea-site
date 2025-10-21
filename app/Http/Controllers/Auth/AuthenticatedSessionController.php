@@ -23,21 +23,37 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+public function store(LoginRequest $request): RedirectResponse
+{
+    $request->authenticate();
+    $request->session()->regenerate();
 
-        $request->session()->regenerate();
+    $usuario = Auth::user();
 
-        $usuario = Auth::user();
+    switch ($usuario->status_conta) {
+        case 0: // conta excluída
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->with('conta_status', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
 
-        if (!$usuario->tipo_usuario === 4) { //tirar essa parte caso o profissional saúde seja removido
-            return redirect()->route('pagina_saude');
+        case 1: // login normal
+            return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Login realizado com sucesso!');
 
-        } else{
-            return redirect()->intended(RouteServiceProvider::HOME); 
-        }
+        case 2: // conta banida
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->with('conta_status', 'Sua conta está banida. Por favor, contate a empresa.');
+
+        default:
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return back()->with('conta_status', 'Erro de validação.');
     }
+}
+
 
     /**
      * Destroy an authenticated session.

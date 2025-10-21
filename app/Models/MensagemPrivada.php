@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MensagemPrivadaModel extends Model
+class MensagemPrivada extends Model
 {
     use HasFactory;
 
@@ -17,7 +17,7 @@ class MensagemPrivadaModel extends Model
     ];
     public function conversa()
     {
-        return $this->belongsTo(ChatPrivadoModel::class, 'conversa_id');
+        return $this->belongsTo(ChatPrivado::class, 'conversa_id');
     }
 
     /**

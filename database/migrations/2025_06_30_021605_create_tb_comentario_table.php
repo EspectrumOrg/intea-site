@@ -38,6 +38,8 @@ return new class extends Migration
      */
     public function down()
     {
+        
+        Schema::dropIfExists('tb_curtida');
         Schema::dropIfExists('tb_comentario');
     }
 };

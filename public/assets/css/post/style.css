@@ -55,8 +55,8 @@
     /* necessário para o overlay */
     max-width: 100%;
     background-color: var(--branco);
-    padding: 1rem;
-    border-bottom: 1px solid var(--cinza-borda);
+    padding: 1rem 1rem 0 1rem;
+    border-bottom: 1px solid var(--branco-light);
     display: flex;
     flex-direction: row;
 }
@@ -89,6 +89,10 @@
     align-items: flex-start;
 }
 
+.container-post .corpo-post .foto-perfil a {
+    z-index: 9998 !important;
+}
+
 /* conteúdo postagem */
 .container-post .corpo-content {
     padding-left: 1rem;
@@ -116,10 +120,10 @@
     max-width: 100%;
     border-radius: 7.5%;
     margin-top: .5rem;
-    border: 1px solid var(--cinza-borda);
+    border: none;
 }
 
-/* Dados e informações ------------------------------------*/
+/* Dados e informações ----------------------------------------------------------*/
 .container-post .dados-post {
     display: flex;
     flex-direction: row;
@@ -133,21 +137,58 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    flex-direction: row;
 }
 
-.container-post .dados-post img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
+.dados-post .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
 }
 
-.container-post .dados-post h1 {
+.container-post .dados-post span {
     font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+/* curtido ou normal*/
+.container-post .dados-post .normal span {
     color: var(--cinza);
 }
 
-/* lista de comentários ------*/
+.container-post .dados-post .curtido span {
+    color: var(--cor-vermelho);
+}
+
+.container-post .dados-post h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--cor-tema);
+}
+
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--cor-vermelho);
+}
+
+.btn-curtir:hover span{
+    background-color: rgba(242, 34, 34, 0.50);
+    color: var(--cor-vermelho);
+}
+
+/* lista de comentários -------------------------------------------------------------------------------------*/
 .lista-comentarios {
     margin-top: 12px;
     width: 100%;
@@ -221,7 +262,7 @@
     line-height: 1.4;
 }
 
-/* container do dropdown */
+/* container do dropdown -----------------------------------------------------------------------------------------*/
 .dropdown-content {
     list-style: none;
     margin: 0;
@@ -237,6 +278,8 @@
 /* estilo base para botões de ação */
 .btn-acao {
     width: 100%;
+    display: flex;
+    gap: 1rem;
     text-align: left;
     padding: .6rem 1rem;
     border: none;
@@ -246,28 +289,69 @@
     cursor: pointer;
     background-color: transparent;
     color: var(--preto);
-    transition: background-color .2s, color .2s, transform .1s;
+    transition: background-color .3s, color .3s, transform .1s;
 }
 
 /* hover geral */
 .btn-acao:hover {
-    transform: scale(1.02);
+    transform: scale(1);
 }
 
 /* editar */
+.container-post .editar {
+    border-radius: 15px 15px 0 0;
+}
+
 .btn-acao.editar:hover {
-    background-color: var(--cor-tema);
-    color: var(--branco);
+    background-color: var(--branco-light);
+    color: var(--cor-tema);
 }
 
 /* excluir */
 .btn-acao.excluir:hover {
-    background-color: var(--vermelho);
-    color: var(--branco);
+    background-color: var(--branco-light);
+    color: var(--cor-vermelho);
+}
+
+.container-post .excluir {
+    border-radius: 0 0 15px 15px;
 }
 
 /* denunciar */
 .btn-acao.denunciar:hover {
     background-color: #ffcccb;
     color: var(--vermelho);
+}
+
+.hashtag {
+    position: relative; /* cria um novo contexto de empilhamento */
+    z-index: 1; /* fica acima do overlay */
+    color: var(--cor-tema);
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.hashtag:hover {
+    color: var(--cor-tema-apagado);
+    text-decoration: underline;
+}
+
+/* Força o dropdown a ficar sempre acima de qualquer outro conteúdo do post */
+.container-post .dropdown {
+    position: relative;
+    z-index: 2000;
+}
+
+.container-post .dropdown .dropdown-content {
+    position: absolute;
+    right: 0;
+    z-index: 9999 !important;
+}
+
+/* Garante que o overlay e botões fiquem abaixo */
+.corpo-post .post-overlay,
+.corpo-post button,
+.corpo-post form {
+    z-index: 1;
 }

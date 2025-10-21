@@ -146,7 +146,7 @@ class AdminController extends Controller
         Auth::login($usuario);
 
         //return response()->json($request->all());
-        return redirect()->route('dashboard.index')->with('Sucesso', 'Usuário Tipo Admin cadastrado com sucesso!');
+        return redirect()->route('dashboard.index')->with('success', 'Usuário Tipo Admin cadastrado com sucesso!');
     }
 
     // Método para validar CPF

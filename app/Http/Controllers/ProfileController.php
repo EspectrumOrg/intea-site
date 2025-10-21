@@ -32,11 +32,21 @@ class ProfileController extends Controller
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
 
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count') // mais curtidas primeiro
-            ->take(5) // pega só os 5 mais curtidos
+        // 🔥 Postagens populares (as mais curtidas)
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count')
+            ->take(5)
             ->get();
 
+        // 📜 Postagens do usuário logado
+        $userPosts = Postagem::where('usuario_id', $user->id)->get();
+
+        // ❤️ Postagens curtidas pelo usuário
+        $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
+            $q->where('usuario_id', $user->id);
+        })->get();
+
+        // 🔍 Dados específicos por tipo de usuário
         switch ($user->tipo_usuario) {
             case 2:
                 $dadosespecificos = $user->autista;
@@ -46,10 +56,21 @@ class ProfileController extends Controller
                 break;
             case 5:
                 $dadosespecificos = $user->responsavel;
+                 $autista = $user->responsavel->autistas()->first() ?? null;
                 break;
         }
 
-        return view('profile.show', compact('dadosespecificos', 'generos', 'telefones', 'user', 'posts'));
+        // ✅ Retorna para a view com todas as variáveis necessárias
+        return view('profile.show', compact(
+            'dadosespecificos',
+            'generos',
+            'telefones',
+            'user',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'autista'
+        ));
     }
 
     /**

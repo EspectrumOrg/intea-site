@@ -18,33 +18,38 @@ class Comentario extends Model
         'comentario',
     ];
 
-    public function usuario () 
+    public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
 
-    public function comentarioPai ()
+    public function comentarioPai()
     {
         return $this->belongsTo(Comentario::class, 'id_comentario_pai', 'id');
     }
 
-    public function postagem ()
+    public function postagem()
     {
         return $this->belongsTo(Postagem::class, 'id_postagem');
     }
 
-    public function image ()
+    public function image()
     {
         return $this->hasOne(ImagemComentario::class, 'id_comentario', 'id');
     }
 
-    public function curtidas_comentario ()
+    public function curtidas_comentario()
     {
-        return $this->hasMany(CurtidaComentario::class);
+        return $this->hasMany(Curtida::class);
     }
 
-    public function respostas ()
+    public function respostas()
     {
         return $this->hasMany(Comentario::class, 'id_comentario_pai', 'id');
+    }
+
+    public function denuncias()
+    {
+        return $this->hasMany(Denuncia::class, 'id_comentario');
     }
 }

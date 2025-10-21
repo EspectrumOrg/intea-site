@@ -52,7 +52,7 @@ class LoginRequest extends FormRequest
         $user = Auth::user();
 
         // Se a conta estiver banida (status_conta = 0), desloga imediatamente
-        if ($user->status_conta === 0) {
+        if ($user->status_conta === 2) {
             Auth::logout();
             RateLimiter::hit($this->throttleKey());
 

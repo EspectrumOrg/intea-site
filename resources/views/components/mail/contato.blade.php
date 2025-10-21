@@ -1,12 +1,9 @@
 @component('mail::message')
-
-![Logo da Empresa de TI]({{ url('assets/images/logos/intea/logo-lamp.png') }})
-
 # Novo contato recebido de {{ $emailContato }}
 
-Olá,
+    Aviso!
 
-Você recebeu uma nova mensagem através do site. Aqui estão os detalhes:
+Uma nova mensagem foi enviada através do Intea. Confira:
 
 **Remetente:** {{ $nomeContato }}  
 **Assunto:** {{ $assuntoContato }}
@@ -19,6 +16,7 @@ Você recebeu uma nova mensagem através do site. Aqui estão os detalhes:
 
 ---
 
+
 Recomendamos que mensagens relevantes sejam respondidas o quanto antes.  
 Caso a mensagem seja de um usuário banido, por favor, consulte um administrador do sistema.
 
@@ -26,7 +24,7 @@ Caso a mensagem seja de um usuário banido, por favor, consulte um administrador
 Acessar o site
 @endcomponent
 
-Atenciosamente,  
+At.te,  
 Equipe {{ config('app.name') }}
 
 @endcomponent

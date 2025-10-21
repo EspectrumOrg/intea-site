@@ -39,12 +39,12 @@ class Postagem extends Model
 
     public function curtidas()
     {
-        return $this->hasMany(CurtidaPostagem::class, 'id_postagem');
+        return $this->hasMany(Curtida::class, 'id_postagem');
     }
 
     public function denuncias()
     {
-        return $this->hasMany(DenunciaPostagem::class, 'id_postagem');
+        return $this->hasMany(Denuncia::class, 'id_postagem');
     }
 
     public function getCurtidasCountAttribute()
@@ -61,4 +61,49 @@ class Postagem extends Model
     {
         return $this->curtidas()->where('id_usuario', auth()->id())->exists();
     }
+
+     /* Nova relação com tendências */
+    public function tendencias()
+    {
+        return $this->belongsToMany(Tendencia::class, 'tb_tendencia_postagem', 'postagem_id', 'tendencia_id')
+                    ->withTimestamps();
+    }
+
+    /* Método para processar hashtags ao criar postagem */
+    public function processarHashtags($texto)
+    {
+        preg_match_all('/#(\w+)/', $texto, $matches);
+        
+        $hashtags = $matches[1] ?? [];
+        $tendenciasIds = [];
+
+        foreach ($hashtags as $tag) {
+            $hashtagCompleta = '#' . $tag;
+            $slug = Tendencia::criarSlug($hashtagCompleta);
+            
+            $tendencia = Tendencia::firstOrCreate(
+                ['slug' => $slug],
+                [
+                    'hashtag' => $hashtagCompleta,
+                    'contador_uso' => 0,
+                    'ultimo_uso' => now()
+                ]
+            );
+
+            // Incrementar contador
+            $tendencia->increment('contador_uso');
+            $tendencia->update(['ultimo_uso' => now()]);
+            
+            $tendenciasIds[] = $tendencia->id;
+        }
+
+        // Sincronizar tendências com a postagem
+        if (!empty($tendenciasIds)) {
+            $this->tendencias()->sync($tendenciasIds);
+        }
+
+        return $texto;
+    }
+
+    
 }

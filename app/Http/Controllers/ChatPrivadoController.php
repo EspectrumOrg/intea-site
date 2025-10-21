@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatPrivado;
 use App\Models\ChatPrivadoModel;
+use App\Models\MensagemPrivada;
 use App\Models\MensagemPrivadaModel;
 use Illuminate\Http\Request;
 
@@ -31,26 +33,26 @@ class ChatPrivadoController extends Controller
         $texto = $request->texto;
 
         // Verifica se já existe conversa entre os dois usuários
-        $conversa = ChatPrivadoModel::where(function ($query) use ($usuario1, $usuario2) {
-                $query->where('usuario1_id', $usuario1)
-                      ->where('usuario2_id', $usuario2);
-            })
+        $conversa = ChatPrivado::where(function ($query) use ($usuario1, $usuario2) {
+            $query->where('usuario1_id', $usuario1)
+                ->where('usuario2_id', $usuario2);
+        })
             ->orWhere(function ($query) use ($usuario1, $usuario2) {
                 $query->where('usuario1_id', $usuario2)
-                      ->where('usuario2_id', $usuario1);
+                    ->where('usuario2_id', $usuario1);
             })
             ->first();
 
         // Se não existir, cria nova conversa
         if (!$conversa) {
-            $conversa = ChatPrivadoModel::create([
+            $conversa = ChatPrivado::create([
                 'usuario1_id' => $usuario1,
                 'usuario2_id' => $usuario2,
             ]);
         }
 
         // Insere a mensagem
-        $mensagem = MensagemPrivadaModel::create([
+        $mensagem = MensagemPrivada::create([
             'conversa_id' => $conversa->id,
             'remetente_id' => $usuario1,
             'texto' => $texto,

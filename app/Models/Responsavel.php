@@ -22,4 +22,8 @@ class Responsavel extends Model
     {
         return $this->belongsTo(Usuario::class, 'usuario_id');
     }
+    public function autistas()
+{
+    return $this->hasMany(Autista::class, 'responsavel_id');
+}
 }
