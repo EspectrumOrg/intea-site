@@ -9,7 +9,7 @@
     <!-- Link do CSS -->
     <link rel="stylesheet" href="{{ url('assets/css/auth/login.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"   />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
 </head>
 
 <body class="font-sans text-gray-900 antialiased">

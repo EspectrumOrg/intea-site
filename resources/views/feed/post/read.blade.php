@@ -39,7 +39,7 @@
                 @if(Auth::id() === $postagem->usuario_id)
                 <li>
                     <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
-                        <img src="{{ asset('assets/images/logos/symbols/site-claro/write.png') }}">Editar
+                        <span class="material-symbols-outlined">edit</span>Editar
                     </button>
                 </li>
                 <li>
@@ -47,18 +47,22 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-acao excluir">
-                            <img src="{{ asset('assets/images/logos/symbols/site-claro/trash.png') }}">Excluir
+                            <span class="material-symbols-outlined">delete</span>Excluir
                         </button>
                     </form>
                 </li>
                 @else
-                <li><a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')"><img src="{{ asset('assets/images/logos/symbols/site-claro/flag.png') }}">Denunciar</a></li>
+                <li>
+                    <a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
+                        <span class="material-symbols-outlined">flag_2</span>Denunciar
+                    </a>
+                </li>
                 <li>
                     <form action="{{ route('seguir.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
                         <button type="submit" class="seguir-btn">
-                            <img src="{{ asset('assets/images/logos/symbols/site-claro/follow.png') }}">Seguir {{ $postagem->usuario->user }}
+                            <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
                         </button>
                     </form>
                 </li>
