@@ -1,0 +1,73 @@
+/* Quando a classe "hidden" NÃO está presente */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 999999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2.5rem;
+}
+
+.modal:not(.hidden),
+.modal-denuncia:not(.hidden),
+.modal-editar-postagem:not(.hidden) {
+    display: flex !important;
+    /* força aparecer */
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background: var(--branco);
+    padding: 4rem 1rem 1rem 1rem;
+    border-radius: 15px;
+    width: 600px;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ---------- BOTÃO FECHAR ---------- */
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    border: none;
+}
+
+.modal-content .close span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--preto);
+    background: none;
+    border-radius: 50%;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.modal-content .close:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
+}
+
+/* Animação de entrada */
+@keyframes aparecerModal {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content-content {
+    width: 100%;
+}

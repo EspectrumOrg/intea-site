@@ -88,7 +88,7 @@ function appendMensagem(data){
     const classe = isRemetente ? 'right' : 'left';
 
     let avatarHtml = '';
-    if(!isRemetente && data.foto){ // mostra foto apenas da outra pessoa
+    if(!isRemetente && data.foto){ // mostra foto apenas da outra pesoa
         avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar" width="40" height="40" style="margin-right:5px;">`;
     }
 
@@ -133,10 +133,13 @@ $(document).on('click', '.usuario-item', function(){
     });
 });
 
-// Enviar mensagem
 $("#chatForm").submit(function(e){
     e.preventDefault();
-    const texto = $("#message").val().trim();
+
+    const input = $(".chat-window #message"); // pega input
+    const texto = input.val().trim();
+    console.log("Submit do form disparado");
+    console.log("Valor do input:", texto);
     if(!texto || !usuarioSelecionado) return;
 
     $.ajax({
@@ -149,12 +152,13 @@ $("#chatForm").submit(function(e){
             usuario2_id: usuarioSelecionado
         },
         success: function(res){
+            console.log("Mensagem enviada:", res);
             appendMensagem({
                 remetente_id: usuarioLogado,
                 message: res.message,
                 foto: "{{ Auth::user()->foto }}"
             });
-            $("#message").val('');
+            input.val(''); // limpa input corretamente
         }
     });
 });

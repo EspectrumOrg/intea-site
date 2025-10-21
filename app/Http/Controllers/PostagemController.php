@@ -25,6 +25,7 @@ class PostagemController extends Controller
      */
     public function index()
     {
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
@@ -81,7 +82,7 @@ class PostagemController extends Controller
                 'id_postagem' => $postagem->id,
             ]);
         }
-        return redirect()->route('post.index')->with('Sucesso', 'Postado, confira já!');
+        return redirect()->route('post.index')->with('success', 'Postado, confira já!');
     }
 
     /**
@@ -93,6 +94,7 @@ class PostagemController extends Controller
             ->with(['comentarios.usuario', 'comentarios.image'])
             ->findOrFail($postagem);
 
+        // Não mais usado 19/10 (pode excluir)
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
@@ -145,7 +147,7 @@ class PostagemController extends Controller
             }
         }
 
-        return redirect()->route('post.index')->with('Sucesso', 'Postagem atualizada!');
+        return redirect()->route('post.index')->with('success', 'Postagem atualizada com êxito!');
     }
 
     /**
@@ -171,7 +173,6 @@ class PostagemController extends Controller
             }
         }
 
-        session()->flash("successo", "Postagem excluído");
-        return redirect()->back();
+        return redirect()->route('post.index')->with('success', 'Postagem exclúida com êxito!');
     }
 }

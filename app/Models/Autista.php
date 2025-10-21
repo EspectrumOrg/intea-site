@@ -21,8 +21,9 @@ class Autista extends Model
         'updated_at'
     ];
 
-    public function Usuario()
+    public function usuario()
     {
         return $this->belongsTo(Usuario::class, 'usuario_id');
     }
+   
 }

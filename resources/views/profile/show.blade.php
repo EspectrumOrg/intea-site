@@ -87,6 +87,13 @@
                                     <span class="tab-text">Configurações</span>
                                 </button>
                                 @endif
+                                <!-- Aba Configurações do autista para responsavel-->
+                                @if($user->tipo_usuario === 5)
+                                <button class="tab-button" data-tab="autista">
+                                    <span class="material-symbols-outlined">settings</span>
+                                    <span class="tab-text">Configurações do autista</span>
+                                </button>
+                                @endif
                             </div>
                         </div>
 
@@ -213,6 +220,13 @@
                         @include('profile.partials.update-profile-information-form')
                         @include('profile.partials.update-password-form')
                         @include('profile.partials.delete-user-form')
+                    </div>
+                    @endif
+                    <!-- Aba 5: Configurações do autista para responsavel -->
+                    @if($user-> tipo_usuario == 5)
+                    <div class="tab-content" id="autista-tab">
+                        <!-- Inclui os formulários de configurações -->
+                        @include('profile.dados-autista-responsavel', ['autista' => $autista])
                     </div>
                     @endif
 

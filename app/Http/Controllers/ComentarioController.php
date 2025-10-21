@@ -44,7 +44,7 @@ class ComentarioController extends Controller
     dd($request->file('caminho_imagem'));
         }
 
-        return back()->with('success', 'Comentário publicado!');
+        return back()->with('nada', 'Comentário publicado!');
     }
 
     public function focus($id)

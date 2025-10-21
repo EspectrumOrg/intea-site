@@ -23,7 +23,7 @@
                         </span>
                     </a>
                     @if (session('status'))
-                        <p class="session-status">{{ session('status') }}</p>
+                    <p class="session-status">{{ session('status') }}</p>
                     @endif
 
                     <div class="login-content">
@@ -31,7 +31,7 @@
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
 
-                              <h2>Entrar</h2>
+                            <h2>Entrar</h2>
 
 
                             <!-- Email -->
@@ -40,7 +40,7 @@
                                 <input id="email" type="email" name="email" value="{{ old('email') }}" required
                                     autofocus autocomplete="username">
                                 @if ($errors->has('email'))
-                                    <p class="error">{{ $errors->first('email') }}</p>
+                                <p class="error">{{ $errors->first('email') }}</p>
                                 @endif
                             </div>
 
@@ -59,15 +59,15 @@
 
 
                                 @if ($errors->has('password'))
-                                    <p class="error">{{ $errors->first('password') }}</p>
+                                <p class="error">{{ $errors->first('password') }}</p>
                                 @endif
                             </div>
 
                             <div class="beto">
                                 <div class="form-actions">
                                     @if (Route::has('password.request'))
-                                        <a href="{{ route('password.request') }}" class="text-senha">Esqueceu sua
-                                            senha?</a>
+                                    <a href="{{ route('password.request') }}" class="text-senha">Esqueceu sua
+                                        senha?</a>
                                     @endif
                                 </div>
 
@@ -91,13 +91,16 @@
 
                     <!-- Modal de Erro -->
                     @if(session('conta_status'))
-                        <div id="loginModal" class="modal">
-                            <div class="modal-content">
-                                <span class="close" onclick="closeModal()">&times;</span>
-                                <p>{{ session('conta_status') }}</p>
-                            </div>
+                    <div id="loginModal" class="modal">
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <p>{{ session('conta_status') }}</p>
                         </div>
+                    </div>
                     @endif
+
+                    <!-- modal de avisos -->
+                    @include("layouts.partials.avisos")
 
                     <script>
                         function closeModal() {

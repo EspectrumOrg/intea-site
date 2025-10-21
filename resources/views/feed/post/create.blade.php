@@ -15,8 +15,11 @@
         <div class="textfield">
             <div id="hashtag-preview" class="hashtag-preview"></div>
 
-            <textarea id="texto_postagem" name="texto_postagem" maxlength="280"
-                rows="1" placeholder="Comece uma publicação" required></textarea>
+            <textarea id="texto_postagem" 
+                name="texto_postagem" 
+                maxlength="280"
+                rows="1" 
+                placeholder="Comece uma publicação" required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
 
             {{-- Preview da imagem --}}
@@ -33,7 +36,7 @@
         <div class="content">
             <div class="extras">
                 <label for="caminho_imagem" class="upload-label">
-                    <img src="{{ url('assets/images/logos/symbols/image.png') }}" class="card-img-top" alt="adicionar imagem">
+                    <span class="material-symbols-outlined">image</span>
                 </label>
                 <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
@@ -51,6 +54,7 @@
     </form>
 </div>
 
+<!-- Preview da Imagem -->
 <script>
     const inputFile = document.getElementById('caminho_imagem');
     const previewContainer = document.getElementById('image-preview');
@@ -75,3 +79,6 @@
         previewContainer.style.display = 'none';
     });
 </script>
+
+<!-- JS -->
+ <script src="{{ url('assets/js/posts/create/hashtag-create.js') }}"></script>

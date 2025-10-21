@@ -91,27 +91,27 @@
 /* ESTILOS POR TIPO             */
 /* ============================ */
 .modal-aviso-padrao.sucesso .modal-aviso-padrao-content {
-    border-top: 6px solid var(--verde);
+    border-top: 6px solid var(--cor-tema);
 }
 .modal-aviso-padrao.sucesso span {
-    color: var(--verde);
+    color: var(--cor-tema);
 }
 .modal-aviso-padrao.sucesso .closeModalPadrao {
-    background: var(--verde);
+    background: var(--cor-tema);
 }
 .modal-aviso-padrao.sucesso .closeModalPadrao:hover {
-    background: #02853c;
+    background: var(--cor-tema-apagado);
     transform: scale(1.05);
 }
 
 .modal-aviso-padrao.erro .modal-aviso-padrao-content {
-    border-top: 6px solid #dc3545;
+    border-top: 6px solid var(--cor-vermelho);
 }
 .modal-aviso-padrao.erro span {
-    color: #dc3545;
+    color: var(--cor-vermelho);
 }
 .modal-aviso-padrao.erro .closeModalPadrao {
-    background: #dc3545;
+    background: var(--cor-vermelho);
 }
 .modal-aviso-padrao.erro .closeModalPadrao:hover {
     background: #c82333;

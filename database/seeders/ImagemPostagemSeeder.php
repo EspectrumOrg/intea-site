@@ -89,5 +89,7 @@ class ImagemPostagemSeeder extends Seeder
             'id_postagem' => 15,
             'caminho_imagem' => 'arquivos/postagens/postagem-15.jpg',
         ]);
+
+         $this->command->info('✅ Imagens para as postagens feitas!');
     }
 }

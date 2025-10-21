@@ -79,7 +79,9 @@
         <!-- Modal Criação de comentário ($postagem->id) -->
         <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
             <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">&times;</button>
+                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
                 <div class="modal-content-content">
                     @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
                 </div>
@@ -89,11 +91,12 @@
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
-                <span class="close" onclick="fecharModalDenuncia('{{$postagem->id}}')">&times;</span>
-
-                <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
+                <span class="close material-symbols-outlined" onclick="fecharModalDenuncia('{{$postagem->id}}')">close</span>
+                <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
                     @csrf
                     <div class="form">
+                        <input type="hidden" name="tipo" value="postagem">
+                        <input type="hidden" name="id_alvo" value="{{ $postagem->id }}">
                         <label class="form-label">Motivo Denúncia</label>
                         <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
                             <option value="">Tipo</option>
@@ -139,8 +142,10 @@
                 </button>
             </div>
 
-            <form method="POST" action="{{ route('post.curtida', $postagem->id) }}">
+            <form method="POST" action="{{ route('curtida.toggle') }}">
                 @csrf
+                <input type="hidden" name="tipo" value="postagem">
+                <input type="hidden" name="id" value="$postagem->id">
                 <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
                     <span class="material-symbols-outlined">favorite</span>
                     <h1>{{ $postagem->curtidas_count }}</h1>
@@ -228,8 +233,10 @@
                         </button>
                     </div>
 
-                    <form method="POST" action="{{ route('post.curtida', $comentario->id) }}">
+                    <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
+                        <input type="hidden" name="tipo" value="comentario">
+                        <input type="hidden" name="id" value="$comentario->id">
                         <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
                             <span class="material-symbols-outlined">favorite</span>
                             <h1>{{ $comentario->curtidas_count }}</h1>
@@ -256,7 +263,9 @@
     <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
     <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
         <div class="modal-content">
-            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">&times;</button>
+            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
+                <span class="material-symbols-outlined">close</span>
+            </button>
             <div class="modal-content-content">
                 @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
             </div>

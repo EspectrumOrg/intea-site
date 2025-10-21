@@ -9,11 +9,11 @@
     <title>Intea - feed</title>
     <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
     <!-- layout geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <!-- postagens -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/create/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
     <!-- comentario -->
@@ -40,7 +40,11 @@
                 @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
+
         
+        <!-- Modal Criação de postagem -->
+        @include('feed.post.create-modal')
+
         <!-- modal de avisos -->
         @include("layouts.partials.avisos")
     </div>
@@ -50,10 +54,8 @@
 <script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
 <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
-<script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
-<script src="{{ url('assets/js/posts/create/hashtag-estilo.js') }}"></script>
-<script src="{{ url('assets/js/posts/update/modal.js') }}"></script>
+<script src="{{ url('assets/js/posts/update/modal-update.js') }}"></script>
 
 <!-- comentario -->
 <script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>

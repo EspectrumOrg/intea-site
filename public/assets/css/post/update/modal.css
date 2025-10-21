@@ -1,66 +1,3 @@
-/* Quando a classe "hidden" NÃO está presente */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999999;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 2.5rem;
-}
-
-.modal:not(.hidden),
-.modal-denuncia:not(.hidden) {
-    display: flex !important; /* força aparecer */
-}
-
-/* Conteúdo do modal */
-.modal-content {
-    background: var(--branco);
-    padding: 4rem 1rem 1rem 1rem;
-    border-radius: 15px;
-    width: 600px;
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-}
-
-.hidden {
-    display: none;
-}
-
-/* ---------- BOTÃO FECHAR ---------- */
-.modal-content .close {
-    position: absolute;
-    top: 0px;
-    left: 20px;
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--cinza);
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-/* Animação de entrada */
-@keyframes aparecerModal {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.modal-content-content {
-    width: 100%;
-}
-
 /* ================= MODAL EDIT POST ================ */
 /* form dentro do modal */
 .form-editar {
@@ -68,6 +5,10 @@
     /* sem fundo extra */
     box-shadow: none;
     padding: 0;
+}
+
+.form-editar .form .content {
+    border-top: 1px solid var(--branco-light);
 }
 
 .form-editar .textfield-editar {

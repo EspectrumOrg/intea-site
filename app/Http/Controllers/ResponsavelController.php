@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
+use App\Models\Autista;
 use App\Models\Responsavel;
+use App\Models\Usuario;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use Illuminate\Http\Request;
@@ -12,11 +13,67 @@ use Illuminate\Support\Facades\Auth;
 class ResponsavelController extends Controller
 {
     private $genero;
-
+    
     public function __construct(Genero $genero) //Gerar objeto (transformar variavel $news em objeto News pelo request)
     {
         $this->genero = $genero;
     }
+    public function edit_autista($id)
+    {
+        $usuario = auth()->user();
+
+        // Pega o responsável logado
+        $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
+
+        // Garante que o autista é do responsável
+        $autista = Autista::where('id', $id)
+                    ->where('responsavel_id', $responsavel->id)
+                    ->firstOrFail();
+
+       return view('profile.dados-autista-responsavel', compact('autista'));
+    }
+
+
+    public function update_autista(Request $request, $id) 
+{
+    $usuario = auth()->user();
+    $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
+
+    $autista = Autista::where('id', $id)
+        ->where('responsavel_id', $responsavel->id)
+        ->firstOrFail();
+
+    if (!$autista->usuario) {
+        return back()->withErrors(['Erro: Autista sem vínculo com usuário.']);
+    }
+
+    // Validação dos dados do request (ajuste conforme suas regras)
+    $validated = $request->validate([
+        'nome' => 'required|string|max:255',
+        'user' => 'required|string|max:255',
+        'apelido' => 'nullable|string|max:255',
+        'email' => 'required|email|max:255',
+        'cpf' => 'required|string|max:14',
+        'data_nascimento' => 'nullable|date',
+    ]);
+
+    // Atualiza os dados do usuário relacionado ao autista
+    $usuarioAutista = $autista->usuario;
+    $usuarioAutista->nome = $validated['nome'];
+    $usuarioAutista->user = $validated['user'];
+    $usuarioAutista->apelido = $validated['apelido'] ?? null;
+    $usuarioAutista->email = $validated['email'];
+    $usuarioAutista->cpf = $validated['cpf'];
+    $usuarioAutista->data_nascimento = $validated['data_nascimento'] ?? null;
+
+    $usuarioAutista->save();
+
+    return redirect()->route('profile.show') // ou qualquer outra rota que faça sentido
+                 ->with('status', 'autista-updated');
+}
+
+
+
     /**
      * Display a listing of the resource.
      */
@@ -116,9 +173,7 @@ class ResponsavelController extends Controller
             ]);
         }
 
-        Auth::login($usuario);
-
-        return redirect()->route('post.index')->with('success', 'Usuário Tipo Responsável cadastrado com sucesso!');
+        return redirect()->route('login')->with('success', 'Usuário responsável cadastrado com sucesso!');
     }
 
     // Função estática para validar CPF (copie essa função dentro da classe)
