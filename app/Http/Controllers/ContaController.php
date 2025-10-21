@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\Postagem;
-use App\Models\CurtidaPostagem;
+use App\Models\Curtida;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Autista;
@@ -32,59 +32,77 @@ class ContaController extends Controller
      Exibe o perfil completo do usuário com as quatro categorias
      */
     public function show($usuario_id = null)
-    {
-        try {
-            // Se não for passado ID, mostra o perfil do usuário logado
-            $responsavel = Responsavel::where('usuario_id', auth()->id())->firstOrFail();
-            $autista = Autista::where('responsavel_id', $responsavel->id)->firstOrFail();
+{
+    try {
+        // Tenta encontrar o usuário (passado na URL ou o logado)
+        $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
 
-            $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
+        // Telefones, gêneros, dados específicos do tipo
+        $generos = $this->genero->all();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        $dadosespecificos = $this->getDadosEspecificos($user);
 
-            $generos = $this->genero->all();
-            $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        // Postagens do usuário
+        $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
+            ->with(['imagens', 'usuario'])
+            ->where('usuario_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
 
-            // Dados específicos do tipo de usuário
-            $dadosespecificos = $this->getDadosEspecificos($user);
+        // Curtidas do usuário
+        $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
+            ->where('id_usuario', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
 
-            // Postagens do usuário
-            $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
-                ->with(['imagens', 'usuario'])
-                ->where('usuario_id', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
+        // Postagens populares
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->with(['imagens', 'usuario'])
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
 
-            // Postagens curtidas pelo usuário
-            $likedPosts = CurtidaPostagem::with([
-                'postagem.usuario',
-                'postagem.imagens'
-            ])
-                ->where('id_usuario', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
-
-            // Posts populares para sidebar
-            $postsPopulares = Postagem::withCount('curtidas')
-                ->with(['imagens', 'usuario'])
-                ->orderByDesc('curtidas_count')
-                ->take(5)
-                ->get();
-
-            return view('profile.show', compact(
-                'user',
-                'generos',
-                'telefones',
-                'dadosespecificos',
-                'userPosts',
-                'likedPosts',
-                'postsPopulares',
-                'autista',
-                'responsavel'
-            ));
-        } catch (\Exception $e) {
-            Log::error('Erro no ContaController: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Erro ao carregar perfil.');
+        // Pega o autista só se o user for responsável (tipo 5)
+        $responsavel = null;
+        $autista = null;
+        if ($user->tipo_usuario == 5) {
+            $responsavel = Responsavel::where('usuario_id', $user->id)->first();
+            if ($responsavel) {
+                $autista = Autista::where('responsavel_id', $responsavel->id)->first();
+            }
         }
+
+        return view('profile.show', compact(
+            'user',
+            'generos',
+            'telefones',
+            'dadosespecificos',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'autista',
+            'responsavel'
+        ));
+
+    } catch (\Exception $e) {
+        // Mostra erro de forma segura sem quebrar a view
+        Log::error('Erro ao carregar perfil: ' . $e->getMessage());
+
+        return view('profile.show', [
+            'user' => null,
+            'generos' => [],
+            'telefones' => [],
+            'dadosespecificos' => null,
+            'userPosts' => collect(),
+            'likedPosts' => collect(),
+            'postsPopulares' => collect(),
+            'autista' => null,
+            'responsavel' => null,
+            'error' => 'Erro ao carregar o perfil. Tente novamente mais tarde.',
+        ]);
     }
+}
+
 
     /*
       Obtém os dados específicos baseados no tipo de usuário
