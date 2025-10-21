@@ -166,31 +166,42 @@
 <div class="contact1" id="contact">
   <div class="container-contact1">
     <div class="contact1-pic js-tilt" data-tilt>
-     <img src="{{ asset('assets/images/landpage/img-01.png') }}" alt="IMG">
+     <img src="{{ asset('assets/images/landpage/img-01.png') }}" alt="IMaGen">
     </div>
 
-    <form class="contact1-form validate-form">
+    <form action=" {{ route('contato.store') }} " method="post" class="contact1-form validate-form"> 
+
       <span class="contact1-form-title">
         Fale conosco  
       </span>
 
+      @csrf
+      
+      @auth
+      <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
+      <input type="hidden" name="name" value="{{ Auth::user()->nome }}" required>
+      @endauth
+      
+      @guest
       <div class="wrap-input1 validate-input" data-validate="Nome é necessário">
-        <input class="input1" type="text" name="name" placeholder="Nome">
+        <input class="input1" type="text" name="name" maxlength="255" placeholder="Nome" required>
         <span class="shadow-input1"></span>
       </div>
 
-      <div class="wrap-input1 validate-input" data-validate="Coloque um email válido: ex@abc.xyz">
-        <input class="input1" type="text" name="email" placeholder="Email">
+      <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
+        <input class="input1" type="text" name="email" maxlength="100" placeholder="Ex.: abc@xyz.com" required>
         <span class="shadow-input1"></span>
       </div>
+      @endguest
+              <!-- OBS: A ordem dos inputs name e email n importa nesse caso, tá certo-->
 
       <div class="wrap-input1 validate-input" data-validate="Assunto é necessário">
-        <input class="input1" type="text" name="subject" placeholder="Assunto">
+        <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
         <span class="shadow-input1"></span>
       </div>
 
       <div class="wrap-input1 validate-input" data-validate="menssagem é necessária">
-        <textarea class="input1" name="message" placeholder="Menssagem"></textarea>
+        <textarea class="input1" name="mensagem" maxlength="755" placeholder="Mensagem" required></textarea>
         <span class="shadow-input1"></span>
       </div>
 
@@ -291,5 +302,20 @@
       });
     });
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Modal aviso 
+ @ include ( 'layouts.partials.avisos')-->
 </body>
 </html>

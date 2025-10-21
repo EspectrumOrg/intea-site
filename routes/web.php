@@ -6,6 +6,7 @@ use App\Http\Controllers\AutistaController;
 use App\Http\Controllers\ChatPrivadoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
+use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaPostagemController;
 use App\Http\Controllers\DenunciaPostagemController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PusherController;
 use App\Models\ProfissionalSaude;
+use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,6 +41,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
+
+Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
 
 // somente para quem não está logado
 Route::get('/login', function () { // Login
