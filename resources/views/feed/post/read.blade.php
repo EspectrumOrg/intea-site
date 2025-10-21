@@ -85,14 +85,7 @@
         </div>
 
         <!-- Modal Edição dessa postagem -->
-        <div id="modal-editar-{{ $postagem->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">&times;</button>
-                <div class="modal-content-content">
-                    @include('feed.post.edit', ['postagem' => $postagem])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.edit', ['postagem' => $postagem])
 
         <!-- Modal Criação de comentário ($postagem->id) -->
         <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">

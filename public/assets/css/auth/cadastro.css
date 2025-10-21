@@ -1,27 +1,19 @@
 :root {
     --cor-tema: #048ABF;
+    --cor-tema-apagado: #016d98;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
 
     --preto: #0D0D0D;
-    --cinza: #404040;
+    --cinza-borda: #2f3336;
+    --cinza-font: #b3b3b3;
     --branco: #F2F2F2;
     --branco-light: #ccc;
     --azul: #1d3e55;
     --verde: #03A64A;
     --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-    /* cores para tema
-    antiga(ciano) - #017373*
-    azul claro - #048ABF/
-    */
 }
 
 body {
@@ -44,22 +36,26 @@ body {
 }
 
 /* botão voltar */
-.register-container .voltar {
-    width: 25px;
+.voltar {
     position: absolute;
-    top: 2rem;
-    left: 2rem;
+    top: 10px;
+    left: 20px;
+    border: none;
 }
 
-.register-container .voltar img {
-    cursor: pointer;
-    width: 100%;
-    transition: .7s;
+.voltar span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--preto);
+    background: none;
     border-radius: 50%;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-.register-container .voltar img:hover {
-    transform: scale(1.25);
+.voltar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--cor-tema);
 }
 
 .register-content {
@@ -70,13 +66,36 @@ body {
     flex: 1;
 }
 
-.register-content .logo {
-    position: absolute;
-    width: 250px;
-    top: 2.5rem;
+/* Logo -------------------------*/
+.container-logo {
+    position: relative;
+    background-color: var(--cor-tema);
+    width: 500px;
 }
 
-/* Formulário */
+.container-logo .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    width: 230px;
+}
+
+.container-logo .logo-esqueceu {
+    position: absolute;
+    width: 230px;
+    top: 4rem;
+    left: 38rem;
+}
+
+.register-content .logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -90%);
+    width: 230px;
+}
+
 .register-container .options {
     background: var(--branco);
     padding: 2rem;
@@ -93,9 +112,9 @@ body {
 
 .register-container .options .descricao h2 {
     text-align: center;
+    font-size: 26px;
     margin-bottom: 1.5rem;
     color: var(--cor-tema);
-    font-size: 1.5rem;
 }
 
 .register-container .options .descricao p {
@@ -110,19 +129,19 @@ body {
 
 /* Botões */
 .register-container .options .option-group button {
-    width: 100%;
-    padding: 0.6rem;
-    border-radius: 6px;
+    align-self: flex-end;
+    background-color: var(--preto);
     color: var(--branco);
-    background-color: var(--cor-fundo);
-    border: 1px solid var(--cor-branco);
-    font-size: 1rem;
-    transition: .7s;
+    font-size: 14px;
+    font-weight: bold;
+    padding: .75rem;
+    border: none;
+    border-radius: 25% / 50%;
     cursor: pointer;
+    transition: .3s;
 }
 
 .register-container .options .option-group .botao-opcao:hover {
-    color: var(--cor-branco);
     background-color: var(--cor-tema);
 }
 
@@ -344,14 +363,14 @@ body {
 .field .prev,
 .field .next,
 .botao-telefone {
-    background: var(--cor-fundo);
-    color: #fff;
+    background: var(--cor-preto);
+    color: var(--branco);
     padding: 0.6rem 1rem;
     border: none;
     border-radius: 6px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s;
 }
 
 .field .prev:hover,
@@ -445,45 +464,47 @@ body {
     color: var(--cor-tema);
 }
 
-.material-symbols-outlined{
-    margin-top: 20px; 
-    margin-left:20px;
+.material-symbols-outlined {
+    margin-top: 20px;
+    margin-left: 20px;
     color: var(--cor-preto);
 }
 
 .contact1-form-btn {
-  min-width: 123px;
-  height: 40px;
-  border-radius: 20px;
-  background: #427dc0;
-  font-size: 15px;
-  line-height: 1.5;
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 25px;
-  transition: all 0.4s;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 75%;
-  margin: 10px auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    min-width: 123px;
+    height: 40px;
+    border-radius: 20px;
+    background: var(--preto);
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--branco);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 25px;
+    transition: .3s;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 75%;
+    margin: 10px auto 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.btn-center a {
+    text-decoration: none;
+} 
+
 .contact1-form-btn:hover {
-  background: #333333;
+    background: var(--cor-tema);
 }
 
 .contact1-form-btn i {
-  margin-left: 7px;
-  transition: all 0.4s;
+    margin-left: 7px;
+    transition: all 0.4s;
 }
 
 .contact1-form-btn:hover i {
-  transform: translateX(10px);
+    transform: translateX(10px);
 }
-
-

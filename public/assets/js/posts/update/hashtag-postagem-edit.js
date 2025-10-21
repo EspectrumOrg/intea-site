@@ -1,11 +1,23 @@
-const textareaPostagemEdit = document.getElementById('texto_postagem_postagem_edit');
-const previewPostagemEdit = document.getElementById('hashtag-preview-postagem-edit');
+document.addEventListener('DOMContentLoaded', () => {
+    // Para cada campo de texto de edição
+    document.querySelectorAll('textarea[id^="texto_postagem_edit-"]').forEach(textarea => {
+        const postId = textarea.id.split('-').pop();
+        const previewDiv = document.getElementById(`hashtag-preview-postagem-edit-${postId}`);
+        const charCount = textarea.closest('.content')?.querySelector('.char-count');
 
-textareaPostagemEdit.addEventListener('input', () => {
-    const text = textareaPostagemEdit.value
-        .replace(/&/g, '&amp;') // escapar HTML
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>'); // colorir hashtags
-    previewPostagemEdit.innerHTML = text + '\n';
+        textarea.addEventListener('input', () => {
+            const text = textarea.value;
+            
+            // Atualiza contagem de caracteres
+            if (charCount) {
+                charCount.textContent = text.length;
+            }
+
+            // Mostra hashtags detectadas
+            const hashtags = text.match(/#\w+/g);
+            previewDiv.innerHTML = hashtags
+                ? hashtags.map(tag => `<span class="hashtag">${tag}</span>`).join(' ')
+                : '';
+        });
+    });
 });

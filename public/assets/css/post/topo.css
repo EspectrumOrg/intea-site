@@ -114,7 +114,8 @@
     background-color: var(--cinza-font);
 }
 
-.container-post .seguir-btn {
+.container-post .seguir-btn,
+.dropdown .form-excluir button {
     display: flex;
     gap: 1rem;
     font-size: 15px;
@@ -129,8 +130,17 @@
     text-align: start;
 }
 
+.dropdown .form-excluir button {
+    border-radius: 15px 15px 0 0;
+}
+
 .container-post .seguir-btn:hover {
     background-color: var(--branco-light);
+}
+
+.dropdown .form-excluir button:hover {
+    background-color: var(--branco-light);
+    color: var(--cor-vermelho);
 }
 
 .container-post .dropdown .dropdown-content {

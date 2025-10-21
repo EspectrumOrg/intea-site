@@ -39,9 +39,18 @@ class ComentarioController extends Controller
         // salvar bd
         $comentario = Comentario::create($dados);
 
-        // Criar imagem
+        // Se veio uma imagem, salvar no storage e criar o registro
         if ($request->hasFile('caminho_imagem')) {
-    dd($request->file('caminho_imagem'));
+            $arquivo = $request->file('caminho_imagem');
+
+            // Salva no storage (ex: storage/app/public/imagens_comentarios)
+            $caminho = $arquivo->store('imagens_comentarios', 'public');
+
+            // Cria o registro da imagem no BD
+            ImagemComentario::create([
+                'id_comentario' => $comentario->id,
+                'caminho_imagem' => $caminho,
+            ]);
         }
 
         return back()->with('nada', 'Comentário publicado!');

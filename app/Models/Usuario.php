@@ -107,7 +107,7 @@ class Usuario extends Authenticatable
 
     public function comentarios()
   {
-    return $this->hasMany(Comentario::class, 'usuario_id');
+    return $this->hasMany(Comentario::class, 'id_usuario');
   }
 
   public function getPostagensCountAttribute()
@@ -117,7 +117,7 @@ class Usuario extends Authenticatable
 
   public function denuncias()
   {
-    return $this->hasMany(DenunciaUsuario::class, 'usuario_id');
+    return $this->hasMany(Denuncia::class, 'id_usuario_denunciante');
   }
 
   public function genero()

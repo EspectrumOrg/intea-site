@@ -59,9 +59,9 @@ return new class extends Migration
         Schema::dropIfExists('tb_profissional_saude');
         Schema::dropIfExists('tb_responsavel');
         Schema::dropIfExists('tb_postagem');
-        Schema::dropIfExists('tb_comentario_postagem');
-        Schema::dropIfExists('tb_curtida_postagem');
-        Schema::dropIfExists('tb_denuncia_postagem');
+        Schema::dropIfExists('tb_comentario');
+        Schema::dropIfExists('tb_curtida');
+        Schema::dropIfExists('tb_denuncia');
         Schema::dropIfExists('tb_seguir');
         Schema::dropIfExists('tb_usuario');
         

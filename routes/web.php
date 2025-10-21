@@ -44,7 +44,7 @@ Route::get('/feed/configuracao/config', function () {
     $user = Auth::user();
     return view(
         'feed.configuracao.config',
-        compact('user' )
+        compact('user')
     );
 })->name('configuracao.config');
 
@@ -62,6 +62,7 @@ Route::get('/cadastro', function () { // Tipo Conta
 // Grupo
 Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
 Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
 
 Route::get('/chat-test', function () {
     return view('chat-test'); // Se tiver uma view
@@ -118,10 +119,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
 
-// Rota AJAX para carregar mensagens de um usuário
+    // Rota AJAX para carregar mensagens de um usuário
     Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
 
-// Rota para enviar mensagem via Pusher
+    // Rota para enviar mensagem via Pusher
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 });
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use App\Models\Postagem;
-use App\Models\DenunciaPostagem;
+use App\Models\Denuncia;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -46,9 +46,9 @@ class DashboardController extends Controller
                 Postagem::whereDate('created_at', $dia)->count()
             );
 
-            // Denúncias criadas por dia
+            // Denúncias criadas por dia (qualquer tipo: usuário, postagem, comentário)
             $denunciasPorDia->push(
-                DenunciaPostagem::whereDate('created_at', $dia)->count()
+                Denuncia::whereDate('created_at', $dia)->count()
             );
         }
 

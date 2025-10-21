@@ -11,59 +11,54 @@
 </head>
 
 <body>
-    <a href="{{ route('login') }}">
-        <div class="register-container">
+    <div class="register-container">
+        <a href="{{ route('login') }}" class="voltar">
             <span class="material-symbols-outlined">
                 arrow_back
             </span>
-    </a>
-    <div class="register-content">
-        <img class="logo-y" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
-        <div class="options">
-            <div class="descricao">
-                <h2>Escolha o tipo de conta</h2>
-                <p id="descricao">Selecione uma das opções abaixo:</p>
+        </a>
+        <div class="register-content">
+
+            <div class="container-logo">
+                <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
             </div>
 
-
-            <!-- create autista -->
-
-<div class="btn-center">
- <a href="{{ route('autista.create') }}">
-                <button class="contact1-form-btn" type="submit" class="btn-primary">
-                    Autista
-                </button>
-</a>
-        <!-- create comunidade-->
-
-    <a href="{{ route('comunidade.create') }}">
-            <button class="contact1-form-btn" type="submit" class="btn-primary">
-                Comunidade
-            </button>
-</a>
-
-    <!-- create profissional
-                <div class="option-group">
-                    <a href="{{ route('profissional.create') }}"><button class="botao-opcao">Profissional Saúde</button></a>
+            <div class="options">
+                <div class="descricao">
+                    <h2>Escolha o tipo de conta</h2>
+                    <p id="descricao">Selecione uma das opções abaixo:</p>
                 </div>
-                -->
 
-    <!-- create responsavel -->
 
-    <a href="{{ route('responsavel.create') }}">
-        <button class="contact1-form-btn" type="submit" class="btn-primary">
-            Responsavel
-        </button>
-    </a>
-</div>
+                <div class="btn-center">
+                    <!-- create autista -->
+                    <a href="{{ route('autista.create') }}">
+                        <button class="contact1-form-btn" type="submit" class="btn-primary">
+                            Autista
+                        </button>
+                    </a>
 
-    <!-- Login -->
-    <div class="registro">
-        <p>Já possui uma conta? <a href="{{ route('login') }}">Entre aqui</a></p>
-    </div>
-    </div>
-    </div>
+                    <!-- create comunidade-->
+                    <a href="{{ route('comunidade.create') }}">
+                        <button class="contact1-form-btn" type="submit" class="btn-primary">
+                            Comunidade
+                        </button>
+                    </a>
 
+                    <!-- create responsavel -->
+                    <a href="{{ route('responsavel.create') }}">
+                        <button class="contact1-form-btn" type="submit" class="btn-primary">
+                            Responsavel
+                        </button>
+                    </a>
+                </div>
+
+                <!-- Login -->
+                <div class="registro">
+                    <p>Já possui uma conta? <a href="{{ route('login') }}">Entre aqui</a></p>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

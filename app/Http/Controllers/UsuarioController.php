@@ -118,24 +118,28 @@ class UsuarioController extends Controller
             $usuario->comentarios()->delete();
 
             // Busca todas as postagens do usuário
-            $postagens = $usuario->postagens()->with('tendencias')->get();
+            $postagens = $usuario->postagens()->with('tendencias', 'curtidas')->get();
 
-            // Coleta todas as tendências ligadas às postagens
-            $tendenciasIds = [];
+            // Processa tendências: decrementa o contador de uso
             foreach ($postagens as $postagem) {
                 foreach ($postagem->tendencias as $tendencia) {
-                    $tendenciasIds[] = $tendencia->id;
+                    // Decrementa contador sem ir abaixo de 0
+                    $tendencia->contador_uso = max($tendencia->contador_uso - 1, 0);
+                    $tendencia->save();
                 }
-            }
 
-            // Exclui postagens do usuário (automático detach das pivot)
-            foreach ($postagens as $postagem) {
+                // Exclui curtidas da postagem
+                $postagem->curtidas()->delete();
+
+                // Desvincula tendências da postagem (pivot)
                 $postagem->tendencias()->detach();
+
+                // Exclui a postagem
                 $postagem->delete();
             }
 
-            // Verifica tendências que ficaram sem postagens e apaga 🔥
-            $tendencias = \App\Models\Tendencia::whereIn('id', $tendenciasIds)->get();
+            // Limpa tendências sem postagens restantes
+            $tendencias = \App\Models\Tendencia::whereIn('id', $postagens->pluck('tendencias.*.id')->flatten())->get();
             foreach ($tendencias as $tendencia) {
                 if ($tendencia->postagens()->count() === 0) {
                     $tendencia->delete();
@@ -146,16 +150,13 @@ class UsuarioController extends Controller
             $usuario->status_conta = 2;
             $usuario->save();
 
-            session()->flash("success", "Usuário banido e conteúdo removido.");
+            session()->flash("warning", "Usuário banido, conteúdo removido do site.");
             return redirect()->back();
         } else {
-            session()->flash("aviso", "O usuário principal não pode ser banido!");
+            session()->flash("error", "O usuário principal não pode ser banido!");
             return redirect()->back();
         }
     }
-
-
-
 
     public function desbanir($id)
     {

@@ -23,21 +23,23 @@
     </form>
 
     <div class="login-container">
-        <a href="{{ route('login') }}">
+        <a href="{{ route('login') }}" class="voltar">
             <span class="material-symbols-outlined">
                 arrow_back
             </span>
         </a>
 
         @if (session('status'))
-            <p class="session-status">{{ session('status') }}</p>
+        <p class="session-status">{{ session('status') }}</p>
         @endif
 
         <div class="login-content">
-            <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+            <div class="container-logo">
+                <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+            </div>
+
             <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
-
                 <h2>Esqueci minha senha</h2>
 
                 <p class="texto-esqueceu">Você quer redefinir sua senha? Sem problemas, nos informe seu e-mail para que

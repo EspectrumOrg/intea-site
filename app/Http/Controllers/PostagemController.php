@@ -118,30 +118,41 @@ class PostagemController extends Controller
     {
         $request->validate([
             'texto_postagem' => 'required|string|max:1000',
-            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif,jpeg|max:4096',
+            'remover_imagem' => 'nullable|boolean', // <- campo hidden opcional para remoção
         ]);
 
+        // Atualiza texto
         $post->update([
             'texto_postagem' => $request->texto_postagem,
         ]);
 
-        // Reprocessar hashtags ao atualizar
-        $post->tendencias()->detach(); // Remove associações antigas
-        $post->processarHashtags($request->texto_postagem);
+        // Reprocessa hashtags (com ID diferenciado)
+        $post->tendencias()->detach();
+        $post->processarHashtags($request->texto_postagem, $post->id); // <- passa o ID pra gerar tags únicas
 
-        if ($request->hasFile('caminho_imagem')) {
+        $imagemPrincipal = $post->imagens()->first();
+
+        // Caso o usuário tenha clicado em "X" para remover a imagem
+        if ($request->boolean('remover_imagem')) {
+            if ($imagemPrincipal) {
+                if (Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
+                    Storage::disk('public')->delete($imagemPrincipal->caminho_imagem);
+                }
+                $imagemPrincipal->delete();
+            }
+        }
+
+        // Caso o usuário tenha enviado uma nova imagem
+        elseif ($request->hasFile('caminho_imagem')) {
             $arquivo = $request->file('caminho_imagem');
             $caminho = $arquivo->store('arquivos/postagens', 'public');
 
-            $imagemPrincipal = $post->imagens()->first();
-
             if ($imagemPrincipal) {
-                // Apaga imagem antiga se existir
-                if ($imagemPrincipal->caminho_imagem && Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
+                if (Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
                     Storage::disk('public')->delete($imagemPrincipal->caminho_imagem);
                 }
-                $imagemPrincipal->caminho_imagem = $caminho;
-                $imagemPrincipal->save();
+                $imagemPrincipal->update(['caminho_imagem' => $caminho]);
             } else {
                 $post->imagens()->create(['caminho_imagem' => $caminho]);
             }

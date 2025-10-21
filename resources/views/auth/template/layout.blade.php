@@ -8,20 +8,22 @@
     <link rel="stylesheet" href="{{ asset('assets/css/auth/cadastro.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"   />
 </head>
 
 <body>
 
     <!-- parte form-outer e form -->
-    <a href="{{ route('register') }}"><img class="logo-cadastro" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}"></a>
-
     <main class="container-cadastro">
         @yield("main")
 
         <!-- Links -->
         <div class="voltar">
-            <p><a href="{{ route('register') }}">Tipo conta</a></p>
-        </div>
+            <a href="{{ route('register') }}">
+                <span class="material-symbols-outlined">
+                arrow_back
+                </span>
+            </a>
         </div>
     </main>
 

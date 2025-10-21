@@ -9,7 +9,7 @@
     <!-- Link do CSS -->
     <link rel="stylesheet" href="{{ url('assets/css/auth/login.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/style.css') }}">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
@@ -17,7 +17,7 @@
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
             <div class="login-container">
                 <div class="login-container">
-                    <a href="{{ route('landpage') }}">
+                    <a href="{{ route('landpage') }}" class="voltar">
                         <span class="material-symbols-outlined">
                             arrow_back
                         </span>
@@ -27,12 +27,14 @@
                     @endif
 
                     <div class="login-content">
-                        <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+                        <div class="container-logo">
+                            <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+                        </div>
+
                         <form method="POST" action="{{ route('login') }}" class="login-form">
                             @csrf
 
                             <h2>Entrar</h2>
-
 
                             <!-- Email -->
                             <div class="form-group">
@@ -72,15 +74,14 @@
                                 </div>
 
                                 <!-- Ações -->
-
                                 <div class="container-contact1-form-btn">
                                     <button class="contact1-form-btn" type="submit" class="btn-primary">
                                         Entrar
                                     </button>
                                 </div>
                             </div>
+                            
                             <!-- Criar conta -->
-
                             <div class="register-link">
                                 <p>Não tem conta? <a href="{{ route('register') }}">Criar conta</a></p>
                             </div>
