@@ -38,7 +38,9 @@
             <ul class="dropdown-content">
                 @if(Auth::id() === $postagem->usuario_id)
                 <li>
-                    <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $postagem->id }}')">
+                    <button type="button"
+                        class="btn-acao editar btn-abrir-modal-edit-postagem"
+                        onclick="abrirModalEditar('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">edit</span>Editar
                     </button>
                 </li>
@@ -52,10 +54,22 @@
                     </form>
                 </li>
                 @else
+                <!-- Caso não tenha sido quem postou --------------------->
                 <li>
-                    <a style="border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
+                    @if( Auth::user()->tipo_usuario === 1 )
+                    <form action="{{ route('usuario.destroy', $postagem->usuario_id) }}" method="post" class="form-excluir">
+                        @csrf
+                        @method("delete")
+                        <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                            <span class="material-symbols-outlined">person_off</span>
+                            Banir usuário
+                        </button>
+                    </form>
+                    @else
+                    <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
                     </a>
+                    @endif
                 </li>
                 <li>
                     <form action="{{ route('seguir.store') }}" method="POST">
