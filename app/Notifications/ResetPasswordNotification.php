@@ -4,6 +4,8 @@ namespace App\Notifications;
 
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log; // importar no topo
+use Illuminate\Support\Facades\Session;
 
 class ResetPasswordNotification extends Notification
 {
@@ -28,20 +30,23 @@ class ResetPasswordNotification extends Notification
     /**
      * Define a mensagem enviada por e-mail.
      */
-    public function toMail($notifiable)
-    {
-        $url = url(route('password.reset', [
-            'token' => $this->token,
-            'email' => $notifiable->getEmailForPasswordReset(),
-        ], false));
+   public function toMail($notifiable)
+{
+    // Log para ver no storage/logs/laravel.log
+    Log::info('Disparando e-mail de reset para: ' . $notifiable->email);
 
-        return (new MailMessage)
-            ->greeting('Olá!')
-            ->subject('Redefinição de Senha')
-            ->line('Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para sua conta.')
-            ->action('Redefinir Senha', $url)
-            ->line('Este link de redefinição de senha expirará em 60 minutos.')
-            ->line('Se você não solicitou a redefinição de senha, nenhuma ação adicional é necessária.')
-            ->salutation('Atenciosamente, equipe Espectrum');
-    }
+    $url = url(route('password.reset', [
+        'token' => $this->token,
+        'email' => $notifiable->getEmailForPasswordReset(),
+    ], false));
+
+    return (new MailMessage)
+        ->greeting('Olá!')
+        ->subject('Redefinição de Senha')
+        ->line('Você está recebendo este e-mail porque recebemos uma solicitação de redefinição de senha para sua conta.')
+        ->action('Redefinir Senha', $url)
+        ->line('Este link de redefinição de senha expirará em 60 minutos.')
+        ->line('Se você não solicitou a redefinição de senha, nenhuma ação adicional é necessária.')
+        ->salutation('Atenciosamente, equipe Espectrum');
+}
 }
