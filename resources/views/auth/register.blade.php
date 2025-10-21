@@ -7,48 +7,62 @@
     <title>Intea - tipo conta</title>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/auth/cadastro.css') }}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"   />
 </head>
 
 <body>
-    <div class="register-container">
-        <a class="voltar" href="{{ route('landpage') }}"><img src="{{ asset('assets/images/logos/symbols/back-button.png') }}"></a>
+    <a href="{{ route('login') }}">
+        <div class="register-container">
+            <span class="material-symbols-outlined">
+                arrow_back
+            </span>
+    </a>
+    <div class="register-content">
+        <img class="logo-y" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
+        <div class="options">
+            <div class="descricao">
+                <h2>Escolha o tipo de conta</h2>
+                <p id="descricao">Selecione uma das opções abaixo:</p>
+            </div>
 
-        <div class="register-content">
-            <img class="logo" src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
-            <div class="options">
-                <div class="descricao">
-                    <h2>Escolha o tipo de conta</h2>
-                    <p id="descricao">Selecione uma das opções abaixo:</p>
-                </div>
 
+            <!-- create autista -->
 
-                <!-- create autista -->
-                <div class="option-group">
-                    <a href="{{ route('autista.create') }}"><button class="botao-opcao">Autista</button></a>
-                </div>
+<div class="btn-center">
+ <a href="{{ route('autista.create') }}">
+                <button class="contact1-form-btn" type="submit" class="btn-primary">
+                    Autista
+                </button>
+</a>
+        <!-- create comunidade-->
 
-                <!-- create comunidade-->
-                <div class="option-group">
-                    <a href="{{ route('comunidade.create') }}"><button class="botao-opcao">Comunidade</button></a>
-                </div>
+    <a href="{{ route('comunidade.create') }}">
+            <button class="contact1-form-btn" type="submit" class="btn-primary">
+                Comunidade
+            </button>
+</a>
 
-                <!-- create profissional
+    <!-- create profissional
                 <div class="option-group">
                     <a href="{{ route('profissional.create') }}"><button class="botao-opcao">Profissional Saúde</button></a>
                 </div>
                 -->
 
-                <!-- create responsavel -->
-                <div class="option-group">
-                    <a href="{{ route('responsavel.create') }}"><button class="botao-opcao">Responsável</button></a>
-                </div>
+    <!-- create responsavel -->
 
-                <!-- Login -->
-                <div class="registro">
-                    <p>Já possui uma conta? <a href="{{ route('login') }}">Entre aqui</a></p>
-                </div>
-            </div>
-        </div>
+    <a href="{{ route('responsavel.create') }}">
+        <button class="contact1-form-btn" type="submit" class="btn-primary">
+            Responsavel
+        </button>
+    </a>
+</div>
+
+    <!-- Login -->
+    <div class="registro">
+        <p>Já possui uma conta? <a href="{{ route('login') }}">Entre aqui</a></p>
+    </div>
+    </div>
+    </div>
 
     </div>
 </body>
