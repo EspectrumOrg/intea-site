@@ -9,8 +9,7 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaController;
-use App\Http\Controllers\DenunciaPostagemController;
-use App\Http\Controllers\DenunciaUsuarioController;
+use App\Http\Controllers\DenunciaController;
 use App\Http\Controllers\GruposControler;
 use App\Http\Controllers\PostagemController;
 use App\Http\Controllers\ProfissionalSaudeController;
@@ -90,7 +89,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
-    Route::post('/feed/{id_postagem}/denuncia/{id_usuario}', [DenunciaPostagemController::class, 'post'])->name('post.denuncia');
+
+    // Denúncias
+    Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
 
     // Seguir
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store');
@@ -103,7 +104,7 @@ Route::middleware('auth')->group(function () {
 
     // Conta e denúncias de usuário
     Route::get('/conta/{usuario_id}', [ContaController::class, 'index'])->name('conta.index');
-    Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaUsuarioController::class, 'post'])->name('usuario.denuncia');
+    Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaController::class, 'post'])->name('usuario.denuncia');
 
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -145,12 +146,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
 
-    // Denúncia postagem
-    Route::resource("denuncia", DenunciaPostagemController::class)
+    // Checagem denúncias
+    Route::resource("denuncia", DenunciaController::class)
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
-    Route::delete('/denuncia/{denuncia}', [DenunciaPostagemController::class, 'destroy'])->name('denuncia.destroy');
-    Route::put('/denuncia/{denuncia}/resolve', [DenunciaPostagemController::class, 'resolve'])->name('denuncia.resolve');
+    Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
+    Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])

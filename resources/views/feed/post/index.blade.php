@@ -188,9 +188,11 @@ e($texto)
                     <span class="material-symbols-outlined">close</span>
                 </span>
 
-                <form method="POST" style="width: 100%;" action="{{ route('post.denuncia', [$postagem->id, Auth::user()->id]) }}">
+                <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
                     @csrf
                     <div class="form">
+                        <input type="hidden" name="tipo" value="postagem">
+                        <input type="hidden" name="id_alvo" value="{{ $postagem->id }}">
                         <label class="form-label">Motivo Denúncia</label>
                         <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
                             <option value="">Tipo</option>

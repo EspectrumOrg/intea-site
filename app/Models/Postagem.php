@@ -44,7 +44,7 @@ class Postagem extends Model
 
     public function denuncias()
     {
-        return $this->hasMany(DenunciaPostagem::class, 'id_postagem');
+        return $this->hasMany(Denuncia::class, 'id_postagem');
     }
 
     public function getCurtidasCountAttribute()
