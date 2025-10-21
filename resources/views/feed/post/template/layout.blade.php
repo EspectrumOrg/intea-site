@@ -45,8 +45,8 @@
         <!-- Modal Criação de postagem -->
         @include('feed.post.create-modal')
 
-        <!-- modal de avisos -->
-        @include("layouts.partials.avisos")
+        <!-- modal de avisos 
+        @include("layouts.partials.avisos")-->
     </div>
 </body>
 

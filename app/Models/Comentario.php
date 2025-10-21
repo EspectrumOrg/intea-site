@@ -40,8 +40,9 @@ class Comentario extends Model
 
     public function curtidas_comentario()
     {
-        return $this->hasMany(Curtida::class);
+        return $this->hasMany(Curtida::class, 'id_comentario', 'id');
     }
+
 
     public function respostas()
     {
@@ -51,5 +52,20 @@ class Comentario extends Model
     public function denuncias()
     {
         return $this->hasMany(Denuncia::class, 'id_comentario');
+    }
+
+    public function getCurtidasCountAttribute()
+    {
+        return $this->curtidas_comentario()->count();
+    }
+
+    public function getComentariosCountAttribute()
+    {
+        return $this->respostas()->count();
+    }
+
+    public function getCurtidasUsuarioAttribute()
+    {
+        return $this->curtidas_comentario()->where('id_usuario', auth()->id())->exists();
     }
 }

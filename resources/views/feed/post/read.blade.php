@@ -156,7 +156,7 @@
             <form method="POST" action="{{ route('curtida.toggle') }}">
                 @csrf
                 <input type="hidden" name="tipo" value="postagem">
-                <input type="hidden" name="id" value="$postagem->id">
+                <input type="hidden" name="id" value="{{ $postagem->id }}">
                 <button type="submit" class="button btn-curtir {{ $postagem->curtidas_usuario ? 'curtido' : 'normal' }}">
                     <span class="material-symbols-outlined">favorite</span>
                     <h1>{{ $postagem->curtidas_count }}</h1>
@@ -247,7 +247,7 @@
                     <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
                         <input type="hidden" name="tipo" value="comentario">
-                        <input type="hidden" name="id" value="$comentario->id">
+                        <input type="hidden" name="id" value="{{ $comentario->id }}">
                         <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
                             <span class="material-symbols-outlined">favorite</span>
                             <h1>{{ $comentario->curtidas_count }}</h1>
@@ -257,19 +257,23 @@
             </div>
         </div>
 
-        @if($comentario->respostas->isNotEmpty()) <!--resposta-->
-        <div class="respostas ms-4 mt-2 border-start ps-3">
-            @foreach($comentario->respostas as $resposta)
-            <div class="resposta mb-2">
-                <a href="{{ route('comentario.focus', $resposta->id) }}">
-                    <strong>{{ $resposta->usuario->user }}</strong>
-                </a>
-                <p>{{ $resposta->comentario }}</p>
-            </div>
-            @endforeach
-        </div>
-        @endif
     </div>
+
+    <!--resposta------------------------------------------------------------------------------------------->
+    @if($comentario->respostas->isNotEmpty())
+    <div class="respostas-base">
+        @foreach($comentario->respostas as $resposta)
+        <img src="foto de quem fez o coment">
+        <div class="resposta">
+            <a href="{{ route('comentario.focus', $resposta->id) }}">
+                <strong>{{ $resposta->usuario->user }}</strong>
+            </a>
+            <p>{{ $resposta->comentario }}</p>
+            <img src="imagem do comentario">
+        </div>
+        @endforeach
+    </div>
+    @endif
 
     <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
     <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">

@@ -48,15 +48,21 @@ class ProfileController extends Controller
 
         // 🔍 Dados específicos por tipo de usuário
         switch ($user->tipo_usuario) {
+            case 1:
+                $dadosespecificos = $user->admin;
+                break;
             case 2:
                 $dadosespecificos = $user->autista;
+                break;
+            case 3:
+                $dadosespecificos = $user->comunidade;
                 break;
             case 4:
                 $dadosespecificos = $user->profissional_saude;
                 break;
             case 5:
                 $dadosespecificos = $user->responsavel;
-                 $autista = $user->responsavel->autistas()->first() ?? null;
+                $autista = $user->responsavel->autistas()->first() ?? null;
                 break;
         }
 

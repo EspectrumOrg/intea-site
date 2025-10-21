@@ -79,7 +79,7 @@
             </div>
 
             <div class="field">
-                <label>Cipteia (não sei como vai funcionar na prática)</label>
+                <label>Cipteia</label>
                 <input type="text" name="cipteia_autista" value="{{ $usuario->cipteia_autista ?? old('cipteia_autista') }}">
             </div>
 
