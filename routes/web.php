@@ -7,6 +7,7 @@ use App\Http\Controllers\AutistaController;
 use App\Http\Controllers\ChatPrivadoController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ContaController;
+use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\ComunidadeController;
 use App\Http\Controllers\CurtidaController;
 use App\Http\Controllers\DenunciaController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PusherController;
+use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,7 +37,8 @@ Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
 
-
+Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
+//contato via email, tanto para guests quanto logados
 
 Route::get('/feed/configuracao/config', function () {
     $user = Auth::user();

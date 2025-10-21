@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="{{ asset('assets/css/layout/avisos.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"/>
 
 @if (session('success') || session('error') || session('warning'))
 <div class="modal-aviso-padrao
