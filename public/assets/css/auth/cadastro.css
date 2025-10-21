@@ -172,6 +172,13 @@ body {
     left: 1rem;
 }
 
+.register-content .logo-y {
+    position: absolute;
+    width: 230px;
+    top: 0.9rem;
+    left: 39rem;
+}
+
 /* --------- Caixa do formulário --------- */
 .form-outer {
     background: var(--branco);
@@ -437,3 +444,46 @@ body {
 .voltar a:hover {
     color: var(--cor-tema);
 }
+
+.material-symbols-outlined{
+    margin-top: 20px; 
+    margin-left:20px;
+    color: var(--cor-preto);
+}
+
+.contact1-form-btn {
+  min-width: 123px;
+  height: 40px;
+  border-radius: 20px;
+  background: #427dc0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 25px;
+  transition: all 0.4s;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 75%;
+  margin: 10px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact1-form-btn:hover {
+  background: #333333;
+}
+
+.contact1-form-btn i {
+  margin-left: 7px;
+  transition: all 0.4s;
+}
+
+.contact1-form-btn:hover i {
+  transform: translateX(10px);
+}
+
+
