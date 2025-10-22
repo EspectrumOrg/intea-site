@@ -45,7 +45,7 @@
     height: 120px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--cor-tema);
+    border: none;
 }
 
 .profile-info h1 {
@@ -102,7 +102,6 @@
 }
 
 .tab-scroll-btn:hover {
-    background-color: var(--branco-light);
     color: var(--cor-tema);
 }
 
@@ -146,7 +145,6 @@
 
 .tab-button:hover {
     color: var(--cor-tema);
-    background-color: var(--branco-light);
 }
 
 .tab-button.active {
@@ -352,7 +350,7 @@
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid var(--branco-light);
-    border-radius: 8px;
+    border-radius: 1rem;
     background-color: var(--branco);
     font-size: 0.95rem;
     transition: all 0.3s ease;
@@ -361,7 +359,6 @@
 
 .form-control:focus {
     border-color: var(--cor-tema);
-    box-shadow: 0 0 0 3px rgba(4, 138, 191, 0.1);
     outline: none;
 }
 
@@ -400,28 +397,30 @@
 .btn-primary {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: var(--cor-tema);
-    color: var(--branco);
-    border: none;
-    border-radius: 8px;
+    background-color: var(--branco);
+    color: var(--cor-tema);
+    border: 1px solid var(--cor-tema);
+    border-radius: 1.4rem;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    transition: background-color 0.4s ease;
     font-size: 0.95rem;
 }
 
 .btn-primary:hover {
-    background-color: var(--azul);
-    transform: translateY(-1px);
+    background-color: var(--cor-tema);
+    color: var(--branco);
 }
 
 #botao-excluir {
-    background-color: var(--cor-vermelho);
+    color: var(--cor-vermelho);
+    border: 1px solid var(--cor-vermelho);
 }
 
 #botao-excluir:hover {
-    background-color: var(--vermelho);
+    background-color: var(--cor-vermelho);
+    color: var(--branco);
 }
 
 .text-success {

@@ -1,7 +1,7 @@
 <section class="perfil-section">
     <header>
-        <h2>{{ __('Excluir Conta') }}</h2>
-        <p>{{ __('Ao excluir sua conta, todos os seus dados serão removidos permanentemente. Baixe quaisquer informações importantes antes de prosseguir.') }}</p>
+        <h2>{{ __('Excluir conta') }}</h2>
+        <p>{{ __('Ao excluir sua conta, todos os seus dados serão removidos permanentemente.') }}</p>
     </header>
 
     <form method="post" action="{{ route('profile.destroy') }}">
