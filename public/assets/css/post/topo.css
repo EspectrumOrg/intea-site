@@ -152,10 +152,9 @@
 }
 
 
-/* fundo do modal --------------(modal)*/
+/* fundo do modal --------------(modal)
 .modal-denuncia {
     display: none;
-    /* escondido por padrão */
     position: fixed;
     z-index: 9999;
     left: 0;
@@ -167,7 +166,7 @@
     align-items: center;
     align-items: flex-start;
     padding-top: 2.5rem;
-}
+}*/
 
 /* conteúdo da caixa do modal */
 .modal-denuncia .modal-content {

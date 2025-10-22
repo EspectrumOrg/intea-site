@@ -219,6 +219,7 @@ e($texto)
     </div>
 </div>
 
+<!-- APAGAR CASO NÃO NECESSÁRIO
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.form-editar').forEach(form => {
@@ -267,6 +268,7 @@ e($texto)
         });
     });
 </script>
+-->
 
 
 <!-- JS -->

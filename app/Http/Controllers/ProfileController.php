@@ -31,6 +31,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
+        $autista = null;
 
         // 🔥 Postagens populares (as mais curtidas)
         $postsPopulares = Postagem::withCount('curtidas')

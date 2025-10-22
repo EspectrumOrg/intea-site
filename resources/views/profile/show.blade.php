@@ -196,15 +196,15 @@
                             @foreach($likedPosts as $like)
                                 <div class="like-item">
                                     <div class="like-avatar">
-                                        @if($like->postagem->usuario->foto)
-                                            <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->nome }}">
+                                        @if($like->usuario->foto)
+                                            <img src="{{ asset('storage/'.$like->usuario->foto) }}" alt="{{ $like->usuario->nome }}">
                                         @else
                                             <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
                                         @endif
                                     </div>
                                     <div class="like-content">
-                                        <strong>{{ $like->postagem->usuario->nome }}</strong>
-                                        <p>{{ $like->postagem->texto_postagem }}</p>
+                                        <strong>{{ $like->usuario->nome }}</strong>
+                                        <p>{{ $like->texto_postagem }}</p>
                                         <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
                                     </div>
                                 </div>

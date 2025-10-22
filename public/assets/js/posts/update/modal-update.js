@@ -1,16 +1,16 @@
 function abrirModalEditar(id) {
     console.log("Abrindo modal", id); // <-- teste
-    const modal = document.getElementById('modal-editar-postagem-' + id);
-    if (modal) {
-        modal.classList.remove('hidden')
+    const modalEditarPostagem = document.getElementById('modal-editar-postagem-' + id);
+    if (modalEditarPostagem) {
+        modalEditarPostagem.classList.remove('hidden')
     };
 }
 
 function fecharModalEditar(id) {
-    const modal = document.getElementById('modal-editar-postagem-' + id);
-    if (modal) {
-        modal.classList.add('hidden');
-        const form = modal.querySelector('form');
+    const modalEditarPostagem = document.getElementById('modal-editar-postagem-' + id);
+    if (modalEditarPostagem) {
+        modalEditarPostagem.classList.add('hidden');
+        const form = modalEditarPostagem.querySelector('form');
         if (form) form.reset();
     }
 }
@@ -23,15 +23,15 @@ window.onclick = function(event) {
     }
 };
 
-const textarea = document.getElementById('post-textarea_edit');
-const charCount = document.getElementById('char-count');
+const textareaEditarPostagem = document.getElementById('post-textarea_edit');
+const charCountEditarPostagem = document.getElementById('char-count');
 
-textarea.addEventListener('input', () => {
+textareaEditarPostagem.addEventListener('input', () => {
     // auto-expand
-    textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
+    textareaEditarPostagem.style.height = 'auto';
+    textareaEditarPostagem.style.height = textareaEditarPostagem.scrollHeight + 'px';
 
     // contador de caracteres
-    const len = textarea.value.length;
-    charCount.textContent = `${len}/255`;
+    const len = textareaEditarPostagem.value.length;
+    charCountEditarPostagem.textContent = `${len}/255`;
 });

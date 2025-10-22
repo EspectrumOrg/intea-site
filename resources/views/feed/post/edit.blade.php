@@ -80,7 +80,55 @@
     </div>
 </div>
 
-<!-- Preview da Imagem -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.form-editar').forEach(form => {
+            const id = form.querySelector('form').action.split('/').pop(); // pega o ID do post
+
+            // Seleciona elementos com base no ID único
+            const textarea = document.getElementById(`texto_postagem_edit_${id}`);
+            const previewHashtag = document.getElementById(`hashtag-preview-postagem-edit-${id}`);
+            const inputFile = document.getElementById(`caminho_imagem_postagem_edit_${id}`);
+            const previewContainer = document.getElementById(`image-preview_postagem_edit_${id}`);
+            const previewImage = document.getElementById(`preview-img_postagem_edit_${id}`);
+            const removeButton = document.getElementById(`remove-image_postagem_edit_${id}`);
+
+            // Hashtags coloridas
+            if (textarea && previewHashtag) {
+                textarea.addEventListener('input', () => {
+                    const text = textarea.value
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+                    previewHashtag.innerHTML = text + '\n';
+                });
+            }
+
+            // Preview de imagem
+            if (inputFile && previewContainer && previewImage && removeButton) {
+                inputFile.addEventListener('change', () => {
+                    const file = inputFile.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            previewImage.src = e.target.result;
+                            previewContainer.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+
+                removeButton.addEventListener('click', () => {
+                    inputFile.value = '';
+                    previewImage.src = '';
+                    previewContainer.style.display = 'none';
+                });
+            }
+        });
+    });
+</script>
+<!-- Preview da Imagem 
 <script>
 (function() {
     const postId = "{{ $postagem->id }}";
@@ -113,6 +161,7 @@
     });
 })();
 </script>
+-->
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/update/hashtag-postagem-edit.js') }}"></script>
