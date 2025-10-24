@@ -19,10 +19,10 @@
         <a href="{{ route('login') }}"><img src="{{ asset('assets/images/landpage/logoIntea2.png') }}" alt="inTEA - Comunidade Autista" class="logo-img"></a>
       </div>
       <div class="navbar-links">
-        <a href="#hero" class="nav-link animated-underline">Home</a>
-        <a href="#solutions" class="nav-link animated-underline">Qualidades</a>
-        <a href="#features" class="nav-link animated-underline">Funcionalidades</a>
-        <a href="#contact" class="nav-link animated-underline">Fale conosco</a>
+        <a href="#hero" id="landpage-nav-01" class="nav-link animated-underline">Home</a>
+        <a href="#solutions" id="landpage-nav-02" class="nav-link animated-underline">Qualidades</a>
+        <a href="#features" id="landpage-nav-03" class="nav-link animated-underline">Funcionalidades</a>
+        <a href="#contact" id="landpage-nav-04" class="nav-link animated-underline">Fale conosco</a>
       </div>
     </div>
   </nav>

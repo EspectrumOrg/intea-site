@@ -49,7 +49,6 @@ class ResponsavelController extends Controller
 
     // Validação dos dados do request (ajuste conforme suas regras)
     $validated = $request->validate([
-        'nome' => 'required|string|max:255',
         'user' => 'required|string|max:255',
         'apelido' => 'nullable|string|max:255',
         'email' => 'required|email|max:255',
@@ -59,7 +58,6 @@ class ResponsavelController extends Controller
 
     // Atualiza os dados do usuário relacionado ao autista
     $usuarioAutista = $autista->usuario;
-    $usuarioAutista->nome = $validated['nome'];
     $usuarioAutista->user = $validated['user'];
     $usuarioAutista->apelido = $validated['apelido'] ?? null;
     $usuarioAutista->email = $validated['email'];
@@ -101,7 +99,6 @@ class ResponsavelController extends Controller
 
         // 0. Validar Dados com regras básicas
         $request->validate([
-            'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
             'apelido' => 'required|string|max:255',
             'email' => 'required|lowercase|email|unique:tb_usuario,email',
@@ -116,7 +113,6 @@ class ResponsavelController extends Controller
             'numero_telefone' => 'required|array|min:1',
             'numero_telefone.*' => 'required|string|max:20' // retirar pontuação posteriormente
         ], [
-            'nome.required' => 'O campo nome é obrigatório',
             'user.required' => 'O campo user é obrigatório',
             'email.required' => 'O campo email é obrigatório',
             'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
@@ -148,7 +144,6 @@ class ResponsavelController extends Controller
 
         // Cria usuário e demais dados
         $usuario = Usuario::create([
-            'nome' => $request->nome,
             'user' => $request->user,
             'apelido' => $request->apelido,
             'email' => $request->email,
