@@ -1,39 +1,26 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-tema-apagado: #016d98;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza-borda: #2f3336;
-    --cinza-font: #b3b3b3;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
+* {
+    box-sizing: border-box
 }
 
 /* Container geral */
-.login-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 100vh;
+.container {
     background: var(--branco);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
 }
 
 /* botão voltar */
-.login-container .voltar {
+.voltar {
     position: absolute;
-    top: 10px;
-    left: 20px;
+    top: 1.5rem;
+    left: 1.5rem;
     border: none;
 }
 
-.login-container .voltar span {
+.voltar span {
     font-size: 20px;
     padding: .5rem;
     color: var(--preto);
@@ -43,58 +30,47 @@
     cursor: pointer;
 }
 
-.login-container .voltar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+.voltar:hover span {
+    background-color: var(--branco-light);
+    color: var(--azul);
 }
 
-/* Formulário div*/
-.login-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    flex: 1;
-}
-
-/* Logo -------------------------*/
-.container-logo {
-    position: relative;
-    background-color: var(--cor-tema);
-    width: 500px;
-}
-
-.login-content .logo {
+/* logo ======= */
+.logo-container {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -90%);
-    width: 230px;
+    top: 15%;
+    left: 45%;
+    transform: translate(-10%, -10%);
+    border: none;
 }
 
-.login-content .logo-esqueceu {
-    position: absolute;
-    width: 230px;
-    top: 4rem;
-    left: 38rem;
+.logo-container img {
+    width: 250px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.logo-container:hover img {
+    transform: translateY(1.75px);
 }
 
 /* Formulário */
-.login-form {
+form {
+    width: 420px;
     background: var(--branco);
-    padding: 2rem;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 0 1rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+    overflow: hidden;
+    transition: height .32s ease;
 }
 
 /* Título */
-.login-form h2 {
+form h2 {
     text-align: center;
     font-size: 26px;
     margin-bottom: 1.5rem;
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* Grupos do formulário */
@@ -165,13 +141,38 @@
 
 .form-actions a {
     font-size: 14px;
-    color: var(--cor-tema);
+    color: var(--vermelho);
     text-decoration: none;
     transition: .3s;
 }
 
 .form-actions a:hover {
-    color: var(--cor-tema-apagado);
+    color: var(--vermelho-apagado);
+}
+
+/*  Opções login */
+.options-login {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem .5rem;
+}
+
+.options-login button {
+    padding: 10px 16px;
+    border-radius: 50% / 100%;
+    border: 0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .3s;
+    border: 1px solid var(--azul);
+    background-color: var(--branco);
+    color: var(--azul);
+}
+
+.options-login button:hover {
+    background-color: var(--azul);
+    color: var(--branco);
 }
 
 /* Link para registro */
@@ -181,14 +182,14 @@
 }
 
 .register-link a {
-    color: var(--cor-tema);
+    color: var(--verde);
     font-weight: bold;
     text-decoration: none;
     transition: .3s;
 }
 
 .register-link a:hover {
-    color: var(--cor-tema-apagado);
+    color: var(--verde-apagado);
 }
 
 /* Mensagens de erro */
@@ -241,48 +242,4 @@
 
 .close:hover {
     color: black;
-}
-
-.contact1-form-btn {
-    align-self: flex-end;
-    background-color: var(--preto);
-    color: var(--branco);
-    font-size: 14px;
-    font-weight: bold;
-    padding: .75rem;
-    border: none;
-    border-radius: 25% / 50%;
-    cursor: pointer;
-    transition: .3s;
-}
-
-.contact1-form-btn:hover {
-    background-color: var(--cor-tema);
-}
-
-.contact1-form-btn i {
-    margin-left: 7px;
-    transition: all 0.4s;
-}
-
-.contact1-form-btn:hover i {
-    transform: translateX(10px);
-}
-
-.text-senha {
-    position: relative;
-}
-
-.beto {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-
-}
-
-.material-symbols-outlined {
-    margin-top: 20px;
-    margin-left: 20px;
-    color: var(--cor-preto);
 }

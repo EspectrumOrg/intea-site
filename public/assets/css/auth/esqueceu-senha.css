@@ -1,45 +1,22 @@
-:root {
-  --cor-tema: #048ABF;
-  --cor-tema-apagado: #016d98;
-  --cor-fundo: #262626;
-  --cor-branco: #D0D6D9;
-  --cor-preto: #000000;
-  --cor-vermelho: #F22222;
-
-  --preto: #0D0D0D;
-  --cinza-borda: #2f3336;
-  --cinza-font: #b3b3b3;
-  --branco: #F2F2F2;
-  --branco-light: #ccc;
-  --azul: #1d3e55;
-  --verde: #03A64A;
-  --vermelho: #F26D6D;
-
-  --texto-pequeno: .75rem;
-  --texto-padrao: 1rem;
-  --texto-secundario: 1.4rem;
-  --texto-titulo: 2.5rem;
-}
-
 /* Container geral */
-.login-container {
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
   background: var(--branco);
-  width: 100%;
 }
 
 /* botão voltar */
-.login-container .voltar {
+.voltar {
   position: absolute;
-  top: 10px;
-  left: 20px;
+  top: 1.5rem;
+  left: 1.5rem;
   border: none;
 }
 
-.login-container .voltar span {
+.voltar span {
   font-size: 20px;
   padding: .5rem;
   color: var(--preto);
@@ -49,58 +26,58 @@
   cursor: pointer;
 }
 
-.login-container .voltar:hover span {
-  background-color: rgba(208, 219, 231, 0.95);
-  color: var(--cor-tema);
+.voltar:hover span {
+  background-color: var(--branco-light);
+  color: var(--vermelho);
 }
 
-/* Formulário div*/
-.login-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  flex: 1;
-}
-
-/* Logo -------------------------*/
-.container-logo {
-  position: relative;
-  background-color: var(--cor-tema);
-  width: 500px;
-}
-
-.login-content .logo {
+/* logo ======= */
+.logo-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -90%);
-  width: 230px;
+  top: 15%;
+  left: 45%;
+  transform: translate(-10%, -10%);
+  border: none;
 }
 
-.login-content .logo-esqueceu {
-  position: absolute;
-  width: 230px;
-  top: 4rem;
-  left: 38rem;
+.logo-container img {
+  width: 250px;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.logo-container:hover img {
+  transform: translateY(1.75px);
+}
+
+/* form */
+.form {
+  width: 420px;
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 0 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+  overflow: hidden;
+  transition: height .32s ease;
 }
 
 /* Formulário */
-.login-form {
+form {
+  width: 420px;
   background: var(--branco);
-  padding: 2rem;
-  border-radius: 10px;
-  width: 100%;
-  max-width: 450px;
-  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 0 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+  overflow: hidden;
+  transition: height .32s ease;
 }
 
 /* Título */
-.login-form h2 {
+form h2 {
   text-align: center;
   font-size: 26px;
   margin-bottom: 1.5rem;
-  color: var(--cor-tema);
+  color: var(--vermelho);
 }
 
 /* Grupos do formulário */
@@ -151,7 +128,7 @@
   width: 100%;
   padding: 0.6rem;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--branco-light);
   font-size: 1rem;
 }
 
@@ -172,7 +149,7 @@
 
 .form-actions a {
   font-size: 0.9rem;
-  color: var(--cor-tema);
+  color: var(--azul);
   text-decoration: none;
 }
 
@@ -187,7 +164,7 @@
 }
 
 .register-link a {
-  color: var(--cor-tema);
+  color: var(--azul);
   font-weight: bold;
   text-decoration: none;
 }
@@ -199,14 +176,14 @@
 /* Mensagens de erro */
 .error {
   font-size: 0.85rem;
-  color: #cd5c5c;
+  color: var(--vermelho);
   margin-top: 0.3rem;
 }
 
 /* Status da sessão */
 .session-status {
-  background: #e0f7e9;
-  color: #094949;
+  background: transparent;
+  color: var(--verde);
   padding: 0.8rem;
   border-radius: 6px;
   text-align: center;
@@ -237,7 +214,7 @@
 }
 
 .close {
-  color: #aaa;
+  color: var(--preto);
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -245,7 +222,7 @@
 }
 
 .close:hover {
-  color: black;
+  color: var(--vermelho);
 }
 
 .texto-esqueceu {
@@ -266,99 +243,38 @@
 .input1 {
   display: block;
   width: 100%;
-  background: #e6e6e6;
+  background: var(--branco);
   font-size: 15px;
   line-height: 1.5;
-  color: #666666;
+  color: var(--preto);
   border-radius: 25px;
   padding: 0 30px;
   height: 50px;
 }
 
-textarea.input1 {
-  min-height: 150px;
-  padding: 12px 30px;
-  border-radius: 25px;
-}
-
-.shadow-input1 {
-  content: '';
-  display: block;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0px 0px 0px 0px;
-  color: rgba(70, 133, 184, 0.5);
-  border-radius: 25px;
-}
-
-.input1:focus+.shadow-input1 {
-  animation: anim-shadow 0.5s ease-in-out forwards;
-}
-
-.material-symbols-outlined {
-  color: var(--cor-preto);
-}
-
-.contact1 {
-  width: 100%;
-  min-height: 100%;
-  padding: 15px;
+/* botões ===*/
+.btn-submit {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-.container-contact1 {
-  width: 1163px;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 90px 130px 88px 148px;
-}
-
-.container-contact1-form-btn {
-  display: flex;
+  flex-direction: column;
   justify-content: flex-end;
+  width: 100%;
+  gap: 1rem;
 }
 
-
-.contact1-form-btn {
-  align-self: flex-end;
-  background-color: var(--preto);
-  color: var(--branco);
-  font-size: 14px;
-  font-weight: bold;
-  padding: .75rem;
-  border: none;
-  border-radius: 25% / 100%;
-  cursor: pointer;
+.btn-submit button {
+  padding: .5rem 1rem;
+  width: 100%;
   transition: .3s;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 15% / 100%;
+  background-color: var(--branco);
+  color: var(--vermelho);
+  border: 1px solid var(--vermelho);
 }
 
-.contact1-form-btn:hover {
-  background-color: var(--cor-tema);
-}
-
-.contact1-form-btn i {
-  margin-left: 7px;
-  transition: all 0.4s;
-}
-
-.contact1-form-btn:hover i {
-  transform: translateX(10px);
-}
-
-.material-symbols-outlined {
-  margin-top: 20px;
-  margin-left: 20px;
-  color: var(--cor-preto);
+.btn-submit button:hover {
+  background-color: var(--vermelho);
+  color: var(--branco);
 }

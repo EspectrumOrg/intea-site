@@ -36,7 +36,6 @@ class AutistaController extends Controller
 
         // Validação
         $validator = Validator::make($request->all(), [
-            'nome' => 'required|string|max:255',
             'user' => 'nullable|string|max:255',
             'apelido' => 'nullable|string|max:255',
             'email' => 'required|email|unique:tb_usuario,email',
@@ -44,15 +43,6 @@ class AutistaController extends Controller
             'cpf' => 'required|max:20|unique:tb_usuario,cpf',
             'genero' => 'required|string',
             'data_nascimento' => 'required|date',
-            'cep' => 'nullable|string|max:20',
-            'logradouro' => 'nullable|string',
-            'endereco' => 'nullable|string',
-            'rua' => 'nullable|string',
-            'bairro' => 'nullable|string',
-            'numero' => 'nullable|string',
-            'cidade' => 'nullable|string',
-            'estado' => 'nullable|string',
-            'complemento' => 'nullable|string',
             'cpf_responsavel' => 'nullable|string',
             'tipo_usuario' => 'required|in:2',
             'status_conta' => 'required|in:1',
@@ -60,11 +50,11 @@ class AutistaController extends Controller
             'numero_telefone.*' => 'required|string|max:20'
         ]);
 
-    if ($validator->fails()) {
-    return redirect()->back()
-                     ->withErrors($validator)
-                     ->withInput();
-}
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         // Calcula idade
         $data_nascimento = new \DateTime($request->data_nascimento);
         $hoje = new \DateTime();
@@ -90,7 +80,7 @@ class AutistaController extends Controller
             return response()->json(['message' => 'CPF inválido.'], 422);
         }
 
-            
+
         $user_usuario = $request->user ?? $request->apelido ?? '';
 
         try {
@@ -102,15 +92,6 @@ class AutistaController extends Controller
                 'cpf' => $cpfRequest,
                 'genero' => $request->genero,
                 'data_nascimento' => $request->data_nascimento,
-                'cep' => $request->cep,
-                'logradouro' => $request->logradouro,
-                'endereco' => $request->endereco,
-                'rua' => $request->rua,
-                'bairro' => $request->bairro,
-                'numero' => $request->numero,
-                'cidade' => $request->cidade,
-                'estado' => $request->estado,
-                'complemento' => $request->complemento,
                 'apelido' => $request->apelido,
                 'tipo_usuario' => $request->tipo_usuario,
                 'status_conta' => $request->status_conta,
@@ -127,35 +108,34 @@ class AutistaController extends Controller
                     ]);
                 }
             }
-            
-$idCuidador = null;
 
-if ($idade < 18) {
-    $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
+            $idCuidador = null;
 
-    // Busca o usuário do responsável pelo CPF
-    $cuidadorUsuario = Usuario::where('cpf', $cpfRespLimpo)->first();
+            if ($idade < 18) {
+                $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
 
-    if (!$cuidadorUsuario) {
-        return response()->json([
-            'message' => 'CPF do responsável não encontrado no sistema.'
-        ], 422);
-    }
+                // Busca o usuário do responsável pelo CPF
+                $cuidadorUsuario = Usuario::where('cpf', $cpfRespLimpo)->first();
 
-    // Usa o ID do usuário encontrado como responsável
-    $idCuidador = $cuidadorUsuario->id;
-}
-Autista::create([
-    'cipteia_autista' => $request->CipteiaAutista,
-    'status_cipteia_autista' => 'Ativo',
-    'usuario_id' => $usuario->id,
-    'responsavel_id' => $idCuidador, // já vai ser o ID do usuário responsável
-]);
-            
+                if (!$cuidadorUsuario) {
+                    return response()->json([
+                        'message' => 'CPF do responsável não encontrado no sistema.'
+                    ], 422);
+                }
+
+                // Usa o ID do usuário encontrado como responsável
+                $idCuidador = $cuidadorUsuario->id;
+            }
+            Autista::create([
+                'cipteia_autista' => $request->CipteiaAutista,
+                'status_cipteia_autista' => 'Ativo',
+                'usuario_id' => $usuario->id,
+                'responsavel_id' => $idCuidador, // já vai ser o ID do usuário responsável
+            ]);
+
             Log::info('Autista criado para usuário ID: ' . $usuario->id);
 
- return redirect()->route('login')->with('success', 'Usuário Autista cadastrado com sucesso!');
-
+            return redirect()->route('login')->with('success', 'Usuário Autista cadastrado com sucesso!');
         } catch (\Exception $e) {
             // Retorna o erro em JSON
             Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());
@@ -181,8 +161,8 @@ Autista::create([
         return true;
     }
 
-    public function show(string $id) { }
-    public function edit(string $id) { }
-    public function update(Request $request, string $id) { }
-    public function destroy(string $id) { }
+    public function show(string $id) {}
+    public function edit(string $id) {}
+    public function update(Request $request, string $id) {}
+    public function destroy(string $id) {}
 }
