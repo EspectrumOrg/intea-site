@@ -4,18 +4,6 @@
      --muted: #6b7280;
      --accent: #2563eb;
      --shadow: rgba(16, 24, 40, 0.06);
-
-     --cor-tema: #048ABF;
-     --cor-fundo: #262626;
-     --cor-branco: #D0D6D9;
-     --cor-preto: #000000;
-     --cor-vermelho: #F22222;
-
-     --preto: #0D0D0D;
-     --cinza: #404040;
-     --branco: #F2F2F2;
-     --branco-light: #ccc;
-     --azul: #1d3e55;
      --verde: #03A64A;
      --vermelho: #F26D6D;
  }
@@ -67,7 +55,7 @@
  .card h3 {
      margin: 8px 0 0;
      font-size: 22px;
-     color: var(--cor-tema);
+     color: var(--azul);
  }
 
  /* Charts grid */

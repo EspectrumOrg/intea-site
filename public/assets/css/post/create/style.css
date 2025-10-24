@@ -54,7 +54,7 @@
 }
 
 .hashtag {
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
 }
 
@@ -88,7 +88,7 @@
 
 .create-post .form .upload-label {
     cursor: pointer;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
     font-size: var(--texto-padrao);
     display: flex;
@@ -124,7 +124,7 @@
 
 .form .upload-label:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* botão */
@@ -147,7 +147,7 @@
 }
 
 .create-post .form .botao-postar:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
 }
 
 /* ----------------------------- preview imagem ------------------------------- */
@@ -183,7 +183,7 @@
 }
 
 .image-preview .remove-image:hover {
-    background-color: var(--cor-tema-apagado);
+    background-color: var(--azul-apagado);
 }
 
 .image-preview .remove-image span {

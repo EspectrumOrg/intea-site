@@ -44,12 +44,12 @@
 
 .form-comentar .upload-label-comentar {
     cursor: pointer;
-    color: #007bff;
+    color: var(--azul);
     font-weight: 500;
 }
 
 .form-comentar .upload-label-comentar:hover {
-    color: #0056b3;
+    color: var(--azul-apagado);
 }
 
 .form-comentar .input-file-comentar {
@@ -89,7 +89,7 @@
 
 .form-comentar .form .upload-label {
     cursor: pointer;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
     font-size: var(--texto-padrao);
     display: flex;
@@ -136,7 +136,7 @@
 }
 
 .form-comentar .form .botao-comentar:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
     transform: scale(1.03);
 }
 

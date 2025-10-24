@@ -173,7 +173,7 @@
 }
 
 .modal-denuncia .form-control:focus {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
     box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
     outline: none;
 }
@@ -196,12 +196,12 @@
 
 /* Hover */
 .modal-denuncia .form-select:hover {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
 }
 
 /* Focus */
 .modal-denuncia .form-select:focus {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
     box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
     outline: none;
 }
@@ -225,7 +225,7 @@
 
 /* botão de denunciar */
 .modal-denuncia button {
-    background-color: var(--cor-vermelho);
+    background-color: var(--vermelho);
     color: var(--branco);
     font-size: var(--texto-padrao);
     font-weight: bold;

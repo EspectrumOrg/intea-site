@@ -51,8 +51,8 @@
 }
 
 .modal-content .close:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    background-color: var(--branco--light);
+    color: var(--vermelho);
 }
 
 /* Animação de entrada */

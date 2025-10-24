@@ -1,9 +1,9 @@
 :root {
-    --cor-tema: #048ABF;
+    --azul: #048ABF;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
-    --cor-vermelho: #F22222;
+    --vermelho: #F22222;
 
     --preto: #0D0D0D;
     --cinza: #404040;
@@ -295,7 +295,7 @@
 }
 
 .interacoes .curtido span {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .interacoes h1 {
@@ -306,22 +306,22 @@
 
 /* comentar */
 .btn-comentar:hover h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .btn-comentar:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* curtir */
 .btn-curtir:hover h1 {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 
@@ -369,7 +369,7 @@
 
 .form-comentario form .upload-label {
     cursor: pointer;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
     font-size: var(--texto-padrao);
     display: flex;
@@ -416,7 +416,7 @@
 }
 
 .form-comentario form .botao-postar:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
     transform: scale(1.03);
 }
 
@@ -508,7 +508,7 @@
 }
 
 .interacoes-comentarios .curtido span {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .interacoes-comentarios h1 {
@@ -519,22 +519,22 @@
 
 /* comentar */
 .btn-comentar:hover h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .btn-comentar:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* curtir */
 .btn-curtir:hover h1 {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 /*adicionais ---------------------------------------------*/
@@ -543,14 +543,14 @@
     /* cria um novo contexto de empilhamento */
     z-index: 1;
     /* fica acima do overlay */
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
     text-decoration: none;
     transition: 0.3s;
 }
 
 .hashtag:hover {
-    color: var(--cor-tema-apagado);
+    color: var(--azul-apagado);
     text-decoration: underline;
 }
 
@@ -595,13 +595,13 @@
 
 .btn-acao.editar:hover {
     background-color: var(--branco-light);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* excluir */
 .btn-acao.excluir:hover {
     background-color: var(--branco-light);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .container-post .excluir {
