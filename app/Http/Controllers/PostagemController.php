@@ -30,7 +30,24 @@ class PostagemController extends Controller
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
             ->get();
-        $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
+        
+
+        $userId = Auth::id();
+
+        $postagens = $this->postagem
+        ->with(['imagens', 'usuario'])
+        ->whereHas('usuario', function($q) use ($userId) {
+            $q->where('visibilidade', 1)
+                ->orWhere('id', $userId)
+                ->orWhere(function($q2) use ($userId) {
+                    $q2->where('visibilidade', 0)
+                        ->whereHas('seguidores', function($q3) use ($userId) {
+                            $q3->where('segue_id', $userId);
+                        });
+                });
+        })
+        ->orderByDesc('created_at')
+        ->get();
 
         $tendenciasPopulares = Tendencia::populares(5)->get();
 
@@ -42,7 +59,22 @@ class PostagemController extends Controller
      */
     public function create()
     {
-        $postagens = $this->postagem->all();
+        $userId = Auth::id();
+
+        $postagens = $this->postagem
+        ->with(['imagens', 'usuario'])
+        ->whereHas('usuario', function($q) use ($userId) {
+            $q->where('visibilidade', 1)
+                ->orWhere('id', $userId)                      
+                ->orWhere(function($q2) use ($userId) {
+                    $q2->where('visibilidade', 0)
+                        ->whereHas('seguidores', function($q3) use ($userId) {
+                            $q3->where('segue_id', $userId);
+                        });
+                });
+        })
+        ->orderByDesc('created_at')
+        ->get();
         $imagem_postagem = $this->imagem_postagem->all();
 
         return view('feed.post.index', compact('imagem_postagem', 'postagens'));

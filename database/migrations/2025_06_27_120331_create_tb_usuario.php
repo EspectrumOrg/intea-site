@@ -38,6 +38,7 @@ return new class extends Migration
             $table->string('complemento')->nullable();
             $table->string('foto')->nullable(); //foto perfil
             $table->string('descricao')->nullable(); //descrição perfil
+            $table->integer('visibilidade')->default(1); // publica ou privada
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
             $table->rememberToken();

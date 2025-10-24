@@ -37,6 +37,7 @@ class Usuario extends Authenticatable
     'complemento',
     'foto',
     'descricao',
+    'visibilidade',
     'tipo_usuario',
     'status_conta',
     'created_at',
