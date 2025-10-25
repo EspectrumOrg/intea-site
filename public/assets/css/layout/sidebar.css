@@ -256,32 +256,82 @@
     color: var(--azul);
 }
 
-/* links --*/
-/* estilo individual dos links */
+/* Base dos links */
 .admin .links .nav-link {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0.8rem 2.5rem;
-    border-radius: 50px / 100%;
-    color: var(--branco);
-    text-decoration: none;
-    transition: all 0.3s ease-in-out;
-}
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.8rem 2.5rem;
+  border-radius: 50px / 100%;
+  color: var(--branco);
+  text-decoration: none;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;}
 
 .admin .links .nav-link h1 {
-    font-size: 16px;
+  font-size: 16px;
+  margin-left: 8px;
 }
 
-/* hover e ativo */
+/* Hover e ativo genérico */
 .admin .links .nav-link:hover {
-    transform: translateX(5px);
-    background-color: var(--cor-fundo);
-    color: var(--azul-apagado);
+  transform: translateX(5px);
 }
 
-.admin .links .active {
-    color: var(--azul);
-    transform: translateX(5px);
+.admin .links .nav-link.active {
+  transform: translateX(5px);
+  font-weight: bold;
+}
 
+/* =====================
+   Cores individuais
+   ===================== */
+
+/* 🔵 Azul (Dashboard) */
+.nav-link.azul:hover {
+  background-color: var(--azul-apagado);
+  color: var(--branco);
+}
+.nav-link.azul.active {
+  background-color: var(--azul);
+  color: var(--branco);
+}
+
+/* 🟢 Verde (Usuários) */
+.nav-link.verde:hover {
+  background-color: var(--verde-apagado);
+  color: var(--branco);
+}
+.nav-link.verde.active {
+  background-color: var(--verde);
+  color: var(--branco);
+}
+
+/* 💜 Roxo (Denúncias) */
+.nav-link.roxo:hover {
+  background-color: var(--roxo-apagado);
+  color: var(--branco);
+}
+.nav-link.roxo.active {
+  background-color: var(--roxo);
+  color: var(--branco);
+}
+
+/* 💖 Rosa (Suporte) */
+.nav-link.rosa:hover {
+  background-color: var(--rosa-apagado);
+  color: var(--branco);
+}
+.nav-link.rosa.active {
+  background-color: var(--rosa);
+  color: var(--branco);
+}
+
+/* 🔴 Vermelho (Voltar) */
+.nav-link.vermelho:hover {
+  background-color: var(--vermelho);
+  color: var(--branco);
+}
+.nav-link.vermelho.active {
+  background-color: var(--vermelho-apagado);
+  color: var(--branco);
 }
