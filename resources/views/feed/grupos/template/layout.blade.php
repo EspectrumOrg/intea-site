@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+    <link rel="shortcut icon" type="imagex/png" href="{{ url('assets/images/logos/intea/39.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intea - grupos</title>

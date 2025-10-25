@@ -7,31 +7,37 @@
 }
 
 :root {
+    /**/
     --cor-tema: #048ABF;
     --cor-fundo: #262626;
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
 
+
+    /* ===================================== site colorido (em ordem dos slides) =============================================*/
+    --vermelho: #E52125;
+    --vermelho-apagado: rgb(153, 34, 34);
+    --verde: #03A64A;
+    --verde-apagado: #036d31;
+    --azul: #2A71B1;
+    --azul-apagado: #1c4a73;
+    --amarelo: #F2E500;
+    --amarelo-apagado: #b1a902;
+    --roxo: #6D398B;
+    --roxo-apagado: #452557;
+    --rosa: #C4027D;
+    --rosa-apagado: #8b0259;
+    /* ===================================== textos =============================================*/
     --preto: #0D0D0D;
-    --cinza: #404040;
-    --cinza-texto: #888686;
     --cinza-borda: #2f3336;
+    --cinza-font: #b3b3b3;
     --branco: #F2F2F2;
     --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
+}
 
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-    /* cores para tema
-    antiga(ciano) - #017373*
-    azul claro - #048ABF/
-    */
+* {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Estilo para hashtags no texto -- LOCAL TEMPORÁRIO, POIS NÃO SEI ONDE FICA O ESTILO DE TODA A FEED, FERMINO BROTHER */
@@ -45,7 +51,7 @@
 }
 
 .hashtag {
-    color: var(--cor-tema);
+    color: var(--azul);
     /* Azul do seu tema (#048ABF) */
     font-weight: 600;
     /* Texto em negrito */
@@ -56,7 +62,7 @@
 }
 
 .hashtag:hover {
-    color: var(--azul);
+    color: var(--azul-apagado);
     /* Azul mais escuro no hover */
     text-decoration: underline;
     /* Sublinhado ao passar mouse */

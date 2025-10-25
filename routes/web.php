@@ -59,17 +59,6 @@ Route::get('/cadastro', function () { // Tipo Conta
     return view('auth.register');
 })->middleware('guest')->name('cadastro.index');
 
-// Grupo
-Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
-Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
-Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
-
-Route::get('/chat-test', function () {
-    return view('chat-test'); // Se tiver uma view
-    // ou
-    return file_get_contents(resource_path('views/chat-test.php'));
-});
-
 // Cadastro de Autista
 Route::resource("autista", AutistaController::class)->names("autista");
 // Cadastro de Comunidade
@@ -93,6 +82,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
+
+    // Grupo
+    Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
+    Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
+    Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
+
+    Route::get('/chat-test', function () {
+        return view('chat-test'); // Se tiver uma view
+        // ou
+        return file_get_contents(resource_path('views/chat-test.php'));
+    });
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');

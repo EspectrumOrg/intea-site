@@ -45,7 +45,7 @@ e($texto)
                     <img
                         src="{{ $postagem->usuario->foto ? url('storage/' . $postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
                         alt="foto de perfil"
-                        style="border-radius: 50%;"
+                        style="border-radius: 50%; object-fit:cover;"
                         width="40"
                         height="40"
                         loading="lazy">

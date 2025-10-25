@@ -8,7 +8,7 @@
     flex: 3;
     display: flex;
     flex-direction: column;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     border-radius: 8px;
     height: 80vh;
     overflow: hidden;
@@ -18,15 +18,15 @@
     display: flex;
     align-items: center;
     padding: 10px;
-    background: #f5f5f5;
-    border-bottom: 1px solid #ccc;
+    background: var(--branco);
+    border-bottom: 1px solid var(--branco-light);
 }
 
 .messages {
     flex: 1;
     padding: 10px;
     overflow-y: auto;
-    background: #e5e5e5;
+    background: var(--branco);
 }
 
 .message {
@@ -49,37 +49,37 @@
 }
 
 .message p {
-    background: #fff;
+    background: var(--branco);
     padding: 8px 12px;
     border-radius: 8px;
 }
 
 .chat-input {
     padding: 10px;
-    border-top: 1px solid #ccc;
-    background: #f5f5f5;
+    border-top: 1px solid var(--branco-light);
+    background: var(--branco);
 }
 
 .chat-input input {
     width: 80%;
     padding: 8px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
 }
 
 .chat-input button {
     padding: 8px 12px;
     border-radius: 4px;
     border: none;
-    background: #007bff;
-    color: #fff;
+    background: var(--azul);
+    color: var(--branco);
     cursor: pointer;
 }
 
 /* Lado direito */
 .chat-right {
     flex: 1;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     border-radius: 8px;
     padding: 10px;
     height: 80vh;
@@ -107,7 +107,7 @@
     padding: 4px 8px;
     border-radius: 4px;
     border: none;
-    background: #28a745;
-    color: #fff;
+    background: var(--verde);
+    color: var(--branco);
     cursor: pointer;
 }

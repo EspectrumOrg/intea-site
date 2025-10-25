@@ -17,27 +17,17 @@ return new class extends Migration
     {
         Schema::create('tb_usuario', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
             $table->string('user');
             $table->string('apelido')->nullable();
             $table->string('email')->unique();
             $table->string('senha');
-            $table->string('cpf')->unique();
+            $table->string('cpf')->unique()->nullable();
             $table->unsignedBigInteger('genero');  
             $table->foreign('genero')->references('id')->on('tb_genero')->onDelete('cascade');
             $table->date('data_nascimento');
-            $table->string('imagem')->nullable();
-            $table->string('cep')->nullable();
-            $table->string('logradouro')->nullable();
-            $table->string('endereco')->nullable();
-            $table->string('rua')->nullable();
-            $table->string('bairro')->nullable();
-            $table->string('numero')->nullable();
-            $table->string('cidade')->nullable();
-            $table->string('estado')->nullable();
-            $table->string('complemento')->nullable();
-            $table->string('foto')->nullable(); //foto perfil
+            $table->string('foto'); //foto perfil
             $table->string('descricao')->nullable(); //descrição perfil
+            $table->integer('visibilidade')->default(1); // publica ou privada
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
             $table->rememberToken();

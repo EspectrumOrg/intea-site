@@ -35,7 +35,7 @@ public function store(LoginRequest $request): RedirectResponse
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return back()->with('conta_status', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
+            return back()->with('warning', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
 
         case 1: // login normal
             return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Login realizado com sucesso!');
@@ -44,13 +44,13 @@ public function store(LoginRequest $request): RedirectResponse
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return back()->with('conta_status', 'Sua conta está banida. Por favor, contate a empresa.');
+            return back()->with('warning', 'Sua conta está banida. Por favor, contate a empresa.');
 
         default:
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return back()->with('conta_status', 'Erro de validação.');
+            return back()->with('error', 'Erro de validação.');
     }
 }
 

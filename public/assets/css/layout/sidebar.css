@@ -1,45 +1,3 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-tema-apagado: #016d98;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza-borda: #2f3336;
-    --cinza-font: #b3b3b3;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --vermelho-fraco: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-
-    /* RESET E ESTILOS GERAIS       SITE EMPRESA*/
-    --cor-primaria: #ffffff;
-    --cor-secundaria: #ffcc00;
-    --cor-fundo: #f9f9f9;
-    --cor-texto: #0D0D0D;
-    --cor-branca: #ffffff;
-    --cor-destaque: #00a8e8;
-    --sombra: 0 4px 8px rgba(0, 0, 0, 0.1);
-    --sombra-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
-    --azul-fraco: #2A71B1;
-    --verde: #03A64A;
-    --amarelo: #F2E500;
-    --vermelho: #E52125;
-    --rosa: #C4027D;
-    --roxo: #6D398B;
-    --cor-card: #ffffff; 
-}
-
-
-
 /* container da sidebar */
 .container-sidebar {
     border-right: 1px solid var(--branco-light);
@@ -67,9 +25,9 @@
 }
 
 .container-sidebar .logo img {
-    width: 80px;
+    width: 75px;
     border-radius: 50%;
-    margin-left: .5rem;
+    padding: .25rem;
     transition: .7s;
     cursor: pointer;
 }
@@ -83,6 +41,7 @@
     display: flex;
     flex-direction: row;
     padding: .5rem 1rem;
+    margin-right: 1rem;
     border-radius: 50px / 100%;
     width: 100%;
     position: relative;
@@ -99,6 +58,7 @@
 .container-sidebar .info img {
     width: 40px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 /* textos */
@@ -432,6 +392,12 @@
     font-size: 2rem;
 }
 
+/* active ----------------------------------
+.links .active h1,
+.links .active span {
+    color: var(--azul);
+}*/
+
 /* Post Button --------------------------------------------------------- */
 .post-button {
     display: flex;
@@ -510,7 +476,7 @@
 
 .admin .admin-topo h2 {
     font-size: 14px;
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* links --*/
@@ -534,11 +500,11 @@
 .admin .links .nav-link:hover {
     transform: translateX(5px);
     background-color: var(--cor-fundo);
-    color: var(--cor-tema-apagado);
+    color: var(--azul-apagado);
 }
 
 .admin .links .active {
-    color: var(--cor-tema);
+    color: var(--azul);
     transform: translateX(5px);
 
 }

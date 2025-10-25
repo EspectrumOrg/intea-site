@@ -1,26 +1,3 @@
-/* assets/css/profile/style.css */
-
-:root {
-    --cor-tema: #048ABF;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza: #404040;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-}
-
 /* ===== LAYOUT PRINCIPAL ===== */
 .profile-container {
     max-width: 1200px;
@@ -69,7 +46,7 @@
 }
 
 .profile-info .tipo-usuario {
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
     margin: 0.5rem 0 0 0;
     font-size: 0.9rem;
@@ -102,7 +79,7 @@
 }
 
 .tab-scroll-btn:hover {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .tab-scroll-btn:disabled {
@@ -144,13 +121,12 @@
 }
 
 .tab-button:hover {
-    color: var(--cor-tema);
-    text-decoration: underline;
+    color: var(--azul);
 }
 
 .tab-button.active {
-    color: var(--cor-tema);
-    border-bottom-color: var(--cor-tema);
+    color: var(--azul);
+    border-bottom-color: var(--azul);
     background-color: var(--branco-light);
 }
 
@@ -197,7 +173,7 @@
 .perfil-section header h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--cor-tema);
+    color: var(--azul);
     margin: 0;
 }
 
@@ -214,7 +190,7 @@
     padding: 1rem;
     background: var(--branco-light);
     border-radius: 8px;
-    border-left: 4px solid var(--cor-tema);
+    border-left: 4px solid var(--azul);
 }
 
 .info-item strong {
@@ -313,7 +289,7 @@
     height: 45px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--cor-tema);
+    border: 2px solid var(--azul);
 }
 
 .like-content {
@@ -359,7 +335,7 @@
 }
 
 .form-control:focus {
-    border-color: var(--cor-tema);
+    border-color: var(--azul);
     outline: none;
 }
 
@@ -379,11 +355,11 @@
 }
 
 .form-select:hover {
-    border-color: var(--cor-tema);
+    border-color: var(--azul);
 }
 
 .form-select:focus {
-    border-color: var(--cor-tema);
+    border-color: var(--azul);
     box-shadow: 0 0 0 3px rgba(4, 138, 191, 0.1);
     outline: none;
 }
@@ -399,8 +375,8 @@
     display: inline-block;
     padding: 0.75rem 1.5rem;
     background-color: var(--branco);
-    color: var(--cor-tema);
-    border: 1px solid var(--cor-tema);
+    color: var(--azul);
+    border: 1px solid var(--azul);
     border-radius: 1.4rem;
     font-weight: 600;
     cursor: pointer;
@@ -410,17 +386,17 @@
 }
 
 .btn-primary:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
     color: var(--branco);
 }
 
 #botao-excluir {
-    color: var(--cor-vermelho);
-    border: 1px solid var(--cor-vermelho);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
 }
 
 #botao-excluir:hover {
-    background-color: var(--cor-vermelho);
+    background-color: var(--vermelho);
     color: var(--branco);
 }
 
@@ -431,7 +407,7 @@
 }
 
 .text-error {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
     font-size: 0.875rem;
     margin-top: 0.5rem;
 }
