@@ -145,6 +145,7 @@
 
 .tab-button:hover {
     color: var(--cor-tema);
+    text-decoration: underline;
 }
 
 .tab-button.active {
