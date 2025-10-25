@@ -47,24 +47,40 @@
                         @case(5) Responsável @break
                     @endswitch
                 </p>
+                <div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
+<div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
+    <div id="btnSeguindo" style="cursor:pointer" data-url="{{ route('usuario.listar.seguindo', ['id' => $user->id]) }}">
+    <strong>{{ $user->seguindo()->count() }}</strong> Seguindo
+</div>
 
-                <!-- NOVOS BOTÕES: Seguir e Mensagem (aparecem apenas se não for o usuário logado) -->
-                @if(auth()->id() != $user->id)
-                <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
-                    <form action="{{ route('seguir.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ $user->id }}">
-                    <button type="submit" class="seguir-btn">
-                        <span class="material-symbols-outlined">person_add</span> Seguir
-                    </button>
-                </form>
+<div id="btnSeguidores" style="cursor:pointer" data-url="{{ route('usuario.listar.seguidores', ['id' => $user->id]) }}">
+    <strong>{{ $user->seguidores()->count() }}</strong> Seguidores
+</div>
+</div>
 
-                  <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
-    <span class="material-symbols-outlined">message</span> Mensagem
-</a>
-                            
-                            </div>
-                @endif
+<!-- Modal simples -->
+<div id="modalUsuarios" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+     background:white; padding:20px; border:1px solid #ccc; max-height:400px; overflow-y:auto;">
+    <button id="fecharModal">Fechar</button>
+    <ul id="listaUsuarios"></ul>
+</div>
+</div>
+
+
+        @if(auth()->id() != $user->id)
+        <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
+            <form action="{{ route('seguir.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                <button type="submit" class="seguir-btn">
+                    <span class="material-symbols-outlined">person_add</span> Seguir
+                </button>
+            </form>
+            <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
+                <span class="material-symbols-outlined">message</span> Mensagem
+            </a>
+        </div>
+        @endif
 </div>
                     </div>
 
@@ -349,5 +365,7 @@
             });
         });
     </script>
+    <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
+
 </body>
 </html>

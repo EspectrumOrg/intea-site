@@ -47,8 +47,39 @@ class SeguirController extends Controller
             }
         }
 
+        
+
         return redirect()->back()->with('success', 'Você está seguindo o usuário!');
     }
+       // Contar quantos usuários o usuário está seguindo
+    public function countSeguindo($id)
+    {
+        $user = Usuario::findOrFail($id);
+        $count = $user->seguindo()->count(); // quantos ele segue
+        return response()->json(['seguindo' => $count]);
+    }
+
+     public function countSeguidores($id)
+    {
+        $user = Usuario::findOrFail($id);
+        $count = $user->seguidores()->count(); // quantos o seguem
+        return response()->json(['seguidores' => $count]);
+    }
+
+public function listarSeguindo($id)
+{
+    $user = Usuario::findOrFail($id);
+    $seguindo = $user->seguindo()->get(); // lista de usuários que ele segue
+    return response()->json($seguindo);
+}
+
+public function listarSeguidores($id)
+{
+    $user = Usuario::findOrFail($id);
+    $seguidores = $user->seguidores()->get(); // lista de usuários que o seguem
+    return response()->json($seguidores);
+}
+
     /**
      * Display the specified resource.
      */

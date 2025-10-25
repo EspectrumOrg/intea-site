@@ -114,7 +114,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/usuario/{id}/seguindo/count', [SeguirController::class, 'countSeguindo']);
+Route::get('/usuario/{id}/seguidores/count', [SeguirController::class, 'countSeguidores']);
+Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])
+    ->name('usuario.listar.seguindo');
+// Lista os usuários que seguem este usuário
+Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidores'])
 
+    ->name('usuario.listar.seguidores');
 
     Route::get('/buscar-usuarios', [ChatPrivadoController::class, 'buscarUsuarios'])->name('buscar.usuarios');
 

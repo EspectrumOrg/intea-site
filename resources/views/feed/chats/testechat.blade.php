@@ -6,22 +6,7 @@
 <div class="chat-container" style="display:flex; height: 90vh; gap: 10px;">
     <!-- Lado esquerdo: lista de usuários/conversas -->
     <div class="chat-list">
-        <h3>Usuários que você segue</h3>
-        @if($usuariosSeguindo->isEmpty())
-            <p>Você ainda não segue ninguém.</p>
-        @else
-            <ul id="usuarios-seguindo">
-                @foreach ($usuariosSeguindo as $usuario)
-                    <li class="usuario-item" data-id="{{ $usuario->id }}" style="margin-bottom:10px; cursor:pointer;">
-                        <img src="{{ $usuario->foto ? asset('storage/' . $usuario->foto) : asset('storage/default.jpg') }}" 
-                             width="40" height="40" alt="{{ $usuario->user }}">
-                        <span style="font-weight:bold; color:#048ABF;">
-                            {{ $usuario->user }}
-                        </span>
-                    </li>
-                @endforeach
-            </ul>
-        @endif
+       
 
         <h3>Minhas Conversas</h3>
         <!-- Caixa de busca -->
