@@ -99,5 +99,5 @@
 }
 
 .grupos-style .btn-entrar:hover {
-    background-color: #06c25a;
+    background-color: var(--verde);
 }

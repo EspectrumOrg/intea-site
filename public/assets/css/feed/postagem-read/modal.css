@@ -165,9 +165,9 @@
 .modal-denuncia .form-control {
     width: 100%;
     padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--branco);
     font-size: 0.95rem;
     transition: all 0.3s ease;
 }
@@ -182,9 +182,9 @@
 .modal-denuncia .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1px solid #ccc;
+    border: 1px solid  var(--branco);
     border-radius: 6px;
-    background-color: #fff;
+    background-color:  var(--branco);
     font-size: 0.95rem;
     appearance: none;
     /* Remove seta padrão do navegador */
@@ -237,5 +237,5 @@
 }
 
 .modal-denuncia button:hover {
-    background-color: red;
+    background-color: var(--vermelho);
 }

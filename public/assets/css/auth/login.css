@@ -122,7 +122,7 @@ form h2 {
     width: 100%;
     padding: 0.6rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     font-size: 1rem;
 }
 
@@ -195,14 +195,14 @@ form h2 {
 /* Mensagens de erro */
 .error {
     font-size: 0.85rem;
-    color: #cd5c5c;
+    color: var(--vermelho);
     margin-top: 0.3rem;
 }
 
 /* Status da sessão */
 .session-status {
-    background: #e0f7e9;
-    color: #094949;
+    background: var(--branco);
+    color: var(--verde);
     padding: 0.8rem;
     border-radius: 6px;
     text-align: center;
@@ -223,7 +223,7 @@ form h2 {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--branco);
     margin: 15% auto;
     padding: 20px;
     border-radius: 8px;
@@ -233,7 +233,7 @@ form h2 {
 }
 
 .close {
-    color: #aaa;
+    color: var(--branco);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -241,5 +241,5 @@ form h2 {
 }
 
 .close:hover {
-    color: black;
+    color:var(--preto);
 }

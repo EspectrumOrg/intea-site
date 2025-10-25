@@ -51,7 +51,7 @@
 }
 
 .hashtag {
-    color: var(--cor-tema);
+    color: var(--azul);
     /* Azul do seu tema (#048ABF) */
     font-weight: 600;
     /* Texto em negrito */
@@ -62,7 +62,7 @@
 }
 
 .hashtag:hover {
-    color: var(--azul);
+    color: var(--azul-apagado);
     /* Azul mais escuro no hover */
     text-decoration: underline;
     /* Sublinhado ao passar mouse */

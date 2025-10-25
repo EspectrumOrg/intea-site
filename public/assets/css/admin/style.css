@@ -145,7 +145,7 @@ body {
 }
 
 .table-usuarios tr:nth-child(even) {
-    background-color: #e9e8e8;
+    background-color: var(--branco);
 }
 
 .btn-excluir-usuario,
@@ -227,7 +227,7 @@ tr:hover,
     border-radius: 50% / 100%;
     background-color: var(--cor-fundo);
     transition: .7s;
-    color: #fff;
+    color: var(--branco);
     border: none;
     cursor: pointer;
 }

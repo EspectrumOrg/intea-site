@@ -57,7 +57,7 @@
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 4px solid #fff;
+    border: 4px solid var(--branco-light);
     /* borda branca estilo twitter */
     object-fit: cover;
 }
@@ -78,8 +78,8 @@
 }
 
 .opcoes .seguir-btn {
-    background: #1d9bf0;
-    color: #fff;
+    background: var(--azul);
+    color: var(--branco);
     font-weight: bold;
     border: none;
     border-radius: 20px;
@@ -89,7 +89,7 @@
 }
 
 .opcoes .seguir-btn:hover {
-    background: #198cd1;
+    background: var(--azul-apagado);
 }
 
 /* corpo do perfil */
@@ -102,13 +102,13 @@
     font-size: 16px;
     font-weight: bold;
     margin: 0;
-    color: #0f1419;
+    color: var(--preto);
 }
 
 .info-perfil h2 {
     font-size: 14px;
     font-weight: normal;
-    color: #536471;
+    color: var(--cinza);
     margin: 3px 0;
 }
 
@@ -167,7 +167,7 @@
     top: -2rem;
     right: -2rem;
     font-size: 30px;
-    color: white;
+    color: var(--branco);
     cursor: pointer;
 }
 
@@ -218,9 +218,9 @@
 .modal-denuncia-usuario .form-control {
     width: 100%;
     padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--branco);
     font-size: 0.95rem;
     transition: all 0.3s ease;
 }
@@ -235,9 +235,9 @@
 .modal-denuncia-usuario .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--branco);
     font-size: 0.95rem;
     appearance: none;
     /* Remove seta padrão do navegador */
@@ -280,7 +280,7 @@
 .modal-denuncia-usuario button {
     background-color: var(--vermelho);
     color: var(--branco);
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     font-weight: bold;
     padding: .6rem 1.5rem;
     border: none;
@@ -290,5 +290,5 @@
 }
 
 .modal-denuncia-usuario button:hover {
-    background-color: red;
+    background-color:var(--vermelho);
 }

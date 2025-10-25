@@ -142,7 +142,7 @@
 
 .dropdown .form-excluir button:hover {
     background-color: var(--branco-light);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .container-post .dropdown .dropdown-content {
@@ -152,23 +152,6 @@
 .container-post .dropdown.ativo .dropdown-content {
     display: block;
 }
-
-
-/* fundo do modal --------------(modal)
-.modal-denuncia {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-    align-items: flex-start;
-    padding-top: 2.5rem;
-}*/
 
 /* conteúdo da caixa do modal */
 .modal-denuncia .modal-content {
@@ -198,15 +181,15 @@
 .modal-denuncia .form-control {
     width: 100%;
     padding: 0.6rem 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--branco-light);
     font-size: 0.95rem;
     transition: all 0.3s ease;
 }
 
 .modal-denuncia .form-control:focus {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
     box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
     outline: none;
 }
@@ -215,9 +198,9 @@
 .modal-denuncia .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco-light);
     border-radius: 6px;
-    background-color: #fff;
+    background-color: var(--branco-light);
     font-size: 0.95rem;
     appearance: none;
     /* Remove seta padrão do navegador */
@@ -229,12 +212,12 @@
 
 /* Hover */
 .modal-denuncia .form-select:hover {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
 }
 
 /* Focus */
 .modal-denuncia .form-select:focus {
-    border-color: var(--cor-vermelho);
+    border-color: var(--vermelho);
     box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
     outline: none;
 }
@@ -258,9 +241,9 @@
 
 /* botão de denunciar */
 .modal-denuncia button {
-    background-color: var(--cor-vermelho);
+    background-color: var(--vermelho);
     color: var(--branco);
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     font-weight: bold;
     padding: .6rem 1.5rem;
     border: none;
@@ -270,5 +253,5 @@
 }
 
 .modal-denuncia button:hover {
-    background-color: red;
+    background-color: var(--vermelho);
 }

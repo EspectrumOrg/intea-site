@@ -239,7 +239,7 @@ body {
 .form-outer .descricao p {
     font-size: 0.9rem;
     text-align: center;
-    color: #444;
+    color: var(--cinza);
     margin-bottom: 1.2rem;
 }
 
@@ -259,7 +259,7 @@ body {
 .progress-bar .step p {
     font-size: 0.85rem;
     margin-bottom: 8px;
-    color: #666;
+    color: var(--cinza);
 }
 
 .progress-bar .step p.active {
@@ -277,13 +277,13 @@ body {
     justify-content: center;
     transition: 0.3s;
     position: relative;
-    background: #fff;
+    background: var(--branco);
 }
 
 .progress-bar .step .bullet.active {
     background: var(--azul);
     border: 2px solid var(--azul-apagado);
-    color: #fff;
+    color: var(--branco);
 }
 
 .progress-bar .step .bullet span {
@@ -335,7 +335,7 @@ body {
 .telefone label {
     font-weight: bold;
     margin-bottom: 0.3rem;
-    color: #333;
+    color: var(--cinza);
 }
 
 .field input,
@@ -343,7 +343,7 @@ body {
     width: 100%;
     padding: 0.6rem;
     border-radius: 6px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--branco);
     font-size: 1rem;
     transition: border-color 0.2s;
 
@@ -361,7 +361,7 @@ body {
     width: 100%;
     padding: 0.4rem;
     border-radius: 6px;
-    border: .5px solid #ccc;
+    border: .5px solid var(--branco-light);
     font-size: .9rem;
     transition: border-color 0.2s;
 }
@@ -422,17 +422,17 @@ body {
 }
 
 .prev {
-    background: #aaa;
+    background: var(--branco);
 }
 
 .prev:hover {
-    background: #888;
+    background: var(--branco);
 }
 
 /* --------- Mensagens de erro  form-outer form .page .field --------- */
 .alert-error {
-    background: #fdd;
-    color: #900;
+    background: var(--branco);
+    color: var(--vermelho);
     padding: 0 2rem;
     margin: .5rem 0;
     border-radius: 6px;
@@ -468,41 +468,3 @@ body {
     text-indent: .8rem;
     opacity: 0.7;
 }
-
-/* --------- Links abaixo --------- 
-.contact1-form-btn {
-    min-width: 123px;
-    height: 40px;
-    border-radius: 20px;
-    background: var(--preto);
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--branco);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 25px;
-    transition: .3s;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 75%;
-    margin: 10px auto 0;
-    display: flex;
-}
-
-.btn-center a {
-    text-decoration: none;
-}
-
-.contact1-form-btn:hover {
-    background: var(--azul);
-}
-
-.contact1-form-btn i {
-    margin-left: 7px;
-    transition: all 0.4s;
-}
-
-.contact1-form-btn:hover i {
-    transform: translateX(10px);
-}*/

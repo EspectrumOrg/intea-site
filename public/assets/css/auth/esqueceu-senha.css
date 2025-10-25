@@ -204,7 +204,7 @@ form h2 {
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: var(--azul);
   margin: 15% auto;
   padding: 20px;
   border-radius: 8px;

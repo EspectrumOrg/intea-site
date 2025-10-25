@@ -108,7 +108,7 @@
 }
 .modal-aviso-padrao.aviso .closeModalPadrao {
     background: var(--amarelo);
-    color: #222;
+    color: var(--cinza);
 }
 .modal-aviso-padrao.aviso .closeModalPadrao:hover {
     background: var(--amarelo);
