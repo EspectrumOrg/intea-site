@@ -79,7 +79,7 @@ class ProfileController extends Controller
             'likedPosts',
             'postsPopulares',
             'autista',
-            'seguindoCount', 'seguidoresCount'
+            
         ));
     }
 
@@ -90,13 +90,10 @@ class ProfileController extends Controller
     {
         $generos = $this->genero->all();
         $user = Auth::user();
-
         $request->user()->fill($request->validated());
-
         if ($request->hasFile('foto')) {
             // salva em storage/app/arquivos/perfil/fotos
             $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
-
             // salva o caminho no banco
             $user->foto = $path;
         }

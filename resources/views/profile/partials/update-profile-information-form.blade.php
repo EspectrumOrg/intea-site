@@ -26,11 +26,7 @@
         @csrf
         @method('patch')
 
-        <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
-            <input id="nome" name="nome" type="text" class="form-control" value="{{ $user->nome ?? old('nome') }}" required autofocus autocomplete="nome" />
-        </div>
-
+ 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input id="email" name="email" type="email" class="form-control" value="{{ $user->email ?? old('email') }}" required autocomplete="username" />
