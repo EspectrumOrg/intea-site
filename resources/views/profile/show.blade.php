@@ -34,20 +34,38 @@
                             <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
                             @endif
                         </div>
-                        <div class="profile-info">
-                            <h1>{{ $user->nome }}</h1>
-                            <p class="username"> {{ $user->user }}</p>
-                            <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
-                            <p class="tipo-usuario">
-                                @switch($user->tipo_usuario)
-                                    @case(1) Administrador @break
-                                    @case(2) Autista @break
-                                    @case(3) Comunidade @break
-                                    @case(4) Profissional de Saúde @break
-                                    @case(5) Responsável @break
-                                @endswitch
-                            </p>
-                        </div>
+                                <div class="profile-info">
+                <h1>{{ $user->nome }}</h1>
+                <p class="username"> {{ $user->user }}</p>
+                <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
+                <p class="tipo-usuario">
+                    @switch($user->tipo_usuario)
+                        @case(1) Administrador @break
+                        @case(2) Autista @break
+                        @case(3) Comunidade @break
+                        @case(4) Profissional de Saúde @break
+                        @case(5) Responsável @break
+                    @endswitch
+                </p>
+
+                <!-- NOVOS BOTÕES: Seguir e Mensagem (aparecem apenas se não for o usuário logado) -->
+                @if(auth()->id() != $user->id)
+                <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
+                    <form action="{{ route('seguir.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    <button type="submit" class="seguir-btn">
+                        <span class="material-symbols-outlined">person_add</span> Seguir
+                    </button>
+                </form>
+
+                  <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
+    <span class="material-symbols-outlined">message</span> Mensagem
+</a>
+                            
+                            </div>
+                @endif
+</div>
                     </div>
 
                     <!-- Navegação por abas DINÂMICA -->

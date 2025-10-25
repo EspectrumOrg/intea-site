@@ -64,6 +64,29 @@ class ChatPrivadoController extends Controller
             'mensagem' => $mensagem,
         ]);
     }
+public function buscarUsuarios(Request $request)
+{
+    $usuarioId = auth()->id(); // Usuário logado
+    $search = $request->input('q'); // Texto digitado
+
+    $conversas = ChatPrivado::where('usuario1_id', $usuarioId)
+        ->orWhere('usuario2_id', $usuarioId)
+        ->get();
+
+    $usuariosConversando = $conversas->map(function($c) use ($usuarioId) {
+        return $c->usuario1_id == $usuarioId ? $c->usuario2_id : $c->usuario1_id;
+    })->unique()->toArray();
+
+    if(empty($usuariosConversando)) {
+        return response()->json([]);
+    }
+
+    $usuarios = \App\Models\Usuario::whereIn('id', $usuariosConversando)
+        ->where('user', 'like', "%{$search}%")
+        ->get(['id', 'user', 'foto']);
+
+    return response()->json($usuarios);
+}
 
 
     /**

@@ -115,14 +115,14 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // teste
+
+    Route::get('/buscar-usuarios', [ChatPrivadoController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
 
-    // Rota AJAX para carregar mensagens de um usuário
     Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
 
-    // Rota para enviar mensagem via Pusher
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 });
 

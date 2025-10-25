@@ -85,7 +85,6 @@ class AutistaController extends Controller
 
         try {
             $usuario = Usuario::create([
-                'nome' => $request->nome,
                 'email' => $request->email,
                 'user' => $user_usuario,
                 'senha' => bcrypt($request->senha),
