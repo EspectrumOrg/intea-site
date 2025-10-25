@@ -13,7 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
                     lista.innerHTML = '';
                     data.forEach(u => {
-                        lista.innerHTML += `<li>${u.user}</li>`;
+                        lista.innerHTML += `
+    <li style="display:flex; align-items:center; gap:10px;">
+        <img src="${u.foto ? '/storage/' + u.foto : '/storage/default.jpg'}" 
+             alt="${u.user}" 
+             style="width:30px; height:30px; border-radius:50%;">
+        <span>${u.user}</span>
+    </li>`;
                     });
                     modal.style.display = 'block';
                 });
@@ -27,7 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(data => {
                     lista.innerHTML = '';
                     data.forEach(u => {
-                        lista.innerHTML += `<li>${u.user}</li>`;
+                        lista.innerHTML +=`
+    <li style="display:flex; align-items:center; gap:10px;">
+        <img src="${u.foto ? '/storage/' + u.foto : '/storage/default.jpg'}" 
+             alt="${u.user}" 
+             style="width:30px; height:30px; border-radius:50%;">
+        <span>${u.user}</span>
+    </li>`;
                     });
                     modal.style.display = 'block';
                 });
