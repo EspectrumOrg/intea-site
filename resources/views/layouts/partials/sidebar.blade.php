@@ -8,7 +8,7 @@
     <!-- Logo -->
     <div class="logo">
         <a href="{{ route('landpage') }}">
-            <img src="{{ asset('assets/images/logos/intea/39.png') }}">
+            <img src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
         </a>
     </div>
 
