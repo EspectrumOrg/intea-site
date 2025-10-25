@@ -265,7 +265,7 @@
   border-radius: 50px / 100%;
   color: var(--branco);
   text-decoration: none;
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.2s ease;}
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.4s ease;}
 
 .admin .links .nav-link h1 {
   font-size: 16px;
@@ -275,6 +275,7 @@
 /* Hover e ativo genérico */
 .admin .links .nav-link:hover {
   transform: translateX(5px);
+  background: transparent;
 }
 
 .admin .links .nav-link.active {
@@ -282,56 +283,76 @@
   font-weight: bold;
 }
 
-/* =====================
+/* ================================================================
    Cores individuais
-   ===================== */
+   ================================================================ */
 
 /* 🔵 Azul (Dashboard) */
-.nav-link.azul:hover {
-  background-color: var(--azul-apagado);
-  color: var(--branco);
+.nav-link.azul:hover h1,
+.nav-link.azul:hover span {
+  color: var(--azul);
 }
 .nav-link.azul.active {
-  background-color: var(--azul);
   color: var(--branco);
+}
+
+.nav-link.azul.active h1,
+.nav-link.azul.active span {
+  color: var(--azul);
 }
 
 /* 🟢 Verde (Usuários) */
-.nav-link.verde:hover {
-  background-color: var(--verde-apagado);
-  color: var(--branco);
+.nav-link.verde:hover h1,
+.nav-link.verde:hover span {
+  color: var(--verde);
 }
 .nav-link.verde.active {
-  background-color: var(--verde);
   color: var(--branco);
+}
+
+.nav-link.verde.active h1,
+.nav-link.verde.active span {
+  color: var(--verde);
 }
 
 /* 💜 Roxo (Denúncias) */
-.nav-link.roxo:hover {
-  background-color: var(--roxo-apagado);
-  color: var(--branco);
+.nav-link.roxo:hover h1,
+.nav-link.roxo:hover span {
+  color: var(--roxo);
 }
 .nav-link.roxo.active {
-  background-color: var(--roxo);
   color: var(--branco);
+}
+
+.nav-link.roxo.active h1,
+.nav-link.roxo.active span {
+  color: var(--roxo);
 }
 
 /* 💖 Rosa (Suporte) */
-.nav-link.rosa:hover {
-  background-color: var(--rosa-apagado);
-  color: var(--branco);
+.nav-link.rosa:hover h1,
+.nav-link.rosa:hover span {
+  color: var(--rosa);
 }
 .nav-link.rosa.active {
-  background-color: var(--rosa);
   color: var(--branco);
 }
 
+.nav-link.rosa.active h1,
+.nav-link.rosa.active span {
+  color: var(--rosa);
+}
+
 /* 🔴 Vermelho (Voltar) */
-.nav-link.vermelho:hover {
-  background-color: var(--vermelho);
-  color: var(--branco);
+.nav-link.vermelho:hover h1,
+.nav-link.vermelho:hover span {
+  color: var(--vermelho);
 }
 .nav-link.vermelho.active {
-  background-color: var(--vermelho-apagado);
   color: var(--branco);
+}
+
+.nav-link.vermelho.active h1,
+.nav-link.vermelho.active span {
+  color: var(--vermelho);
 }
