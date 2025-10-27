@@ -7,7 +7,7 @@
     border: 1px solid var(--branco-light);
     position: sticky;
     z-index: 100;
-    top: 8rem;
+    top: 5rem;
 }
 
 .sidebar-header h3 {
