@@ -183,12 +183,14 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 // Novo sistema de perfil (3 abas)
 Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
 
-// Certifique-se de que estas rotas existem:
-Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
+// Rotas de tendências
 Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
+Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
 
-Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+// Rotas da API para tendências
+Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 
 
 // rotas para edição dos dados do autista via responsavel

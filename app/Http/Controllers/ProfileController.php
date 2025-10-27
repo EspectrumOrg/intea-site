@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\Models\Postagem;
 
-use function PHPSTORM_META\map;
-
 class ProfileController extends Controller
 {
     private $genero;
