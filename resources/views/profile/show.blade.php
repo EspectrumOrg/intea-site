@@ -158,10 +158,18 @@
                                     <strong>Apelido:</strong>
                                     <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                 </div>
+                                 @if($podeVerCPF)
                                 <div class="info-item">
                                     <strong>CPF:</strong>
                                     <span>{{ $user->cpf }}</span>
                                 </div>
+                                @else
+                                <div class="info-item">
+                                    <strong>CPF:</strong>
+                                    <span>•••••••••••</span>
+                                    <small style="color: #666; font-style: italic;">Informação privada</small>
+                                </div>
+                                @endif
                                 <div class="info-item">
                                     <strong>Data Nascimento:</strong>
                                     <span>{{ \Carbon\Carbon::parse($user->data_nascimento)->format('d/m/Y') }}</span>
@@ -254,7 +262,6 @@
                         @include('profile.partials.update-profile-information-form')
                         @include('profile.partials.update-privacy-form')
                         @include('profile.partials.update-password-form')
-                        @include('profile.partials.delete-user-form')
                     </div>
                     @endif
                     <!-- Aba 5: Configurações do autista para responsavel -->

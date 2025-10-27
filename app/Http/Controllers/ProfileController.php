@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
+use App\Models\Tendencia;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,7 @@ class ProfileController extends Controller
         $this->genero = $genero;
         $this->telefone = $telefone;
     }
+
     /**
      * Display the user's profile form.
      */
@@ -33,21 +35,21 @@ class ProfileController extends Controller
         $dadosespecificos = null;
         $autista = null;
 
-        // 🔥 Postagens populares (as mais curtidas)
+        //  Postagens populares (as mais curtidas)
         $postsPopulares = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count')
             ->take(5)
             ->get();
 
-        // 📜 Postagens do usuário logado
+        //  Postagens do usuário logado
         $userPosts = Postagem::where('usuario_id', $user->id)->get();
 
-        // ❤️ Postagens curtidas pelo usuário
+        //  Postagens curtidas pelo usuário
         $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
             $q->where('usuario_id', $user->id);
         })->get();
 
-        // 🔍 Dados específicos por tipo de usuário
+        //  Dados específicos por tipo de usuário
         switch ($user->tipo_usuario) {
             case 1:
                 $dadosespecificos = $user->admin;
@@ -67,7 +69,10 @@ class ProfileController extends Controller
                 break;
         }
 
-        // ✅ Retorna para a view com todas as variáveis necessárias
+        // Tendências populares para o sidebar
+        $tendenciasPopulares = Tendencia::populares(10)->get();
+
+        // Retorna para a view com todas as variáveis necessárias
         return view('profile.show', compact(
             'dadosespecificos',
             'generos',
@@ -77,10 +82,72 @@ class ProfileController extends Controller
             'likedPosts',
             'postsPopulares',
             'autista',
-            
+            'tendenciasPopulares' 
         ));
     }
 
+    /**
+     * Display another user's profile (para quando acessar perfil de outros usuários)
+     */
+    public function show($id): View
+    {
+        $user = \App\Models\User::findOrFail($id);
+        $currentUser = Auth::user();
+        
+        // Verifica se é o próprio usuário ou admin para ver CPF
+        $podeVerCPF = ($currentUser && ($currentUser->id == $user->id || $currentUser->tipo_usuario == 1));
+        
+        //  Postagens populares (as mais curtidas)
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+        //  Postagens do usuário
+        $userPosts = Postagem::where('usuario_id', $user->id)->get();
+
+        //  Postagens curtidas pelo usuário
+        $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
+            $q->where('usuario_id', $user->id);
+        })->get();
+
+        //  Tendências populares
+        $tendenciasPopulares = Tendencia::populares(10)->get();
+
+        //  Dados específicos por tipo de usuário
+        $dadosespecificos = null;
+        $autista = null;
+        
+        switch ($user->tipo_usuario) {
+            case 1:
+                $dadosespecificos = $user->admin;
+                break;
+            case 2:
+                $dadosespecificos = $user->autista;
+                break;
+            case 3:
+                $dadosespecificos = $user->comunidade;
+                break;
+            case 4:
+                $dadosespecificos = $user->profissional_saude;
+                break;
+            case 5:
+                $dadosespecificos = $user->responsavel;
+                $autista = $user->responsavel->autistas()->first() ?? null;
+                break;
+        }
+
+        return view('profile.show', compact(
+            'dadosespecificos',
+            'user',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'autista',
+            'tendenciasPopulares',
+            'podeVerCPF' 
+        ));
+    }
     
     /**
      * Update the user's profile information.
@@ -89,7 +156,14 @@ class ProfileController extends Controller
     {
         $generos = $this->genero->all();
         $user = Auth::user();
-        $request->user()->fill($request->validated());
+        
+        // Remove campos que não podem ser editados
+        $data = $request->validated();
+        unset($data['cpf']); // Remove CPF dos dados a serem atualizados
+        unset($data['logradouro']); // Remove logradouro dos dados a serem atualizados
+        
+        $request->user()->fill($data);
+        
         if ($request->hasFile('foto')) {
             // salva em storage/app/arquivos/perfil/fotos
             $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
