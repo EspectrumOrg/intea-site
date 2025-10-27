@@ -78,7 +78,7 @@
         <a href="{{ route('dashboard.index') }}"
             class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
             <span class="material-symbols-outlined">manage_accounts</span>
-            <h1>Admin</h1>
+            <h1>Administração</h1>
         </a>
         @endcan
 

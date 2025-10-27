@@ -21,7 +21,7 @@
     <div class="links">
         <a href="{{ route('dashboard.index')}}" class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="dashboard">
             <span class="material-symbols-outlined">monitoring</span>
-            <h1>Estatísticas</h1>
+            <h1>Dashboard</h1>
         </a>
 
         <a href="{{ route('usuario.index')}}" class="nav-link {{ request()->routeIs('usuario.index') ? 'active' : '' }}" id="usuario">
