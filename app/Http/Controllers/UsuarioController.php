@@ -108,6 +108,25 @@ class UsuarioController extends Controller
 
         return view('admin.usuario.index', compact('usuario'));
     }
+public function buscarUsuarios(Request $request)
+{
+    $usuarioId = auth()->id();
+    $search = $request->input('q', '');
+
+    if ($search !== '') {
+        $usuarios = Usuario::where('id', '!=', $usuarioId)
+            ->where(function ($q) use ($search) {
+                $q->where('user', 'like', "%{$search}%")
+                  ->orWhere('apelido', 'like', "%{$search}%");
+            })
+            ->orderBy('user', 'asc')
+            ->get(['id','user','apelido','foto']);
+
+        return response()->json($usuarios);
+    }
+
+    return view('feed.conta.buscar');
+}
 
     public function destroy($id)
     {

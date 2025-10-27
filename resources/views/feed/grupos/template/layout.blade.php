@@ -31,7 +31,9 @@
 
             <!-- conteúdo popular  -->
             <div class="content-popular">
-                @include('feed.post.partials.sidebar-popular')
+            @include('feed.post.partials.buscar')
+
+            @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
     </div>

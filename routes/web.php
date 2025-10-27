@@ -83,7 +83,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
 
+Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+
+
     // Grupo
+
+
     Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
     Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
     Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
@@ -93,6 +98,8 @@ Route::middleware('auth')->group(function () {
         // ou
         return file_get_contents(resource_path('views/chat-test.php'));
     });
+
+
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
@@ -123,7 +130,7 @@ Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidor
 
     ->name('usuario.listar.seguidores');
 
-    Route::get('/buscar-usuarios', [ChatPrivadoController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuarioschat'])->name('buscar.usuarios.chat');
 
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
