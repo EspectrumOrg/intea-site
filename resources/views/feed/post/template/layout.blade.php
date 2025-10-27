@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
     <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
-        <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
 </head>
 
@@ -35,22 +34,20 @@
                 @yield("main")
             </div>
 
-            <!-- conteúdo popular  -->
-          
-            <div class="content-popular">    
-            @include('feed.post.partials.buscar')
+            <!-- barra de pesquisa, popular  -->
+            <div class="content-popular">
+                @include('feed.post.partials.buscar')
 
-            @include('feed.post.partials.sidebar-popular')
+                @include('feed.post.partials.sidebar-popular')
             </div>
-
         </div>
 
-        
+
         <!-- Modal Criação de postagem -->
         @include('feed.post.create-modal')
 
-        <!-- modal de avisos 
-        @include("layouts.partials.avisos")-->
+        <!-- modal de avisos -->
+        @include("layouts.partials.avisos")
     </div>
 </body>
 

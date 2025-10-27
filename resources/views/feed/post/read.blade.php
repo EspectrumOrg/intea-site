@@ -204,11 +204,11 @@
                 <label for="caminho_imagem_create_comentario" class="upload-label">
                     <span class="material-symbols-outlined">image</span>
                 </label>
-                <input 
-                    id="caminho_imagem_create_comentario"  
-                    name="caminho_imagem" 
-                    type="file" 
-                    accept="image/*" 
+                <input
+                    id="caminho_imagem_create_comentario"
+                    name="caminho_imagem"
+                    type="file"
+                    accept="image/*"
                     class="input-file">
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
             </div>
@@ -291,16 +291,8 @@
     @endif
 
     <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
-    <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
-        <div class="modal-content">
-            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <div class="modal-content-content">
-                @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
-            </div>
-        </div>
-    </div>
+    @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
+
     @endforeach
 </div>
 @endsection
