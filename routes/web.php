@@ -48,7 +48,29 @@ Route::get('/feed/configuracao/config', function () {
     );
 })->name('configuracao.config');
 
-
+// NÃO MEXA, ÁREA DE MONOCROMATICO!
+Route::post('/update-theme-preference', function (Illuminate\Http\Request $request) {
+    try {
+        if (!Auth::check()) {
+            return response()->json(['success' => false, 'message' => 'Usuário não autenticado']);
+        }
+        
+        $user = Auth::user();
+        $user->tema_preferencia = $request->tema_preferencia;
+        $user->save();
+        
+        \Log::info('Preferência de tema atualizada', [
+            'user_id' => $user->id,
+            'tema_preferencia' => $request->tema_preferencia
+        ]);
+        
+        return response()->json(['success' => true]);
+    } catch (\Exception $e) {
+        \Log::error('Erro ao atualizar preferência de tema: ' . $e->getMessage());
+        return response()->json(['success' => false, 'message' => $e->getMessage()]);
+    }
+})->middleware('auth');
+/// POR FAVOR
 
 // somente para quem não está logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::get('/login', function () { // Login

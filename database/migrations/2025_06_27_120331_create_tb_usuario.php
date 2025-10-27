@@ -30,6 +30,8 @@ return new class extends Migration
             $table->integer('visibilidade')->default(1); // publica ou privada
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
+            $table->string('tema_preferencia')->default('colorido');
+            $table->string('tema_interface')->default('claro'); 
             $table->rememberToken();
             $table->timestamps();
         });

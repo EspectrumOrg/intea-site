@@ -31,6 +31,8 @@ class Usuario extends Authenticatable
     'visibilidade',
     'tipo_usuario',
     'status_conta',
+    'tema_preferencia',
+    'tema_interface',
     'created_at',
     'updated_at'
   ];
