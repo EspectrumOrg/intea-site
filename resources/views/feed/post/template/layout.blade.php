@@ -13,14 +13,13 @@
     <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
     <!-- layout geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <!-- postagens -->
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
-    <!-- comentario -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/comentario/modal.css') }}">
     <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
+        <!-- read -->
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
 </head>
 
 <body>
@@ -62,11 +61,9 @@
 <script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
 <script src="{{ url('assets/js/posts/update/modal-update.js') }}"></script>
 
-<!-- comentario -->
-<script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>
-
 <!-- read comentários -->
 <script src="{{ url('assets/js/posts/read/char-count.js') }}"></script>
+<script src="{{ url('assets/js/posts/read/hashtag-comentario-read.js') }}"></script>
 
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
