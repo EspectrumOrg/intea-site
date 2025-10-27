@@ -64,7 +64,7 @@ class ChatPrivadoController extends Controller
             'mensagem' => $mensagem,
         ]);
     }
-public function buscarUsuarios(Request $request)
+public function buscarUsuarioschat(Request $request)
 {
     $usuarioId = auth()->id(); // Usuário logado
     $search = $request->input('q'); // Texto digitado

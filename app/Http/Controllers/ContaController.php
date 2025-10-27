@@ -10,6 +10,7 @@ use App\Models\FoneUsuario;
 use App\Models\Autista;
 use App\Models\ProfissionalSaude;
 use App\Models\Responsavel;
+use App\Models\Tendencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -62,6 +63,8 @@ class ContaController extends Controller
             ->take(5)
             ->get();
 
+          $tendenciasPopulares = Tendencia::populares(7)->get();
+
         // Pega o autista só se o user for responsável (tipo 5)
         $responsavel = null;
         $autista = null;
@@ -80,6 +83,7 @@ class ContaController extends Controller
             'userPosts',
             'likedPosts',
             'postsPopulares',
+            'tendenciasPopulares',
             'autista',
             'responsavel'
         ));

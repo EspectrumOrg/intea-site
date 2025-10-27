@@ -83,7 +83,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
 
+Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+
+
     // Grupo
+
+
     Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
     Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
     Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
@@ -93,6 +98,8 @@ Route::middleware('auth')->group(function () {
         // ou
         return file_get_contents(resource_path('views/chat-test.php'));
     });
+
+
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
@@ -123,7 +130,7 @@ Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidor
 
     ->name('usuario.listar.seguidores');
 
-    Route::get('/buscar-usuarios', [ChatPrivadoController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuarioschat'])->name('buscar.usuarios.chat');
 
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
@@ -131,8 +138,11 @@ Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidor
     Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
 
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
-});
 
+    // Atualizar visibilidade de usuário
+    Route::patch('/usuario/update-privacidade', [\App\Http\Controllers\UsuarioController::class, 'update_privacidade'])
+        ->name('usuario.update_privacidade');
+});
 
 
 // Profissional de Saúde Logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -173,12 +183,14 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
 // Novo sistema de perfil (3 abas)
 Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
 
-// Certifique-se de que estas rotas existem:
-Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
+// Rotas de tendências
 Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
+Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
 
-Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+// Rotas da API para tendências
+Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 
 
 // rotas para edição dos dados do autista via responsavel

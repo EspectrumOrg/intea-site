@@ -143,7 +143,7 @@ $("#buscarUsuario").on('keyup', function() {
     }
 
     $.ajax({
-        url: "{{ route('buscar.usuarios') }}",
+        url: "{{ route('buscar.usuarios.chat') }}",
         method: "GET",
         data: { q: query },
         success: function(res) {

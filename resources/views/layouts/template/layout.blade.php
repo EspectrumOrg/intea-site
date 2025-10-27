@@ -44,6 +44,7 @@
 
             <!-- conteúdo popular  -->
             <div class="content-popular">
+                
                 @include('feed.post.partials.sidebar-popular')
             </div>
         WRONG

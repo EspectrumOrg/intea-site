@@ -23,18 +23,16 @@ class PostagemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Não mais usado 19/10 (pode excluir)
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count') // mais curtidas primeiro
-            ->take(5) // pega só os 5 mais curtidos
-            ->get();
-        
+public function index()
+{
+    $userId = Auth::id();
 
-        $userId = Auth::id();
+    $posts = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
 
-        $postagens = $this->postagem
+    $postagens = $this->postagem
         ->with(['imagens', 'usuario'])
         ->whereHas('usuario', function($q) use ($userId) {
             $q->where('visibilidade', 1)
@@ -49,10 +47,10 @@ class PostagemController extends Controller
         ->orderByDesc('created_at')
         ->get();
 
-        $tendenciasPopulares = Tendencia::populares(5)->get();
+    $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
 
-        return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
-    }
+    return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
+}
 
     /**
      * Show the form for creating a new resource.

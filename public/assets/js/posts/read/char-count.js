@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const textareaComentario = document.getElementById("texto_comentario");
-    const counterComentario = document.getElementById("char-count-comentario");
+    const counterComentario = document.getElementById("char-count-create-comentario");
     const maxComentario = textareaComentario.getAttribute("maxlength");
 
     // Expande conforme digita

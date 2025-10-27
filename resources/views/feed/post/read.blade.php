@@ -167,47 +167,60 @@
 </div>
 
 <!-------------------------------------------- Form de comentário ---------------------------->
-<div class="form-comentario">
-    <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" enctype="multipart/form-data">
-        <div style="display: flex;">
-            <div class="foto-perfil">
-                @if (!empty(Auth::user()->foto))
-                <img src="{{ asset('storage/'.Auth::user()->foto) }}" alt="foto perfil">
-                @else
-                <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
-                @endif
-            </div>
-            @csrf
-            <div style="width: 100%;">
-                <div>
-                    <textarea
-                        id="texto_comentario"
-                        name="comentario"
-                        maxlength="280"
-                        rows="4"
-                        placeholder="Responda a publicação de {{ $postagem->usuario->user }}" required></textarea>
-                </div>
+<div class="form-create-comentario">
+    <img
+        src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
+        alt="foto de perfil"
+        style="border-radius: 50%; object-fit:cover;"
+        width="40"
+        height="40"
+        loading="lazy">
 
-                <div style="display: flex; justify-content:space-between; padding: 0 1rem">
-                    <div class="extras">
-                        <label for="caminho_imagem" class="upload-label">
-                            <img src="{{ url('assets/images/logos/symbols/image.png') }}" class="card-img-top" alt="adicionar imagem">
-                        </label>
-                        <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
-                        <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
-                    </div>
+    <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" class="form" enctype="multipart/form-data">
+        @csrf
+        <div class="textfield">
+            <div id="hashtag-preview-create-comentario" class="hashtag-preview"></div>
 
-                    <div class="contador">
-                        <span id="char-count-comentario">0</span>/280
-                    </div>
+            <textarea id="texto_comentario"
+                name="comentario"
+                maxlength="280"
+                rows="4"
+                placeholder="Responda a publicação de {{ $postagem->usuario->user }}" required></textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
 
-                    <div class="botao-submit">
-                        <button type="submit" class="botao-postar">Publicar</button>
-                    </div>
-                </div>
+            {{-- Preview da imagem --}}
+            <div id="image-preview-create-comentario" class="image-preview" style="display: none;">
+                <img id="preview-img-create-comentario" src="" alt="Prévia da imagem">
+                <button type="button" id="remove-image-create-comentario" class="remove-image">
+                    <span class="material-symbols-outlined">
+                        close
+                    </span>
+                </button>
             </div>
         </div>
 
+        <div class="content">
+            <div class="extras">
+                <label for="caminho_imagem_create_comentario" class="upload-label">
+                    <span class="material-symbols-outlined">image</span>
+                </label>
+                <input
+                    id="caminho_imagem_create_comentario"
+                    name="caminho_imagem"
+                    type="file"
+                    accept="image/*"
+                    class="input-file">
+                <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
+            </div>
+
+            <div class="contador">
+                <span id="char-count-create-comentario">0</span>/280
+            </div>
+
+            <div class="botao-submit">
+                <button type="submit" class="botao-postar">Postar</button>
+            </div>
+        </div>
     </form>
 </div>
 <!------------------------------ Lista de comentários ------------------------------------------------------------------------------------------------------------------------->
@@ -217,11 +230,13 @@
         <a href="{{ route('comentario.focus', ['id' => $comentario->id]) }}" class="post-overlay"></a>
 
         <div class="foto-comentario"> <!--foto-->
-            @if (!empty($comentario->usuario->foto))
-            <img src="{{ asset('storage/' . $comentario->usuario->foto) }}" alt="foto perfil">
-            @else
-            <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="sem-foto">
-            @endif
+            <img
+                src="{{ $comentario->usuario->foto ? url('storage/' . $comentario->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
+                alt="foto de perfil"
+                style="border-radius: 50%; object-fit:cover;"
+                width="40"
+                height="40"
+                loading="lazy">
         </div>
 
         <div class="dados"> <!--dados-->
@@ -276,16 +291,8 @@
     @endif
 
     <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
-    <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
-        <div class="modal-content">
-            <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-            <div class="modal-content-content">
-                @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
-            </div>
-        </div>
-    </div>
+    @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
+
     @endforeach
 </div>
 @endsection

@@ -168,18 +168,8 @@ e($texto)
 
 
         <!-- Modal Criação de comentário ($postagem->id) -->
-        <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button"
-                    class="close"
-                    onclick="fecharModalComentar('{{ $postagem->id }}')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="modal-content-content">
-                    @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
+
 
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">

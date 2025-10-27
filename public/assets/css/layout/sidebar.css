@@ -24,7 +24,12 @@
     align-items: flex-start;
 }
 
-.container-sidebar .logo img {
+
+.container-sidebar .logo a {
+    transition: .7s;
+}
+
+.container-sidebar .logo a img {
     width: 75px;
     border-radius: 50%;
     padding: .25rem;
@@ -32,8 +37,8 @@
     cursor: pointer;
 }
 
-.container-sidebar .logo img:hover {
-    border: solid 0.5px var(--cor-destaque);
+.container-sidebar .logo a:hover img {
+    background-color: var(--cinza-texto);
 }
 
 /* container de info do usuário ---------------------------------------------------------------*/
@@ -51,7 +56,7 @@
 }
 
 .container-sidebar .info:hover {
-    background-color: var(--cinza-font);
+    background-color: var(--cinza-texto);
 }
 
 /* imagem usuário */
@@ -60,6 +65,7 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
 
 /* textos */
 .container-sidebar .info .text {
@@ -331,7 +337,7 @@
             transition: width 0.4s ease-in-out;
         }
     }
-    
+
     &:hover {
         transform: translateX(7.5px);
         text-rendering: optimizeLegibility;
@@ -412,18 +418,18 @@
 /* Post Button --------------------------------------------------------- */
 .post-button {
     display: flex;
-    align-items: flex-start;
-    width: 50%;
+    justify-content: center;
+    width: 100%;
     padding: 0px;
-    margin: 0px;
 }
 
 .post-button button {
-    color: var(--cor-tema);
-    font-size: 1.25rem;
+    color: var(--azul);
+    font-size: 17px;
     font-weight: 600;
-    padding-left: 1rem;
-    border: none;
+    min-width: 90%;
+    padding: .75rem 1rem;
+    border: 1px solid var(--azul);
     outline: none;
     border-radius: 50px / 100%;
     cursor: pointer;
@@ -431,8 +437,8 @@
 }
 
 .post-button button:hover {
-    color: var(--cor-tema);
-    text-decoration: underline var(--cor-tema);
+    color: var(--branco);
+    background-color: var(--azul);
 }
 
 /* Parte Admin -----------------------------------------------------------------------+*/
@@ -490,8 +496,7 @@
     color: var(--azul);
 }
 
-/* links --*/
-/* estilo individual dos links */
+/* Base dos links */
 .admin .links .nav-link {
     display: flex;
     flex-direction: row;
@@ -500,7 +505,7 @@
     border-radius: 50px / 100%;
     color: var(--branco);
     text-decoration: none;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.4s ease;
 }
 
 .admin .links a:nth-of-type(1) {
@@ -704,17 +709,95 @@
 
 .admin .links .nav-link h1 {
     font-size: 16px;
+    margin-left: 8px;
 }
 
-/* hover e ativo */
+/* Hover e ativo genérico */
 .admin .links .nav-link:hover {
     transform: translateX(5px);
-    background-color: var(--cor-fundo);
-    color: var(--azul-apagado);
+    background: transparent;
 }
 
-.admin .links .active {
-    color: var(--azul);
+.admin .links .nav-link.active {
     transform: translateX(5px);
+    font-weight: bold;
+}
 
+/* ================================================================
+   Cores individuais
+   ================================================================ */
+
+/* 🔵 Azul (Dashboard) */
+.nav-link.azul:hover h1,
+.nav-link.azul:hover span {
+    color: var(--azul);
+}
+
+.nav-link.azul.active {
+    color: var(--branco);
+}
+
+.nav-link.azul.active h1,
+.nav-link.azul.active span {
+    color: var(--azul);
+}
+
+/* 🟢 Verde (Usuários) */
+.nav-link.verde:hover h1,
+.nav-link.verde:hover span {
+    color: var(--verde);
+}
+
+.nav-link.verde.active {
+    color: var(--branco);
+}
+
+.nav-link.verde.active h1,
+.nav-link.verde.active span {
+    color: var(--verde);
+}
+
+/* 💜 Roxo (Denúncias) */
+.nav-link.roxo:hover h1,
+.nav-link.roxo:hover span {
+    color: var(--roxo);
+}
+
+.nav-link.roxo.active {
+    color: var(--branco);
+}
+
+.nav-link.roxo.active h1,
+.nav-link.roxo.active span {
+    color: var(--roxo);
+}
+
+/* 💖 Rosa (Suporte) */
+.nav-link.rosa:hover h1,
+.nav-link.rosa:hover span {
+    color: var(--rosa);
+}
+
+.nav-link.rosa.active {
+    color: var(--branco);
+}
+
+.nav-link.rosa.active h1,
+.nav-link.rosa.active span {
+    color: var(--rosa);
+}
+
+/* 🔴 Vermelho (Voltar) */
+.nav-link.vermelho:hover h1,
+.nav-link.vermelho:hover span {
+    color: var(--vermelho);
+}
+
+.nav-link.vermelho.active {
+    color: var(--branco);
+}
+
+.nav-link.vermelho.active h1,
+.nav-link.vermelho.active span {
+    color: var(--vermelho);
 }

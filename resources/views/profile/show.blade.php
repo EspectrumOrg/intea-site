@@ -252,6 +252,7 @@
                     <div class="tab-content" id="settings-tab">
                         <!-- Inclui os formulários de configurações -->
                         @include('profile.partials.update-profile-information-form')
+                        @include('profile.partials.update-privacy-form')
                         @include('profile.partials.update-password-form')
                         @include('profile.partials.delete-user-form')
                     </div>
@@ -274,7 +275,8 @@
             </div>
 
             <!-- conteúdo popular -->
-            <div class="content-popular">
+            <div class="content-popular">   
+                @include('profile.partials.buscar')
                 @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])
             </div>
         </div>
