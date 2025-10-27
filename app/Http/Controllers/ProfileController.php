@@ -69,6 +69,8 @@ class ProfileController extends Controller
                 break;
         }
 
+        $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+
         // ✅ Retorna para a view com todas as variáveis necessárias
         return view('profile.show', compact(
             'dadosespecificos',
@@ -79,11 +81,11 @@ class ProfileController extends Controller
             'likedPosts',
             'postsPopulares',
             'autista',
-            
+            'tendenciasPopulares',
         ));
     }
 
-    
+
     /**
      * Update the user's profile information.
      */

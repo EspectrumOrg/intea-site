@@ -14,12 +14,12 @@
     width: 100%;
 }
 
-.textfield {
+.form-create-comentario .textfield {
     position: relative;
     width: 100%;
 }
 
-.hashtag-preview {
+.form-create-comentario .hashtag-preview {
     position: absolute;
     top: 0;
     left: 0;
@@ -34,7 +34,7 @@
     pointer-events: none; /* permite clicar no textarea em cima */
 }
 
-.textfield textarea {
+.form-create-comentario .textfield textarea {
     position: relative;
     background: transparent;
     width: 100%;

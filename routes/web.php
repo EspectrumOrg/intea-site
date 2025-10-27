@@ -78,17 +78,17 @@ Route::middleware('auth')->group(function () {
         ->names("post")
         ->parameters(["feed" => "post"]);
     Route::post('/feed/curtida', [CurtidaController::class, 'toggleCurtida'])->name('curtida.toggle');
+    Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
+    // Comentários
+    Route::resource("comentario", ComentarioController::class)->names('comentario');
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
-    Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
 
-Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
+    Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
 
 
     // Grupo
-
-
     Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
     Route::post('/grupo/entrar/{grupoId}', [GruposControler::class, 'entrarNoGrupo'])->name('grupo.entrar');
     Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
@@ -98,8 +98,6 @@ Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('busca
         // ou
         return file_get_contents(resource_path('views/chat-test.php'));
     });
-
-
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
@@ -121,16 +119,16 @@ Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('busca
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-Route::get('/usuario/{id}/seguindo/count', [SeguirController::class, 'countSeguindo']);
-Route::get('/usuario/{id}/seguidores/count', [SeguirController::class, 'countSeguidores']);
-Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])
-    ->name('usuario.listar.seguindo');
-// Lista os usuários que seguem este usuário
-Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidores'])
+    Route::get('/usuario/{id}/seguindo/count', [SeguirController::class, 'countSeguindo']);
+    Route::get('/usuario/{id}/seguidores/count', [SeguirController::class, 'countSeguidores']);
+    Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])
+        ->name('usuario.listar.seguindo');
+    // Lista os usuários que seguem este usuário
+    Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidores'])
 
-    ->name('usuario.listar.seguidores');
+        ->name('usuario.listar.seguidores');
 
-Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuarioschat'])->name('buscar.usuarios.chat');
+    Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuarioschat'])->name('buscar.usuarios.chat');
 
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
