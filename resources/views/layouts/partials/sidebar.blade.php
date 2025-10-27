@@ -1,7 +1,6 @@
 <!-- icons and style -->
 <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 <div class="content">
 
@@ -45,30 +44,30 @@
     <div class="links">
         <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
             id="home">
-            <span class="material-symbols-outlined">home</span>
+            <span id="simbolo-home" class="material-symbols-outlined" >home</span>
             <h1>Home</h1>
         </a>
 
         <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
-            <span class="material-symbols-outlined">mail</span>
+            <span id="simbolo-mensagens" class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
 
         <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
             id="profile">
-            <span class="material-symbols-outlined">person</span>
+            <span id="simbolo-perfil" class="material-symbols-outlined">person</span>
             <h1>Perfil</h1>
         </a>
 
         <a href="{{ route('grupo.index') }}" class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
             id="config">
-            <span class="material-symbols-outlined">group</span>
+            <span id="simbolo-grupos" class="material-symbols-outlined">group</span>
             <h1>Grupos</h1>
         </a>
 
         <a href="{{ route('configuracao.config') }}"
             class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}">
-            <span class="material-symbols-outlined">settings</span>
+            <span id="simbolo-config" class="material-symbols-outlined">settings</span>
             <h1>Configurações</h1>
         </a>
 
@@ -77,7 +76,7 @@
         @can("visualizar-admin")
         <a href="{{ route('dashboard.index') }}"
             class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-            <span class="material-symbols-outlined">manage_accounts</span>
+            <span id="simbolo-admin" class="material-symbols-outlined">manage_accounts</span>
             <h1>Admin</h1>
         </a>
         @endcan

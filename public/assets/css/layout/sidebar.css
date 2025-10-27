@@ -19,6 +19,19 @@
     --texto-padrao: 1rem;
     --texto-secundario: 1.4rem;
     --texto-titulo: 2.5rem;
+
+  --vermelho: #E52125;
+  --vermelho-apagado: rgb(153, 34, 34);
+  --verde: #03A64A;
+  --verde-apagado: #036d31;
+  --azul: #2A71B1;
+  --azul-apagado: #1c4a73;
+  --amarelo: #F2E500;
+  --amarelo-apagado: #b1a902;
+  --roxo: #6D398B;
+  --roxo-apagado: #452557;
+  --rosa: #C4027D;
+  --rosa-apagado: #8b0259;
 }
 
 
@@ -306,4 +319,72 @@
     color: var(--cor-tema);
     transform: translateX(5px);
 
+}
+
+
+#simbolo-home {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+    color: var(--azul-apagado);
+}
+
+#simbolo-mensagens {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+  color: var(--vermelho-apagado);
+}
+
+#simbolo-perfil {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+  color: var(--verde-apagado);
+}
+
+#simbolo-grupos {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+  color: var(--amarelo-apagado);
+}
+
+#simbolo-config {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+  color: var(--roxo-apagado);
+}
+
+#simbolo-admin {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 40;
+  font-style: bolder;
+  font-size: 32px;
+  color: var(--preto);
+  height: auto;
 }
