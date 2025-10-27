@@ -21,13 +21,13 @@ class ComentarioController extends Controller
             ]
         );
 
-        // salvar dados gerais
+        // Dados básicos
         $dados = [
             'id_usuario' => auth()->id(),
             'comentario' => $request->comentario,
         ];
 
-        // salvar como post coment ou post reply
+        // Verifica tipo e define relacionamento
         if ($tipo === 'postagem') {
             $dados['id_postagem'] = $id;
         } elseif ($tipo === 'comentario') {
@@ -36,25 +36,35 @@ class ComentarioController extends Controller
             abort(400, 'Tipo inválido de comentário.');
         }
 
-        // salvar bd
+        // Cria o comentário
         $comentario = Comentario::create($dados);
 
-        // Se veio uma imagem, salvar no storage e criar o registro
+        // Se veio uma imagem, salva no storage
         if ($request->hasFile('caminho_imagem')) {
             $arquivo = $request->file('caminho_imagem');
-
-            // Salva no storage (ex: storage/app/public/imagens_comentarios)
             $caminho = $arquivo->store('imagens_comentarios', 'public');
 
-            // Cria o registro da imagem no BD
             ImagemComentario::create([
                 'id_comentario' => $comentario->id,
                 'caminho_imagem' => $caminho,
             ]);
         }
 
-        return back()->with('nada', 'Comentário publicado!');
+        // 🔁 Redirecionamento dinâmico
+        if ($tipo === 'postagem') {
+            return redirect()
+                ->route('post.read', ['postagem' => $id])
+                ->with('success', 'Comentário publicado!');
+        } elseif ($tipo === 'comentario') {
+            return redirect()
+                ->route('comentario.focus', ['id' => $id])
+                ->with('success', 'Resposta publicada!');
+        }
+
+        // fallback (só em caso de erro)
+        return back()->with('error', 'Não foi possível redirecionar.');
     }
+
 
     public function focus($id)
     {

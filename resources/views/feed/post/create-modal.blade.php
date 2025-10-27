@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="botao-submit">
-                            <button type="submit" class="botao-postar">Publicar</button>
+                            <button type="submit" class="botao-postar">Postar</button>
                         </div>
                     </div>
                 </form>
