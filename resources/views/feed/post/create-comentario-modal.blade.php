@@ -15,6 +15,7 @@
                     src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
                     alt="foto de perfil"
                     class="user-photo"
+                    style="object-fit: cover;"
                     loading="lazy">
 
                 <h1> {{ $postagem->titulo}} </h1>

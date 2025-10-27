@@ -1,68 +1,67 @@
-<div class="buscar-container" style="margin-bottom: 30px;">
-    <h1 style="font-size: 20px; margin-bottom: 10px;">Buscar Usuários</h1>
-    <input type="text" id="buscar" placeholder="Digite o nome ou apelido..." 
-           style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;outline:none; margin-bottom:10px;">
-    <div id="listaUsuarios" class="user-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+<!-- style -->
+<link rel="stylesheet" href="{{ asset('assets/css/layout/barra-pesquisa.css') }}">
+
+<div class="buscar-container">
+    <input 
+        type="text" 
+        id="buscar" 
+        placeholder="Digite o nome ou apelido...">
+    <div id="listaUsuarios" class="user-list"></div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const inputBuscar = document.getElementById('buscar');
-    const lista = document.getElementById('listaUsuarios');
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputBuscar = document.getElementById('buscar');
+        const lista = document.getElementById('listaUsuarios');
 
-    if (!inputBuscar || !lista) return;
+        if (!inputBuscar || !lista) return;
 
-    // URL absoluta usando Blade
-    const buscarUrl = "{{ route('buscar.usuarios') }}";
+        // URL absoluta usando Blade
+        const buscarUrl = "{{ route('buscar.usuarios') }}";
 
-    inputBuscar.addEventListener('input', function() {
-        const query = this.value.trim();
+        inputBuscar.addEventListener('input', function() {
+            const query = this.value.trim();
 
-        if(query === '') {
-            lista.innerHTML = '';
-            return;
-        }
-
-        fetch(`${buscarUrl}?q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(usuarios => {
+            if (query === '') {
                 lista.innerHTML = '';
+                return;
+            }
 
-                if(!usuarios || usuarios.length === 0){
-                    lista.innerHTML = '<p>Nenhum usuário encontrado.</p>';
-                    return;
-                }
+            fetch(`${buscarUrl}?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(usuarios => {
+                    lista.innerHTML = '';
 
-                usuarios.forEach(u => {
-                    const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
+                    if (!usuarios || usuarios.length === 0) {
+                        lista.innerHTML = '<p class="user-not-found">Nenhum usuário encontrado.</p>';
+                        return;
+                    }
 
-                    const a = document.createElement('a');
-                    a.href = `/conta/${u.id}`;
-                    a.style.display = 'flex';
-                    a.style.alignItems = 'center';
-                    a.style.gap = '10px';
-                    a.style.background = '#fafafa';
-                    a.style.padding = '10px';
-                    a.style.borderRadius = '8px';
-                    a.style.textDecoration = 'none';
-                    a.style.color = 'inherit';
+                    usuarios.forEach(u => {
+                        const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
 
-                    a.innerHTML = `
-                        <img src="${fotoUrl}" alt="${u.user}" 
-                             style="width:45px;height:45px;border-radius:50%;object-fit:cover;">
-                        <div>
-                            <strong>${u.user}</strong><br>
-                            <small style="color:#777;">${u.apelido ?? ''}</small>
+                        const a = document.createElement('a');
+                        a.href = `/conta/${u.id}`;
+                        a.className = 'link-barra-pesquisa'
+
+                        a.innerHTML = `
+                        <img 
+                            class="foto-usuario-barra-pesquisa"
+                            src="${fotoUrl}" 
+                            alt="${u.user}">
+                        <div class="info-barra-pesquisa">
+                            <h1>${u.user}</h1>
+                            <p>${u.apelido ?? ''}</p>
                         </div>
                     `;
 
-                    lista.appendChild(a);
+                        lista.appendChild(a);
+                    });
+                })
+                .catch(err => {
+                    console.error('Erro ao buscar usuários:', err);
+                    lista.innerHTML = '<p>Ocorreu um erro ao buscar usuários.</p>';
                 });
-            })
-            .catch(err => {
-                console.error('Erro ao buscar usuários:', err);
-                lista.innerHTML = '<p>Ocorreu um erro ao buscar usuários.</p>';
-            });
+        });
     });
-});
 </script>

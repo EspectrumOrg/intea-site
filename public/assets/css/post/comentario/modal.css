@@ -10,7 +10,8 @@
     color: var(--preto);
     white-space: pre-wrap;
     word-wrap: break-word;
-    pointer-events: none; /* permite clicar no textarea em cima */
+    pointer-events: none;
+    /* permite clicar no textarea em cima */
 }
 
 /* form dentro do modal */
@@ -152,4 +153,58 @@
 /* ----------------------------- preview imagem modal------------------------------- */
 .form-comentar .image-preview img {
     max-height: 375px;
+}
+
+/* ----------------------------- resposta modal ------------------------------- */
+.resposta {
+    display: flex;
+    flex-direction: column;
+}
+
+.resposta .reply {
+    width: 100%;
+}
+
+.resposta .reply-content {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.resposta .dados-reply {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: none
+}
+
+/* dados da comentário respondida*/
+.resposta .info-user-resposta {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.resposta h1 {
+    font-size: 14px;
+    color: var(--azul);
+    font-weight: 600;
+}
+
+.resposta p {
+    font-size: 14px;
+    color: var(--cinza);
+    font-weight: 600;
+}
+
+/* texto da comentário respondida*/
+.resposta .texto-comentario {
+    width: 100%;
+    border: none;
+}
+
+.resposta .comentario {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cinza-font);
 }

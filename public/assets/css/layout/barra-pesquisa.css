@@ -1,0 +1,93 @@
+.buscar-container {
+    background: var(--branco);
+    margin: 0 0 0 2rem;
+    width: 350px;
+    position: sticky;
+    z-index: 9999;
+    top: 1rem;
+}
+
+/* barra de pesquisa*/
+input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 15px;
+    background-color: var(--branco);
+    border-radius: 50px / 100%;
+    border: 2px solid var(--branco-light);
+    transition: .3s;
+}
+
+input:focus {
+    border-color: var(--azul);
+    outline: var(--azul);
+}
+
+/* itens pesquisados */
+.user-list {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    max-height: 70vh;
+    overflow-y: scroll;
+    border-radius: 8px;
+}
+
+.user-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--branco);
+    color: var(--preto);
+    border: 1px solid var(--branco-light);
+    transition: 0.4s;
+}
+
+/* link de cada user */
+.link-barra-pesquisa {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--branco);
+    text-decoration: none;
+    padding: 1rem;
+    transition: .3s;
+    gap: 1rem;
+}
+
+.link-barra-pesquisa:hover {
+    background-color: var(--branco-light);
+}
+
+.foto-usuario-barra-pesquisa {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+    object-fit: cover;
+}
+
+/* dados usuário pesquisados */
+.info-barra-pesquisa {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.info-barra-pesquisa h1 {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--azul);
+}
+
+.info-barra-pesquisa p {
+    color: var(--preto);
+    font-size: 14px;
+}
+
+/* nenhum usuário encontrado */
+.user-not-found {
+    padding: 1rem;
+    background-color: var(--branco);
+}
