@@ -274,7 +274,8 @@
             </div>
 
             <!-- conteúdo popular -->
-            <div class="content-popular">
+            <div class="content-popular">   
+                @include('profile.partials.buscar') 
                 @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])
             </div>
         </div>

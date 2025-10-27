@@ -110,8 +110,10 @@ class UsuarioController extends Controller
     }
 public function buscarUsuarios(Request $request)
 {
-    $usuarioId = auth()->id();
+$usuarioId = auth()->id() ?? 0;
     $search = $request->input('q', '');
+
+    $usuarios = collect();
 
     if ($search !== '') {
         $usuarios = Usuario::where('id', '!=', $usuarioId)
@@ -121,11 +123,9 @@ public function buscarUsuarios(Request $request)
             })
             ->orderBy('user', 'asc')
             ->get(['id','user','apelido','foto']);
-
-        return response()->json($usuarios);
     }
 
-    return view('feed.conta.buscar');
+    return response()->json($usuarios);
 }
 
     public function destroy($id)

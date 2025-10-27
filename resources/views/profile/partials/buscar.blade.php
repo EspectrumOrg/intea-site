@@ -1,18 +1,22 @@
 <div class="buscar-container" style="margin-bottom: 30px;">
-    <h1 style="font-size: 20px; margin-bottom: 10px;">Buscar Usuários</h1>
-    <input type="text" id="buscar" placeholder="Digite o nome ou apelido..." 
+    <h2 style="font-size: 20px; margin-bottom: 10px;">Buscar Usuários</h2>
+
+    <!-- Campo de busca -->
+    <input type="text" id="buscarInputPerfil" placeholder="Digite o nome ou apelido..." 
            style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;outline:none; margin-bottom:10px;">
-    <div id="listaUsuarios" class="user-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+
+    <!-- Lista de usuários -->
+    <div id="listaUsuariosPerfil" class="user-list" style="display:flex;flex-direction:column;gap:10px;"></div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const inputBuscar = document.getElementById('buscar');
-    const lista = document.getElementById('listaUsuarios');
+    const inputBuscar = document.getElementById('buscarInputPerfil');
+    const lista = document.getElementById('listaUsuariosPerfil');
 
     if (!inputBuscar || !lista) return;
 
-    // URL absoluta usando Blade
+    // URL absoluta usando Laravel
     const buscarUrl = "{{ route('buscar.usuarios') }}";
 
     inputBuscar.addEventListener('input', function() {
