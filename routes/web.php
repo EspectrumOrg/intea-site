@@ -138,8 +138,11 @@ Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuari
     Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
 
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
-});
 
+    // Atualizar visibilidade de usuário
+    Route::patch('/usuario/update-privacidade', [\App\Http\Controllers\UsuarioController::class, 'update_privacidade'])
+        ->name('usuario.update_privacidade');
+});
 
 
 // Profissional de Saúde Logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+

@@ -108,6 +108,20 @@ class UsuarioController extends Controller
 
         return view('admin.usuario.index', compact('usuario'));
     }
+
+    public function update_privacidade(Request $request)
+    {
+
+        $request->validate([
+        'visibilidade' => 'required|in:0,1',
+    ]);
+
+        $request->user()->visibilidade = $request->visibilidade;
+        $request->user()->save();
+
+        return redirect()->back()->with('success', 'Configurações de privacidade atualizadas com sucesso.');
+    }
+
 public function buscarUsuarios(Request $request)
 {
 $usuarioId = auth()->id() ?? 0;
