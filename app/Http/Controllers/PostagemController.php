@@ -47,7 +47,7 @@ public function index()
         ->orderByDesc('created_at')
         ->get();
 
-    $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+    $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
 
     return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
 }

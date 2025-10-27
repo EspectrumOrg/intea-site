@@ -63,7 +63,7 @@ class ContaController extends Controller
             ->take(5)
             ->get();
 
-          $tendenciasPopulares = Tendencia::populares(10)->get();
+          $tendenciasPopulares = Tendencia::populares(7)->get();
 
         // Pega o autista só se o user for responsável (tipo 5)
         $responsavel = null;

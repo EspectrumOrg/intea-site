@@ -28,29 +28,33 @@ class TendenciaController extends Controller
      * Lista todas as tendências com pesquisa
      */
     public function index(Request $request)
-    {
-        try {
-            Log::info('Acessando página de tendências', ['search' => $request->search]);
+{
+    try {
+        Log::info('Acessando página de tendências', ['search' => $request->search]);
 
-            $query = Tendencia::query();
+        $query = Tendencia::query();
 
-            // Aplica pesquisa
-            $this->aplicarPesquisa($query, $request->search);
+        // Aplica pesquisa
+        $this->aplicarPesquisa($query, $request->search);
 
-            $tendencias = $query->orderBy('contador_uso', 'desc')
-                ->orderBy('ultimo_uso', 'desc')
-                ->paginate(20)
-                ->appends($request->query());
+        $tendenciasPopulares = Tendencia::populares(7)->get();
 
-            Log::info('Tendências carregadas', ['count' => $tendencias->count()]);
+        $tendencias = $query->orderBy('contador_uso', 'desc')
+            ->orderBy('ultimo_uso', 'desc')
+            ->paginate(20)
+            ->appends($request->query());
 
-            return view('feed.tendencias.index', compact('tendencias'));
-        } catch (\Exception $e) {
-            Log::error('Erro no controller de tendências: ' . $e->getMessage());
-            return view('feed.tendencias.index')->with('tendencias', []);
-        }
+        Log::info('Tendências carregadas', ['count' => $tendencias->count()]);
+
+        return view('feed.tendencias.index', compact('tendencias', 'tendenciasPopulares'));
+        
+    } catch (\Exception $e) {
+        Log::error('Erro no controller de tendências: ' . $e->getMessage());
+        
+        $tendenciasPopulares = collect();
+        return view('feed.tendencias.index', compact('tendenciasPopulares'))->with('tendencias', []);
     }
-
+}
     /**
      * API para buscar tendências
      */
@@ -63,7 +67,7 @@ class TendenciaController extends Controller
 
             $this->aplicarPesquisa($query, $request->search);
 
-            $tendencias = $query->populares(10)->get();
+            $tendencias = $query->populares(7)->get();
 
             Log::info('Tendências API retornadas', ['count' => $tendencias->count()]);
 
@@ -89,7 +93,7 @@ class TendenciaController extends Controller
         try {
             Log::info('API Tendências Populares chamada');
 
-            $tendencias = Tendencia::populares(10)->get();
+            $tendencias = Tendencia::populares(7)->get();
 
             Log::info('Tendências populares retornadas', ['count' => $tendencias->count()]);
 
@@ -124,7 +128,7 @@ class TendenciaController extends Controller
                 ->orderByDesc('created_at')
                 ->paginate(15);
 
-            $tendenciasPopulares = Tendencia::populares(10)->get();
+            $tendenciasPopulares = Tendencia::populares(7)->get();
 
             Log::info('Tendência carregada', [
                 'tendencia' => $tendencia->hashtag,
