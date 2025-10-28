@@ -56,10 +56,10 @@
     <div class="container">
       <div class="solutions-content">
         <div class="solutions-header">
-          <span class="solution-tag">Apoio e Comunidade</span>
+          <span class="solution-tag-vermelho">Apoio e Comunidade</span>
           <h2 class="section-title">
-            <span class="gradient-text">Criado para a</span>
-            <span class="text-azul-solido">comunidade autista</span>
+            <span class="gradient-text-solution">Criado para a</span>
+            <span class="text-vermelho-solido">comunidade autista</span>
           </h2>
           <p class="section-description">
             A comunidade autista enfrenta muitos desafios, principalmente com a dificuldade na comunicação e conexão com outras pessoas, estamos aqui para resolver esse problema.
@@ -108,10 +108,10 @@
   <section id="features" class="section features">
     <div class="container">
       <div class="features-header text-center">
-        <span class="solution-tag">Nossas funcionalidades</span>
+        <span class="solution-tag-verde">Nossas funcionalidades</span>
         <h2 class="section-title">
-          <span class="gradient-text">Tudo que você precisa</span>
-          <span class="text-azul-solido">para se conectar</span>
+          <span class="gradient-text-verde">Tudo que você precisa</span>
+          <span class="text-verde-solido">para se conectar</span>
         </h2>
         <p class="section-description">
           Nossa plataforma oferece todas as ferramentas e recursos necessários para criar uma comunidade inclusiva e acolhedora para pessoas no espectro autista.
@@ -191,7 +191,7 @@
         </div>
 
         <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
-          <input class="input1" type="text" name="email" maxlength="100" placeholder="Ex.: abc@xyz.com" required>
+          <input class="input1" type="text" name="email" maxlength="100" placeholder="Email" required>
           <span class="shadow-input1"></span>
         </div>
         @endguest
