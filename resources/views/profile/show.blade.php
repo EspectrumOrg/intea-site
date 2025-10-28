@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile/modalSeguir.css') }}">
+
 </head>
 
 <body>
