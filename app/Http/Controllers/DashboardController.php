@@ -90,7 +90,7 @@ class DashboardController extends Controller
         // Top 5 tendências mais populares
         $topTendencias = Tendencia::orderBy('contador_uso', 'desc')
             ->orderBy('ultimo_uso', 'desc')
-            ->take(5)
+            ->take(6)
             ->get();
 
         // Tendências criadas este mês

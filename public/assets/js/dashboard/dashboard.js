@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // === Gráfico de Linhas (Usuários, Postagens, Denúncias, Tendências) ===
-    const ctxLine = document.getElementById('atividadeChart').getContext('2d'); // ✅ MUDOU: atividadeChart
+    const ctxLine = document.getElementById('atividadeChart').getContext('2d'); // atividadeChart
     new Chart(ctxLine, {
         type: 'line',
         data: {
