@@ -3,9 +3,11 @@
 
 <div class="buscar-container">
     <input 
+        class="input-barra-pesquisa"
         type="text" 
         id="buscar" 
-        placeholder="Digite o nome ou apelido...">
+        placeholder="Buscar">
+        <span class="material-symbols-outlined">search</span>
     <div id="listaUsuarios" class="user-list"></div>
 </div>
 

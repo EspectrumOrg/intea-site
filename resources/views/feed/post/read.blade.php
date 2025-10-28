@@ -21,13 +21,16 @@
     <div class="postagem-foco">
         <div style="display: flex; gap: 1rem;">
             <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}" class="foto-user">
-                <img src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}" alt="foto perfil">
+                <img
+                    src="{{ $postagem->usuario->foto ? asset('storage/'.$postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
+                    alt="foto perfil"
+                    class="foto-user-padrao">
             </a>
             <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                    <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
+                    <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
                 </a>
-                <h2>{{ $postagem->usuario->user }}</h2>
+                <h2>{{ $postagem->usuario->apelido }}</h2>
             </div>
         </div>
 
@@ -171,9 +174,7 @@
     <img
         src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
         alt="foto de perfil"
-        style="border-radius: 50%; object-fit:cover;"
-        width="40"
-        height="40"
+        class="foto-user-padrao"
         loading="lazy">
 
     <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" class="form" enctype="multipart/form-data">
@@ -227,42 +228,111 @@
 <div class="comentarios">
     @foreach($postagem->comentarios->whereNull('id_comentario_pai') as $comentario)
     <div class="comentario">
-        <a href="{{ route('comentario.focus', ['id' => $comentario->id]) }}" class="post-overlay"></a>
+        <a href="{{ route('comentario.focus', ['id' => $comentario->id]) }}" class="comentario-overlay"></a>
 
-        <div class="foto-comentario"> <!--foto-->
-            <img
-                src="{{ $comentario->usuario->foto ? url('storage/' . $comentario->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
-                alt="foto de perfil"
-                style="border-radius: 50%; object-fit:cover;"
-                width="40"
-                height="40"
-                loading="lazy">
+
+        <div class="foto-perfil">
+            <a href="{{ route('conta.index', ['usuario_id' => $comentario->usuario->id]) }}">
+                <img
+                    src="{{ $comentario->usuario->foto ? url('storage/' . $comentario->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
+                    alt="foto de perfil"
+                    class="foto-user-padrao"
+                    loading="lazy">
+            </a>
         </div>
 
-        <div class="dados"> <!--dados-->
-            <strong>{{ $comentario->usuario->nome }}</strong>
-            <span>{{ $comentario->created_at->diffForHumans() }}</span>
-            <p>{{ $comentario->comentario }}</p>
+        <div class="corpo-content" style="width: 100%;">
+            <div class="topo"> <!-- info conta -->
+                <div class="info-perfil">
+                    <a href="{{ route('conta.index', ['usuario_id' => $comentario->usuario->id]) }}">
+                        <h1>{{ Str::limit($comentario->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                    </a>
+                    <h2>{{ $comentario->usuario->user }} . {{ $comentario->created_at->shortAbsoluteDiffForHumans() }}</h2>
+                </div>
 
-            @if(!empty($comentario->image))
-            <img src="{{ asset('storage/' . $comentario->image->caminho_imagem) }}" alt="Imagem comentário">
-            @endif
-            <!----------------------------- Curtidas e comentários Comentários-------------------->
-            <div class="interacoes-comentarios">
-                <div class="corpo">
-                    <div class="comment">
-                        <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button btn-comentar">
-                            <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')">
-                                <span class="material-symbols-outlined">chat_bubble</span>
-                                <h1>{{ $comentario->comentarios_count }}</h1>
+                <div class="dropdown"> <!-- opções comentario -->
+                    <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                        <span class="material-symbols-outlined">more_horiz</span>
+                    </button>
+                    <ul class="dropdown-content">
+                        @if(Auth::id() === $comentario->usuario->id)
+                        <li>
+                            <button type="button"
+                                class="btn-acao editar btn-abrir-modal-edit-comentario"
+                                onclick="abrirModalEditarComentario('{{ $comentario->id }}')">
+                                <span class="material-symbols-outlined">edit</span>Editar
+                            </button>
+                        </li>
+                        <li>
+                            <form action="{{ route('post.destroy', $comentario->id) }}" method="POST" style="display:inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-acao excluir">
+                                    <span class="material-symbols-outlined">delete</span>Excluir
+                                </button>
+                            </form>
+                        </li>
+                        @else
+                        <!-- Caso não tenha sido quem postou --------------------->
+                        <li>
+                            @if( Auth::user()->tipo_usuario === 1 )
+                            <form action="{{ route('usuario.destroy', $comentario->usuario->id) }}" method="post" class="form-excluir">
+                                @csrf
+                                @method("delete")
+                                <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                                    <span class="material-symbols-outlined">person_off</span>
+                                    Banir usuário
+                                </button>
+                            </form>
+                            @else
+                            <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
+                                <span class="material-symbols-outlined">flag_2</span>Denunciar
                             </a>
-                        </button>
-                    </div>
+                            @endif
+                        </li>
+                        <li>
+                            <form action="{{ route('seguir.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $comentario->usuario->id }}">
+                                <button type="submit" class="seguir-btn">
+                                    <span class="material-symbols-outlined">person_add</span>Seguir {{ $comentario->usuario->user }}
+                                </button>
+                            </form>
+                        </li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
 
+            <!-- conteudo comentario -->
+            <div class="conteudo-post">
+                <div class="coment-perfil">
+                    <p class="texto-curto" id="texto-{{ $comentario->id }}">
+                        {{ $comentario->comentario }}
+                        @if (strlen($comentario->comentario) > 150)
+                        <span class="mostrar-mais" onclick="toggleTexto('{{ $comentario->id }}', this)">...mais</span>
+                        @endif
+                    </p>
+
+                    <p class="texto-completo" id="texto-completo-{{ $comentario->id }}" style="display: none;">
+                        $comentario->comentario
+                        <span class="mostrar-mais" onclick="toggleTexto('{{ $comentario->id }}', this)">...menos</span>
+                    </p>
+                </div>
+
+                <div class="image-post">
+                    @if ($comentario->image)
+                    <img src="{{ asset('storage/' . $comentario->image->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
+                    @endif
+                </div>
+
+
+                <!-- curtidas e comentários ---------------------------------------------------------------------------------->
+                <div class="dados-post interacoes">
                     <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
                         <input type="hidden" name="tipo" value="comentario">
-                        <input type="hidden" name="id" value="{{ $comentario->id }}">
+                        <input type="hidden" name="id" value="{{ $comentario->id}}">
                         <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
                             <span class="material-symbols-outlined">favorite</span>
                             <h1>{{ $comentario->curtidas_count }}</h1>
@@ -271,28 +341,48 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!--resposta------------------------------------------------------------------------------------------->
-    @if($comentario->respostas->isNotEmpty())
-    <div class="respostas-base">
-        @foreach($comentario->respostas as $resposta)
-        <img src="foto de quem fez o coment">
-        <div class="resposta">
-            <a href="{{ route('comentario.focus', $resposta->id) }}">
-                <strong>{{ $resposta->usuario->user }}</strong>
-            </a>
-            <p>{{ $resposta->comentario }}</p>
-            <img src="imagem do comentario">
-        </div>
-        @endforeach
-    </div>
-    @endif
-
-    <!-- modal resposta comentário-------------------------------------------------------------------------------------------------------------->
+    <!-- modal resposta comentário------------------------------------------------>
     @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
 
+    <!-- Modal Edição dessa comentario -->
+    @include('feed.post.comentario.comentario-edit', ['comentario' => $comentario])
+
+    <!-- Modal de denúncia (um para cada postagem) -->
+    <div id="modal-denuncia-comentario-{{ $comentario->id }}" class="modal-denuncia hidden">
+        <div class="modal-content">
+            <span class="close"
+                onclick="fecharModalDenunciaComentario('{{$comentario->id}}')">
+                <span class="material-symbols-outlined">close</span>
+            </span>
+
+            <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
+                @csrf
+                <div class="form">
+                    <input type="hidden" name="tipo" value="comentario">
+                    <input type="hidden" name="id_alvo" value="{{ $comentario->id }}">
+                    <label class="form-label">Motivo Denúncia</label>
+                    <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                        <option value="">Tipo</option>
+                        <option value="spam">Spam</option>
+                        <option value="desinformacao">Desinformação</option>
+                        <option value="conteudo_explicito">Conteúdo Explícito</option>
+                        <option value="discurso_de_odio">Discurso de Ódio</option>
+                    </select>
+                </div>
+
+                <div class="form-label">
+                    <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
+                    <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
+                </div>
+
+                <div style="display: flex; justify-content: end;">
+                    <button type="submit">Denunciar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     @endforeach
 </div>
 @endsection

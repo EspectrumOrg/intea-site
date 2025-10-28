@@ -69,10 +69,16 @@ class ProfileController extends Controller
                 break;
         }
 
+<<<<<<< HEAD
         // Tendências populares para o sidebar
         $tendenciasPopulares = Tendencia::populares(10)->get();
 
         // Retorna para a view com todas as variáveis necessárias
+=======
+        $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+
+        // ✅ Retorna para a view com todas as variáveis necessárias
+>>>>>>> parte-admin
         return view('profile.show', compact(
             'dadosespecificos',
             'generos',
@@ -82,6 +88,7 @@ class ProfileController extends Controller
             'likedPosts',
             'postsPopulares',
             'autista',
+<<<<<<< HEAD
             'tendenciasPopulares' 
         ));
     }
@@ -149,6 +156,13 @@ class ProfileController extends Controller
         ));
     }
     
+=======
+            'tendenciasPopulares',
+        ));
+    }
+
+
+>>>>>>> parte-admin
     /**
      * Update the user's profile information.
      */

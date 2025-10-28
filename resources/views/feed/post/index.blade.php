@@ -1,3 +1,6 @@
+@extends('feed.post.template.layout')
+
+@section('main')
 <!-- style -->
 <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
@@ -263,3 +266,4 @@ e($texto)
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
+@endsection
