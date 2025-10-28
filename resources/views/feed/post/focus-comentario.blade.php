@@ -26,9 +26,9 @@
             </a>
             <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $comentario->usuario->id]) }}">
-                    <h1>{{ $comentario->usuario->user }}</h1>
+                    <h1>{{ $comentario->usuario->apelido }}</h1>
                 </a>
-                <h2>{{ $comentario->usuario->apelido }}</h2>
+                <h2>{{ $comentario->usuario->user }}</h2>
             </div>
         </div>
 
@@ -89,16 +89,7 @@
         @include('feed.post.comentario.comentario-edit', ['comentario' => $comentario])
 
         <!-- Modal Criação de comentário ($comentario->id) -->
-        <div id="modal-comentar-{{ $comentario->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $comentario->id }}')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="modal-content-content">
-                    @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
 
         <!-- Modal de denúncia (um para cada comentario) -->
         <div id="modal-denuncia-comentario-{{ $comentario->id }}" class="modal-denuncia hidden">
@@ -244,9 +235,9 @@
 
             <div class="dados"> <!--dados-->
                 <a href="{{ route('conta.index', ['usuario_id' => $resposta->usuario->id]) }}">
-                    <strong>{{ $resposta->usuario->user }}</strong>
+                    <strong>{{ $resposta->usuario->apelido }}</strong>
                 </a>
-                <strong>{{ $resposta->usuario->apelido }}</strong>
+                <strong>{{ $resposta->usuario->user }}</strong>
                 <span>{{ $resposta->created_at->diffForHumans() }}</span>
                 <p>{{ $resposta->comentario}}</p>
 
@@ -257,7 +248,7 @@
                     alt="Imagem respsota">
                 @endif
                 <!----------------------------- Curtidas -------------------->
-                <div class="interacoes-comentarios">
+                <div class="interacoes">
                     <div class="corpo">
                         <form method="POST" action="{{ route('curtida.toggle') }}">
                             @csrf

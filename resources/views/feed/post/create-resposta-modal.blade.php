@@ -64,11 +64,11 @@
 
                         <div class="content">
                             <div class="extras">
-                                <label for="caminho_imagem_modal" class="upload-label">
+                                <label for="caminho_imagem_modal_{{ $comentario->id}}" class="upload-label">
                                     <span class="material-symbols-outlined">image</span>
                                 </label>
                                 <input
-                                    id="caminho_imagem_modal"
+                                    id="caminho_imagem_modal_{{ $comentario->id}}"
                                     name="caminho_imagem"
                                     type="file"
                                     accept="image/*"
@@ -98,7 +98,7 @@
                 // Campos dinâmicos — IDs ajustados para o seu HTML real
                 const textareaRespostaModal = document.getElementById(`texto_resposta_create_modal_${idRespostaModal}`);
                 const previewHashtagRespostaModal = document.getElementById(`hashtag-preview-create-resposta-modal-${idRespostaModal}`);
-                const inputFileRespostaModal = document.getElementById('caminho_imagem_modal'); // mesmo id para todos
+                const inputFileRespostaModal = document.getElementById(`caminho_imagem_modal_${idRespostaModal}`); // mesmo id para todos
                 const previewContainerRespostaModal = document.getElementById(`image-preview_create_resposta_modal_${idRespostaModal}`);
                 const previewImageRespostaModal = document.getElementById(`preview-img_create_resposta_modal_${idRespostaModal}`);
                 const removeButtonRespostaModal = document.getElementById(`remove-image_create_resposta_modal_${idRespostaModal}`);

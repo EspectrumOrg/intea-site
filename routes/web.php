@@ -55,16 +55,16 @@ Route::post('/update-theme-preference', function (Illuminate\Http\Request $reque
         if (!Auth::check()) {
             return response()->json(['success' => false, 'message' => 'Usuário não autenticado']);
         }
-        
+
         $user = Auth::user();
         $user->tema_preferencia = $request->tema_preferencia;
         $user->save();
-        
+
         Log::info('Preferência de tema atualizada', [
             'user_id' => $user->id,
             'tema_preferencia' => $request->tema_preferencia
         ]);
-        
+
         return response()->json(['success' => true]);
     } catch (\Exception $e) {
         Log::error('Erro ao atualizar preferência de tema: ' . $e->getMessage());
@@ -124,6 +124,10 @@ Route::middleware('auth')->group(function () {
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
+    // Checagem denúncias
+    Route::resource("denuncia", DenunciaController::class)
+        ->names("denuncia")
+        ->parameters(["denuncia" => "denuncias"]);
 
     // Seguir
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store');
@@ -188,10 +192,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
 
-    // Checagem denúncias
-    Route::resource("denuncia", DenunciaController::class)
-        ->names("denuncia")
-        ->parameters(["denuncia" => "denuncias"]);
     Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
 
