@@ -29,96 +29,153 @@ class ContaController extends Controller
         $this->telefone = $telefone;
     }
 
-    /*
-     Exibe o perfil completo do usuário com as quatro categorias
-     */
     public function show($usuario_id = null)
-    {
-        try {
-            // Tenta encontrar o usuário (passado na URL ou o logado)
-            $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
-            $currentUser = auth()->user();
-
-            // ✅ ADICIONADO: Proteção do CPF
-            $podeVerCPF = ($currentUser && ($currentUser->id == $user->id || $currentUser->tipo_usuario == 1));
-
-            // Telefones, gêneros, dados específicos do tipo
-            $generos = $this->genero->all();
-            $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-            $dadosespecificos = $this->getDadosEspecificos($user);
-
-            // Postagens do usuário
-            $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
-                ->with(['imagens', 'usuario'])
-                ->where('usuario_id', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
-
-            // Curtidas do usuário
-            $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
-                ->where('id_usuario', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
-
-            // Postagens populares
-            $postsPopulares = Postagem::withCount('curtidas')
-                ->with(['imagens', 'usuario'])
-                ->orderByDesc('curtidas_count')
-                ->take(5)
-                ->get();
-
-            $tendenciasPopulares = Tendencia::populares(7)->get();
-
-            // Pega o autista só se o user for responsável (tipo 5)
-            $responsavel = null;
-            $autista = null;
-            if ($user->tipo_usuario == 5) {
-                $responsavel = Responsavel::where('usuario_id', $user->id)->first();
-                if ($responsavel) {
-                    $autista = Autista::where('responsavel_id', $responsavel->id)->first();
-                }
-            }
-
-            return view('profile.show', compact(
-                'user',
-                'generos',
-                'telefones',
-                'dadosespecificos',
-                'userPosts',
-                'likedPosts',
-                'postsPopulares',
-                'tendenciasPopulares',
-                'autista',
-                'responsavel',
-                'podeVerCPF' // ✅ ADICIONADO
-            ));
-
-        } catch (\Exception $e) {
-            // Mostra erro de forma segura sem quebrar a view
-            Log::error('Erro ao carregar perfil: ' . $e->getMessage());
-
-            return view('profile.show', [
-                'user' => null,
-                'generos' => [],
-                'telefones' => [],
-                'dadosespecificos' => null,
-                'userPosts' => collect(),
-                'likedPosts' => collect(),
-                'postsPopulares' => collect(),
-                'tendenciasPopulares' => collect(),
-                'autista' => null,
-                'responsavel' => null,
-                'podeVerCPF' => false, // ✅ ADICIONADO
-                'error' => 'Erro ao carregar o perfil. Tente novamente mais tarde.',
-            ]);
+{
+    try {
+        // Tenta encontrar o usuário (passado na URL ou o logado)
+        $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
+        
+        if (!$user) {
+            return redirect('/feed')->with('error', 'Usuário não encontrado.');
         }
-    }
 
-    /*
-      Obtém os dados específicos baseados no tipo de usuário
-     */
+        $currentUser = auth()->user();
+        
+      
+        if ($currentUser && $currentUser->id != $user->id && $currentUser->tipo_usuario != 1) {
+            // Se NÃO é o próprio usuário E NÃO é admin, OCULTA o CPF
+            $user->cpf = '•••••••••••';
+        }
+        
+        // Se não está logado, também oculta o CPF
+        if (!$currentUser) {
+            $user->cpf = '•••••••••••';
+        }
+
+        // Resto do código...
+        $generos = $this->genero->all();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        $dadosespecificos = $this->getDadosEspecificos($user);
+
+        $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
+            ->with(['imagens', 'usuario'])
+            ->where('usuario_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
+            ->where('id_usuario', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->with(['imagens', 'usuario'])
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        $responsavel = null;
+        $autista = null;
+        if ($user->tipo_usuario == 5) {
+            $responsavel = Responsavel::where('usuario_id', $user->id)->first();
+            if ($responsavel) {
+                $autista = Autista::where('responsavel_id', $responsavel->id)->first();
+            }
+        }
+
+        return view('profile.show', compact(
+            'user',
+            'generos',
+            'telefones',
+            'dadosespecificos',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'tendenciasPopulares',
+            'autista',
+            'responsavel'
+           
+        ));
+
+    } catch (\Exception $e) {
+        Log::error('Erro ao carregar perfil: ' . $e->getMessage());
+        return redirect('/feed')->with('error', 'Erro ao carregar o perfil.');
+    }
+}
+
+    public function index($usuario_id)
+{
+    try {
+        $user = Usuario::findOrFail($usuario_id);
+        $currentUser = auth()->user();
+
+        // ✅ PROTEÇÃO DO CPF - MESMA LÓGICA (IDÊNTICA)
+        if ($currentUser && $currentUser->id != $user->id && $currentUser->tipo_usuario != 1) {
+            $user->cpf = '•••••••••••';
+        }
+        
+        if (!$currentUser) {
+            $user->cpf = '•••••••••••';
+        }
+
+        // Resto do código index()...
+        $generos = $this->genero->all();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        $dadosespecificos = $this->getDadosEspecificos($user);
+
+        $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
+            ->with(['imagens', 'usuario'])
+            ->where('usuario_id', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
+            ->where('id_usuario', $user->id)
+            ->orderByDesc('created_at')
+            ->get();
+
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->with(['imagens', 'usuario'])
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        $responsavel = null;
+        $autista = null;
+        if ($user->tipo_usuario == 5) {
+            $responsavel = Responsavel::where('usuario_id', $user->id)->first();
+            if ($responsavel) {
+                $autista = Autista::where('responsavel_id', $responsavel->id)->first();
+            }
+        }
+
+        return view('profile.show', compact(
+            'user',
+            'generos',
+            'telefones',
+            'dadosespecificos',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'tendenciasPopulares',
+            'autista',
+            'responsavel'
+        ));
+
+    } catch (\Exception $e) {
+        Log::error('Erro em conta.index: ' . $e->getMessage());
+        return redirect('/feed')->with('error', 'Perfil não encontrado.');
+    }
+}
+    /* Obtém os dados específicos baseados no tipo de usuário */
     private function getDadosEspecificos(Usuario $user)
     {
+        if (!$user) return null;
+
         switch ($user->tipo_usuario) {
             case 2: // Autista
                 return $user->autista;
@@ -128,97 +185,6 @@ class ContaController extends Controller
                 return $user->responsavel;
             default:
                 return null;
-        }
-    }
-
-    /*
-      Verifica se o usuário é admin
-     */
-    private function isAdmin()
-    {
-        return auth()->check() && auth()->user()->tipo_usuario === 1;
-    }
-
-    /*
-     Método antigo para compatibilidade
-     */
-    public function index($usuario_id)
-    {
-        try {
-            $user = Usuario::findOrFail($usuario_id);
-            $currentUser = auth()->user();
-            
-            // ✅ ADICIONADO: Proteção do CPF
-            $podeVerCPF = ($currentUser && ($currentUser->id == $user->id || $currentUser->tipo_usuario == 1));
-
-            // Telefones, gêneros, dados específicos do tipo
-            $generos = $this->genero->all();
-            $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-            $dadosespecificos = $this->getDadosEspecificos($user);
-
-            // Postagens do usuário
-            $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
-                ->with(['imagens', 'usuario'])
-                ->where('usuario_id', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
-
-            // Curtidas do usuário
-            $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
-                ->where('id_usuario', $user->id)
-                ->orderByDesc('created_at')
-                ->get();
-
-            // Postagens populares
-            $postsPopulares = Postagem::withCount('curtidas')
-                ->with(['imagens', 'usuario'])
-                ->orderByDesc('curtidas_count')
-                ->take(5)
-                ->get();
-
-            $tendenciasPopulares = Tendencia::populares(7)->get();
-
-            // Pega o autista só se o user for responsável (tipo 5)
-            $responsavel = null;
-            $autista = null;
-            if ($user->tipo_usuario == 5) {
-                $responsavel = Responsavel::where('usuario_id', $user->id)->first();
-                if ($responsavel) {
-                    $autista = Autista::where('responsavel_id', $responsavel->id)->first();
-                }
-            }
-
-            return view('profile.show', compact(
-                'user',
-                'generos',
-                'telefones',
-                'dadosespecificos',
-                'userPosts',
-                'likedPosts',
-                'postsPopulares',
-                'tendenciasPopulares',
-                'autista',
-                'responsavel',
-                'podeVerCPF' // ✅ ADICIONADO
-            ));
-
-        } catch (\Exception $e) {
-            Log::error('Erro ao carregar perfil no index: ' . $e->getMessage());
-
-            return view('profile.show', [
-                'user' => null,
-                'generos' => [],
-                'telefones' => [],
-                'dadosespecificos' => null,
-                'userPosts' => collect(),
-                'likedPosts' => collect(),
-                'postsPopulares' => collect(),
-                'tendenciasPopulares' => collect(),
-                'autista' => null,
-                'responsavel' => null,
-                'podeVerCPF' => false, // ✅ ADICIONADO
-                'error' => 'Erro ao carregar o perfil. Tente novamente mais tarde.',
-            ]);
         }
     }
 

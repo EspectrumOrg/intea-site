@@ -145,7 +145,7 @@ class ProfileController extends Controller
             'postsPopulares',
             'autista',
             'tendenciasPopulares',
-            'podeVerCPF' 
+            'podeVerCPF' // ← NOVA VARIÁVEL PARA CONTROLAR VISUALIZAÇÃO DO CPF
         ));
     }
     

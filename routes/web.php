@@ -22,6 +22,7 @@ use App\Http\Controllers\PusherController;
 use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,14 +60,14 @@ Route::post('/update-theme-preference', function (Illuminate\Http\Request $reque
         $user->tema_preferencia = $request->tema_preferencia;
         $user->save();
         
-        \Log::info('Preferência de tema atualizada', [
+        Log::info('Preferência de tema atualizada', [
             'user_id' => $user->id,
             'tema_preferencia' => $request->tema_preferencia
         ]);
         
         return response()->json(['success' => true]);
     } catch (\Exception $e) {
-        \Log::error('Erro ao atualizar preferência de tema: ' . $e->getMessage());
+        Log::error('Erro ao atualizar preferência de tema: ' . $e->getMessage());
         return response()->json(['success' => false, 'message' => $e->getMessage()]);
     }
 })->middleware('auth');
