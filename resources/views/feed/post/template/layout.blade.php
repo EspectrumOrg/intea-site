@@ -63,8 +63,8 @@
 <script src="{{ url('assets/js/posts/read/hashtag-comentario-read.js') }}"></script>
 <script src="{{ url('assets/js/posts/read/create-resposta-comentario-focus.js') }}"></script>
 
-<script src="{{ url('assets/js/posts/read/modal-denuncia-comentario.js') }}"></script>
-<script src="{{ url('assets/js/posts/read/modal-update-comentario.js') }}"></script>
+<script src="{{ url('assets/js/posts/comentario/modal-denuncia-comentario.js') }}"></script>
+<script src="{{ url('assets/js/posts/comentario/modal-update-comentario.js') }}"></script>
 
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>

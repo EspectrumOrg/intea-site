@@ -65,6 +65,10 @@
 .container-post .corpo-post .foto-perfil a {
     z-index: 9998 !important;
 }
+.container-post .corpo-post .foto-perfil img {
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+}
 
 /* conteúdo postagem */
 .container-post .corpo-content {
@@ -90,10 +94,10 @@
 
 /* Imagem Post*/
 .container-post .image-post img {
-    max-width: 100%;
-    border-radius: 7.5%;
     margin-top: .5rem;
-    border: none;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--branco-light);
 }
 
 /* Dados e informações ----------------------------------------------------------*/
@@ -324,7 +328,10 @@
 
 /* Garante que o overlay e botões fiquem abaixo */
 .corpo-post .post-overlay,
+.comentario .comentario-overlay, 
 .corpo-post button,
-.corpo-post form {
+.comentario button, 
+.corpo-post form,
+.comentario form {
     z-index: 1;
 }

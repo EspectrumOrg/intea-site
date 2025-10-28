@@ -220,14 +220,12 @@
 
 /* interações------------------------------------------------*/
 .interacoes {
-    margin-top: .75rem;
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
     color: var(--cinza);
-    margin: auto;
-    display: flex;
-    flex-direction: row;
     gap: 2rem;
-    padding: 0rem 1rem;
+    padding: 1rem;
 }
 
 .interacoes .corpo {
@@ -445,6 +443,23 @@
     color: var(--vermelho);
 }
 
+/*comentário conteúdo ---------------------------------------------*/
+.corpo-content .coment-perfil {
+    margin: .5rem 0;
+}
+
+.corpo-content .coment-perfil p {
+    font-size: 14px;
+    color: var(--preto);
+}
+
+.corpo-content .image-post img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
+}
+
 /*adicionais ---------------------------------------------*/
 .hashtag {
     position: relative;
@@ -522,11 +537,20 @@
     color: var(--vermelho);
 }
 
-/* Garante que o overlay e botões fiquem abaixo */
+/* Overlay postagem focus */
 .container-read .comentario-overlay,
 .container-read button,
 .container-read form,
 .container-read .dropdown,
 .container-read a {
+    z-index: 1;
+}
+
+/* Overlay comentários */
+.comentario .comentario-overlay,
+.comentario button,
+.comentario .dropdown,
+.comentario form,
+.comentario a {
     z-index: 1;
 }

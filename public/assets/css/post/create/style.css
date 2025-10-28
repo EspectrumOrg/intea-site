@@ -11,6 +11,11 @@
     gap: 1rem;
 }
 
+.create-post .form img{
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+}
+
 .create-post .form form{
     width: 100%;
 }

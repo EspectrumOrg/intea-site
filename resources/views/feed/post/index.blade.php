@@ -59,7 +59,7 @@ e($texto)
                 <div class="topo"> <!-- info conta -->
                     <div class="info-perfil">
                         <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                            <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                            <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                         </a>
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>

@@ -28,9 +28,9 @@
             </a>
             <div class="foto-perfil">
                 <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                    <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                    <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                 </a>
-                <h2>{{ $postagem->usuario->apelido }}</h2>
+                <h2>{{ $postagem->usuario->user }}</h2>
             </div>
         </div>
 
@@ -241,11 +241,11 @@
             </a>
         </div>
 
-        <div class="corpo-content" style="width: 100%;">
+        <div class="corpo-content" style="width: 100%; margin-left: 1rem;">
             <div class="topo"> <!-- info conta -->
                 <div class="info-perfil">
                     <a href="{{ route('conta.index', ['usuario_id' => $comentario->usuario->id]) }}">
-                        <h1>{{ Str::limit($comentario->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                        <h1>{{ Str::limit($comentario->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                     </a>
                     <h2>{{ $comentario->usuario->user }} . {{ $comentario->created_at->shortAbsoluteDiffForHumans() }}</h2>
                 </div>
@@ -329,6 +329,15 @@
 
                 <!-- curtidas e comentários ---------------------------------------------------------------------------------->
                 <div class="dados-post interacoes">
+                    <div>
+                        <button type="button" onclick="toggleForm('{{ $comentario->id }}')" class="button btn-comentar">
+                            <a href="javascript:void(0)" onclick="abrirModalComentar('{{ $comentario->id }}')">
+                                <span class="material-symbols-outlined">chat_bubble</span>
+                                <h1>{{ $comentario->comentarios_count }}</h1>
+                            </a>
+                        </button>
+                    </div>
+
                     <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
                         <input type="hidden" name="tipo" value="comentario">
