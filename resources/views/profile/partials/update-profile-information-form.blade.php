@@ -200,7 +200,9 @@
             <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
         </div>
    -->
-        <h6>Telefones</h6>
+       
+   <!--
+    <h6>Telefones</h6>
 
         @foreach($telefones as $index => $telefone)
         <div class="mb-3">
@@ -209,6 +211,7 @@
             <x-input-error class="mt-2" :messages="$errors->get('numero_telefone.' . $index)" />
         </div>
         @endforeach
+    -->
 
         <div class="flex">
             <button type="submit" class="btn-primary">{{ __('Salvar') }}</button>

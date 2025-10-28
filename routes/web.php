@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TelefoneController;
 use App\Http\Controllers\TendenciaController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AutistaController;
@@ -212,6 +213,15 @@ Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('te
 Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+
+// Rotas para gerenciamento de telefones
+Route::middleware('auth')->group(function () {
+    Route::post('/telefones', [App\Http\Controllers\TelefoneController::class, 'store'])->name('telefones.store');
+    Route::put('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'update'])->name('telefones.update');
+    Route::delete('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'destroy'])->name('telefones.destroy');
+    Route::post('/telefones/{id}/principal', [App\Http\Controllers\TelefoneController::class, 'setPrincipal'])->name('telefones.principal');
+    Route::get('/telefones/{id}/dados', [App\Http\Controllers\TelefoneController::class, 'getDados'])->name('telefones.dados');
+});
 
 
 // rotas para edição dos dados do autista via responsavel

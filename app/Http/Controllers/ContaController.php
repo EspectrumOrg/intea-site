@@ -52,7 +52,6 @@ class ContaController extends Controller
             $user->cpf = '•••••••••••';
         }
 
-        // Resto do código...
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = $this->getDadosEspecificos($user);
@@ -75,6 +74,7 @@ class ContaController extends Controller
             ->get();
 
         $tendenciasPopulares = Tendencia::populares(7)->get();
+        
 
         $responsavel = null;
         $autista = null;
