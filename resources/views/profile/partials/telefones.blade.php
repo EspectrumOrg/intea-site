@@ -478,26 +478,38 @@ async function salvarTelefone(event) {
 }
 
 function editarTelefone(id) {
+    console.log('Iniciando edição do telefone ID:', id);
+    
     // Buscar os dados do telefone via AJAX para garantir que temos os dados corretos
     fetch(`/telefones/${id}/dados`)
         .then(response => response.json())
-        .then(telefone => {
-            abrirModalTelefone(telefone);
+        .then(result => {
+            console.log('Resposta da API:', result);
+            
+            if (result.success && result.telefone) {
+                // ✅ CORREÇÃO AQUI: usar result.telefone em vez de telefone
+                abrirModalTelefone(result.telefone);
+            } else {
+                throw new Error(result.message || 'Dados do telefone não encontrados');
+            }
         })
         .catch(error => {
-            console.error('Erro ao carregar telefone:', error);
+            console.error('Erro ao carregar telefone via API:', error);
+            
             // Fallback: tentar pegar dados da interface
             const telefoneItem = document.querySelector(`.telefone-item[data-id="${id}"]`);
             if (telefoneItem) {
+                console.log('Usando fallback para ID:', id);
                 const telefone = {
                     id: id,
                     numero_telefone: telefoneItem.querySelector('.telefone-numero').textContent,
                     tipo_telefone: telefoneItem.querySelector('.telefone-tipo').textContent.toLowerCase(),
                     is_principal: telefoneItem.querySelector('.badge-primary') !== null
                 };
+                console.log('Dados do fallback:', telefone);
                 abrirModalTelefone(telefone);
             } else {
-                showNotification('Erro ao carregar dados do telefone', 'error');
+                showNotification('Erro ao carregar dados do telefone: ' + error.message, 'error');
             }
         });
 }
