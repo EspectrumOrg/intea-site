@@ -38,7 +38,7 @@
 /* logo ======= */
 .logo-container {
     position: absolute;
-    top: 15%;
+    top: 10%;
     left: 45%;
     transform: translate(-10%, -10%);
     border: none;
@@ -71,6 +71,7 @@ form h2 {
     font-size: 26px;
     margin-bottom: 1.5rem;
     color: var(--azul);
+    margin-top: 2rem;
 }
 
 /* Grupos do formulário */
@@ -178,7 +179,8 @@ form h2 {
 /* Link para registro */
 .register-link {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 1rem;    
+    margin-bottom: 2rem;
 }
 
 .register-link a {

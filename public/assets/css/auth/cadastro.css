@@ -74,6 +74,7 @@ body {
 /* Título */
 .form .descricao {
     padding: 0 5px 15px 5px;
+    margin-top: 2rem;
 }
 
 .form .descricao h2 {
@@ -127,6 +128,7 @@ body {
 .registro {
     text-align: center;
     margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .registro a {
