@@ -181,12 +181,17 @@ Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->na
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
 
 
+// rotas para adicionar dependente via responsavel
+// routes/web.php
+Route::post('/responsavel/{id}/adicionar-dependente', [ResponsavelController::class, 'addDependente'])->name('responsavel.adicionar_dependente');
+
+
 // rotas para edição dos dados do autista via responsavel
 // routes/web.php
 
 Route::middleware('auth')->group(function () {
-    Route::get('/autistas/{id}/editar', [App\Http\Controllers\ResponsavelController::class, 'edit_autista'])->name('autistas.edit_autista');
-    Route::patch('/autistas/{id}', [App\Http\Controllers\ResponsavelController::class, 'update_autista'])->name('autistas.update_autista');
+    Route::get('/autistas/{id}/editar', [App\Http\Controllers\AutistaController::class, 'edit_responsavel'])->name('autistas.edit_responsavel');
+    Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
 });
 
 

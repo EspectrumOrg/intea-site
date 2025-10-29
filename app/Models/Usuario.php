@@ -149,4 +149,9 @@ public function grupos()
 {
     $this->notify(new ResetPasswordNotification($token));
 }
+
+public function autistasResponsaveis()
+{
+    return $this->hasMany(Autista::class, 'responsavel_id');
+}
 }

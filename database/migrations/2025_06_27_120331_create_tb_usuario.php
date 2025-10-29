@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('genero');  
             $table->foreign('genero')->references('id')->on('tb_genero')->onDelete('cascade');
             $table->date('data_nascimento');
-            $table->string('foto'); //foto perfil
+            $table->string('foto')->nullable(); //foto perfil
             $table->string('descricao')->nullable(); //descrição perfil
             $table->integer('visibilidade')->default(1); // publica ou privada
             $table->integer('tipo_usuario'); //FK

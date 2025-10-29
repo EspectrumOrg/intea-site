@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
+use App\Models\Autista;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,7 +66,10 @@ class ProfileController extends Controller
                 break;
             case 5:
                 $dadosespecificos = $user->responsavel;
-                $autista = $user->responsavel->autistas()->first() ?? null;
+                $usuarioLogado = auth()->user();
+                $autista = Autista::with('usuario')
+                ->where('responsavel_id', $usuarioLogado->id)
+                ->first(); // ou ->get() se houver mais de um
                 break;
         }
 

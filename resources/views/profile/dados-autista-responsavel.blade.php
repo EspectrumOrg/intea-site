@@ -6,7 +6,7 @@
     </header>
 
     @isset($autista)
-    <form method="post" action="{{ route('autistas.update_autista', $autista->id) }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('autistas.update_responsavel', $autista->id) }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 <div class="mb-3">

@@ -52,3 +52,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modalPerfil = document.getElementById('modalPerfil');
+    const modalRemover = document.getElementById('modalRemoverDependente');
+
+    const abrirPerfil = document.getElementById('abrirModalPerfil');
+    const fecharPerfil = document.getElementById('fecharModalPerfil');
+    const abrirRemover = document.getElementById('abrirModalRemover');
+    const fecharRemover = document.getElementById('fecharModalRemover');
+
+    // Modal de adicionar dependente
+    if (abrirPerfil && modalPerfil && fecharPerfil) {
+        abrirPerfil.addEventListener('click', () => modalPerfil.style.display = 'flex');
+        fecharPerfil.addEventListener('click', () => modalPerfil.style.display = 'none');
+        modalPerfil.addEventListener('click', e => {
+            if (e.target === modalPerfil) modalPerfil.style.display = 'none';
+        });
+    }
+
+    // Modal de remover dependente
+    if (abrirRemover && modalRemover && fecharRemover) {
+        abrirRemover.addEventListener('click', () => modalRemover.style.display = 'flex');
+        fecharRemover.addEventListener('click', () => modalRemover.style.display = 'none');
+        modalRemover.addEventListener('click', e => {
+            if (e.target === modalRemover) modalRemover.style.display = 'none';
+        });
+    }
+});

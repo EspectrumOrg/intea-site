@@ -25,5 +25,10 @@ class Autista extends Model
     {
         return $this->belongsTo(Usuario::class, 'usuario_id');
     }
-   
+
+    public function responsavel()
+    {
+        return $this->belongsTo(Responsavel::class, 'responsavel_id');
+    }
+
 }

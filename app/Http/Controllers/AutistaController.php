@@ -9,6 +9,7 @@ use App\Models\Usuario;
 use App\Models\Autista;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
+use App\Models\Responsavel;
 
 class AutistaController extends Controller
 {
@@ -18,6 +19,61 @@ class AutistaController extends Controller
     {
         $this->genero = $genero;
     }
+
+    public function edit_responsavel($id)
+{
+    $usuarioLogado = auth()->user();
+
+    // Busca o responsável vinculado ao usuário logado
+    $responsavel = Responsavel::where('usuario_id', $usuarioLogado->id)->firstOrFail();
+
+    // Agora busca o autista vinculado a esse responsável
+    $autista = Autista::with('usuario')
+        ->where('id', $id)
+        ->where('responsavel_id', $responsavel->id)
+        ->first();
+
+    if (!$autista) {
+        abort(404, 'Autista não encontrado ou você não tem permissão para editá-lo.');
+    }
+
+    return view('profile.dados-autista-responsavel', compact('autista'));
+}
+
+public function update_responsavel(Request $request, $id)
+{
+    $usuario = auth()->user(); // Usuário logado (responsável)
+    $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
+
+    $autista = Autista::where('id', $id)
+        ->where('responsavel_id', $responsavel->id)
+        ->firstOrFail();
+
+    if (!$autista->usuario) {
+        return back()->withErrors(['Erro: Autista sem vínculo com usuário.']);
+    }
+
+    $validated = $request->validate([
+        'user' => 'required|string|max:255',
+        'apelido' => 'nullable|string|max:255',
+        'email' => 'required|email|max:255',
+        'cpf' => 'required|string|max:14',
+        'data_nascimento' => 'nullable|date',
+    ]);
+
+    $usuarioAutista = $autista->usuario;
+    $usuarioAutista->user = $validated['user'];
+    $usuarioAutista->apelido = $validated['apelido'] ?? null;
+    $usuarioAutista->email = $validated['email'];
+    $usuarioAutista->cpf = $validated['cpf'];
+    $usuarioAutista->data_nascimento = $validated['data_nascimento'] ?? null;
+    $usuarioAutista->save();
+
+    return redirect()->route('profile.show')
+                     ->with('status', 'autista-updated');
+}
+
+
 
     public function index()
     {

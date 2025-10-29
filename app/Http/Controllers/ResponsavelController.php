@@ -9,6 +9,8 @@ use App\Models\Genero;
 use App\Models\FoneUsuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class ResponsavelController extends Controller
 {
@@ -18,64 +20,98 @@ class ResponsavelController extends Controller
     {
         $this->genero = $genero;
     }
-    public function edit_autista($id)
-    {
-        $usuario = auth()->user();
-
-        // Pega o responsável logado
-        $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
-
-        // Garante que o autista é do responsável
-        $autista = Autista::where('id', $id)
-                    ->where('responsavel_id', $responsavel->id)
-                    ->firstOrFail();
-
-       return view('profile.dados-autista-responsavel', compact('autista'));
-    }
-
-
-    public function update_autista(Request $request, $id) 
-{
-    $usuario = auth()->user();
-    $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
-
-    $autista = Autista::where('id', $id)
-        ->where('responsavel_id', $responsavel->id)
-        ->firstOrFail();
-
-    if (!$autista->usuario) {
-        return back()->withErrors(['Erro: Autista sem vínculo com usuário.']);
-    }
-
-    // Validação dos dados do request (ajuste conforme suas regras)
-    $validated = $request->validate([
-        'user' => 'required|string|max:255',
-        'apelido' => 'nullable|string|max:255',
-        'email' => 'required|email|max:255',
-        'cpf' => 'required|string|max:14',
-        'data_nascimento' => 'nullable|date',
-    ]);
-
-    // Atualiza os dados do usuário relacionado ao autista
-    $usuarioAutista = $autista->usuario;
-    $usuarioAutista->user = $validated['user'];
-    $usuarioAutista->apelido = $validated['apelido'] ?? null;
-    $usuarioAutista->email = $validated['email'];
-    $usuarioAutista->cpf = $validated['cpf'];
-    $usuarioAutista->data_nascimento = $validated['data_nascimento'] ?? null;
-
-    $usuarioAutista->save();
-
-    return redirect()->route('profile.show') // ou qualquer outra rota que faça sentido
-                 ->with('status', 'autista-updated');
-}
-
-
-
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+
+public function addDependente(Request $request)
+{
+    Log::info('Início do método addDependente', $request->all());
+
+    $validator = Validator::make($request->all(), [
+        'cpf' => 'nullable|string|max:20',
+        'ciptea' => 'nullable|string|max:100',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    try {
+        $cpf = $request->filled('cpf') ? preg_replace('/[^0-9]/', '', $request->cpf) : null;
+
+        // 🔍 Busca autista
+        $autista = Autista::query()
+    ->when($cpf, function ($query) use ($cpf) {
+        // Garantir que estamos fazendo a busca corretamente pelo cpf associado ao usuario
+        $query->whereHas('usuario', function ($q) use ($cpf) {
+            $q->where('cpf', $cpf);
+        });
+    })
+    ->when($request->filled('ciptea'), function ($query) use ($request) {
+        // Verificar se o ciptea_autista está correto
+        $query->where('cipteia_autista', $request->ciptea);
+    })
+    ->first();
+
+
+        if (!$autista) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Autista não encontrado.'
+            ], 404);
+        }
+
+        $responsavelId = auth()->id();
+
+        // 🔎 Verifica se já existe o vínculo
+        $jaExiste = Responsavel::where('usuario_id', $responsavelId)
+            ->where('cipteia_autista', $autista->cipteia_autista)
+            ->exists();
+
+        if ($jaExiste) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Você já é responsável por esse autista.'
+            ], 409);
+        }
+
+        $usuario = auth()->user();
+
+        // 🧩 Cria o vínculo na tabela de responsáveis
+// Cria o vínculo na tabela de responsáveis
+$novoVinculo = Responsavel::create([
+    'usuario_id' => $responsavelId,
+    'cipteia_autista' => $autista->cipteia_autista,
+]);
+
+// Atualiza o autista com o ID do registro de responsável (não do usuário)
+if (is_null($autista->responsavel_id)) {
+    $autista->responsavel_id = $novoVinculo->id; // <- aqui muda
+    $autista->save();
+}
+
+// 🔄 Atualiza o tipo de usuário (Comunidade → Responsável)
+$usuario = Usuario::find($responsavelId);
+if ($usuario && $usuario->tipo_usuario == 3) {
+    $usuario->tipo_usuario = 5;
+    $usuario->save();
+}
+
+
+        Log::info("Usuário {$responsavelId} agora é responsável pelo autista {$autista->id}");
+
+    } catch (\Exception $e) {
+        Log::error('Erro ao vincular dependente: ' . $e->getMessage());
+    }
+}
+
+    public function index() {
+        
+    }
 
     /**
      * Show the form for creating a new resource.
