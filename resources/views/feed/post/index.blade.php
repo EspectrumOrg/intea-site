@@ -1,3 +1,6 @@
+@extends('feed.post.template.layout')
+
+@section('main')
 <!-- style -->
 <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
@@ -56,7 +59,7 @@ e($texto)
                 <div class="topo"> <!-- info conta -->
                     <div class="info-perfil">
                         <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                            <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                            <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                         </a>
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>
@@ -263,3 +266,4 @@ e($texto)
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
+@endsection

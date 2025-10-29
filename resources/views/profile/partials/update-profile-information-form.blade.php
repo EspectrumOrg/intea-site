@@ -128,11 +128,13 @@
         </div>
         @endif
 
+        <!--
         <div class="mb-3">
             <label for="cpf" class="form-label">CPF</label>
             <input id="cpf" name="cpf" type="text" class="form-control" value="{{ $user->cpf ?? old('cpf')}}" required autocomplete="cpf" />
             <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
         </div>
+-->
 
         <div class="mb-3">
             <label for="genero_id" class="form-label">Gênero</label>
@@ -150,11 +152,11 @@
             <x-input-error class="mt-2" :messages="$errors->get('data_nascimento')" />
         </div>
 
-        <div class="mb-3">
+      <!--  <div class="mb-3">
             <label for="logradouro" class="form-label">Logradouro</label>
             <input id="logradouro" name="logradouro" type="text" class="form-control" value="{{ $user->logradouro ?? old('logradouro')}}" autocomplete="logradouro" />
             <x-input-error class="mt-2" :messages="$errors->get('logradouro')" />
-        </div>
+        </div> 
 
         <div class="mb-3">
             <label for="endereco" class="form-label">Endereço</label>
@@ -197,8 +199,10 @@
             <input id="complemento" name="complemento" type="text" class="form-control" value="{{ $user->complemento ?? old('complemento')}}" autocomplete="complemento" />
             <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
         </div>
-
-        <h6>Telefones</h6>
+   -->
+       
+   <!--
+    <h6>Telefones</h6>
 
         @foreach($telefones as $index => $telefone)
         <div class="mb-3">
@@ -207,6 +211,7 @@
             <x-input-error class="mt-2" :messages="$errors->get('numero_telefone.' . $index)" />
         </div>
         @endforeach
+    -->
 
         <div class="flex">
             <button type="submit" class="btn-primary">{{ __('Salvar') }}</button>

@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/profile/modalSeguir.css') }}">
+
 </head>
 
 <body>
@@ -25,6 +27,14 @@
             <!-- conteúdo principal -->
             <div class="container-main">
                 <div class="profile-container">
+                    <!-- VERIFICAÇÃO DE SEGURANÇA -->
+                    @if(!isset($user) || is_null($user))
+                        <div class="alert alert-danger text-center">
+                            <h4>❌ Erro: Perfil não encontrado</h4>
+                            <p>O usuário que você está tentando acessar não existe.</p>
+                            <a href="/feed" class="btn btn-primary">Voltar para o Feed</a>
+                        </div>
+                    @else
                     <!-- Cabeçalho do perfil -->
                     <div class="profile-header">
                         <div class="foto-perfil">
@@ -34,54 +44,50 @@
                             <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
                             @endif
                         </div>
-                                <div class="profile-info">
-                <h1>{{ $user->nome }}</h1>
-                <p class="username"> {{ $user->user }}</p>
-                <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
-                <p class="tipo-usuario">
-                    @switch($user->tipo_usuario)
-                        @case(1) Administrador @break
-                        @case(2) Autista @break
-                        @case(3) Comunidade @break
-                        @case(4) Profissional de Saúde @break
-                        @case(5) Responsável @break
-                    @endswitch
-                </p>
-                <div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
-<div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
-    <div id="btnSeguindo" style="cursor:pointer" data-url="{{ route('usuario.listar.seguindo', ['id' => $user->id]) }}">
-    <strong>{{ $user->seguindo()->count() }}</strong> Seguindo
-</div>
+                        <div class="profile-info">
+                            <h1>{{ $user->nome }}</h1>
+                            <p class="username">{{ $user->apelido ?? $user->nome }}</p>
+                            <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
+                            <p class="tipo-usuario">
+                                @switch($user->tipo_usuario)
+                                    @case(1) Administrador @break
+                                    @case(2) Autista @break
+                                    @case(3) Comunidade @break
+                                    @case(4) Profissional de Saúde @break
+                                    @case(5) Responsável @break
+                                @endswitch
+                            </p>
+                            <div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
+                                <div id="btnSeguindo" style="cursor:pointer" data-url="{{ route('usuario.listar.seguindo', ['id' => $user->id]) }}">
+                                    <strong>{{ $user->seguindo()->count() }}</strong> Seguindo
+                                </div>
 
-<div id="btnSeguidores" style="cursor:pointer" data-url="{{ route('usuario.listar.seguidores', ['id' => $user->id]) }}">
-    <strong>{{ $user->seguidores()->count() }}</strong> Seguidores
-</div>
-</div>
+                                <div id="btnSeguidores" style="cursor:pointer" data-url="{{ route('usuario.listar.seguidores', ['id' => $user->id]) }}">
+                                    <strong>{{ $user->seguidores()->count() }}</strong> Seguidores
+                                </div>
+                            </div>
 
-<!-- Modal simples -->
-<div id="modalUsuarios" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-     background:white; padding:20px; border:1px solid #ccc; max-height:400px; overflow-y:auto;">
-    <button id="fecharModal">Fechar</button>
-    <ul id="listaUsuarios"></ul>
-</div>
-</div>
+                            <!-- Modal simples -->
+                            <div id="modalUsuarios" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid #ccc; max-height:400px; overflow-y:auto;">
+                                <button id="fecharModal">Fechar</button>
+                                <ul id="listaUsuarios"></ul>
+                            </div>
 
-
-        @if(auth()->id() != $user->id)
-        <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
-            <form action="{{ route('seguir.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                <button type="submit" class="seguir-btn">
-                    <span class="material-symbols-outlined">person_add</span> Seguir
-                </button>
-            </form>
-            <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
-                <span class="material-symbols-outlined">message</span> Mensagem
-            </a>
-        </div>
-        @endif
-</div>
+                            @if(auth()->id() != $user->id)
+                            <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
+                                <form action="{{ route('seguir.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                    <button type="submit" class="seguir-btn">
+                                        <span class="material-symbols-outlined">person_add</span> Seguir
+                                    </button>
+                                </form>
+                                <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
+                                    <span class="material-symbols-outlined">message</span> Mensagem
+                                </a>
+                            </div>
+                            @endif
+                        </div>
                     </div>
 
                     <!-- Navegação por abas DINÂMICA -->
@@ -121,6 +127,7 @@
                                     <span class="tab-text">Configurações</span>
                                 </button>
                                 @endif
+
                                 <!-- Aba Configurações do autista para responsavel-->
                                 @if($user->tipo_usuario === 5)
                                 <button class="tab-button" data-tab="autista">
@@ -158,10 +165,25 @@
                                     <strong>Apelido:</strong>
                                     <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                 </div>
-                                <div class="info-item">
-                                    <strong>CPF:</strong>
-                                    <span>{{ $user->cpf }}</span>
-                                </div>
+                               
+                              <div class="info-item">
+                            <strong>CPF:</strong>
+                            <span style= "{{ $user->cpf === '•••••••••••' ? 'color: #999;' : 'color: green; font-weight: bold;' }}">
+                                {{ $user->cpf }}
+                            </span>
+                            @if($user->cpf !== '•••••••••••' && auth()->check() && auth()->id() == $user->id)
+                                <small style="color: #666; margin-left: 5px;">(seu CPF)</small>
+                            @elseif($user->cpf === '•••••••••••')
+                                <small style="color: #666; font-style: italic; margin-left: 5px;">
+                                    @auth
+                                        Informação privada
+                                    @else
+                                        Faça login para ver
+                                    @endauth
+                                </small>
+                            @endif
+                        </div>
+
                                 <div class="info-item">
                                     <strong>Data Nascimento:</strong>
                                     <span>{{ \Carbon\Carbon::parse($user->data_nascimento)->format('d/m/Y') }}</span>
@@ -252,13 +274,14 @@
                     <div class="tab-content" id="settings-tab">
                         <!-- Inclui os formulários de configurações -->
                         @include('profile.partials.update-profile-information-form')
+                        @include('profile.partials.telefones', ['telefones' => $telefones])
                         @include('profile.partials.update-privacy-form')
                         @include('profile.partials.update-password-form')
-                        @include('profile.partials.delete-user-form')
                     </div>
                     @endif
+
                     <!-- Aba 5: Configurações do autista para responsavel -->
-                    @if($user-> tipo_usuario == 5)
+                    @if($user->tipo_usuario == 5)
                     <div class="tab-content" id="autista-tab">
                         <!-- Inclui os formulários de configurações -->
                         @include('profile.dados-autista-responsavel', ['autista' => $autista])
@@ -271,6 +294,7 @@
                         <p>Este usuário ainda não tem atividades para mostrar.</p>
                     </div>
                     @endif
+                    @endif <!-- Fim da verificação de segurança -->
                 </div>
             </div>
 
@@ -284,14 +308,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Controle das abas
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
             const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
             const prevBtn = document.querySelector('.tab-scroll-prev');
             const nextBtn = document.querySelector('.tab-scroll-next');
-            const tabsContainer = document.querySelector('.profile-tabs');
 
-            // Controle das abas
             tabButtons.forEach(button => {
                 button.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
@@ -317,13 +340,8 @@
                 const scrollWidth = tabsWrapper.scrollWidth;
                 const clientWidth = tabsWrapper.clientWidth;
 
-                // Mostra/oculta botões baseado no scroll
                 prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
                 nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' : 'none';
-
-                // Ativa/desativa botões
-                prevBtn.disabled = scrollLeft <= 0;
-                nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
             }
 
             // Eventos dos botões de scroll
@@ -336,38 +354,12 @@
                     tabsWrapper.scrollBy({ left: 200, behavior: 'smooth' });
                 });
 
-                // Atualiza botões quando scrollar
                 tabsWrapper.addEventListener('scroll', updateScrollButtons);
-
-                // Atualiza botões no carregamento e redimensionamento
                 window.addEventListener('resize', updateScrollButtons);
                 updateScrollButtons();
             }
-
-            // Scroll suave para a aba ativa se estiver fora da view
-            function scrollToActiveTab() {
-                const activeTab = document.querySelector('.tab-button.active');
-                if (activeTab && tabsWrapper) {
-                    const tabRect = activeTab.getBoundingClientRect();
-                    const wrapperRect = tabsWrapper.getBoundingClientRect();
-
-                    if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
-                        activeTab.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'nearest', 
-                            inline: 'center' 
-                        });
-                    }
-                }
-            }
-
-            // Recalcula scroll quando mudar de aba
-            tabButtons.forEach(button => {
-                button.addEventListener('click', scrollToActiveTab);
-            });
         });
     </script>
     <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
-
 </body>
 </html>

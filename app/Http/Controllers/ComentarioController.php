@@ -6,6 +6,7 @@ use App\Models\Postagem;
 use App\Models\Comentario;
 use App\Models\ImagemComentario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ComentarioController extends Controller
 {
@@ -39,7 +40,7 @@ class ComentarioController extends Controller
         // Cria o comentário
         $comentario = Comentario::create($dados);
 
-        // Se veio uma imagem, salva no storage
+        // Salva caso imagem
         if ($request->hasFile('caminho_imagem')) {
             $arquivo = $request->file('caminho_imagem');
             $caminho = $arquivo->store('imagens_comentarios', 'public');
@@ -50,7 +51,7 @@ class ComentarioController extends Controller
             ]);
         }
 
-        // 🔁 Redirecionamento dinâmico
+        // Redirecionamento
         if ($tipo === 'postagem') {
             return redirect()
                 ->route('post.read', ['postagem' => $id])
@@ -73,7 +74,7 @@ class ComentarioController extends Controller
             'image',
             'postagem.usuario',
             'respostas.usuario',
-            'respostas.imagens'
+            'respostas.image'
         ])->findOrFail($id);
 
         $posts = Postagem::withCount('curtidas')
@@ -81,6 +82,50 @@ class ComentarioController extends Controller
             ->take(5) // pega só os 5 mais curtidos
             ->get();
 
-        return view('feed.post.focus-comentario', compact('comentario', 'posts'));
+        $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+
+        return view('feed.post.focus-comentario', compact('comentario', 'posts', 'tendenciasPopulares'));
+    }
+
+     public function update(Request $request, Comentario $comentario)
+    {
+        $request->validate([
+            'comentario' => 'required|string|max:1000',
+            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif,jpeg|max:4096',
+        ]);
+
+        // Atualiza texto
+        $comentario->update([
+            'comentario' => $request->texto_postagem,
+        ]);
+
+        $imagemPrincipal = $comentario->imagem;
+
+        // Caso o usuário tenha clicado em "X" para remover a imagem
+        if ($request->boolean('remover_imagem')) {
+            if ($imagemPrincipal) {
+                if (Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
+                    Storage::disk('public')->delete($imagemPrincipal->caminho_imagem);
+                }
+                $imagemPrincipal->delete();
+            }
+        }
+
+        // Caso o usuário tenha enviado uma nova imagem
+        elseif ($request->hasFile('caminho_imagem')) {
+            $arquivo = $request->file('caminho_imagem');
+            $caminho = $arquivo->store('imagens_comentarios', 'public');
+
+            if ($imagemPrincipal) {
+                if (Storage::disk('public')->exists($imagemPrincipal->caminho_imagem)) {
+                    Storage::disk('public')->delete($imagemPrincipal->caminho_imagem);
+                }
+                $imagemPrincipal->update(['caminho_imagem' => $caminho]);
+            } else {
+                $comentario->imagens()->create(['caminho_imagem' => $caminho]);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Comentário atualizado com êxito!');
     }
 }

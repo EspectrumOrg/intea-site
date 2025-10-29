@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
 
-<div class="content">
+<div class="content {{ Auth::check() && Auth::user()->tema_preferencia == 'monocromatico' ? 'sidebar-monochrome' : '' }}">
 
     <!-- Logo -->
     <div class="logo">

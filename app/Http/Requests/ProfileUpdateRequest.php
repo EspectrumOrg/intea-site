@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Usuario;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,21 +17,13 @@ class ProfileUpdateRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(Usuario::class)->ignore($this->user()->id)],
-            'user' => 'nullable|string|max:255',
-            'apelido' => 'nullable|string|max:255',
-            'cpf' => 'nullable|string|size:11',
-            'genero' => 'nullable|string|max:255',
-            'data_nascimento' => 'nullable|date',
-            'logradouro' => 'nullable|string|max:255',
-            'rua' => 'nullable|string|max:255',
-            'bairro' => 'nullable|string|max:255',
-            'numero' => 'nullable|string|max:255',
-            'cidade' => 'nullable|string|max:255',
-            'estado' => 'nullable|string|max:255',
-            'complemento' => 'nullable|string|max:255',
-            'foto' => 'nullable|image|mimes:png,jpg,gif|max:2048', //foto perfil
-            'descricao' => 'nullable|string|max:755', //descrição perfil
+            'email' => ['required', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
+            'apelido' => ['nullable', 'string', 'max:100'],
+            'descricao' => ['nullable', 'string', 'max:500'],
+            'data_nascimento' => ['required', 'date'],
+            'genero_id' => ['required', 'exists:generos,id'],
+            'foto' => ['nullable', 'image', 'max:2048'],
+            // Remoção de 'cpf' e 'logradouro' das regras de validação
         ];
     }
 }

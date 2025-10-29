@@ -50,7 +50,22 @@
                             </p>
                         </div>
                     </div>
-
+<!-- Seção Acessibilidade -->
+                    <div class="config-section">
+                        <h3>Acessibilidade</h3>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <h4>Modo Monocromático</h4>
+                                <p>Ativa a escala monocromatica para pessoas com sensibilidade</p>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="monochrome-sidebar-toggle" 
+                                    {{ Auth::user()->tema_preferencia == 'monocromatico' ? 'checked' : '' }}>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
                     <!-- Mostrando diretamente "Atualizar senha" e "Excluir conta" -->
                     @if(auth()->id() == $user->id)
                     <div class="profile-settings-direct">
@@ -62,6 +77,127 @@
             </div>
         </div>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.getElementById('monochrome-sidebar-toggle');
+    const sidebar = document.querySelector('.container-sidebar .content');
+    
+    if (toggle && sidebar) {
+        toggle.addEventListener('change', function() {
+            const isMonochrome = this.checked;
+            
+            // Atualizar visualmente imediatamente (sem esperar pelo servidor)
+            if (isMonochrome) {
+                sidebar.classList.add('sidebar-monochrome');
+            } else {
+                sidebar.classList.remove('sidebar-monochrome');
+            }
+            
+            // Enviar para o servidor em segundo plano
+            fetch('/update-theme-preference', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    tema_preferencia: isMonochrome ? 'monocromatico' : 'colorido'
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na resposta do servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Preferência salva com sucesso!');
+                    
+                    // Opcional: mostrar feedback visual sucesso
+                    showFeedback('Preferência salva!', 'success');
+                } else {
+                    throw new Error(data.message || 'Erro desconhecido');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                
+                // Reverter visualmente em caso de erro
+                if (isMonochrome) {
+                    sidebar.classList.remove('sidebar-monochrome');
+                } else {
+                    sidebar.classList.add('sidebar-monochrome');
+                }
+                toggle.checked = !isMonochrome;
+                
+                // Mostrar feedback de erro
+                showFeedback('Erro ao salvar preferência', 'error');
+            });
+        });
+    }
+});
 
+// Função para mostrar feedback visual
+function showFeedback(message, type) {
+    // Remove feedback anterior se existir
+    const existingFeedback = document.querySelector('.feedback-message');
+    if (existingFeedback) {
+        existingFeedback.remove();
+    }
+    
+    // Cria novo feedback
+    const feedback = document.createElement('div');
+    feedback.className = `feedback-message feedback-${type}`;
+    feedback.textContent = message;
+    feedback.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        animation: slideIn 0.3s ease-out;
+        ${type === 'success' ? 'background: #10b981;' : 'background: #ef4444;'}
+    `;
+    
+    document.body.appendChild(feedback);
+    
+    // Remove automaticamente após 3 segundos
+    setTimeout(() => {
+        feedback.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => feedback.remove(), 300);
+    }, 3000);
+}
+
+// Adicionar os keyframes de animação
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+</script>
 </body>
 </html>

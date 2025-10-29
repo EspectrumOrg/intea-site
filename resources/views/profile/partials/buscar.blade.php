@@ -1,13 +1,21 @@
+<!-- Campo de busca estilizado -->
 <div class="buscar-container" style="margin-bottom: 30px;">
     <h2 style="font-size: 20px; margin-bottom: 10px;">Buscar Usuários</h2>
 
-    <!-- Campo de busca -->
-    <input type="text" id="buscarInputPerfil" placeholder="Digite o nome ou apelido..." 
-           style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;outline:none; margin-bottom:10px;">
+    <!-- Input de busca -->
+    <input 
+        type="text" 
+        id="buscarInputPerfil" 
+        placeholder="Digite o nome ou apelido..."
+        class="input-barra-pesquisa"
+        style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;outline:none; margin-bottom:10px;">
 
     <!-- Lista de usuários -->
-    <div id="listaUsuariosPerfil" class="user-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+    <div id="listaUsuariosPerfil" class="user-list"></div>
 </div>
+
+<!-- Importa o CSS -->
+<link rel="stylesheet" href="{{ asset('assets/css/layout/barra-pesquisa.css') }}">
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -16,13 +24,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!inputBuscar || !lista) return;
 
-    // URL absoluta usando Laravel
+    // Rota Laravel
     const buscarUrl = "{{ route('buscar.usuarios') }}";
 
     inputBuscar.addEventListener('input', function() {
         const query = this.value.trim();
 
-        if(query === '') {
+        if (query === '') {
             lista.innerHTML = '';
             return;
         }
@@ -32,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(usuarios => {
                 lista.innerHTML = '';
 
-                if(!usuarios || usuarios.length === 0){
-                    lista.innerHTML = '<p>Nenhum usuário encontrado.</p>';
+                if (!usuarios || usuarios.length === 0) {
+                    lista.innerHTML = '<p class="user-not-found">Nenhum usuário encontrado.</p>';
                     return;
                 }
 
@@ -42,21 +50,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     const a = document.createElement('a');
                     a.href = `/conta/${u.id}`;
-                    a.style.display = 'flex';
-                    a.style.alignItems = 'center';
-                    a.style.gap = '10px';
-                    a.style.background = '#fafafa';
-                    a.style.padding = '10px';
-                    a.style.borderRadius = '8px';
-                    a.style.textDecoration = 'none';
-                    a.style.color = 'inherit';
+                    a.className = 'link-barra-pesquisa';
 
                     a.innerHTML = `
-                        <img src="${fotoUrl}" alt="${u.user}" 
-                             style="width:45px;height:45px;border-radius:50%;object-fit:cover;">
-                        <div>
-                            <strong>${u.user}</strong><br>
-                            <small style="color:#777;">${u.apelido ?? ''}</small>
+                        <img 
+                            class="foto-usuario-barra-pesquisa"
+                            src="${fotoUrl}" 
+                            alt="${u.user}">
+                        <div class="info-barra-pesquisa">
+                            <h1>${u.user}</h1>
+                            <p>${u.apelido ?? ''}</p>
                         </div>
                     `;
 

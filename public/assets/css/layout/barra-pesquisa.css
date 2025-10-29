@@ -3,24 +3,31 @@
     margin: 0 0 0 2rem;
     width: 350px;
     position: sticky;
-    z-index: 9999;
+    z-index: 999;
     top: 1rem;
 }
 
 /* barra de pesquisa*/
-input {
+.input-barra-pesquisa {
     width: 100%;
-    padding: 1rem;
-    font-size: 15px;
+    padding: .75rem 2.5rem;
+    font-size: 16px;
     background-color: var(--branco);
     border-radius: 50px / 100%;
     border: 2px solid var(--branco-light);
     transition: .3s;
 }
 
-input:focus {
+.input-barra-pesquisa:focus {
     border-color: var(--azul);
     outline: var(--azul);
+}
+
+.buscar-container span {
+    color: var(--cinza-font);
+    position: absolute;
+    left: .5rem;
+    top: .555rem;
 }
 
 /* itens pesquisados */
@@ -29,7 +36,7 @@ input:focus {
     display: flex;
     width: 100%;
     flex-direction: column;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 7px 7px 10px rgba(0, 0, 0, 0.5);
     max-height: 70vh;
     overflow-y: scroll;
     border-radius: 8px;
