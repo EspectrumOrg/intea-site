@@ -16,7 +16,7 @@
 <body>
     <!-- Voltar -->
     <div class="voltar">
-        <a href="{{ route('login') }}">
+        <a href="{{ route('landpage') }}">
             <span class="material-symbols-outlined">arrow_back</span>
         </a>
     </div>
