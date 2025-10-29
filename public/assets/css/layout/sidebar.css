@@ -289,7 +289,7 @@
 }
 
 .links a:nth-of-type(4) {
-    color: var(--amarelo-apagado);
+    color: var(--amarelo);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -301,7 +301,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.5px;
+            height: 2px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -612,7 +612,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.3px;
+            height: 2px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -730,6 +730,9 @@
 .admin .links .nav-link.active {
     transform: translateX(5px);
     font-weight: bold;
+<<<<<<< HEAD
+}
+=======
 }
 
 /* ================================================================
@@ -1032,3 +1035,4 @@ input:checked + .slider:before {
 }
 
 /*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*/
+>>>>>>> 706355669800ebbbbe3730cbc1861edf5e730a33

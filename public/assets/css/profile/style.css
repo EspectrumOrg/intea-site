@@ -315,6 +315,10 @@
 }
 
 /* ===== FORMULÁRIOS (ABA CONFIGURAÇÕES) ===== */
+textarea {
+    resize: none;
+}
+
 .form-label {
     display: block;
     font-weight: 600;

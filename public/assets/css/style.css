@@ -22,8 +22,8 @@
     --verde-apagado: #036d31;
     --azul: #2A71B1;
     --azul-apagado: #1c4a73;
-    --amarelo: #F2E500;
-    --amarelo-apagado: #b1a902;
+    --amarelo: #F2B705;
+    --amarelo-apagado: #E0B122;
     --roxo: #6D398B;
     --roxo-apagado: #452557;
     --rosa: #C4027D;
@@ -39,7 +39,7 @@
 }
 
 * {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 /* Estilo para hashtags no texto -- LOCAL TEMPORÁRIO, POIS NÃO SEI ONDE FICA O ESTILO DE TODA A FEED, FERMINO BROTHER */
