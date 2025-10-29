@@ -22,15 +22,13 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6" id="profileForm">
         @csrf
         @method('patch')
 
- 
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input id="email" name="email" type="email" class="form-control" value="{{ $user->email ?? old('email') }}" required autocomplete="username" />
-
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div>
@@ -53,7 +51,42 @@
 
         <div class="mb-3">
             <label for="foto" class="form-label">Foto Perfil</label>
-            <input id="foto" name="foto" type="file" class="form-control" accept="image/*" value="{{ $user->foto ?? old('foto')}}" autocomplete="foto">
+            
+            <!-- Preview Container -->
+            <div class="image-preview-container mb-3">
+                <div class="preview-wrapper" onclick="document.getElementById('foto').click()">
+                    @if (!empty($user->foto))
+                    <img src="{{ asset('storage/'.$user->foto) }}" class="preview-image" alt="Preview da foto" id="imagePreview">
+                    @else
+                    <img src="{{ url('assets/images/logos/contas/user.png') }}" class="preview-image" alt="Preview da foto" id="imagePreview">
+                    @endif
+                    <div class="preview-overlay">
+                        <span class="preview-text">Clique para alterar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input File Escondido -->
+            <input id="foto" name="foto" type="file" style="display: none;" accept="image/*" onchange="previewImage(this)">
+            
+            <!-- Container dos Botões -->
+            <div class="photo-buttons-container">
+                <button type="button" class="btn-choose-photo" onclick="document.getElementById('foto').click()">
+                    <i class="fas fa-camera"></i>
+                    <span>Escolher Foto</span>
+                </button>
+                
+                @if($user->foto)
+                <button type="button" class="btn-remove-photo" onclick="removePhoto()">
+                    <i class="fas fa-trash"></i>
+                    <span>Remover Foto</span>
+                </button>
+                @endif
+            </div>
+            
+            <div class="form-text">
+                Formatos suportados: JPG, PNG, GIF. Tamanho máximo: 2MB
+            </div>
             <x-input-error class="mt-2" :messages="$errors->get('foto')" />
         </div>
 
@@ -128,14 +161,6 @@
         </div>
         @endif
 
-        <!--
-        <div class="mb-3">
-            <label for="cpf" class="form-label">CPF</label>
-            <input id="cpf" name="cpf" type="text" class="form-control" value="{{ $user->cpf ?? old('cpf')}}" required autocomplete="cpf" />
-            <x-input-error class="mt-2" :messages="$errors->get('cpf')" />
-        </div>
--->
-
         <div class="mb-3">
             <label for="genero_id" class="form-label">Gênero</label>
             <select type="text" class="form-select" id="genero_id" name="genero_id">
@@ -152,67 +177,6 @@
             <x-input-error class="mt-2" :messages="$errors->get('data_nascimento')" />
         </div>
 
-      <!--  <div class="mb-3">
-            <label for="logradouro" class="form-label">Logradouro</label>
-            <input id="logradouro" name="logradouro" type="text" class="form-control" value="{{ $user->logradouro ?? old('logradouro')}}" autocomplete="logradouro" />
-            <x-input-error class="mt-2" :messages="$errors->get('logradouro')" />
-        </div> 
-
-        <div class="mb-3">
-            <label for="endereco" class="form-label">Endereço</label>
-            <input id="endereco" name="endereco" type="text" class="form-control" value="{{ $user->endereco ?? old('endereco')}}" autocomplete="endereco" />
-            <x-input-error class="mt-2" :messages="$errors->get('endereco')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="rua" class="form-label">Rua</label>
-            <input id="rua" name="rua" type="text" class="form-control" value="{{ $user->rua ?? old('rua')}}" autocomplete="rua" />
-            <x-input-error class="mt-2" :messages="$errors->get('rua')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="bairro" class="form-label">Bairro</label>
-            <input id="bairro" name="bairro" type="text" class="form-control" value="{{ $user->bairro ?? old('bairro')}}" autocomplete="bairro" />
-            <x-input-error class="mt-2" :messages="$errors->get('bairro')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="numero" class="form-label">Número</label>
-            <input id="numero" name="numero" type="text" class="form-control" value="{{ $user->numero ?? old('numero')}}" autocomplete="numero" />
-            <x-input-error class="mt-2" :messages="$errors->get('numero')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="Cidade" class="form-label">Cidade</label>
-            <input id="cidade" name="cidade" type="text" class="form-control" value="{{ $user->cidade ?? old('cidade')}}" autocomplete="cidade" />
-            <x-input-error class="mt-2" :messages="$errors->get('cidade')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="estado" class="form-label">Estado</label>
-            <input id="estado" name="estado" type="text" class="form-control" value="{{ $user->estado ?? old('estado')}}" autocomplete="estado" />
-            <x-input-error class="mt-2" :messages="$errors->get('estado')" />
-        </div>
-
-        <div class="mb-3">
-            <label for="complemento" class="form-label">Complemento</label>
-            <input id="complemento" name="complemento" type="text" class="form-control" value="{{ $user->complemento ?? old('complemento')}}" autocomplete="complemento" />
-            <x-input-error class="mt-2" :messages="$errors->get('complemento')" />
-        </div>
-   -->
-       
-   <!--
-    <h6>Telefones</h6>
-
-        @foreach($telefones as $index => $telefone)
-        <div class="mb-3">
-            <label for="telefone_{{ $index }}" class="form-label">Telefone {{ $index + 1 }}</label>
-            <input id="telefone_{{ $index }}" name="numero_telefone[]" type="tel" class="form-control" value="{{ $telefone->numero_telefone ?? old('numero_telefone.' . $index)}}" required autocomplete="telefone" />
-            <x-input-error class="mt-2" :messages="$errors->get('numero_telefone.' . $index)" />
-        </div>
-        @endforeach
-    -->
-
         <div class="flex">
             <button type="submit" class="btn-primary">{{ __('Salvar') }}</button>
             @if (session('status') === 'profile-updated')
@@ -220,4 +184,216 @@
             @endif
         </div>
     </form>
+
+    <style>
+    .image-preview-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .preview-wrapper {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        border: 3px solid #e2e8f0;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .preview-wrapper:hover {
+        border-color: #3b82f6;
+        transform: scale(1.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .preview-wrapper:hover .preview-overlay {
+        opacity: 1;
+    }
+
+    .preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: all 0.3s ease;
+    }
+
+    .preview-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(59, 130, 246, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .preview-text {
+        color: white;
+        font-size: 0.8rem;
+        text-align: center;
+        padding: 0.5rem;
+        font-weight: 500;
+    }
+
+    /* Container dos Botões */
+    .photo-buttons-container {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+    }
+
+    /* Botão Escolher Foto */
+    .btn-choose-photo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-choose-photo:hover {
+        background: linear-gradient(135deg, #1d4ed8, #1e40af);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+    }
+
+    .btn-choose-photo:active {
+        transform: translateY(0);
+    }
+
+    .btn-choose-photo i {
+        font-size: 1rem;
+    }
+
+    /* Botão Remover Foto */
+    .btn-remove-photo {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        border: none;
+        border-radius: 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-remove-photo:hover {
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-remove-photo:active {
+        transform: translateY(0);
+    }
+
+    .btn-remove-photo i {
+        font-size: 1rem;
+    }
+
+    /* Texto informativo */
+    .form-text {
+        text-align: center;
+        margin-top: 1rem;
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* Animação para quando a imagem é carregada */
+    .image-loaded {
+        animation: pulse 0.5s ease-in-out;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    /* Responsividade */
+    @media (max-width: 640px) {
+        .photo-buttons-container {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-choose-photo,
+        .btn-remove-photo {
+            width: 100%;
+            max-width: 200px;
+            justify-content: center;
+        }
+        
+        .preview-wrapper {
+            width: 120px;
+            height: 120px;
+        }
+    }
+    </style>
+
+    <script>
+    function previewImage(input) {
+        const preview = document.getElementById('imagePreview');
+        const file = input.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.add('image-loaded');
+                
+                setTimeout(() => {
+                    preview.classList.remove('image-loaded');
+                }, 500);
+            }
+            
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function removePhoto() {
+    document.getElementById('imagePreview').src = "{{ url('assets/images/logos/contas/user.png') }}";
+    document.getElementById('foto').value = '';
+    
+    let existingRemoveField = document.getElementById('remove_photo');
+    if (!existingRemoveField) {
+        let removeField = document.createElement('input');
+        removeField.type = 'hidden';
+        removeField.name = 'remove_photo';
+        removeField.value = '1';
+        removeField.id = 'remove_photo';
+        document.getElementById('profileForm').appendChild(removeField);
+    }
+    
+    // Remove o botão de remover foto após clicar
+    let removeButton = document.querySelector('.btn-remove-photo');
+    if (removeButton) {
+        removeButton.style.display = 'none';
+    }
+}
+    </script>
 </section>

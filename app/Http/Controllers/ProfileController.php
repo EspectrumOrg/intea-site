@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Tendencia;
+use App\Models\Postagem;
+use App\Models\Autista;
+use App\Models\ProfissionalSaude;
+use App\Models\Responsavel;
+use App\Models\Curtida;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use App\Models\Postagem;
 
 class ProfileController extends Controller
 {
@@ -29,159 +33,105 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        $generos = $this->genero->all();
         $user = Auth::user();
+        $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+        
+        // Carregue dados específicos
         $dadosespecificos = null;
-        $autista = null;
-
-        //  Postagens populares (as mais curtidas)
-        $postsPopulares = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
-
-        //  Postagens do usuário logado
-        $userPosts = Postagem::where('usuario_id', $user->id)->get();
-
-        //  Postagens curtidas pelo usuário
-        $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
-            $q->where('usuario_id', $user->id);
-        })->get();
-
-        //  Dados específicos por tipo de usuário
-        switch ($user->tipo_usuario) {
-            case 1:
-                $dadosespecificos = $user->admin;
-                break;
-            case 2:
-                $dadosespecificos = $user->autista;
-                break;
-            case 3:
-                $dadosespecificos = $user->comunidade;
-                break;
-            case 4:
-                $dadosespecificos = $user->profissional_saude;
-                break;
-            case 5:
-                $dadosespecificos = $user->responsavel;
-                $autista = $user->responsavel->autistas()->first() ?? null;
-                break;
+        switch($user->tipo_usuario) {
+            case 2: $dadosespecificos = $user->autista; break;
+            case 4: $dadosespecificos = $user->profissionalsaude; break;
+            case 5: $dadosespecificos = $user->responsavel; break;
         }
 
-        // Tendências populares para o sidebar
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-
-        // Retorna para a view com todas as variáveis necessárias
-        return view('profile.show', compact(
-            'dadosespecificos',
-            'generos',
-            'telefones',
-            'user',
-            'userPosts',
-            'likedPosts',
-            'postsPopulares',
-            'autista',
-            'tendenciasPopulares' 
-        ));
+        return view('profile.edit', compact('user', 'generos', 'telefones', 'dadosespecificos'));
     }
 
-    /**
-     * Display another user's profile (para quando acessar perfil de outros usuários)
-     */
-    public function show($id): View
-    {
-        $user = \App\Models\User::findOrFail($id);
-        $currentUser = Auth::user();
-        
-        // Verifica se é o próprio usuário ou admin para ver CPF
-        $podeVerCPF = ($currentUser && ($currentUser->id == $user->id || $currentUser->tipo_usuario == 1));
-        
-        //  Postagens populares (as mais curtidas)
-        $postsPopulares = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
-
-        //  Postagens do usuário
-        $userPosts = Postagem::where('usuario_id', $user->id)->get();
-
-        //  Postagens curtidas pelo usuário
-        $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
-            $q->where('usuario_id', $user->id);
-        })->get();
-
-        //  Tendências populares
-        $tendenciasPopulares = Tendencia::populares(10)->get();
-
-        //  Dados específicos por tipo de usuário
-        $dadosespecificos = null;
-        $autista = null;
-        
-        switch ($user->tipo_usuario) {
-            case 1:
-                $dadosespecificos = $user->admin;
-                break;
-            case 2:
-                $dadosespecificos = $user->autista;
-                break;
-            case 3:
-                $dadosespecificos = $user->comunidade;
-                break;
-            case 4:
-                $dadosespecificos = $user->profissional_saude;
-                break;
-            case 5:
-                $dadosespecificos = $user->responsavel;
-                $autista = $user->responsavel->autistas()->first() ?? null;
-                break;
-        }
-
-        return view('profile.show', compact(
-            'dadosespecificos',
-            'user',
-            'userPosts',
-            'likedPosts',
-            'postsPopulares',
-            'autista',
-            'tendenciasPopulares',
-            'podeVerCPF' // ← NOVA VARIÁVEL PARA CONTROLAR VISUALIZAÇÃO DO CPF
-        ));
-    }
-    
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+   /**
+ * Update the user's profile information.
+ */
+public function update(Request $request): RedirectResponse
+{
+    $user = Auth::user();
+
+    // Validação
+    $validated = $request->validate([
+        'user' => 'required|string|max:255|unique:tb_usuario,user,' . $user->id,
+        'email' => 'required|email|unique:tb_usuario,email,' . $user->id,
+        'apelido' => 'nullable|string|max:255',
+        'descricao' => 'nullable|string',
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'data_nascimento' => 'nullable|date',
+        'genero' => 'nullable|exists:tb_genero,id',
+    ]);
+
+    // Verificar se o usuário quer remover a foto
+    if ($request->has('remove_photo') && $request->remove_photo == '1') {
+        if ($user->foto && Storage::exists('public/' . $user->foto)) {
+            Storage::delete('public/' . $user->foto);
+        }
+        // Use o caminho da imagem padrão em vez de null
+        $validated['foto'] = 'assets/images/logos/contas/user.png';
+    }
+    // Upload da nova foto
+    else if ($request->hasFile('foto')) {
+        // Delete old photo if exists
+        if ($user->foto && Storage::exists('public/' . $user->foto)) {
+            Storage::delete('public/' . $user->foto);
+        }
+        
+        $path = $request->file('foto')->store('profiles', 'public');
+        $validated['foto'] = $path;
+    } else {
+        // Mantém a foto atual se não houve alteração
+        unset($validated['foto']);
+    }
+
+    // Atualizar usuário
+    $user->update($validated);
+
+    // Atualizar dados específicos
+    $this->updateDadosEspecificos($user, $request);
+
+    return Redirect::route('profile.show')->with('status', 'profile-updated');
+}
+
+    /**
+     * Atualiza dados específicos para cada tipo de usuário
+     */
+    private function updateDadosEspecificos($user, Request $request)
     {
-        $generos = $this->genero->all();
-        $user = Auth::user();
-        
-        // Remove campos que não podem ser editados
-        $data = $request->validated();
-        unset($data['cpf']); // Remove CPF dos dados a serem atualizados
-        unset($data['logradouro']); // Remove logradouro dos dados a serem atualizados
-        
-        $request->user()->fill($data);
-        
-        if ($request->hasFile('foto')) {
-            // salva em storage/app/arquivos/perfil/fotos
-            $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
-            // salva o caminho no banco
-            $user->foto = $path;
+        switch($user->tipo_usuario) {
+            case 2: // Autista
+                if ($user->autista) {
+                    $autistaData = $request->validate([
+                        'cipteia_autista' => 'nullable|string|max:255',
+                        'status_cipteia_autista' => 'nullable|string|max:255',
+                        'rg_autista' => 'nullable|string|max:255',
+                    ]);
+                    $user->autista->update($autistaData);
+                }
+                break;
+                
+            case 4: // Profissional de Saúde
+                if ($user->profissionalsaude) {
+                    $profissionalData = $request->validate([
+                        'tipo_registro' => 'nullable|string|max:255',
+                        'registro_profissional' => 'nullable|string|max:255',
+                        'cipteia_autista' => 'nullable|string|max:255',
+                    ]);
+                    $user->profissionalsaude->update($profissionalData);
+                }
+                break;
         }
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.show', compact('generos'))->with('status', 'profile-updated');
     }
 
     /**
-     * Delete the user's account. logout
+     * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -194,6 +144,7 @@ class ProfileController extends Controller
         Auth::logout();
 
         $user->status_conta = 0;
+        $user->save();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

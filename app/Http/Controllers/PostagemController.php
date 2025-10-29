@@ -211,7 +211,7 @@ class PostagemController extends Controller
         // Deletar postagem
         $postagem->delete();
 
-        // Deletar tendências sem postagens 🔥
+        // Deletar tendências
         foreach ($tendencias as $tendencia) {
             if ($tendencia->postagens()->count() === 0) {
                 $tendencia->delete();

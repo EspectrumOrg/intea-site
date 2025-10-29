@@ -25,7 +25,7 @@
             </div>
 
             <!-- conteúdo principal  -->
-            <div class="container-main grupos-style">
+            <div class="container-main estilo-geral">
                 @yield("main")
             </div>
 
