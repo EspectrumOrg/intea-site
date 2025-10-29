@@ -18,7 +18,6 @@
                 <option value="1" {{ request('tipo_usuario') == 1 ? 'selected' : '' }}>Admin</option>
                 <option value="2" {{ request('tipo_usuario') == 2 ? 'selected' : '' }}>Autistas</option>
                 <option value="3" {{ request('tipo_usuario') == 3 ? 'selected' : '' }}>Comunidade</option>
-                <option value="4" {{ request('tipo_usuario') == 4 ? 'selected' : '' }}>Profissionais de Saúde</option>
                 <option value="5" {{ request('tipo_usuario') == 5 ? 'selected' : '' }}>Responsáveis</option>
             </select>
 
@@ -97,7 +96,6 @@
                                 @default
                                 Desconhecido
                                 @endswitch
-                            </td>
                             </td>
                             <td>
                                 @if($item->status_conta == 1)

@@ -11,18 +11,32 @@ body {
     padding: 0 2rem;
 }
 
-.usuario-inner {
+.usuario-inner,
+.denuncia-inner {
     max-width: 1200px;
     margin: 0 auto;
 }
 
 /* título */
-.usuario-title {
-    display: flex;
-    color: var(--preto);
+.usuario-title,
+.denuncia-title {
+     display: flex;
+     margin: 1rem 0;
+     gap: 1rem;
+     border-bottom: 1px solid var(--preto);
+     width: fit-content;
 }
 
-.usuario-title span {
+.usuario-title span{
+     color: var(--verde);
+}
+
+.denuncia-title span{
+     color: var(--amarelo);
+}
+
+.usuario-title span,
+.denuncia-title span {
     font-size: 3rem;
 }
 
@@ -82,7 +96,6 @@ body {
 }
 
 .usuario-gerenciamento .table-usuarios td {
-    border-top: 1px solid var(--branco-light);
     padding: 0.25rem;
     font-size: .8rem;
     text-align: left;
@@ -126,7 +139,6 @@ body {
 .table-usuarios .button-open-data {
     display: flex;
     padding: 0;
-    flex-direction: row-reverse;
 }
 
 .table-usuarios .img-icons {
@@ -137,6 +149,8 @@ body {
 .table-usuarios .td-acoes {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
 
@@ -237,6 +251,20 @@ tr:hover,
 }
 
 /* ------------------------ Modal Denúncia*/
+
+.modal-content .foto-denunciado{
+    height: 40px;
+    width: 40px;
+    border: 1px solid var(--vermelho);
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.modal-content .imagem-postagem{
+    max-width: 100%;
+    border: 1px solid var(--vermelho);
+    object-fit: cover;
+}
 
 /* Responsividade */
 @media (max-width: 768px) {

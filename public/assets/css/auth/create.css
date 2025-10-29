@@ -37,7 +37,7 @@ body {
 /* logo ======= */
 .logo-container {
     position: absolute;
-    top: 15%;
+    top: 3rem;
     left: 45%;
     transform: translate(-10%, -10%);
     border: none;
