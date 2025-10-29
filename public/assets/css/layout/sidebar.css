@@ -280,7 +280,7 @@
 }
 
 .links a:nth-of-type(4) {
-    color: var(--amarelo-apagado);
+    color: var(--amarelo);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -292,7 +292,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.5px;
+            height: 2px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -603,7 +603,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.3px;
+            height: 2px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -721,83 +721,4 @@
 .admin .links .nav-link.active {
     transform: translateX(5px);
     font-weight: bold;
-}
-
-/* ================================================================
-   Cores individuais
-   ================================================================ */
-
-/* 🔵 Azul (Dashboard) */
-.nav-link.azul:hover h1,
-.nav-link.azul:hover span {
-    color: var(--azul);
-}
-
-.nav-link.azul.active {
-    color: var(--branco);
-}
-
-.nav-link.azul.active h1,
-.nav-link.azul.active span {
-    color: var(--azul);
-}
-
-/* 🟢 Verde (Usuários) */
-.nav-link.verde:hover h1,
-.nav-link.verde:hover span {
-    color: var(--verde);
-}
-
-.nav-link.verde.active {
-    color: var(--branco);
-}
-
-.nav-link.verde.active h1,
-.nav-link.verde.active span {
-    color: var(--verde);
-}
-
-/* 💜 Roxo (Denúncias) */
-.nav-link.roxo:hover h1,
-.nav-link.roxo:hover span {
-    color: var(--roxo);
-}
-
-.nav-link.roxo.active {
-    color: var(--branco);
-}
-
-.nav-link.roxo.active h1,
-.nav-link.roxo.active span {
-    color: var(--roxo);
-}
-
-/* 💖 Rosa (Suporte) */
-.nav-link.rosa:hover h1,
-.nav-link.rosa:hover span {
-    color: var(--rosa);
-}
-
-.nav-link.rosa.active {
-    color: var(--branco);
-}
-
-.nav-link.rosa.active h1,
-.nav-link.rosa.active span {
-    color: var(--rosa);
-}
-
-/* 🔴 Vermelho (Voltar) */
-.nav-link.vermelho:hover h1,
-.nav-link.vermelho:hover span {
-    color: var(--vermelho);
-}
-
-.nav-link.vermelho.active {
-    color: var(--branco);
-}
-
-.nav-link.vermelho.active h1,
-.nav-link.vermelho.active span {
-    color: var(--vermelho);
 }
