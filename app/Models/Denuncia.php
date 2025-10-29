@@ -27,7 +27,7 @@ class Denuncia extends Model
     }
     public function usuarioDenunciado() // Usuário denunciado
     {
-        return $this->belongsTo(Usuario::class, 'id_usuario_denunciante');
+        return $this->belongsTo(Usuario::class, 'id_usuario_denunciado');
     }
 
     public function postagem() // Postagem denunciada

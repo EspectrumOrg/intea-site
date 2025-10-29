@@ -3,6 +3,7 @@
 
 <div class="sidebar-tendencias">
     <div class="sidebar-header">
+        <span class="material-symbols-outlined">whatshot</span>
         <h3>Tendências</h3>
     </div>
 
