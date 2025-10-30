@@ -75,25 +75,44 @@ class PusherController extends Controller
         ]);
     }
 
-    public function webzap()
-    {
-        $usuarioLogado = auth()->id();
+public function webzap(Request $request)
+{
+    $usuarioLogado = auth()->id();
+    $usuario2 = $request->usuario2; // usuário selecionado via link ou query string
 
-        // Pega apenas os IDs dos usuários que você segue
-        $usuariosSeguindoIds = \App\Models\seguirModel::where('segue_id', $usuarioLogado)
-            ->pluck('seguindo_id')
-            ->toArray();
+    // Pega os IDs dos usuários que você segue
+    $usuariosSeguindoIds = \App\Models\seguirModel::where('segue_id', $usuarioLogado)
+        ->pluck('seguindo_id')
+        ->toArray();
 
-        // Busca os usuários que você segue
-        $usuariosSeguindo = \App\Models\Usuario::whereIn('id', $usuariosSeguindoIds)->get();
+    // Busca os usuários que você segue
+    $usuariosSeguindo = \App\Models\Usuario::whereIn('id', $usuariosSeguindoIds)->get();
 
-        // Conversas existentes (para manter o chat funcional)
-        $conversas = \App\Models\ChatPrivado::where('usuario1_id', $usuarioLogado)
-            ->orWhere('usuario2_id', $usuarioLogado)
-            ->get();
+    // Busca conversas existentes do usuário logado
+    $conversas = \App\Models\ChatPrivado::where('usuario1_id', $usuarioLogado)
+        ->orWhere('usuario2_id', $usuarioLogado)
+        ->get();
 
-        return view('feed.chats.testechat', compact('usuariosSeguindo', 'conversas', 'usuarioLogado'));
+    // Mapeia os usuários com quem você tem conversas
+    $conversasComUsuarios = $conversas->map(function($c) use ($usuarioLogado) {
+        $outroUsuarioId = $c->usuario1_id == $usuarioLogado ? $c->usuario2_id : $c->usuario1_id;
+        return \App\Models\Usuario::find($outroUsuarioId);
+    })->unique()->filter();
+
+    // Se houver um usuario2 vindo da URL/query, busca ele para abrir o chat
+    $usuarioSelecionado = null;
+    if ($usuario2) {
+        $usuarioSelecionado = \App\Models\Usuario::find($usuario2);
     }
+
+    return view('feed.chats.testechat', compact(
+        'usuariosSeguindo', 
+        'conversas', 
+        'usuarioLogado', 
+        'conversasComUsuarios',
+        'usuarioSelecionado' // envia para o blade para abrir automaticamente
+    ));
+}
     /**
      * Rota AJAX para carregar chat
      */
@@ -128,7 +147,7 @@ class PusherController extends Controller
         return response()->json([
             'usuario' => [
                 'id' => $usuario->id,
-                'nome' => $usuario->nome,
+                'user' => $usuario->user,
                 'foto' => $usuario->foto ?? 'default.jpg',
             ],
             'mensagens' => $mensagens

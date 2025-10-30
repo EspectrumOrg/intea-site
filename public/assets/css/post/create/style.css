@@ -11,7 +11,20 @@
     gap: 1rem;
 }
 
-.create-post .form form{
+.create-post .form img {
+    margin-top: .5rem;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--branco-light);
+    max-width: 40vh ;
+}
+
+.create-post .foto-perfil-create {
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+}
+
+.create-post .form form {
     width: 100%;
 }
 
@@ -32,7 +45,8 @@
     color: var(--preto);
     white-space: pre-wrap;
     word-wrap: break-word;
-    pointer-events: none; /* permite clicar no textarea em cima */
+    pointer-events: none;
+    /* permite clicar no textarea em cima */
 }
 
 .textfield textarea {
@@ -43,8 +57,10 @@
     padding: 1rem;
     font-size: 18px;
     font-family: inherit;
-    color: transparent; /* texto invisível, mas cursor visível */
-    caret-color: var(--preto); /* deixa o cursor preto */
+    color: transparent;
+    /* texto invisível, mas cursor visível */
+    caret-color: var(--preto);
+    /* deixa o cursor preto */
     resize: none;
     overflow-y: hidden;
 }
@@ -54,7 +70,7 @@
 }
 
 .hashtag {
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
 }
 
@@ -88,9 +104,9 @@
 
 .create-post .form .upload-label {
     cursor: pointer;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     display: flex;
     align-items: center;
     gap: .5rem;
@@ -110,9 +126,11 @@
     font-size: 16px;
     color: var(--cinza);
     align-self: center;
-    margin-left: auto; /* joga pro lado direito */
+    margin-left: auto;
+    /* joga pro lado direito */
     margin-right: 1rem;
 }
+
 /* icon image -------------------*/
 .form .upload-label span {
     font-size: 20px;
@@ -124,7 +142,7 @@
 
 .form .upload-label:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* botão */
@@ -135,19 +153,20 @@
 
 .create-post .form .botao-postar {
     align-self: flex-end;
-    background-color: var(--preto);
-    color: var(--branco);
+    background-color: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
     font-size: 14px;
     font-weight: bold;
     padding: .75rem;
-    border: none;
     border-radius: 25% / 50%;
     cursor: pointer;
-    transition: .3s;
+    transition: .4s;
 }
 
 .create-post .form .botao-postar:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
+    color: var(--branco);
 }
 
 /* ----------------------------- preview imagem ------------------------------- */
@@ -183,7 +202,7 @@
 }
 
 .image-preview .remove-image:hover {
-    background-color: var(--cor-tema-apagado);
+    background-color: var(--azul-apagado);
 }
 
 .image-preview .remove-image span {

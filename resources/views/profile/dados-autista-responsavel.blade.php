@@ -9,12 +9,6 @@
     <form method="post" action="{{ route('autistas.update_autista', $autista->id) }}" class="mt-6 space-y-6">
         @csrf
         @method('patch')
-
-        <div class="mb-3">
-    <label for="nome" class="form-label">Nome</label>
-    <input id="nome" name="nome" type="text" class="form-control" value="{{ $autista->usuario->nome ?? old('nome') }}" required />
-</div>
-
 <div class="mb-3">
     <label for="user" class="form-label">Usuário</label>
     <input id="user" name="user" type="text" class="form-control" value="{{ $autista->usuario->user ?? old('user') }}" required />

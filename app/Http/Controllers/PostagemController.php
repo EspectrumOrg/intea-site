@@ -25,16 +25,33 @@ class PostagemController extends Controller
      */
     public function index()
     {
-        // Não mais usado 19/10 (pode excluir)
+        $userId = Auth::id();
+
         $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count') // mais curtidas primeiro
-            ->take(5) // pega só os 5 mais curtidos
+            ->orderByDesc('curtidas_count')
+            ->take(5)
             ->get();
-        $postagens = $this->postagem->with(['imagens', 'usuario'])->OrderByDesc('created_at')->get();
 
-        $tendenciasPopulares = Tendencia::populares(5)->get();
+        $postagens = $this->postagem
+            ->with(['imagens', 'usuario'])
+            ->whereHas('usuario', function ($q) use ($userId) {
+                $q->where('visibilidade', 1)
+                    ->orWhere('id', $userId)
+                    ->orWhere(function ($q2) use ($userId) {
+                        $q2->where('visibilidade', 0)
+                            ->whereHas('seguidores', function ($q3) use ($userId) {
+                                $q3->where('segue_id', $userId);
+                            });
+                    });
+            })
+            ->orderByDesc('created_at')
+            ->get();
 
-        return view('feed', compact('postagens', 'posts', 'tendenciasPopulares'));
+
+        $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
+
+
+        return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
 
     /**
@@ -42,7 +59,22 @@ class PostagemController extends Controller
      */
     public function create()
     {
-        $postagens = $this->postagem->all();
+        $userId = Auth::id();
+
+        $postagens = $this->postagem
+            ->with(['imagens', 'usuario'])
+            ->whereHas('usuario', function ($q) use ($userId) {
+                $q->where('visibilidade', 1)
+                    ->orWhere('id', $userId)
+                    ->orWhere(function ($q2) use ($userId) {
+                        $q2->where('visibilidade', 0)
+                            ->whereHas('seguidores', function ($q3) use ($userId) {
+                                $q3->where('segue_id', $userId);
+                            });
+                    });
+            })
+            ->orderByDesc('created_at')
+            ->get();
         $imagem_postagem = $this->imagem_postagem->all();
 
         return view('feed.post.index', compact('imagem_postagem', 'postagens'));
@@ -100,7 +132,9 @@ class PostagemController extends Controller
             ->take(5) // pega só os 5 mais curtidos
             ->get();
 
-        return view('feed.post.read', compact('postagem', 'posts'));
+        $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+
+        return view('feed.post.read', compact('postagem', 'posts', 'tendenciasPopulares'));
     }
 
     /**
@@ -177,7 +211,7 @@ class PostagemController extends Controller
         // Deletar postagem
         $postagem->delete();
 
-        // Deletar tendências sem postagens 🔥
+        // Deletar tendências
         foreach ($tendencias as $tendencia) {
             if ($tendencia->postagens()->count() === 0) {
                 $tendencia->delete();

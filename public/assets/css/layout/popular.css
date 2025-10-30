@@ -1,43 +1,33 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-tema-apagado: #016d98;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza-borda: #2f3336;
-    --cinza-font: #b3b3b3;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-}
-
 .sidebar-tendencias {
     background: var(--branco); 
     border-radius: 15px;
     padding-top: 1rem;
-    margin: 0 0 0 2rem;
+    margin: 2rem 0 0 2rem;
     width: 350px;
     border: 1px solid var(--branco-light);
     position: sticky;
-    top: 1rem;
+    z-index: 100;
+    top: 5rem;
+}
+
+/* Título Header */
+.sidebar-header {
+    display: flex;
+    flex-direction: row;
+    padding-left: 1rem;
+    gap: .5rem;
+}
+
+.sidebar-header span {
+    font-size: 24px;
+    color: var(--vermelho);
 }
 
 .sidebar-header h3 {
-    color: var(--preto);
+    color: var(--vermelho);
     margin: 0 0 1rem 0;
     font-size: 24px;
     font-weight: 700;
-    text-indent: 1rem;
 }
 
 .tendencias-list {
@@ -69,10 +59,11 @@
 }
 
 .tendencia-contador {
-    color: var(--cinza);
+    color: var(--vermelho);
     font-size: 14px;
 }
 
+/* Sem tendências */
 .no-tendencias {
     text-align: center;
     padding: 1rem;
@@ -99,5 +90,101 @@
     padding: 1rem 1.2rem;
     text-decoration: none;
     font-size: 18px;
-    color: var(--cor-tema);
+    color: var(--vermelho);
+    transition: .3s;
+}
+
+.ver-mais:hover a {
+    color: var(--vermelho-apagado);
+}
+
+/* Estilos para modo monocromático do sidebar de tendências */
+.sidebar-tendencias-monochrome {
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+.sidebar-tendencias-monochrome .sidebar-header {
+    color: #666 !important;
+}
+
+.sidebar-tendencias-monochrome .sidebar-header span {
+    filter: grayscale(100%);
+}
+
+.sidebar-tendencias-monochrome .tendencia-item {
+    color: #666 !important;
+    border-color: #ddd !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-item:hover {
+    background-color: #f5f5f5 !important;
+    border-color: #ccc !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-nome {
+    color: #666 !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-contador {
+    color: #999 !important;
+}
+
+.sidebar-tendencias-monochrome .ver-mais a {
+    color: #666 !important;
+    border-color: #ddd !important;
+    background-color: #f5f5f5 !important;
+}
+
+.sidebar-tendencias-monochrome .ver-mais a:hover {
+    background-color: #e9e9e9 !important;
+    border-color: #ccc !important;
+}
+
+.sidebar-tendencias-monochrome .no-tendencias p {
+    color: #999 !important;
+}
+
+.sidebar-tendencias-monochrome .material-symbols-outlined {
+    filter: grayscale(100%);
+}
+
+/* Se você quiser remover o filter do container principal e aplicar apenas nos elementos internos */
+.sidebar-tendencias-monochrome {
+    filter: none;
+}
+
+.sidebar-tendencias-monochrome * {
+    filter: grayscale(100%);
+}
+
+/* Alternativa mais específica - remova o filter do container e aplique elemento por elemento */
+.sidebar-tendencias-monochrome .sidebar-header,
+.sidebar-tendencias-monochrome .tendencia-item,
+.sidebar-tendencias-monochrome .tendencia-nome,
+.sidebar-tendencias-monochrome .tendencia-contador,
+.sidebar-tendencias-monochrome .ver-mais a,
+.sidebar-tendencias-monochrome .no-tendencias p,
+.sidebar-tendencias-monochrome .material-symbols-outlined {
+    filter: grayscale(100%);
+    color: #666 !important;
+}
+
+/* Mantenha as cores específicas para cada elemento */
+.sidebar-tendencias-monochrome .sidebar-header h3 {
+    color: #666 !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-nome {
+    color: #555 !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-contador {
+    color: #888 !important;
+}
+
+.sidebar-tendencias-monochrome .ver-mais a {
+    color: #666 !important;
+    background-color: #f8f8f8 !important;
+    border: 1px solid #ddd !important;
 }

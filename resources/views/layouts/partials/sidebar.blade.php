@@ -2,12 +2,12 @@
 <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-<div class="content">
+<div class="content {{ Auth::check() && Auth::user()->tema_preferencia == 'monocromatico' ? 'sidebar-monochrome' : '' }}">
 
     <!-- Logo -->
     <div class="logo">
         <a href="{{ route('landpage') }}">
-            <img src="{{ asset('assets/images/logos/intea/41.png') }}">
+            <img src="{{ asset('assets/images/logos/intea/logo-lamp.png') }}">
         </a>
     </div>
 
@@ -28,7 +28,7 @@
         </div>
 
         <ul class="dropdown-checar-perfil hidden">
-            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
+            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.show') }}">Checar perfil</a></li>
             <li id="li-checar-perfil-siedebar-02">
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">
@@ -76,8 +76,8 @@
         @can("visualizar-admin")
         <a href="{{ route('dashboard.index') }}"
             class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
-            <span id="simbolo-admin" class="material-symbols-outlined">manage_accounts</span>
-            <h1>Admin</h1>
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <h1>Administração</h1>
         </a>
         @endcan
 

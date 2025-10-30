@@ -80,11 +80,11 @@ class UsuarioController extends Controller
     {
         $query = $this->usuario->query();
 
-        // Busca por nome, user ou email
+        // Busca por apelido, user ou email
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('nome', 'like', "%{$search}%")
+                $q->where('apelido', 'like', "%{$search}%")
                     ->orWhere('user', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
@@ -108,6 +108,39 @@ class UsuarioController extends Controller
 
         return view('admin.usuario.index', compact('usuario'));
     }
+
+    public function update_privacidade(Request $request)
+    {
+
+        $request->validate([
+        'visibilidade' => 'required|in:0,1',
+    ]);
+
+        $request->user()->visibilidade = $request->visibilidade;
+        $request->user()->save();
+
+        return redirect()->back()->with('success', 'Configurações de privacidade atualizadas com sucesso.');
+    }
+
+public function buscarUsuarios(Request $request)
+{
+$usuarioId = auth()->id() ?? 0;
+    $search = $request->input('q', '');
+
+    $usuarios = collect();
+
+    if ($search !== '') {
+        $usuarios = Usuario::where('id', '!=', $usuarioId)
+            ->where(function ($q) use ($search) {
+                $q->where('user', 'like', "%{$search}%")
+                  ->orWhere('apelido', 'like', "%{$search}%");
+            })
+            ->orderBy('user', 'asc')
+            ->get(['id','user','apelido','foto']);
+    }
+
+    return response()->json($usuarios);
+}
 
     public function destroy($id)
     {

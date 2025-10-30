@@ -1,26 +1,3 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza: #404040;
-    --cinza-texto: #888686;
-    --cinza-borda: #2f3336;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.1rem;
-    --texto-titulo: 1.4rem;
-}
-
 /* topo -----------------------------------------------------------*/
 .container-read .topo {
     display: flex;
@@ -60,17 +37,19 @@
     gap: .5rem;
     align-items: center;
     padding: .75rem 1rem;
-    font-size: var(--texto-pequeno);
+    font-size: 12px;
     color: var(--branco-light);
 }
 
 /* bloco topo da postagem ----------------------------------------------------------------------------------*/
 .container-read .postagem-foco {
+    position: relative;
+    max-width: 100%;
     background-color: var(--branco);
+    padding: 1rem 1rem 0 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem;
 }
 
 .container-read .foto-perfil {
@@ -100,7 +79,7 @@
 .container-read .foto-perfil h2 {
     font-size: 15px;
     font-weight: 500;
-    color: var(--cinza-texto);
+    color: var(--cinza);
 }
 
 
@@ -241,14 +220,12 @@
 
 /* interações------------------------------------------------*/
 .interacoes {
-    margin-top: .75rem;
-    font-size: var(--texto-pequeno);
-    color: var(--cinza);
-    margin: auto;
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--cinza);
     gap: 2rem;
-    padding: 0rem 1rem;
+    padding: 1rem;
 }
 
 .interacoes .corpo {
@@ -295,7 +272,7 @@
 }
 
 .interacoes .curtido span {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .interacoes h1 {
@@ -306,131 +283,50 @@
 
 /* comentar */
 .btn-comentar:hover h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .btn-comentar:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* curtir */
 .btn-curtir:hover h1 {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
-
-
-/* formulário de comentário ------------------------------------------*/
-.form-comentario {
-    padding: 1rem;
-}
-
-.form-comentario form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-comentario form .foto-perfil img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.form-comentario textarea {
+/*------------------------------------------------------------------------------- comentários --------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.comentario-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: .75rem;
-    margin-bottom: .5rem;
-    border-radius: 12px;
-    background: transparent;
-    border: none;
-    resize: none;
-    color: var(--preto);
-    font-size: 15px;
+    height: 100%;
+    z-index: 1;
 }
 
-.form-comentario textarea:focus {
-    outline: none;
+.comentario-overlay:hover {
+    background-color: 0, 0, rgba(0, 0, 0, 0.08);
 }
 
-/* label customizada */
-.form-comentario form img {
-    width: 20px;
-}
-
-.form-comentario form img:hover {
-    transform: scale(1.05);
-}
-
-.form-comentario form .upload-label {
-    cursor: pointer;
-    color: var(--cor-tema);
-    font-weight: bold;
-    font-size: var(--texto-padrao);
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    transition: color .2s;
-}
-
-.form-comentario form .upload-label:hover {
-    color: var(--azul);
-}
-
-/* esconder input file padrão */
-.form-comentario form .input-file {
-    display: none;
-}
-
-.form-comentario form .contador {
-    font-size: 16px;
-    color: var(--cinza);
-    align-self: center;
-    margin-left: auto;
-    /* joga pro lado direito */
-    margin-right: 1rem;
-}
-
-/* botão */
-.form-comentario form .botao-submit {
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-.form-comentario form .botao-postar {
-    align-self: flex-end;
-    background-color: var(--preto);
-    color: var(--branco);
-    font-size: 14px;
-    font-weight: bold;
-    padding: .3rem 1.5rem;
-    border: none;
-    border-radius: 25% / 100%;
-    cursor: pointer;
-    transition: background-color .2s, transform .1s;
-}
-
-.form-comentario form .botao-postar:hover {
-    background-color: var(--cor-tema);
-    transform: scale(1.03);
-}
-
-/* comentários ---------------------------------------------------------------------------------------*/
 .comentarios {
     background-color: var(--branco);
 }
 
 .comentario {
-    border-top: 1px solid var(--cinza-borda);
-    padding: 1rem;
-    font-size: var(--texto-padrao);
+    position: relative;
+    border-top: 1px solid var(--branco-light);
+    padding: .5rem 1rem;
+    font-size: 14px;
     color: var(--preto);
     display: flex;
+    width: 100%;
     flex-direction: row;
 }
 
@@ -440,16 +336,25 @@
     align-items: flex-start;
 }
 
-.comentario .foto-comentario img {
-    width: 50px;
-    height: 50px;
+.comentario .foto-comentario img,
+.foto-user-padrao {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: none;
+    border: 1px solid var(--azul);
+    object-fit: cover;
 }
 
 .comentario .dados {
     width: 100%;
     padding: 0 1rem;
+}
+
+.dados img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
 }
 
 .comentario strong {
@@ -459,8 +364,8 @@
 
 /* comentário ------------------------------------------*/
 .interacoes-comentarios {
-    margin-top: .75rem;
-    font-size: var(--texto-pequeno);
+    margin-top: .25rem;
+    font-size: 12px;
     color: var(--cinza);
     margin: auto;
     display: flex;
@@ -472,6 +377,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    margin-top: 1rem;
 }
 
 .comment {
@@ -508,7 +414,7 @@
 }
 
 .interacoes-comentarios .curtido span {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .interacoes-comentarios h1 {
@@ -519,22 +425,39 @@
 
 /* comentar */
 .btn-comentar:hover h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .btn-comentar:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* curtir */
 .btn-curtir:hover h1 {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
+}
+
+/*comentário conteúdo ---------------------------------------------*/
+.corpo-content .coment-perfil {
+    margin: .5rem 0;
+}
+
+.corpo-content .coment-perfil p {
+    font-size: 14px;
+    color: var(--preto);
+}
+
+.corpo-content .image-post img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
 }
 
 /*adicionais ---------------------------------------------*/
@@ -543,14 +466,14 @@
     /* cria um novo contexto de empilhamento */
     z-index: 1;
     /* fica acima do overlay */
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
     text-decoration: none;
     transition: 0.3s;
 }
 
 .hashtag:hover {
-    color: var(--cor-tema-apagado);
+    color: var(--azul-apagado);
     text-decoration: underline;
 }
 
@@ -575,7 +498,7 @@
     padding: .6rem 1rem;
     border: none;
     border-radius: 8px;
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     background-color: transparent;
@@ -595,13 +518,13 @@
 
 .btn-acao.editar:hover {
     background-color: var(--branco-light);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* excluir */
 .btn-acao.excluir:hover {
     background-color: var(--branco-light);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 .container-post .excluir {
@@ -610,6 +533,24 @@
 
 /* denunciar */
 .btn-acao.denunciar:hover {
-    background-color: #ffcccb;
+    background-color: var(--branco);
     color: var(--vermelho);
+}
+
+/* Overlay postagem focus */
+.container-read .comentario-overlay,
+.container-read button,
+.container-read form,
+.container-read .dropdown,
+.container-read a {
+    z-index: 1;
+}
+
+/* Overlay comentários */
+.comentario .comentario-overlay,
+.comentario button,
+.comentario .dropdown,
+.comentario form,
+.comentario a {
+    z-index: 1;
 }

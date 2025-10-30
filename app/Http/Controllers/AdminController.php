@@ -54,7 +54,6 @@ class AdminController extends Controller
         ]);
 
         $request->validate([
-            'nome' => 'required|string|max:255',
             'user' => 'required|string|max:255',
             'apelido' => 'nullable|string|max:255',
             'email' => 'required|lowercase|email|unique:tb_usuario,email',
@@ -63,21 +62,11 @@ class AdminController extends Controller
             'cpf' => 'required|max:20|unique:tb_usuario,cpf', // retirar pontuação posteriormente
             'genero' => 'required|integer',
             'data_nascimento' => 'required|date',
-            'cep' => 'nullable|string|max:20', // retirar pontuação posteriormente
-            'logradouro' => 'nullable|string|max:255',
-            'endereco' => 'nullable|string|max:255',
-            'rua' => 'nullable|string|max:255',
-            'bairro' => 'nullable|string|max:255',
-            'numero' => 'nullable|string|max:255',
-            'cidade' => 'nullable|string|max:255',
-            'estado' => 'nullable|string|max:255',
-            'complemento' => 'nullable|string|max:255',
             'tipo_usuario' => 'required|in:1',
             'status_conta' => 'required|in:1',
             'numero_telefone' => 'required|array|min:1',
             'numero_telefone.*' => 'required|string|max:20' // retirar pontuação posteriormente
         ], [
-            'nome.required' => 'O campo nome é obrigatório',
             'user.required' => 'O campo user é obrigatório',
             'email.required' => 'O campo email é obrigatório',
             'email.lowercase' => 'O campo email não deve conter letras maiúsculas',
@@ -116,15 +105,6 @@ class AdminController extends Controller
             'cpf' => $request->cpf,
             'genero' => $request->genero,
             'data_nascimento' => $request->data_nascimento,
-            'cep' => $request->cep,
-            'logradouro' => $request->logradouro,
-            'endereco' => $request->endereco,
-            'rua' => $request->rua,
-            'bairro' => $request->bairro,
-            'numero' => $request->numero,
-            'cidade' => $request->cidade,
-            'estado' => $request->estado,
-            'complemento' => $request->complemento,
             'tipo_usuario' => $request->tipo_usuario,
             'status_conta' => $request->status_conta,
         ]);

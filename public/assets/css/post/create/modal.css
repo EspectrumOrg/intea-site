@@ -93,12 +93,12 @@
 
 .form-postar .form .upload-label:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .form-postar .form .upload-label {
     cursor: pointer;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
     font-size: var(--texto-padrao);
     display: flex;
@@ -133,19 +133,20 @@
 
 .form-postar .form .botao-postar {
     align-self: flex-end;
-    background-color: var(--preto);
-    color: var(--branco);
+    background-color: var(--branco);
+    color: var(--azul);
     font-size: 14px;
     font-weight: bold;
     padding: .75rem;
-    border: none;
+    border: 1px solid var(--azul);
     border-radius: 25% / 50%;
     cursor: pointer;
-    transition: .3s;
+    transition: .4s;
 }
 
 .form-postar .form .botao-postar:hover {
-    background-color: var(--cor-tema);
+    background-color: var(--azul);
+    color: var(--branco);
 }
 
 /* ----------------------------- preview imagem modal------------------------------- */

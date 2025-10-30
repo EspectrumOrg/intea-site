@@ -1,3 +1,6 @@
+@extends('feed.post.template.layout')
+
+@section('main')
 <!-- style -->
 <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
@@ -45,7 +48,7 @@ e($texto)
                     <img
                         src="{{ $postagem->usuario->foto ? url('storage/' . $postagem->usuario->foto) : asset('assets/images/logos/contas/user.png') }}"
                         alt="foto de perfil"
-                        style="border-radius: 50%;"
+                        style="border-radius: 50%; object-fit:cover;"
                         width="40"
                         height="40"
                         loading="lazy">
@@ -56,7 +59,7 @@ e($texto)
                 <div class="topo"> <!-- info conta -->
                     <div class="info-perfil">
                         <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                            <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                            <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                         </a>
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>
@@ -168,18 +171,8 @@ e($texto)
 
 
         <!-- Modal Criação de comentário ($postagem->id) -->
-        <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button"
-                    class="close"
-                    onclick="fecharModalComentar('{{ $postagem->id }}')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="modal-content-content">
-                    @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
+
 
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
@@ -273,3 +266,4 @@ e($texto)
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
+@endsection

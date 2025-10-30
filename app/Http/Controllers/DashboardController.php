@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Usuario;
 use App\Models\Postagem;
 use App\Models\Denuncia;
+use App\Models\Tendencia;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -31,6 +32,7 @@ class DashboardController extends Controller
         $usuariosPorDia = collect();
         $postagensPorDia = collect();
         $denunciasPorDia = collect();
+        $tendenciasPorDia = collect(); 
 
         for ($i = 6; $i >= 0; $i--) {
             $dia = Carbon::today()->subDays($i)->format('Y-m-d');
@@ -50,6 +52,11 @@ class DashboardController extends Controller
             $denunciasPorDia->push(
                 Denuncia::whereDate('created_at', $dia)->count()
             );
+
+            // Tendências usadas por dia
+            $tendenciasPorDia->push(
+                Tendencia::whereDate('ultimo_uso', $dia)->count()
+            );
         }
 
         // Dados para o gráfico de pizza (quantidade de usuários por tipo)
@@ -63,7 +70,7 @@ class DashboardController extends Controller
             1 => 'Administrador',
             2 => 'Autista',
             3 => 'Comunidade',
-            4 => 'Profissional de Saúde',
+            4 => 'Profissional de Saúde', 
             5 => 'Responsável',
         ];
 
@@ -71,6 +78,23 @@ class DashboardController extends Controller
         $usuariosPorTipoNomes = collect($usuariosPorTipo)->mapWithKeys(function ($total, $tipo) use ($mapaTipos) {
             return [$mapaTipos[$tipo] ?? "Tipo {$tipo}" => $total];
         });
+
+        // DADOS DAS TENDÊNCIAS
+        $totalTendencias = Tendencia::count();
+        $tendenciasHoje = Tendencia::whereDate('ultimo_uso', Carbon::today())->count();
+        $tendenciasSemana = Tendencia::whereBetween('ultimo_uso', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek()
+        ])->count();
+        
+        // Top 5 tendências mais populares
+        $topTendencias = Tendencia::orderBy('contador_uso', 'desc')
+            ->orderBy('ultimo_uso', 'desc')
+            ->take(6)
+            ->get();
+
+        // Tendências criadas este mês
+        $tendenciasMes = Tendencia::whereMonth('created_at', Carbon::now()->month)->count();
 
         return view('admin.dashboard.index', compact(
             'totalUsuarios',
@@ -83,6 +107,12 @@ class DashboardController extends Controller
             'denunciasPorDia',
             'usuariosPorTipo',
             'usuariosPorTipoNomes',
+            'totalTendencias',
+            'tendenciasHoje',
+            'tendenciasSemana',
+            'tendenciasMes',
+            'topTendencias',
+            'tendenciasPorDia',
         ));
     }
 }

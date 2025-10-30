@@ -1,125 +1,152 @@
-  :root {
-      --cor-tema: #048ABF;
-      --cor-fundo: #262626;
-      --cor-branco: #D0D6D9;
-      --cor-preto: #000000;
-      --cor-vermelho: #F22222;
+.grupos-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 
-      --preto: #0D0D0D;
-      --cinza: #404040;
-      --cinza-borda: #2f3336;
-      --branco: #F2F2F2;
-      --branco-light: #ccc;
-      --azul: #1d3e55;
-      --verde: #03A64A;
-      --vermelho: #F26D6D;
+    border: 1px solid var(--amarelo);
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.25rem rgba(132, 117, 7, 0.2);   /*0 0.35rem 0.85rem rgba(170, 156, 5, 0.2);*/
+    font-family: Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+    margin: 1rem;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
+}
 
-      --texto-pequeno: .75rem;
-      --texto-padrao: 1rem;
-      --texto-secundario: 1.4rem;
-      --texto-titulo: 2.5rem;
-  }
+.grupos-container .logo {
+    max-height: 5rem;
+    max-width: 5rem;
+    image-rendering: optimizeQuality;
+}
 
-  .grupos-style h1 {
-      font-size: var(--texto-titulo);
-      color: var(--branco);
-      margin-bottom: 20px;
-      text-align: center;
-  }
+.grupos-container img {
+    width: 100%;
+    max-height: 100%;
+}
 
-  .grupos-style form {
-      background: var(--branco);
-      padding: 1rem 2rem;
-      width: 100%;
-      border: 1px solid var(--branco-light);
-  }
+.grupos-container h1 {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: Helvetica, verdana, sans-serif;
+    color: var(--preto);
+    margin-bottom: 20px;
+    text-align: justify;
+}
 
-  .grupos-style .form-group {
-      margin-bottom: 15px;
-  }
+.estilo.geral {
+    background: var(--branco);
+    padding: 1rem 2rem;
+    margin: 1rem;
+    border: 1px solid var(--branco-light);
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.25rem rgba(0, 0, 0, 0.2);
+}
 
-  .grupos-style label {
-      display: block;
-      font-weight: 600;
-      color: var(--preto);
-      margin-bottom: 5px;
-  }
+.grupos-style {
+    background: var(--branco);
+    padding: 1rem 2rem;
+    margin: 1rem;
+    border: 1px solid var(--amarelo);
+    border-radius: 1rem;
+    box-shadow: 0.1rem 0.25rem rgba(0, 0, 0, 0.2);
+}
 
-  .grupos-style input[type="text"],
-  .grupos-style input[type="file"] {
-      width: 100%;
-      padding: 10px;
-      background-color: var(--branco-light);
-      color: var(--preto);
-      border: 1px solid var(--branco-light);
-      border-radius: 8px;
-      font-size: 14px;
-      transition: border 0.2s ease;
-  }
+.grupos-style label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--preto);
+    margin-bottom: 0.5rem;
+    margin-left: 0.1rem;
+}
 
-  .grupos-style input:focus {
-      border-color: var(--cor-tema);
-      outline: none;
-  }
+.grupos-style input[type="text"],
+.grupos-style input[type="file"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0rem auto 0.5rem auto;
+    background-color: var(--branco);
+    color: var(--preto);
+    border: 1.5px solid var(--branco-light);
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    transition: border 0.1s ease;
+}
 
-  .grupos-style .botao {
-      width: 100%;
-      background-color: var(--cor-tema);
-      color: var(--branco);
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: var(--texto-padrao);
-      transition: background-color 0.3s ease;
-  }
+.grupos-style input:focus {
+    border-color: var(--amarelo);
+    outline: none;
+}
 
-  .grupos-style .botao:hover {
-      background-color: var(--azul);
-  }
+.grupos-style .botao {
+    width: 30%;
+    min-width: fit-content;
+    background-color: var(--branco);
+    color: var(--azul);
+    padding: 0.5rem;
+    margin: 0.75rem auto;
+    border: 1px solid var(--azul);
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: var(--texto-padrao);
+    transition: all 0.2s ease-in-out;
+}
 
-  .grupos-style .grupo {
-      background: var(--cinza);
-      border: 1px solid var(--cinza-borda);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      padding: 20px;
-      margin-top: 25px;
-      width: 100%;
-      max-width: 500px;
-      color: var(--branco);
-  }
+.grupos-style .botao:hover {
+    color: var(--branco);
+    background-color: var(--azul);
+    border-color: var(--azul);
+}
 
-  .grupos-style .grupo h2 {
-      color: var(--cor-tema);
-      font-size: var(--texto-secundario);
-      margin-bottom: 10px;
-  }
+.grupos-style-dois {
+    background: var(--branco);
+    border: 1px solid var(--amarelo-apagado);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    padding: 0.75rem 0rem;
+    margin: 1rem auto;
+    max-width: 94.5%;
+    color: var(--branco);
+}
 
-  .grupos-style .grupo p {
-      color: var(--branco-light);
-      font-size: var(--texto-padrao);
-  }
+.grupos-style-dois h2 {
+    color: var(--amarelo);
+    font-size: 1.5rem;
+    padding: 0.25rem;
+    margin-left: 1rem;
+    margin-bottom: 8px;
+}
 
-  .grupos-style .grupo img {
-      border-radius: 10px;
-      margin-top: 10px;
-      border: 1px solid var(--cinza-borda);
-  }
+.grupos-style-dois p {
+    color: var(--preto);
+    font-size: 0.75rem;
+    padding: .25rem;
+    margin-left: 1rem;
+}
 
-  .grupos-style .btn-entrar {
-      background-color: var(--verde);
-      color: var(--branco);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 15px;
-      transition: background 0.3s ease;
-  }
+.groupBanner {
+    width: 100%;
+    image-rendering: optimizeQuality;
+    object-fit: contain;
+}
 
-  .grupos-style .btn-entrar:hover {
-      background-color: #06c25a;
-  }
+.grupos-style-dois .btn-group {
+    background-color: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
+    border-radius: 8px;
+
+    min-width: fit-content;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    
+    transition: all 0.3s ease-in-out;
+}
+
+.grupos-style-dois .btn-group:hover {
+    background-color: var(--azul);
+    color: var(--branco );
+}

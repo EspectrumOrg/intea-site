@@ -21,7 +21,6 @@ class UsuarioSeeder extends Seeder
     {
         // criar admin padrão
         $admin = Usuario::factory()->create([
-            'nome' => 'Arthur L. Grey',
             'user' => '@artleywin',
             'apelido' => 'art',
             'email' => 'admin@site.com',
@@ -34,7 +33,6 @@ class UsuarioSeeder extends Seeder
 
         // Criar autista padrão
         $autista = Usuario::factory()->create([
-            'nome' => 'Kauan Costa ',
             'user' => '@dormindo092',
             'apelido' => 'kauancosta',
             'email' => 'autista@site.com',
@@ -46,7 +44,6 @@ class UsuarioSeeder extends Seeder
 
         // criar comunidade padrão
         $comunidade = Usuario::factory()->create([
-            'nome' => 'João G. Ribeiro',
             'user' => '@JoaoG',
             'apelido' => 'juanGabriel',
             'email' => 'comunidade@site.com',
@@ -58,7 +55,6 @@ class UsuarioSeeder extends Seeder
 
         // criar profissional saúde padrão
         $profissionalsaude = Usuario::factory()->create([
-            'nome' => 'Ryan Ferreira Barbosa',
             'user' => '@ryanFerreiraOF',
             'apelido' => 'Ryan Ferreira Barbosa',
             'email' => 'profissionalsaude@site.com',
@@ -70,7 +66,6 @@ class UsuarioSeeder extends Seeder
 
         // criar responsável padrão
         $responsavel = Usuario::factory()->create([
-            'nome' => 'Danilo Sousa Cunha',
             'user' => '@DaniloSousaCunha',
             'apelido' => 'Danilo',
             'email' => 'responsavel@site.com',
@@ -126,7 +121,6 @@ class UsuarioSeeder extends Seeder
         // 10 usuários do tipo comunidade
         $usuarios = [
             [
-                'nome' => 'Carla Mendes',
                 'user' => '@carla.mendes',
                 'apelido' => 'Carla Mendes',
                 'email' => 'carla.mendes@site.com',
@@ -134,7 +128,6 @@ class UsuarioSeeder extends Seeder
                 'descricao' => 'Mãe dedicada e participante ativa em grupos de apoio.'
             ],
             [
-                'nome' => 'João Pereira',
                 'user' => '@joao.pereira',
                 'apelido' => 'João Pereira',
                 'email' => 'joao.pereira@site.com',
@@ -142,7 +135,6 @@ class UsuarioSeeder extends Seeder
                 'descricao' => 'Estudante universitário interessado em inclusão social.'
             ],
             [
-                'nome' => 'Dr. Lucas Farias',
                 'user' => '@lucas.farias',
                 'apelido' => 'Dr. Lucas Farias',
                 'email' => 'lucas.farias@site.com',
@@ -150,49 +142,42 @@ class UsuarioSeeder extends Seeder
                 'descricao' => 'Psicólogo voluntário que contribui em debates na comunidade.'
             ],
             [
-                'nome' => 'Mariana Silva',
                 'user' => '@mariana.silva',
                 'email' => 'mariana.silva@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-09.jpg',
                 'descricao' => 'Apaixonada por leitura e sempre engajada em discussões sobre empatia.'
             ],
             [
-                'nome' => 'Rafael Oliveira',
                 'user' => '@rafael.oliveira',
                 'email' => 'rafael.oliveira@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-10.jpg',
                 'descricao' => 'Pai de um adolescente autista, busca compartilhar experiências.'
             ],
             [
-                'nome' => 'Beatriz Costa',
                 'user' => '@beatriz.costa',
                 'email' => 'beatriz.costa@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-11.jpg',
                 'descricao' => 'Estudante de pedagogia com foco em educação inclusiva.'
             ],
             [
-                'nome' => 'André Gomes',
                 'user' => '@andre.gomes',
                 'email' => 'andre.gomes@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-12.jpg',
                 'descricao' => 'Irmão de autista, participa ativamente em discussões sobre acessibilidade.'
             ],
             [
-                'nome' => 'Fernanda Rocha',
                 'user' => '@fernanda.rocha',
                 'email' => 'fernanda.rocha@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-13.jpg',
                 'descricao' => 'Universitária de psicologia, sempre trazendo reflexões científicas.'
             ],
             [
-                'nome' => 'Diego Martins',
                 'user' => '@diego.martins',
                 'email' => 'diego.martins@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-14.jpg',
                 'descricao' => 'Educador físico, fala sobre atividades e saúde no espectro.'
             ],
             [
-                'nome' => 'Ana Paula Lima',
                 'user' => '@ana.lima',
                 'email' => 'ana.lima@site.com',
                 'foto' => 'arquivos/perfil/fotos/perfil-15.jpg',
@@ -202,7 +187,6 @@ class UsuarioSeeder extends Seeder
 
         foreach ($usuarios as $u) {
             $usuario = Usuario::factory()->create([
-                'nome' => $u['nome'],
                 'user' => $u['user'],
                 'email' => $u['email'],
                 'senha' => bcrypt('123456'),

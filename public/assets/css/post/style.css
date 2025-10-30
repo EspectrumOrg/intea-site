@@ -1,30 +1,3 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza: #404040;
-    --cinza-borda: #2f3336;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
-
-    --texto-pequeno: .75rem;
-    --texto-padrao: 1rem;
-    --texto-secundario: 1.4rem;
-    --texto-titulo: 2.5rem;
-
-    /* cores para tema
-    antiga(ciano) - #017373*
-    azul claro - #048ABF/
-    */
-}
-
 /* Corpo */
 .container-post {
     flex: 1;
@@ -92,6 +65,10 @@
 .container-post .corpo-post .foto-perfil a {
     z-index: 9998 !important;
 }
+.container-post .corpo-post .foto-perfil img {
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+}
 
 /* conteúdo postagem */
 .container-post .corpo-content {
@@ -103,7 +80,7 @@
 .container-post .mostrar-mais {
     background: none;
     border: none;
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: bold;
     cursor: pointer;
     padding: 0;
@@ -117,10 +94,10 @@
 
 /* Imagem Post*/
 .container-post .image-post img {
-    max-width: 100%;
-    border-radius: 7.5%;
     margin-top: .5rem;
-    border: none;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--branco-light);
 }
 
 /* Dados e informações ----------------------------------------------------------*/
@@ -170,12 +147,12 @@
 
 /* comentar */
 .btn-comentar:hover h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 .btn-comentar:hover span {
     background-color: rgba(208, 219, 231, 0.95);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* curtir */
@@ -207,7 +184,7 @@
     padding: 12px;
     background: var(--branco);
     border-radius: 10px;
-    border: 1px solid #eee;
+    border: 1px solid var(--branco-light);
     transition: box-shadow 0.2s ease;
 }
 
@@ -229,7 +206,7 @@
     height: 42px;
     object-fit: cover;
     margin-right: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--branco-light);
 }
 
 /* info do usuário */
@@ -284,7 +261,7 @@
     padding: .6rem 1rem;
     border: none;
     border-radius: 8px;
-    font-size: var(--texto-padrao);
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     background-color: transparent;
@@ -304,7 +281,7 @@
 
 .btn-acao.editar:hover {
     background-color: var(--branco-light);
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 
 /* excluir */
@@ -326,14 +303,14 @@
 .hashtag {
     position: relative; /* cria um novo contexto de empilhamento */
     z-index: 1; /* fica acima do overlay */
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
     text-decoration: none;
     transition: 0.3s;
 }
 
 .hashtag:hover {
-    color: var(--cor-tema-apagado);
+    color: var(--azul-apagado);
     text-decoration: underline;
 }
 
@@ -351,7 +328,10 @@
 
 /* Garante que o overlay e botões fiquem abaixo */
 .corpo-post .post-overlay,
+.comentario .comentario-overlay, 
 .corpo-post button,
-.corpo-post form {
+.comentario button, 
+.corpo-post form,
+.comentario form {
     z-index: 1;
 }

@@ -1,21 +1,3 @@
-:root {
-    --cor-tema: #048ABF;
-    --cor-tema-apagado: #016d98;
-    --cor-fundo: #262626;
-    --cor-branco: #D0D6D9;
-    --cor-preto: #000000;
-    --cor-vermelho: #F22222;
-
-    --preto: #0D0D0D;
-    --cinza-borda: #2f3336;
-    --cinza-font: #b3b3b3;
-    --branco: #F2F2F2;
-    --branco-light: #ccc;
-    --azul: #1d3e55;
-    --verde: #03A64A;
-    --vermelho: #F26D6D;
-}
-
 /* ============================ */
 /* BASE DO MODAL                */
 /* ============================ */
@@ -60,13 +42,13 @@
     font-size: 26px;
     margin: 8px 0;
     font-weight: 600;
-    color: #1f1f1f;
+    color: var(--preto);
 }
 
 .modal-aviso-padrao-content p {
     font-size: 18px;
     margin-bottom: 20px;
-    color: #3c3c3c;
+    color: var(--cinza);
     line-height: 1.4;
 }
 
@@ -91,45 +73,45 @@
 /* ESTILOS POR TIPO             */
 /* ============================ */
 .modal-aviso-padrao.sucesso .modal-aviso-padrao-content {
-    border-top: 6px solid var(--cor-tema);
+    border-top: 6px solid var(--azul);
 }
 .modal-aviso-padrao.sucesso span {
-    color: var(--cor-tema);
+    color: var(--azul);
 }
 .modal-aviso-padrao.sucesso .closeModalPadrao {
-    background: var(--cor-tema);
+    background: var(--azul);
 }
 .modal-aviso-padrao.sucesso .closeModalPadrao:hover {
-    background: var(--cor-tema-apagado);
+    background: var(--azul-apagado);
     transform: scale(1.05);
 }
 
 .modal-aviso-padrao.erro .modal-aviso-padrao-content {
-    border-top: 6px solid var(--cor-vermelho);
+    border-top: 6px solid var(--vermelho);
 }
 .modal-aviso-padrao.erro span {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 .modal-aviso-padrao.erro .closeModalPadrao {
-    background: var(--cor-vermelho);
+    background: var(--vermelho);
 }
 .modal-aviso-padrao.erro .closeModalPadrao:hover {
-    background: #c82333;
+    background: var(--vermelho);
     transform: scale(1.05);
 }
 
 .modal-aviso-padrao.aviso .modal-aviso-padrao-content {
-    border-top: 6px solid #ffc107;
+    border-top: 6px solid var(--amarelo);
 }
 .modal-aviso-padrao.aviso span {
-    color: #e6b800;
+    color: var(--amarelo);
 }
 .modal-aviso-padrao.aviso .closeModalPadrao {
-    background: #ffc107;
-    color: #222;
+    background: var(--amarelo);
+    color: var(--cinza);
 }
 .modal-aviso-padrao.aviso .closeModalPadrao:hover {
-    background: #e0a800;
+    background: var(--amarelo);
     transform: scale(1.05);
 }
 

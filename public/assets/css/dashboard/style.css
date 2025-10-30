@@ -4,18 +4,6 @@
      --muted: #6b7280;
      --accent: #2563eb;
      --shadow: rgba(16, 24, 40, 0.06);
-
-     --cor-tema: #048ABF;
-     --cor-fundo: #262626;
-     --cor-branco: #D0D6D9;
-     --cor-preto: #000000;
-     --cor-vermelho: #F22222;
-
-     --preto: #0D0D0D;
-     --cinza: #404040;
-     --branco: #F2F2F2;
-     --branco-light: #ccc;
-     --azul: #1d3e55;
      --verde: #03A64A;
      --vermelho: #F26D6D;
  }
@@ -34,7 +22,8 @@
  /* título */
  .dashboard-title {
      display: flex;
-     color: var(--preto);
+     color: var(--azul);
+     gap: 1rem;
  }
 
  .dashboard-title span {
@@ -67,7 +56,7 @@
  .card h3 {
      margin: 8px 0 0;
      font-size: 22px;
-     color: var(--cor-tema);
+     color: var(--azul);
  }
 
  /* Charts grid */
@@ -99,7 +88,7 @@
  .chart-title {
      margin: 0 0 8px;
      text-align: center;
-     color: #111827;
+     color: var(--preto);
      font-size: 16px;
      font-weight: 600;
  }
@@ -115,6 +104,237 @@
      width: 100% !important;
      height: 100% !important;
      display: block;
+ }
+
+ .card-icon {
+     margin-bottom: 10px;
+     color: var(--azul);
+ }
+
+ .card-icon .material-symbols-outlined {
+     font-size: 24px;
+ }
+
+ .card-stats {
+     margin-top: 8px;
+     font-size: 12px;
+     display: flex;
+     flex-direction: column;
+     gap: 2px;
+ }
+
+ .stat-today {
+     color: var(--verde);
+     font-weight: 500;
+ }
+
+ .stat-week {
+     color: var(--muted);
+ }
+
+ /* Seção de tendências (nova) */
+ .tendencias-section {
+     background: var(--card);
+     border-radius: 10px;
+     padding: 1.5rem;
+     box-shadow: 0 6px 18px var(--shadow);
+     margin: 24px 0;
+ }
+
+ .section-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     margin-bottom: 1.5rem;
+ }
+
+ .section-header h2 {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     font-size: 1.25rem;
+     font-weight: 600;
+     color: var(--preto);
+     margin: 0;
+ }
+
+ .section-header h2 .material-symbols-outlined {
+     color: var(--azul);
+ }
+
+ .btn-view-all {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     padding: 8px 16px;
+     background: var(--azul);
+     color: var(--branco);
+     text-decoration: none;
+     border-radius: 6px;
+     font-size: 14px;
+     font-weight: 500;
+     transition: all 0.2s ease;
+ }
+
+ .btn-view-all:hover {
+     background: var(--azul-apagado);
+     transform: translateY(-1px);
+     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+ }
+
+ /* Grid de tendências (novo) */
+ .tendencias-grid {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+     gap: 1rem;
+ }
+
+ .tendencia-card {
+     border: 1px solid var(--branco-light);
+     border-radius: 8px;
+     padding: 1rem;
+     background: var(--card);
+     transition: all 0.2s ease;
+     box-shadow: 0 2px 8px var(--shadow);
+ }
+
+ .tendencia-card:hover {
+     border-color: var(--azul);
+     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+     transform: translateY(-2px);
+ }
+
+ .tendencia-header {
+     display: flex;
+     justify-content: space-between;
+     align-items: flex-start;
+     margin-bottom: 0.75rem;
+     gap: 8px;
+ }
+
+ .tendencia-hashtag {
+     font-size: 1.125rem;
+     font-weight: 600;
+     color: var(--preto);
+     margin: 0;
+     word-break: break-word;
+     flex: 1;
+ }
+
+ .tendencia-count {
+     background: var(--azul);
+     color: var(--branco);
+     padding: 4px 8px;
+     border-radius: 12px;
+     font-size: 12px;
+     font-weight: 500;
+     white-space: nowrap;
+     min-width: fit-content;
+ }
+
+ .tendencia-body {
+     margin-bottom: 1rem;
+ }
+
+ .tendencia-slug {
+     color: var(--muted);
+     font-size: 14px;
+     margin: 0 0 8px 0;
+     font-family: monospace;
+ }
+
+ .tendencia-meta {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     font-size: 12px;
+     color: #9ca3af;
+ }
+
+ .tendencia-date {
+     display: flex;
+     align-items: center;
+     gap: 4px;
+ }
+
+ .tendencia-date .material-symbols-outlined {
+     font-size: 14px;
+ }
+
+ .tendencia-actions {
+     display: flex;
+     justify-content: flex-end;
+ }
+
+ .btn-tendencia {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     padding: 6px 12px;
+     background: #e5e7eb;
+     color: #374151;
+     text-decoration: none;
+     border-radius: 6px;
+     font-size: 12px;
+     font-weight: 500;
+     transition: all 0.2s ease;
+ }
+
+ .btn-tendencia:hover {
+     background: #d1d5db;
+     color: var(--preto);
+     transform: translateY(-1px);
+ }
+
+ .no-tendencias {
+     grid-column: 1 / -1;
+     text-align: center;
+     padding: 3rem;
+     color: var(--muted);
+ }
+
+ .no-tendencias .material-symbols-outlined {
+     font-size: 48px;
+     margin-bottom: 1rem;
+     opacity: 0.5;
+ }
+
+ .no-tendencias p {
+     margin: 0;
+     font-size: 16px;
+ }
+
+ /* Responsividade adicional para tendências */
+ @media (max-width: 900px) {
+     .section-header {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 1rem;
+     }
+
+     .tendencias-grid {
+         grid-template-columns: 1fr;
+     }
+
+     .tendencia-header {
+         flex-direction: column;
+         align-items: flex-start;
+         gap: 0.5rem;
+     }
+
+     .tendencia-count {
+         align-self: flex-start;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .tendencias-section {
+         padding: 1rem;
+     }
+
+     .tendencias-grid {
+         gap: 0.75rem;
+     }
  }
 
  /* Responsividade em telas menores*/

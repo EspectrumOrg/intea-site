@@ -15,7 +15,7 @@ class DenunciaController extends Controller
     {
         $query = Denuncia::query();
 
-        // 🔹 Filtros
+        // Filtros
         if ($request->filled('motivo_denuncia')) {
             $query->where('motivo_denuncia', $request->motivo_denuncia);
         }
@@ -24,13 +24,13 @@ class DenunciaController extends Controller
             $query->where('status_denuncia', $request->status_denuncia);
         }
 
-        // 🔹 Ordenação
+        // Ordenação
         $ordem = $request->input('ordem', 'desc');
         $query->orderBy('created_at', $ordem);
 
-        // 🔹 Carrega relações
+        // Carrega relações
         $denuncias = $query->with([
-            'usuario',               // denunciante
+            'usuarioDenunciante',               // denunciante
             'usuarioDenunciado',     // denunciado
             'postagem.usuario',      // autor da postagem (se for o caso)
             'comentario.usuario',    // autor do comentário (se for o caso)

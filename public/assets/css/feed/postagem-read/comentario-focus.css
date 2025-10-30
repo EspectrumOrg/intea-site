@@ -1,0 +1,537 @@
+/* topo -----------------------------------------------------------*/
+.container-comentario-focus .topo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1rem 0 0 1rem;
+}
+
+.container-comentario-focus .topo .voltar {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.container-comentario-focus .topo .voltar span {
+    font-size: 1.5rem;
+    color: var(--preto);
+    padding: .5rem;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.container-comentario-focus .topo .voltar span:hover {
+    background-color: var(--cinza-texto);
+}
+
+.container-comentario-focus .topo .text h1 {
+    margin-left: 1rem;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--preto);
+}
+
+/* informações do usuário da postagem */
+.container-comentario-focus .info-conta {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    padding: .75rem 1rem;
+    font-size: 12px;
+    color: var(--branco-light);
+}
+
+/* bloco topo da postagem ----------------------------------------------------------------------------------*/
+.container-comentario-focus .comentario-foco {
+    max-width: 100%;
+    background-color: var(--branco);
+    padding: 1rem 1rem 0 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container-comentario-focus .foto-perfil {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.container-comentario-focus .foto-user img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.container-comentario-focus .foto-perfil a {
+    text-decoration: none;
+}
+
+.container-comentario-focus .foto-perfil h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--preto);
+}
+
+.container-comentario-focus .foto-perfil h2 {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--cinza);
+}
+
+
+/* opcoes perfil ---------------------------------------------------------- */
+.container-comentario-focus .topo .opcoes-perfil {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.container-comentario-focus .menu-opcoes {
+    font-size: 1.5rem;
+    color: var(--cinza);
+    cursor: pointer;
+    padding: .3rem .3rem;
+    border-radius: 50%;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    border: none;
+}
+
+.container-comentario-focus .menu-opcoes:hover {
+    background-color: var(--branco-light);
+}
+
+/* container do dropdown */
+.container-comentario-focus .dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.container-comentario-focus .dropdown .menu-opcoes img {
+    width: 25px;
+}
+
+.container-comentario-focus .dropdown .menu-opcoes img:hover {
+    background-color: var(--branco-light);
+}
+
+/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
+.container-comentario-focus .dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--branco);
+    width: 275px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    padding: 0;
+}
+
+/* cada item do dropdown */
+.container-comentario-focus .dropdown .dropdown-content li {
+    list-style: none;
+}
+
+.container-comentario-focus .dropdown .dropdown-content img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.container-comentario-focus .dropdown .dropdown-content li a {
+    display: block;
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--preto);
+    text-decoration: none;
+    transition: .2s;
+}
+
+.container-comentario-focus .dropdown .dropdown-content li a:hover {
+    background-color: var(--cinza-font);
+}
+
+.container-comentario-focus .seguir-btn {
+    display: flex;
+    gap: 1rem;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 0 0 15px 15px;
+    color: var(--preto);
+    cursor: pointer;
+    transition: .3s;
+    text-align: start;
+}
+
+.container-comentario-focus .seguir-btn:hover {
+    background-color: var(--branco-light);
+}
+
+.container-comentario-focus .dropdown .dropdown-content {
+    display: none;
+}
+
+.container-comentario-focus .dropdown.ativo .dropdown-content {
+    display: block;
+}
+
+/* postagem ----------------------------------------------------------------------------------------------*/
+/* texto da postagem */
+.container-comentario-focus p {
+    font-size: 18px;
+    color: var(--preto);
+    line-height: 1.5;
+    text-indent: 1px;
+    padding: 0 .5rem;
+}
+
+/* imagem da postagem */
+.container-comentario-focus .image {
+    padding: 0 1rem;
+}
+
+.container-comentario-focus .image img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
+}
+
+/* texto dados */
+.container-comentario-focus .dados {
+    padding: 1rem 0;
+}
+
+.container-comentario-focus .dados h3 {
+    font-size: 14px;
+    color: var(--cinza);
+    font-weight: 400;
+}
+
+/* Garante que o overlay e botões fiquem abaixo */
+.container-comentario-focus .comentario-overlay,
+.container-comentario-focus button,
+.container-comentario-focus form {
+    z-index: 1;
+}
+
+.container-comentario-focus .textfield textarea {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    caret-color: var(--preto);
+    resize: none;
+    overflow-y: hidden;
+}
+
+/* ----------------------------- create resposta --------------------------------------------- */
+.form-create-resposta-comentario-focus {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--branco);
+    padding: 1rem 1rem 0 1rem;
+    border-top: 1px solid var(--branco-light);
+    border-bottom: 1px solid var(--branco-light);
+}
+
+.form-create-resposta-comentario-focus .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-create-resposta-comentario-focus .textfield {
+    position: relative;
+    width: 100%;
+}
+
+.form-create-resposta-comentario-focus .hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none;
+    /* permite clicar no textarea em cima */
+}
+
+.form-create-resposta-comentario-focus .textfield textarea {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    /* texto invisível, mas cursor visível */
+    caret-color: var(--preto);
+    /* deixa o cursor preto */
+    resize: none;
+    overflow-y: hidden;
+}
+
+.form-create-resposta-comentario-focus .form .textfield textarea:focus {
+    outline: none;
+}
+
+.hashtag {
+    color: var(--azul);
+    font-weight: 600;
+}
+
+
+/* opções (upload etc) ----------------------------------*/
+.form-create-resposta-comentario-focus .form .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-top: 1px solid var(--branco-light);
+    margin: auto;
+    margin-top: .5rem;
+    width: 100%;
+}
+
+.form-create-resposta-comentario-focus .form .content .extras {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* label customizada */
+.form-create-resposta-comentario-focus .form .upload-label img {
+    width: 20px;
+}
+
+.form-create-resposta-comentario-focus .form .upload-label img:hover {
+    transform: scale(1.05);
+}
+
+.form-create-resposta-comentario-focus .form .upload-label {
+    cursor: pointer;
+    color: var(--azul);
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.form-create-resposta-comentario-focus .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.form-create-resposta-comentario-focus .form .input-file {
+    display: none;
+}
+
+.form-create-resposta-comentario-focus .form .contador {
+    font-size: 16px;
+    color: var(--cinza);
+    align-self: center;
+    margin-left: auto;
+    /* joga pro lado direito */
+    margin-right: 1rem;
+}
+
+/* icon image -------------------*/
+.form .upload-label span {
+    font-size: 20px;
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--preto);
+    transition: .3s;
+}
+
+.form .upload-label:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--azul);
+}
+
+/* botão */
+.form-create-resposta-comentario-focus .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.form-create-resposta-comentario-focus .form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
+    font-size: 14px;
+    font-weight: bold;
+    padding: .75rem;
+    border-radius: 25% / 50%;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.form-create-resposta-comentario-focus .form .botao-postar:hover {
+    background-color: var(--azul);
+    color: var(--branco);
+}
+/* interações */
+/* interações------------------------------------------------*/
+.interacoes {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    color: var(--cinza);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.interacoes .corpo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    border-top: 1px solid var(--branco-light);
+    padding: .5rem 0rem;
+}
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.interacoes .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+/* curtido ou normal*/
+.interacoes .normal span {
+    color: var(--cinza);
+}
+
+.interacoes .curtido span {
+    color: var(--vermelho);
+}
+
+.interacoes h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--azul);
+}
+
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--azul);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--vermelho);
+}
+
+.btn-curtir:hover span {
+    background-color: rgba(242, 34, 34, 0.50);
+    color: var(--vermelho);
+}
+
+.comentarios {
+    background-color: var(--branco);
+}
+
+.comentario {
+    position: relative;
+    border-bottom: 1px solid var(--branco-light);
+    padding: .5rem 1rem;
+    font-size: 14px;
+    color: var(--preto);
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+/* foto */
+.comentario .foto-comentario {
+    display: flex;
+    align-items: flex-start;
+}
+
+.comentario .foto-comentario img,
+.foto-user-padrao {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+    object-fit: cover;
+}
+
+.comentario .dados {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.dados img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
+}
+
+.comentario a {
+    text-decoration: none;
+    transition: .3s;
+}
+
+.comentario a:hover {
+    text-decoration: underline;
+}
+
+.comentario strong {
+    font-weight: 700;
+    color: var(--preto);
+    font-size: 14px;
+}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\GruposModel;
 use Illuminate\Http\Request;
+use App\Models\Tendencia;
 use Illuminate\Support\Facades\Auth;
 
 class GruposControler extends Controller
@@ -13,7 +14,7 @@ class GruposControler extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -38,7 +39,9 @@ class GruposControler extends Controller
     public function exibirGrupos()
     {
         $grupo = GruposModel::all();
-        return view('grupos', compact('grupo'));
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+        
+        return view('grupos', compact('grupo', 'tendenciasPopulares'));
     }
 
 

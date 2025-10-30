@@ -5,10 +5,7 @@
     <img
         src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
         alt="foto de perfil"
-        style="border-radius: 50%;"
-        width="40"
-        height="40"
-        loading="lazy">
+        class="foto-perfil-create">
 
     <form action="{{ route('post.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -47,7 +44,7 @@
             </div>
 
             <div class="botao-submit">
-                <button type="submit" class="botao-postar">Publicar</button>
+                <button type="submit" class="botao-postar">Postar</button>
             </div>
         </div>
 

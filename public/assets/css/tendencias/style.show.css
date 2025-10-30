@@ -16,7 +16,7 @@
 }
 
 .tendencia-info h1 {
-    color: var(--cor-tema);
+    color: var(--azul);
     margin: 0;
     font-size: 1.8rem;
     font-weight: bold;
@@ -74,7 +74,7 @@
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--cor-tema);
+    border: 2px solid var(--azul);
 }
 
 .user-details {
@@ -106,7 +106,7 @@
 }
 
 .hashtag {
-    color: var(--cor-tema);
+    color: var(--azul);
     font-weight: 600;
     text-decoration: none;
 }
@@ -143,7 +143,7 @@
 .btn-action {
     display: inline-block;
     padding: 0.5rem 1rem;
-    background: var(--cor-tema);
+    background: var(--azul);
     color: var(--branco);
     text-decoration: none;
     border-radius: 6px;
