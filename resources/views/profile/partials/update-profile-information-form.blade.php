@@ -1,12 +1,14 @@
 <section class="perfil-section">
     <header class="header">
 
-        <div class="foto-perfil">
-            @if (!empty($user->foto))
-            <img src="{{ asset('storage/'.$user->foto) }}" class="card-img-top" alt="foto perfil">
-            @else
-            <img src="{{ url('assets/images/logos/contas/user.png') }}" class="card-img-top" alt="foto perfil">
-            @endif
+        <div class="foto-perfil-container">
+            <div class="foto-perfil-wrapper">
+                @if (!empty($user->foto) && $user->foto != 'assets/images/logos/contas/user.png')
+                <img src="{{ asset('storage/'.$user->foto) }}" class="foto-perfil-img" alt="foto perfil">
+                @else
+                <img src="{{ url('assets/images/logos/contas/user.png') }}" class="foto-perfil-img" alt="foto perfil">
+                @endif
+            </div>
         </div>
 
         <h2 class="text-lg font-medium text-gray-900">
@@ -186,6 +188,105 @@
     </form>
 
     <style>
+
+        .foto-perfil-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .foto-perfil-wrapper {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #e2e8f0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+    }
+
+    .foto-perfil-wrapper:hover {
+        border-color: #3b82f6;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transform: scale(1.02);
+    }
+
+    .foto-perfil-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .foto-perfil-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Tamanhos para diferentes dispositivos */
+    @media (min-width: 768px) {
+        .foto-perfil-wrapper {
+            width: 140px;
+            height: 140px;
+        }
+    }
+
+    @media (min-width: 1024px) {
+        .foto-perfil-wrapper {
+            width: 160px;
+            height: 160px;
+        }
+    }
+
+    @media (min-width: 1280px) {
+        .foto-perfil-wrapper {
+            width: 180px;
+            height: 180px;
+        }
+    }
+
+    /* Para telas muito pequenas */
+    @media (max-width: 480px) {
+        .foto-perfil-wrapper {
+            width: 100px;
+            height: 100px;
+            border-width: 3px;
+        }
+    }
+
+    /* Efeito de loading suave */
+    .foto-perfil-img {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    /* Estado vazio/placeholder */
+    .foto-perfil-wrapper:has(.foto-perfil-img[src*="user.png"]) {
+        background: linear-gradient(135deg, #f1f5f9, #cbd5e1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .foto-perfil-wrapper:has(.foto-perfil-img[src*="user.png"]) .foto-perfil-img {
+        width: 60%;
+        height: 60%;
+        object-fit: contain;
+        opacity: 0.6;
+    }
+    
     .image-preview-container {
         display: flex;
         justify-content: center;

@@ -29,7 +29,7 @@
         </div>
 
         <ul class="dropdown-checar-perfil hidden">
-            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.edit') }}">Checar perfil</a></li>
+            <li id="li-checar-perfil-siedebar-01"><a href="{{ route('profile.show') }}">Checar perfil</a></li>
             <li id="li-checar-perfil-siedebar-02">
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">

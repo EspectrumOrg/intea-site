@@ -111,7 +111,7 @@ class ContaController extends Controller
         $user = Usuario::findOrFail($usuario_id);
         $currentUser = auth()->user();
 
-        // ✅ PROTEÇÃO DO CPF - MESMA LÓGICA (IDÊNTICA)
+        // Proteção de CPF
         if ($currentUser && $currentUser->id != $user->id && $currentUser->tipo_usuario != 1) {
             $user->cpf = '•••••••••••';
         }
