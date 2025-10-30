@@ -1,3 +1,14 @@
+@php
+use App\Models\Postagem;
+
+if (!isset($postsPopulares)) {
+    $postsPopulares = Postagem::withCount('curtidas')
+        ->with(['imagens', 'usuario'])
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
+}
+@endphp
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -75,23 +86,42 @@
                     @endif
                 </div>
             </div>
+            @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])        
         </div>
     </div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const toggle = document.getElementById('monochrome-sidebar-toggle');
     const sidebar = document.querySelector('.container-sidebar .content');
+    const sidebarTendencias = document.querySelector('.sidebar-tendencias');
     
-    if (toggle && sidebar) {
-        toggle.addEventListener('change', function() {
-            const isMonochrome = this.checked;
-            
-            // Atualizar visualmente imediatamente (sem esperar pelo servidor)
+    // Função para aplicar/remover modo monocromático
+    function toggleMonochrome(isMonochrome) {
+        // Sidebar principal
+        if (sidebar) {
             if (isMonochrome) {
                 sidebar.classList.add('sidebar-monochrome');
             } else {
                 sidebar.classList.remove('sidebar-monochrome');
             }
+        }
+        
+        // Sidebar de tendências
+        if (sidebarTendencias) {
+            if (isMonochrome) {
+                sidebarTendencias.classList.add('sidebar-tendencias-monochrome');
+            } else {
+                sidebarTendencias.classList.remove('sidebar-tendencias-monochrome');
+            }
+        }
+    }
+    
+    if (toggle) {
+        toggle.addEventListener('change', function() {
+            const isMonochrome = this.checked;
+            
+            // Atualizar visualmente imediatamente (sem esperar pelo servidor)
+            toggleMonochrome(isMonochrome);
             
             // Enviar para o servidor em segundo plano
             fetch('/update-theme-preference', {
@@ -124,17 +154,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Erro:', error);
                 
                 // Reverter visualmente em caso de erro
-                if (isMonochrome) {
-                    sidebar.classList.remove('sidebar-monochrome');
-                } else {
-                    sidebar.classList.add('sidebar-monochrome');
-                }
+                toggleMonochrome(!isMonochrome);
                 toggle.checked = !isMonochrome;
                 
                 // Mostrar feedback de erro
                 showFeedback('Erro ao salvar preferência', 'error');
             });
         });
+        
+        // Aplicar estado inicial baseado no toggle (caso a página seja carregada com a preferência já salva)
+        if (sidebarTendencias && sidebarTendencias.classList.contains('sidebar-tendencias-monochrome')) {
+            toggle.checked = true;
+        }
     }
 });
 
@@ -195,6 +226,47 @@ style.textContent = `
             transform: translateX(100%);
             opacity: 0;
         }
+    }
+    
+    /* Estilos para modo monocromático do sidebar de tendências */
+    .sidebar-tendencias-monochrome {
+        filter: grayscale(100%);
+        transition: filter 0.3s ease;
+    }
+    
+    .sidebar-tendencias-monochrome .sidebar-header {
+        color: #666 !important;
+    }
+    
+    .sidebar-tendencias-monochrome .sidebar-header span {
+        filter: grayscale(100%);
+    }
+    
+    .sidebar-tendencias-monochrome .tendencia-item {
+        color: #666 !important;
+        border-color: #ddd !important;
+    }
+    
+    .sidebar-tendencias-monochrome .tendencia-nome {
+        color: #666 !important;
+    }
+    
+    .sidebar-tendencias-monochrome .tendencia-contador {
+        color: #999 !important;
+    }
+    
+    .sidebar-tendencias-monochrome .ver-mais a {
+        color: #666 !important;
+        border-color: #ddd !important;
+        background-color: #f5f5f5 !important;
+    }
+    
+    .sidebar-tendencias-monochrome .no-tendencias p {
+        color: #999 !important;
+    }
+    
+    .sidebar-tendencias-monochrome .material-symbols-outlined {
+        filter: grayscale(100%);
     }
 `;
 document.head.appendChild(style);

@@ -1,7 +1,7 @@
 <!-- resources/views/feed/post/partials/sidebar-popular.blade.php -->
 <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
 
-<div class="sidebar-tendencias">
+<div class="sidebar-tendencias {{ Auth::check() && Auth::user()->tema_preferencia == 'monocromatico' ? 'sidebar-tendencias-monochrome' : '' }}">
     <div class="sidebar-header">
         <span class="material-symbols-outlined">whatshot</span>
         <h3>Tendências</h3>
