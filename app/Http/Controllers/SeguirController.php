@@ -48,7 +48,7 @@ public function store(Request $request)
     }
 
     if ($userToFollow->visibilidade == 0) {
-        return redirect()->back()->with('error', 'Conta privada!');
+        return redirect()->back()->with('error', 'não pode Seguir, Conta privada!');
     }
 
     $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
