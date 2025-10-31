@@ -54,6 +54,30 @@ class PostagemController extends Controller
         return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
 
+    public function seguindo()
+    {
+        $userId = Auth::id();
+
+        $posts = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+        $postagens = $this->postagem
+            ->with(['imagens', 'usuario'])
+            ->whereHas('usuario', function ($q) use ($userId) {
+                $q->whereHas('seguidores', function ($q2) use ($userId) {
+                    $q2->where('segue_id', $userId);
+            })->orWhere('id', $userId);
+            })->orderByDesc('created_at')
+            ->get();
+
+
+        $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
+
+        return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

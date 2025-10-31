@@ -97,6 +97,9 @@ Route::resource("responsavel", ResponsavelController::class)->names("responsavel
 // Usuário Logado PADRÃO --------------------------------------------------------------------------------------------------------------------------------------------------------------+
 Route::middleware('auth')->group(function () {
 
+    //Teste
+    Route::get('/feed/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
+
     // Feed e postagens
     Route::resource("feed", PostagemController::class)
         ->names("post")

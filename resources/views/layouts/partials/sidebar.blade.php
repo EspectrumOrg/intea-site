@@ -48,6 +48,12 @@
             <h1>Home</h1>
         </a>
 
+        <a href="{{ route('post.seguindo') }}" class="nav-link {{ request()->routeIs('post.seguindo') ? 'active' : '' }}"
+            id="seguindo">
+            <span id="simbolo-home" class="material-symbols-outlined" >home</span>
+            <h1>Posts Seguindo</h1>
+        </a>
+
         <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
             <span id="simbolo-mensagens" class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
