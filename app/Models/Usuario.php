@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Notifications\ResetPasswordNotification; // coloque esse use lá no topo, junto dos outros
-
+use App\Notifications\ResetPasswordNotification;
 
 class Usuario extends Authenticatable
 {
@@ -33,37 +32,28 @@ class Usuario extends Authenticatable
     'status_conta',
     'tema_preferencia',
     'tema_interface',
+    'onboarding_concluido',
+    'onboarding_concluido_em',
     'created_at',
     'updated_at'
   ];
 
-  /**
-   * The attributes that should be hidden for serialization.
-   *
-   * @var array<int, string>
-   */
   protected $hidden = [
     'senha',
     'remember_token',
   ];
 
-  /**
-   * The attributes that should be cast.
-   *
-   * @var array<string, string>
-   */
   protected $casts = [
     'email_verified_at' => 'datetime',
+    'onboarding_concluido' => 'boolean',
+    'onboarding_concluido_em' => 'datetime'
   ];
 
-  // Aqui está o método necessário para o Auth::attempt funcionar com o campo "senha"
   public function getAuthPassword()
   {
     return $this->senha;
   }
 
-
-  // Relacionamentos
   public function admin()
   {
     return $this->hasOne(Admin::class, 'usuario_id');
@@ -99,7 +89,7 @@ class Usuario extends Authenticatable
     return $this->hasMany(Postagem::class, 'usuario_id');
   }
 
-    public function comentarios()
+  public function comentarios()
   {
     return $this->hasMany(Comentario::class, 'id_usuario');
   }
@@ -116,39 +106,187 @@ class Usuario extends Authenticatable
 
   public function genero()
   {
-    return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
+    return $this->belongsTo(Genero::class, 'genero');
   }
+
   public function seguindo()
-{
+  {
     return $this->belongsToMany(
         Usuario::class,     
         'tb_seguir',         
         'segue_id',          
         'seguindo_id'       
     )->withTimestamps();
-}
+  }
 
-
-public function grupos()
-{
+  public function grupos()
+  {
     return $this->belongsToMany(
         GruposModel::class,
         'tb_gruposdacomunidade_usuarios',
         'idusuario',
         'idGruposComunidade'
     );
-}
+  }
+
   public function seguidores()
   {
       return $this->belongsToMany(
           self::class,
           'tb_seguir',
-          'seguindo_id',    // Foreign key do usuário atual na tabela follows (quem é seguido)
-          'segue_id'        // Foreign key do usuário que está seguindo
+          'seguindo_id',
+          'segue_id'
       )->withTimestamps();
   }
+
+  public function interesses()
+  {
+      return $this->belongsToMany(Interesse::class, 'interesse_usuario')
+                  ->withPivot('notificacoes', 'seguindo_desde')
+                  ->withTimestamps();
+  }
+
+  public function interessesComoModerador()
+  {
+      return $this->belongsToMany(Interesse::class, 'interesse_moderadores')
+                  ->withPivot('cargo')
+                  ->withTimestamps();
+  }
+
+  public function alertasModeracao()
+  {
+      return $this->hasMany(AlertaModeracao::class);
+  }
+
+  public function expulsoesInteresses()
+  {
+      return $this->hasMany(InteresseExpulsao::class);
+  }
+
+  public function postagensModeradas()
+  {
+      return $this->hasMany(Postagem::class, 'removida_por');
+  }
+
+  public function postagensNoInteresse($interesseId)
+  {
+      return $this->postagens()
+                  ->whereHas('interesses', function($query) use ($interesseId) {
+                      $query->where('interesses.id', $interesseId);
+                  })
+                  ->get();
+  }
+
+  public function seguirInteresse($interesseId, $notificacoes = true): void
+  {
+      $this->interesses()->attach($interesseId, [
+          'notificacoes' => $notificacoes,
+          'seguindo_desde' => now()
+      ]);
+
+      $interesse = Interesse::find($interesseId);
+      $interesse->atualizarContadores();
+  }
+
+  public function deixarSeguirInteresse($interesseId): void
+  {
+      $this->interesses()->detach($interesseId);
+
+      $interesse = Interesse::find($interesseId);
+      $interesse->atualizarContadores();
+  }
+
+  public function segueInteresse($interesseId): bool
+  {
+      return $this->interesses()->where('interesses.id', $interesseId)->exists();
+  }
+
+  public function estaExpulsoDe($interesseId): bool
+  {
+      return $this->expulsoesInteresses()
+                  ->where('interesse_id', $interesseId)
+                  ->where(function($query) {
+                      $query->where('permanente', true)
+                            ->orWhere('expulso_ate', '>', now());
+                  })
+                  ->exists();
+  }
+
+  public function ehModeradorDe($interesseId): bool
+  {
+      return $this->interessesComoModerador()
+                  ->where('interesses.id', $interesseId)
+                  ->exists();
+  }
+
+  public function podeModerar($interesseId): bool
+  {
+      return $this->ehModeradorDe($interesseId) || $this->tipo_usuario === 'admin';
+  }
+
+  public function obterFeedInteresses($limite = 20)
+  {
+      $interessesIds = $this->interesses()->pluck('interesses.id');
+      
+      return Postagem::with(['usuario', 'imagens', 'interesses'])
+                  ->whereHas('interesses', function($query) use ($interessesIds) {
+                      $query->whereIn('interesses.id', $interessesIds);
+                  })
+                  ->where(function($query) {
+                      $query->where('visibilidade_interesse', 'publico')
+                            ->orWhere(function($q) {
+                                $q->where('visibilidade_interesse', 'seguidores');
+                            });
+                  })
+                  ->where('bloqueada_auto', false)
+                  ->where('removida_manual', false)
+                  ->orderBy('created_at', 'desc')
+                  ->limit($limite)
+                  ->get();
+  }
+
+  public function obterInteressesSugeridos($limite = 6)
+  {
+      return Interesse::ativos()
+                  ->whereNotIn('id', $this->interesses()->pluck('interesses.id'))
+                  ->populares($limite)
+                  ->get();
+  }
+
+  public function obterEstatisticasModeracao()
+  {
+      return [
+          'alertas_ativos' => $this->alertasModeracao()->where('ativo', true)->count(),
+          'expulsoes' => $this->expulsoesInteresses()->count(),
+          'postagens_moderadas' => $this->postagensModeradas()->count(),
+      ];
+  }
+
+  public function onboardingConcluido(): bool
+  {
+      return $this->onboarding_concluido ?? false;
+  }
+
+  public function completarOnboarding()
+  {
+      $this->update([
+          'onboarding_concluido' => true,
+          'onboarding_concluido_em' => now()
+      ]);
+  }
+
+  public function temInteresses(): bool
+  {
+      return $this->interesses()->exists();
+  }
+
+  public function obterIdsInteresses(): array
+  {
+      return $this->interesses()->pluck('interesses.id')->toArray();
+  }
+
   public function sendPasswordResetNotification($token)
-{
-    $this->notify(new ResetPasswordNotification($token));
-}
+  {
+      $this->notify(new ResetPasswordNotification($token));
+  }
 }
