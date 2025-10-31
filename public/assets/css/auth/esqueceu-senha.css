@@ -35,13 +35,13 @@
 .logo-container {
   position: absolute;
   top: 3rem;
-  left: 45%;
+  left: 47.5%;
   transform: translate(-10%, -10%);
   border: none;
 }
 
 .logo-container img {
-  width: 250px;
+  width: 150px;
   transition: 0.3s;
   cursor: pointer;
 }

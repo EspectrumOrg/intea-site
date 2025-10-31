@@ -1,0 +1,191 @@
+body {
+    background-color: var(--cor-branco);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--cinza);
+    margin: 0;
+}
+
+/* Container principal ----------------(Denúncia)-------------*/
+.denuncia-gerenciamento {
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.denuncia-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* título */
+.denuncia-title {
+    display: flex;
+    margin: 1rem 0;
+    gap: 1rem;
+    border-bottom: 1px solid var(--amarelo);
+    width: fit-content;
+}
+
+.denuncia-title span {
+    color: var(--amarelo);
+    font-size: 3rem;
+}
+
+/* Card */
+.denuncia-gerenciamento .card {
+    background-color: var(--branco);
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: scroll;
+}
+
+/* Header do card */
+.denuncia-gerenciamento .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--cor-fundo);
+}
+
+.denuncia-gerenciamento .card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--branco);
+}
+
+
+/* Tabela ----*/
+.denuncia-gerenciamento .card-body {
+    padding: 0;
+}
+
+.denuncia-gerenciamento .table-denuncias {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.denuncia-gerenciamento .table-denuncias th {
+    border-left: .0 solid var(--branco-light);
+    padding: 0.5rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
+.denuncia-gerenciamento .table-denuncias td {
+    padding: 0.25rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
+/* Topo tabela*/
+.denuncia-gerenciamento .card-header {
+    background-color: var(--cor-fundo);
+}
+
+.table-denuncias thead {
+    background-color: var(--cor-fundo);
+    color: var(--branco);
+}
+
+.table-denuncias .motivo_denuncia {
+    font-size: .8rem;
+}
+
+/* botão filtrar */
+.btn-filtrar {
+    padding: 0.5rem 1rem;
+    border-radius: 50% / 100%;
+    background-color: var(--branco);
+    transition: .7s;
+    color: var(--preto);
+    border: 1px solid var(--amarelo);
+    cursor: pointer;
+}
+
+.btn-filtrar:hover {
+    background-color: var(--amarelo);
+    color: var(--branco);
+}
+
+/* Botão Ações -- denúncias----*/
+.table-denuncias .td-acoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.table-denuncias .td-acoes span {
+    color: var(--preto);
+}
+
+.table-denuncias tr:nth-child(even) {
+    background-color: var(--branco);
+}
+
+.btn-excluir-usuario,
+.btn-desabilitar,
+.btn-desbanir,
+.btn-visualizar {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Botão Excluir */
+.btn-excluir-usuario span:hover {
+    color: var(--vermelho);
+}
+
+.btn-desabilitar span:hover {
+    color: var(--verde);
+}
+
+/* Botão Visualizar*/
+.table-denuncias .btn-visualizar span:hover {
+    transition: .3s;
+    color: var(--azul);
+}
+
+/* Botão desbanir */
+.btn-desbanir:hover {
+    color: var(--azul);
+}
+
+.btn-excluir-usuario span,
+.btn-desabilitar span,
+.btn-desbanir span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+/* ------------------------ Modal Denúncia*/
+
+.modal-content .foto-denunciado {
+    height: 40px;
+    width: 40px;
+    border: 1px solid var(--vermelho);
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.modal-content .imagem-postagem {
+    max-width: 100%;
+    border: 1px solid var(--vermelho);
+    object-fit: cover;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .filtro-form {
+        flex-direction: column;
+    }
+
+    .table-usuarios th,
+    .table-usuarios td {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.8rem;
+    }
+}

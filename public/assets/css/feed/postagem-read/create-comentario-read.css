@@ -42,8 +42,7 @@
     padding: 1rem;
     font-size: 18px;
     font-family: inherit;
-    color: transparent; /* texto invisível, mas cursor visível */
-    caret-color: var(--preto); /* deixa o cursor preto */
+    color: var(--preto); 
     resize: none;
     overflow-y: hidden;
 }

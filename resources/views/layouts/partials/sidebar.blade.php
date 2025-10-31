@@ -24,8 +24,8 @@
                 loading="lazy">
         </a>
         <div class="text">
-            <h5>{{ Auth::user()->user }}</h5>
-            <h4>{{ Auth::user()->email }}</h4>
+            <h5>{{ Auth::user()->apelido }}</h5>
+            <h4>{{ Auth::user()->user }}</h4>
         </div>
 
         <ul class="dropdown-checar-perfil hidden">

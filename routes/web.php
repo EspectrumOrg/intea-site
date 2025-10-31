@@ -95,7 +95,7 @@ Route::resource("responsavel", ResponsavelController::class)->names("responsavel
 
 
 // Usuário Logado PADRÃO --------------------------------------------------------------------------------------------------------------------------------------------------------------+
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.ban'])->group(function () {
 
     // Feed e postagens
     Route::resource("feed", PostagemController::class)
@@ -181,7 +181,7 @@ Route::middleware('auth', 'is_profissional')->group(function () {
 
 
 // Apenas Admin --------------------------------------------------------------------------------------------------------------------------------------------------------------+
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
 
     // Cadastro de Admin
     Route::resource("admin", AdminController::class)->names("admin");

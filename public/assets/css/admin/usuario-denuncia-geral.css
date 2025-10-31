@@ -1,0 +1,169 @@
+/* Filtros */
+.filtro-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: .5rem;
+}
+
+.filtro-form input:focus {
+    outline: none;
+    border-color: var(--azul);
+}
+
+.filtro-form input,
+.filtro-form select {
+    padding: 0.5rem 1.8rem 0.5rem 0.5rem;
+    border-radius: 25% / 100%;
+    border: 1px solid var(--branco-light);
+    background-color: var(--branco);
+    font: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23888' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+}
+
+.filtro-form select:focus {
+    outline: none;
+    border-color: var(--azul);
+}
+
+tr:hover,
+.table-usuarios tr:nth-child(even):hover {
+    transition: .3s;
+    background: var(--cinza-texto);
+}
+
+/* Ações ------------------------------ */
+.btn-excluir-usuario,
+.btn-desabilitar,
+.btn-desbanir,
+.btn-visualizar {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.btn-excluir-usuario span,
+.btn-desabilitar span,
+.btn-desbanir span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.td-acoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.td-acoes span {
+    color: var(--preto);
+}
+
+tr:nth-child(even) {
+    background-color: var(--cor-branco);
+}
+
+
+/* Botão deesabilitar*/
+.btn-desabilitar span:hover {
+    color: var(--verde);
+}
+
+.btn-desabilitar:hover {
+    color: var(--verde);
+}
+
+/* Botão Visualizar*/
+.btn-visualizar span:hover {
+    transition: .3s;
+    color: var(--azul);
+}
+
+.btn-visualizar:hover {
+    color: var(--azul);
+}
+
+/* Botão desbanir ---*/
+.btn-desbanir:hover {
+    color: var(--azul);
+}
+
+.btn-desbanir span:hover {
+    color: var(--azul);
+}
+
+/* Botão Excluir ---*/
+.btn-excluir-usuario:hover {
+    color: var(--vermelho);
+}
+
+.btn-excluir-usuario span:hover {
+    color: var(--vermelho);
+}
+
+
+
+
+/* Paginação */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.paginacao ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 5px;
+}
+
+.paginacao li {
+    display: inline-block;
+}
+
+.paginacao li a,
+.paginacao li span {
+    display: block;
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--preto);
+    background-color: var(--branco);
+    border: 1px solid var(--azul-apagado);
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+.paginacao li a:hover {
+    background-color: var(--azul);
+    border-color: var(--azul);
+    color: var(--branco);
+}
+
+.paginacao li span {
+    background-color: var(--azul);
+    border-color: var(--azul);
+    font-weight: 700;
+}
+
+/* Desativado */
+.paginacao li.disabled span {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

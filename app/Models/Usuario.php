@@ -5,10 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Banimento[] $banimentos
+ * @method \Illuminate\Database\Eloquent\Relations\HasMany banimentos()
+ */
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Notifications\ResetPasswordNotification; // coloque esse use lá no topo, junto dos outros
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class Usuario extends Authenticatable
@@ -99,7 +105,7 @@ class Usuario extends Authenticatable
     return $this->hasMany(Postagem::class, 'usuario_id');
   }
 
-    public function comentarios()
+  public function comentarios()
   {
     return $this->hasMany(Comentario::class, 'id_usuario');
   }
@@ -114,41 +120,47 @@ class Usuario extends Authenticatable
     return $this->hasMany(Denuncia::class, 'id_usuario_denunciante');
   }
 
+
+  public function banimentos(): HasMany
+  {
+    return $this->hasMany(Banimento::class, 'id_usuario');
+  }
+
   public function genero()
   {
     return $this->belongsTo(Genero::class, 'genero'); // a chave estrangeira é 'genero'
   }
+
   public function seguindo()
-{
+  {
     return $this->belongsToMany(
-        Usuario::class,     
-        'tb_seguir',         
-        'segue_id',          
-        'seguindo_id'       
+      Usuario::class,
+      'tb_seguir',
+      'segue_id',
+      'seguindo_id'
     )->withTimestamps();
-}
+  }
 
-
-public function grupos()
-{
+  public function grupos()
+  {
     return $this->belongsToMany(
-        GruposModel::class,
-        'tb_gruposdacomunidade_usuarios',
-        'idusuario',
-        'idGruposComunidade'
+      GruposModel::class,
+      'tb_gruposdacomunidade_usuarios',
+      'idusuario',
+      'idGruposComunidade'
     );
-}
+  }
   public function seguidores()
   {
-      return $this->belongsToMany(
-          self::class,
-          'tb_seguir',
-          'seguindo_id',    // Foreign key do usuário atual na tabela follows (quem é seguido)
-          'segue_id'        // Foreign key do usuário que está seguindo
-      )->withTimestamps();
+    return $this->belongsToMany(
+      self::class,
+      'tb_seguir',
+      'seguindo_id',    // Foreign key do usuário atual na tabela follows (quem é seguido)
+      'segue_id'        // Foreign key do usuário que está seguindo
+    )->withTimestamps();
   }
   public function sendPasswordResetNotification($token)
-{
+  {
     $this->notify(new ResetPasswordNotification($token));
-}
+  }
 }

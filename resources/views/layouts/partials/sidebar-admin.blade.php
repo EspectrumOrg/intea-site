@@ -1,20 +1,12 @@
 <div class="content">
     @can("visualizar-admin")
 
-    <div class="texto-superior">
-        <h1>Administração</h1>
-    </div>
-
     <div class="admin-topo">
         <img src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : url('assets/images/logos/contas/user.png') }}"
-            alt="foto de perfil"
-            style="border-radius: 50%;"
-            width="80"
-            height="80"
-            loading="lazy">
+            class="foto-administrador">
         <div class="text">
-            <h1>{{ Auth::user()->nome}}</h1>
             <h2>@if(Auth::user()->id === 1) Administrador Chefe @else Administrador Secundario @endif</h2>
+            <h1>{{ Auth::user()->apelido}} - {{ Auth::user()->user}}</h1>
         </div>
     </div>
 

@@ -44,7 +44,7 @@ public function store(LoginRequest $request): RedirectResponse
             Auth::logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
-            return back()->with('warning', 'Sua conta está banida. Por favor, contate a empresa.');
+            return back()->with('ban_reason', 'Sua conta está banida. Por favor, contate a empresa.');
 
         default:
             Auth::logout();

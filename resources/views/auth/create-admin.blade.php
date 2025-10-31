@@ -15,7 +15,7 @@
 <body>
     <!-- Voltar -->
     <div class="voltar">
-        <a href="{{ route('dashboard.index') }}">
+        <a href="{{ route('usuario.index') }}">
             <span class="material-symbols-outlined">arrow_back</span>
         </a>
     </div>
