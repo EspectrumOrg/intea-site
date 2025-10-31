@@ -36,7 +36,7 @@
             <h1>Conta Banida</h1>
             <p>{{ session('ban_reason') }}</p>
             <p>Se você acredita que isso foi um engano, pode solicitar uma revisão do banimento.</p>
-            <a href="{{ route('contato.store') }}" class="botao-reconciliacao">Entrar em contato</a>
+            <a href="{{ route('landpage') }}#contact" class="botao-reconciliacao">Entrar em contato</a>
             @endif
         </div>
 

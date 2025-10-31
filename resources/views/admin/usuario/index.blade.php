@@ -103,8 +103,7 @@
                             <td>
                                 @if($item->status_conta == 1)
                                 <!-- Usuário ativo → Mostrar botão de banir -->
-                                <!-- Botão que abre o modal -->
-                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" data-bs-target="#modalBanirUsuario{{ $item->id }}">
+                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $item->id }}')">
                                     <span class="material-symbols-outlined">person_off</span>
                                     Banir
                                 </button>

@@ -25,7 +25,7 @@
             <h1>Usuários</h1>
         </a>
 
-        <a href="#" 
+        <a href="{{ route('contato.index')}}" 
             class="nav-link roxo" 
             id="denuncia">
             <span class="material-symbols-outlined">contact_support</span>

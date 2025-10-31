@@ -251,8 +251,6 @@
                                                     <p class="text-muted"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
                                                 </div>
 
-
-
                                                 @elseif ($item->postagem)
                                                 <!-- Postagem -->
                                                 <p>Conteúdo Postagem</p>

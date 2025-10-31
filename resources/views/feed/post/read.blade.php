@@ -60,14 +60,14 @@
                 <!-- Caso não tenha sido quem postou --------------------->
                 <li>
                     @if( Auth::user()->tipo_usuario === 1 )
-                    <form action="{{ route('usuario.destroy', $postagem->usuario_id) }}" method="post" class="form-excluir">
-                        @csrf
-                        @method("delete")
-                        <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                    <!-- Botão que abre o modal -->
+                    <div class="form-excluir">
+                        <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
                             <span class="material-symbols-outlined">person_off</span>
-                            Banir usuário
+                            Banir
                         </button>
-                    </form>
+                    </div>
+
                     @else
                     <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
@@ -90,17 +90,11 @@
         <!-- Modal Edição dessa postagem -->
         @include('feed.post.edit', ['postagem' => $postagem])
 
+        <!-- modal banir-->
+        @include('layouts.partials.modal-banimento', ['usuario' => $postagem->usuario])
+
         <!-- Modal Criação de comentário ($postagem->id) -->
-        <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button" class="close" onclick="fecharModalComentar('{{ $postagem->id }}')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="modal-content-content">
-                    @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
 
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
@@ -112,7 +106,7 @@
                         <input type="hidden" name="tipo" value="postagem">
                         <input type="hidden" name="id_alvo" value="{{ $postagem->id }}">
                         <label class="form-label">Motivo Denúncia</label>
-                        <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                        <select class="form-select" id="motivo_denuncia_postagem_{{$postagem->id}}" name="motivo_denuncia" required>
                             <option value="">Tipo</option>
                             <option value="spam">Spam</option>
                             <option value="desinformação">Desinformação</option>
@@ -276,14 +270,13 @@
                         <!-- Caso não tenha sido quem postou --------------------->
                         <li>
                             @if( Auth::user()->tipo_usuario === 1 )
-                            <form action="{{ route('usuario.destroy', $comentario->usuario->id) }}" method="post" class="form-excluir">
-                                @csrf
-                                @method("delete")
-                                <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                            <!-- Botão que abre o modal -->
+                            <div class="form-excluir">
+                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
                                     <span class="material-symbols-outlined">person_off</span>
-                                    Banir usuário
+                                    Banir
                                 </button>
-                            </form>
+                            </div>
                             @else
                             <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
                                 <span class="material-symbols-outlined">flag_2</span>Denunciar
@@ -355,6 +348,9 @@
     <!-- modal resposta comentário------------------------------------------------>
     @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
 
+    <!-- modal banir-->
+    @include('layouts.partials.modal-banimento', ['usuario' => $comentario->usuario])
+
     <!-- Modal Edição dessa comentario -->
     @include('feed.post.comentario.comentario-edit', ['comentario' => $comentario])
 
@@ -372,7 +368,7 @@
                     <input type="hidden" name="tipo" value="comentario">
                     <input type="hidden" name="id_alvo" value="{{ $comentario->id }}">
                     <label class="form-label">Motivo Denúncia</label>
-                    <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                    <select class="form-select" id="motivo_denuncia_comentario_{{$comentario->id}}" name="motivo_denuncia" required>
                         <option value="">Tipo</option>
                         <option value="spam">Spam</option>
                         <option value="desinformacao">Desinformação</option>

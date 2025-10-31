@@ -6,18 +6,18 @@ body {
 }
 
 /* Container principal ----------------(Denúncia)-------------*/
-.denuncia-gerenciamento {
+.suporte-gerenciamento {
     margin: 2rem auto;
     padding: 0 2rem;
 }
 
-.denuncia-inner {
+.suporte-inner {
     max-width: 1200px;
     margin: 0 auto;
 }
 
 /* título */
-.denuncia-title {
+.suporte-title {
     display: flex;
     margin: 1rem 0;
     gap: 1rem;
@@ -25,13 +25,13 @@ body {
     width: fit-content;
 }
 
-.denuncia-title span {
+.suporte-title span {
     color: var(--amarelo);
     font-size: 3rem;
 }
 
 /* Card */
-.denuncia-gerenciamento .card {
+.suporte-gerenciamento .card {
     background-color: var(--branco);
     border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -41,7 +41,7 @@ body {
 }
 
 /* Header do card */
-.denuncia-gerenciamento .card-header {
+.suporte-gerenciamento .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,7 +49,7 @@ body {
     color: var(--preto);
 }
 
-.denuncia-gerenciamento .card-header h2 {
+.suporte-gerenciamento .card-header h2 {
     margin: 0;
     font-size: 1.5rem;
     color: var(--preto);
@@ -57,39 +57,39 @@ body {
 
 
 /* Tabela ----*/
-.denuncia-gerenciamento .card-body {
+.suporte-gerenciamento .card-body {
     padding: 0;
 }
 
-.denuncia-gerenciamento .table-denuncias {
+.suporte-gerenciamento .table-suporte {
     width: 100%;
     border-collapse: collapse;
 }
 
-.denuncia-gerenciamento .table-denuncias th {
+.suporte-gerenciamento .table-suporte th {
     border-left: .0 solid var(--branco-light);
     padding: 0.5rem;
     font-size: .8rem;
     text-align: left;
 }
 
-.denuncia-gerenciamento .table-denuncias td {
+.suporte-gerenciamento .table-suporte td {
     padding: 0.25rem;
     font-size: .8rem;
     text-align: left;
 }
 
 /* Topo tabela*/
-.denuncia-gerenciamento .card-header {
+.suporte-gerenciamento .card-header {
     background-color: var(--cor-fundo);
 }
 
-.table-denuncias thead {
+.table-suporte thead {
     background-color: var(--cor-fundo);
     color: var(--branco);
 }
 
-.table-denuncias .motivo_denuncia {
+.table-suporte .motivo_suporte {
     font-size: .8rem;
 }
 

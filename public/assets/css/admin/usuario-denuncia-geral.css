@@ -117,53 +117,83 @@ tr:nth-child(even) {
 
 
 
-/* Paginação */
+/* paginação */
+.paginacao li:first-child,
+.paginacao li:last-child {
+    display: none !important;
+}
 .paginacao {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    gap: 5px;
-    flex-wrap: wrap;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.paginacao nav {
+    display: flex;
+    justify-content: center;
 }
 
 .paginacao ul {
+    display: flex;
+    align-items: center;
     list-style: none;
     padding: 0;
-    display: flex;
-    gap: 5px;
+    margin: 0;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
 .paginacao li {
-    display: inline-block;
+    display: flex;
 }
 
 .paginacao li a,
 .paginacao li span {
-    display: block;
-    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
     border-radius: 8px;
-    text-decoration: none;
-    color: var(--preto);
-    background-color: var(--branco);
     border: 1px solid var(--azul-apagado);
-    transition: all 0.25s ease;
+    background: var(--branco);
+    color: var(--preto);
+    text-decoration: none;
+    font-size: 0.95rem;
     font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
 }
 
+/* Hover */
 .paginacao li a:hover {
-    background-color: var(--azul);
+    background: var(--azul);
     border-color: var(--azul);
     color: var(--branco);
+    transform: translateY(-2px);
 }
 
-.paginacao li span {
-    background-color: var(--azul);
+/* Página atual */
+.paginacao li.active span {
+    background: var(--azul);
+    color: var(--branco);
     border-color: var(--azul);
     font-weight: 700;
 }
 
-/* Desativado */
+/* Botões desativados (ex: “Anterior” quando na 1ª página) */
 .paginacao li.disabled span {
-    opacity: 0.5;
+    background: var(--cinza-claro);
+    border-color: var(--cinza-claro);
+    color: #aaa;
     cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Ícones de setas ou textos como “Anterior” / “Próximo” */
+.paginacao li:first-child a,
+.paginacao li:last-child a {
+    padding: 0 14px;
+    font-weight: 600;
 }

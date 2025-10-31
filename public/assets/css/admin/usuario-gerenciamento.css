@@ -33,8 +33,10 @@ body {
 /* Card */
 .usuario-gerenciamento .card {
     background-color: var(--branco);
-    border-radius: var(--border-radius);
+    border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--branco-light);
+    padding: .5rem;
     overflow-x: scroll;
 }
 

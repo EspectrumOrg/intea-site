@@ -18,7 +18,7 @@
     text-decoration: none;
     transition: 0.3s;
     text-decoration-color: var(--cor-preto);
-    z-index: 9998 !important;
+    z-index: 998 !important;
 }
 
 .topo .info-perfil a:hover {

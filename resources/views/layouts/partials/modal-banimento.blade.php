@@ -1,33 +1,34 @@
-<!-- COMPONENTE DE MODAL DE BANIMENTO -->
-<div class="modal fade" id="modalBanirUsuario{{ $usuario->id }}" tabindex="-1" aria-labelledby="modalBanirUsuarioLabel{{ $usuario->id }}" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+    <!-- layout geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/modal-banimento.css') }}">
 
-            <!-- Cabeçalho -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalBanirUsuarioLabel{{ $usuario->id }}">
-                    Banir Usuário
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+    <div id="modal-banimento-usuario-{{ $usuario->id }}" class="modal-banimento-overlay" style="display: none;">
+        <div class="modal-banimento-content">
+            <div class="modal-banimento-header">
+                <h2>Banir Usuário</h2>
+                <button class="modal-banimento-fechar" onclick="fecharModalBanimentoUsuarioEspecifico('{{ $usuario->id }}')">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
 
-            <!-- Corpo -->
-            <div class="modal-body">
-                <div class="text-center mb-3">
-                    <img src="{{ asset('storage/'.$usuario->foto ?? 'assets/images/logos/contas/user.png') }}"
-                         class="rounded-circle" width="100" height="100" alt="Foto do usuário">
-                    <h5 class="mt-2">{{ $usuario->user }}</h5>
-                    <p class="text-muted">{{ $usuario->apelido ?? 'Sem apelido' }}</p>
+            <div class="modal-banimento-body">
+                <div class="modal-banimento-usuario">
+                    <div class="nome-usuario-banimento">
+                        <img src="{{ asset('storage/'.$usuario->foto ?? 'assets/images/logos/contas/user.png') }}" alt="Foto do usuário">
+                        <h3>{{ $usuario->user }}</h3>
+                        <p>{{ $usuario->apelido ?? 'Sem apelido' }}</p>
+                    </div>
+                    <div class="descricao-usuario-banimento">
+                        <p>{{ $usuario->descricao ?? 'Sem descrição' }}</p>
+                    </div>
                 </div>
 
-                <form action="{{ route('usuario.destroy', $usuario->id) }}" method="POST">
+                <form action="{{ route('usuario.destroy', $usuario->id) }}" method="POST" class="modal-banimento-form">
                     @csrf
                     @method('DELETE')
 
-                    <!-- Campo infração -->
-                    <label class="form-label">Infração</label>
-                    <select class="form-select" id="infracao-{{ $usuario->id }}" name="infracao" required>
-                        <option value="">Tipo</option>
+                    <label for="infracao-{{ $usuario->id }}">Infração</label>
+                    <select id="infracao-{{ $usuario->id }}" name="infracao" required>
+                        <option value="">Selecione</option>
                         <option value="conteudo_explicito">Conteúdo Explícito</option>
                         <option value="desinformacao">Desinformação</option>
                         <option value="discurso_de_odio">Discurso de Ódio</option>
@@ -36,19 +37,41 @@
                         <option value="spam">Spam</option>
                     </select>
 
-                    <!-- Campo motivo -->
-                    <div class="mb-3">
-                        <label for="motivo{{ $usuario->id }}" class="form-label">Motivo do banimento</label>
-                        <textarea name="motivo" id="motivo{{ $usuario->id }}" class="form-control" rows="3"
-                                  placeholder="Descreva o motivo do banimento..." required></textarea>
-                    </div>
+                    <label for="motivo-{{ $usuario->id }}">Motivo do banimento</label>
+                    <textarea 
+                        id="motivo-{{ $usuario->id }}" 
+                        rows="5"
+                        name="motivo" placeholder="Motivo do banimento" required></textarea>
 
-                    <div class="text-end">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Confirmar Banimento</button>
+                    <div class="modal-banimento-botoes">
+                        <button type="submit" class="modal-banimento-confirmar">Confirmar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- JS -->
+    <script>
+        function abrirModalBanimentoUsuarioEspecifico(usuarioId) {
+            const modalBanimentoUsuario = document.getElementById(`modal-banimento-usuario-${usuarioId}`);
+            if (modalBanimentoUsuario) modalBanimentoUsuario.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharModalBanimentoUsuarioEspecifico(usuarioId) {
+            const modalBanimentoUsuario = document.getElementById(`modal-banimento-usuario-${usuarioId}`);
+            if (modalBanimentoUsuario) modalBanimentoUsuario.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('click', function(event) {
+            const todosOsModaisBanimentoUsuarios = document.querySelectorAll('.modal-banimento-overlay');
+            todosOsModaisBanimentoUsuarios.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        });
+    </script>

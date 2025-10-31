@@ -90,14 +90,14 @@ e($texto)
                             <!-- Caso não tenha sido quem postou --------------------->
                             <li>
                                 @if( Auth::user()->tipo_usuario === 1 )
-                                <form action="{{ route('usuario.destroy', $postagem->usuario_id) }}" method="post" class="form-excluir">
-                                    @csrf
-                                    @method("delete")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                                <!-- Botão que abre o modal -->
+                                <div class="form-excluir">
+                                    <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
                                         <span class="material-symbols-outlined">person_off</span>
-                                        Banir usuário
+                                        Banir
                                     </button>
-                                </form>
+                                </div>
+
                                 @else
                                 <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                                     <span class="material-symbols-outlined">flag_2</span>Denunciar
@@ -169,9 +169,11 @@ e($texto)
         <!-- Modal Edição dessa postagem -->
         @include('feed.post.edit', ['postagem' => $postagem])
 
-
         <!-- Modal Criação de comentário ($postagem->id) -->
         @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
+
+        <!-- modal banir-->
+        @include('layouts.partials.modal-banimento', ['usuario' => $postagem->usuario])
 
 
         <!-- Modal de denúncia (um para cada postagem) -->

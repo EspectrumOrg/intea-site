@@ -63,7 +63,7 @@
 }
 
 .container-post .corpo-post .foto-perfil a {
-    z-index: 9998 !important;
+    z-index: 998 !important;
 }
 .container-post .corpo-post .foto-perfil img {
     border-radius: 50%;
@@ -151,7 +151,7 @@
 }
 
 .btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -161,8 +161,8 @@
 }
 
 .btn-curtir:hover span{
-    background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    background-color: var(--vermelho);
+    color: var(--vermelho-apagado);
 }
 
 /* lista de comentários -------------------------------------------------------------------------------------*/
@@ -296,7 +296,7 @@
 
 /* denunciar */
 .btn-acao.denunciar:hover {
-    background-color: #ffcccb;
+    background-color: var(--branco);
     color: var(--vermelho);
 }
 

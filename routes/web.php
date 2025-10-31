@@ -186,6 +186,11 @@ Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
     // Cadastro de Admin
     Route::resource("admin", AdminController::class)->names("admin");
 
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware('auth')
+        ->name('dashboard.index');
+
     // Usuário
     Route::resource("usuario", UsuarioController::class)
         ->names("usuario")
@@ -193,13 +198,11 @@ Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
 
+    // Denúncias
     Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth')
-        ->name('dashboard.index');
+    Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
 });
 
 // Novo sistema de perfil (3 abas)
