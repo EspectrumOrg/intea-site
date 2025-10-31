@@ -50,8 +50,8 @@
 
         <a href="{{ route('post.seguindo') }}" class="nav-link {{ request()->routeIs('post.seguindo') ? 'active' : '' }}"
             id="seguindo">
-            <span id="simbolo-home" class="material-symbols-outlined" >home</span>
-            <h1>Posts Seguindo</h1>
+            <span id="simbolo-home" class="material-symbols-outlined" >Home</span>
+            <h1>Seguindo</h1>
         </a>
 
         <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">

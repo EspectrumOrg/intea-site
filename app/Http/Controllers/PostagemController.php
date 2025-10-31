@@ -47,9 +47,7 @@ class PostagemController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-
         $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
-
 
         return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares'));
     }
