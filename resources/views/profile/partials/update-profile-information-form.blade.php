@@ -1,7 +1,7 @@
 <section class="perfil-section">
     <header class="header">
 
-        <div class="foto-perfil-container">
+       <!--  <div class="foto-perfil-container">
             <div class="foto-perfil-wrapper">
                 @if (!empty($user->foto) && $user->foto != 'assets/images/logos/contas/user.png')
                 <img src="{{ asset('storage/'.$user->foto) }}" class="foto-perfil-img" alt="foto perfil">
@@ -11,6 +11,8 @@
             </div>
         </div>
 
+-->
+        
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Informações do Perfil') }}
         </h2>
