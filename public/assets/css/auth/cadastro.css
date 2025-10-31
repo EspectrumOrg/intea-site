@@ -66,7 +66,7 @@ body {
     background: var(--branco);
     border-radius: 8px;
     padding: 0 1rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     transition: height .32s ease;
 }

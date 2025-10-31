@@ -31,26 +31,35 @@ class SeguirController extends Controller
      * Store a newly created resource in storage.
      */
 
+public function store(Request $request)
+{
+    /** @var \App\Models\Usuario $user */
+    $user = auth()->user();
+    $userIdToFollow = $request->input('user_id');
 
-    public function store(Request $request)
-    {
-        /** @var \App\Models\Usuario $user */
-
-        $user = auth()->user();
-        $userIdToFollow = $request->input('user_id');
-
-        if ($user->id != $userIdToFollow) {
-            $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
-
-            if (!$isAlreadyFollowing) {
-                $user->seguindo()->attach($userIdToFollow);
-            }
-        }
-
-        
-
-        return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+    if ($user->id == $userIdToFollow) {
+        return redirect()->back()->with('error', 'Você não pode seguir a si mesmo!');
     }
+
+    $userToFollow = \App\Models\Usuario::find($userIdToFollow);
+
+    if (!$userToFollow) {
+        return redirect()->back()->with('error', 'Usuário não encontrado!');
+    }
+
+    if ($userToFollow->visibilidade == 0) {
+        return redirect()->back()->with('error', 'não pode Seguir, Conta privada!');
+    }
+
+    $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
+
+    if (!$isAlreadyFollowing) {
+        $user->seguindo()->attach($userIdToFollow);
+    }
+
+    return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+}
+
        // Contar quantos usuários o usuário está seguindo
     public function countSeguindo($id)
     {

@@ -50,24 +50,13 @@
   transform: translateY(1.75px);
 }
 
-/* form */
-.form {
-  width: 420px;
-  background: var(--branco);
-  border-radius: 8px;
-  padding: 0 1rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
-  overflow: hidden;
-  transition: height .32s ease;
-}
-
 /* Formulário */
 form {
   width: 420px;
   background: var(--branco);
   border-radius: 8px;
   padding: 0 1rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   transition: height .32s ease;
 }
@@ -76,8 +65,9 @@ form {
 form h2 {
   text-align: center;
   font-size: 26px;
-  margin-bottom: 1.5rem;
+  margin-top: .5rem;
   color: var(--vermelho);
+
 }
 
 /* Grupos do formulário */
@@ -130,13 +120,6 @@ form h2 {
   border-radius: 6px;
   border: 1px solid var(--branco-light);
   font-size: 1rem;
-}
-
-/* Checkbox lembrar-me */
-.remember-me {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 /* Links */
@@ -259,6 +242,7 @@ form h2 {
   justify-content: flex-end;
   width: 100%;
   gap: 1rem;
+  margin-bottom: 1rem;
 }
 
 .btn-submit button {

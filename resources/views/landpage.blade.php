@@ -19,10 +19,10 @@
         <a href="{{ route('login') }}"><img src="{{ asset('assets/images/landpage/logoIntea2.png') }}" alt="inTEA - Comunidade Autista" class="logo-img"></a>
       </div>
       <div class="navbar-links">
-        <a href="#hero" id="landpage-nav-01" class="nav-link animated-underline">Home</a>
-        <a href="#solutions" id="landpage-nav-02" class="nav-link animated-underline">Qualidades</a>
-        <a href="#features" id="landpage-nav-03" class="nav-link animated-underline">Funcionalidades</a>
-        <a href="#contact" id="landpage-nav-04" class="nav-link animated-underline">Fale conosco</a>
+        <a href="#hero" class="nav-link animated-underline">Home</a>
+        <a href="#solutions" class="nav-link animated-underline">Qualidades</a>
+        <a href="#features" class="nav-link animated-underline">Funcionalidades</a>
+        <a href="#contact" class="nav-link animated-underline">Fale conosco</a>
       </div>
     </div>
   </nav>
@@ -56,10 +56,10 @@
     <div class="container">
       <div class="solutions-content">
         <div class="solutions-header">
-          <span class="solution-tag">Apoio e Comunidade</span>
+          <span class="solution-tag-vermelho">Apoio e Comunidade</span>
           <h2 class="section-title">
-            <span class="gradient-text">Criado para a</span>
-            <span class="text-azul-solido">comunidade autista</span>
+            <span class="gradient-text-solution">Criado para a</span>
+            <span class="text-vermelho-solido">comunidade autista</span>
           </h2>
           <p class="section-description">
             A comunidade autista enfrenta muitos desafios, principalmente com a dificuldade na comunicação e conexão com outras pessoas, estamos aqui para resolver esse problema.
@@ -108,10 +108,10 @@
   <section id="features" class="section features">
     <div class="container">
       <div class="features-header text-center">
-        <span class="solution-tag">Nossas funcionalidades</span>
+        <span class="solution-tag-verde">Nossas funcionalidades</span>
         <h2 class="section-title">
-          <span class="gradient-text">Tudo que você precisa</span>
-          <span class="text-azul-solido">para se conectar</span>
+          <span class="gradient-text-verde">Tudo que você precisa</span>
+          <span class="text-verde-solido">para se conectar</span>
         </h2>
         <p class="section-description">
           Nossa plataforma oferece todas as ferramentas e recursos necessários para criar uma comunidade inclusiva e acolhedora para pessoas no espectro autista.
@@ -191,18 +191,28 @@
         </div>
 
         <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
-          <input class="input1" type="text" name="email" maxlength="100" placeholder="Ex.: abc@xyz.com" required>
+          <input class="input1" type="text" name="email" maxlength="100" placeholder="E-mail" required>
           <span class="shadow-input1"></span>
         </div>
         @endguest
         <!-- OBS: A ordem dos inputs name e email n importa nesse caso, tá certo-->
 
-        <div class="wrap-input1 validate-input" data-validate="Assunto é necessário">
-          <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
-          <span class="shadow-input1"></span>
+        <div class="selectAssunto" data-validate="Assunto é necessário">
+          <!-- <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
+          <span class="shadow-input1"></span> -->
+
+          <select class="select-cls" name="assunto" id="assunto" required>
+            <option value="" disabled selected hidden>Escolha de quê deseja tratar</option>
+            <option value="Recomende mudanças no sistema">Recomende mudanças no sistema</option>
+            <option value="Consulta por vagas de emprego">Consulte vagas de emprego</option>
+            <option value="Tire sua dúvida">Tire sua dúvida</option>
+            <option value="Reconsideração de banimento">Reconsideração de banimento</option>
+            <option value="Informação de bug/erro encontrado">Informação de bug/erro encontrado</option>
+            <option value="Comunicações comerciais/governamentais">Comunicações comerciais/governamentais</option>
+          </select>
         </div>
 
-        <div class="wrap-input1 validate-input" data-validate="menssagem é necessária">
+        <div class="wrap-input1 validate-input" data-validate="mensagem é necessária">
           <textarea class="input1" name="mensagem" maxlength="755" placeholder="Mensagem" required></textarea>
           <span class="shadow-input1"></span>
         </div>

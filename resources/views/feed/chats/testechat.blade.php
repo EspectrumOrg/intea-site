@@ -10,7 +10,7 @@
 
         <h3>Minhas Conversas</h3>
         <!-- Caixa de busca -->
-        <input type="text" id="buscarUsuario" placeholder="Buscar usuário..." style="width:100%; padding:5px; margin-bottom:10px;">
+        <input type="text" id="buscarUsuario" placeholder="Pesquisar usuários" style="width:100%; padding:5px; margin-bottom:10px;">
 
         @if($conversas->isEmpty())
             <p>Você ainda não possui conversas.</p>
@@ -40,12 +40,12 @@
         <div class="top" style="padding:10px; border-bottom:1px solid #ccc; display:flex; align-items:center;">
             <img id="avatar-destinatario" src="" width="50" height="50" alt="Avatar" style="display:none; margin-right:10px;">
             <div>
-                <p id="nome-destinatario">Selecione um usuário para começar</p>
+                <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
                 <small id="status-destinatario"></small>
             </div>
         </div>
 
-        <div class="messages" id="messages" style="flex:1; padding:10px; overflow-y:auto; background:#f9f9f9;"></div>
+        <div class="messages" id="messages"></div>
 
         <div class="bottom" style="padding:10px; border-top:1px solid #ccc; display:none;" id="chat-form-container">
             <form id="chatForm">
