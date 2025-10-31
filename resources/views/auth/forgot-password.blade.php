@@ -15,8 +15,6 @@
 </head>
 
 <body>
-
-
     <!-- Voltar -->
     <div class="voltar">
         <a href="{{ route('login') }}">

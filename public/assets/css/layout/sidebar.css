@@ -730,9 +730,6 @@
 .admin .links .nav-link.active {
     transform: translateX(5px);
     font-weight: bold;
-<<<<<<< HEAD
-}
-=======
 }
 
 /* ================================================================
@@ -1034,5 +1031,5 @@ input:checked + .slider:before {
     font-family: system-ui, -apple-system, sans-serif;
 }
 
-/*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*/
->>>>>>> 706355669800ebbbbe3730cbc1861edf5e730a33
+/*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*
+>>>>>>> 25f5d9e86ca09d41f67eb747d1879b644f66c203

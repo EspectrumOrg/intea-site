@@ -48,7 +48,7 @@ class PostagemController extends Controller
             ->get();
 
 
-            $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
+        $tendenciasPopulares = \App\Models\Tendencia::populares(7)->get();
 
 
         return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares'));
@@ -211,7 +211,7 @@ class PostagemController extends Controller
         // Deletar postagem
         $postagem->delete();
 
-        // Deletar tendências sem postagens 🔥
+        // Deletar tendências
         foreach ($tendencias as $tendencia) {
             if ($tendencia->postagens()->count() === 0) {
                 $tendencia->delete();

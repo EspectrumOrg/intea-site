@@ -19,8 +19,8 @@
 }
 
 .input-barra-pesquisa:focus {
-    border-color: var(--azul);
-    outline: var(--azul);
+    border-color: var(--amarelo);
+    outline: var(--amarelo);
 }
 
 .buscar-container span {

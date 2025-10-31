@@ -43,7 +43,7 @@
         <a href="{{ route('denuncia.index')}}" 
             class="nav-link rosa {{ request()->routeIs('denuncia.index') ? 'active' : '' }}" 
             id="denuncia">
-            <span class="material-symbols-outlined">report</span>
+            <span class="material-symbols-outlined">flag_2</span>
             <h1>Denúncias</h1>
         </a>
 

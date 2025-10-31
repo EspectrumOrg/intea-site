@@ -80,11 +80,11 @@ class UsuarioController extends Controller
     {
         $query = $this->usuario->query();
 
-        // Busca por nome, user ou email
+        // Busca por apelido, user ou email
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('nome', 'like', "%{$search}%")
+                $q->where('apelido', 'like', "%{$search}%")
                     ->orWhere('user', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%");
             });
