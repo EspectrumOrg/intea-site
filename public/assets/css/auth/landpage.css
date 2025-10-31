@@ -17,8 +17,8 @@
   --verde-apagado: #036d31;
   --azul: #2A71B1;
   --azul-apagado: #1c4a73;
-  --amarelo: #F2E500;
-  --amarelo-apagado: #b1a902;
+  --amarelo: #F2B705;
+  --amarelo-apagado: #E0B122;
   --roxo: #6D398B;
   --roxo-apagado: #452557;
   --roxo: #C4027D;
@@ -580,6 +580,45 @@ textarea.input1 {
 .input1:focus+.shadow-input1 {
   animation: anim-shadow 0.5s ease-in-out forwards;
 }
+
+
+
+.selectAssunto {
+  display: flex;
+  justify-content: center;
+  min-width: fit-content;
+  max-width: 400px;
+  min-height: fit-content;
+  margin: auto 1.25rem;
+  margin-bottom: 1.2rem;
+}
+
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: none;
+  padding: 0.5rem;
+  min-width: 170px;
+  border-radius: 1rem;
+  font-size: 1rem;
+  color: var(--preto);
+  border: 1px solid #e6e6e6;
+}
+  /*Style da setinha inside T select elemento:*/
+.select-cls {
+  background-image: url(/public/assets/images/logos/symbols/right.png) var(--preto);
+  color: var(--preto);
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 12px;
+}
+
+
+
+
+
 
 @keyframes anim-shadow {
   to {

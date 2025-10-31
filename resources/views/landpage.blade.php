@@ -191,18 +191,28 @@
         </div>
 
         <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
-          <input class="input1" type="text" name="email" maxlength="100" placeholder="Ex.: abc@xyz.com" required>
+          <input class="input1" type="text" name="email" maxlength="100" placeholder="E-mail" required>
           <span class="shadow-input1"></span>
         </div>
         @endguest
         <!-- OBS: A ordem dos inputs name e email n importa nesse caso, tá certo-->
 
-        <div class="wrap-input1 validate-input" data-validate="Assunto é necessário">
-          <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
-          <span class="shadow-input1"></span>
+        <div class="selectAssunto" data-validate="Assunto é necessário">
+          <!-- <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
+          <span class="shadow-input1"></span> -->
+
+          <select class="select-cls" name="assunto" id="assunto" required>
+            <option value="" disabled selected hidden>Escolha de quê deseja tratar</option>
+            <option value="Recomende mudanças no sistema">Recomende mudanças no sistema</option>
+            <option value="Consulta por vagas de emprego">Consulta por vagas de emprego</option>
+            <option value="Tire sua dúvida">Tire sua dúvida</option>
+            <option value="Reconsideração de banimento">Reconsideração de banimento</option>
+            <option value="Informação de bug/erro encontrado">Informação de bug/erro encontrado</option>
+            <option value="Comunicações comerciais/governamentais">Comunicações comerciais/governamentais</option>
+          </select>
         </div>
 
-        <div class="wrap-input1 validate-input" data-validate="menssagem é necessária">
+        <div class="wrap-input1 validate-input" data-validate="mensagem é necessária">
           <textarea class="input1" name="mensagem" maxlength="755" placeholder="Mensagem" required></textarea>
           <span class="shadow-input1"></span>
         </div>

@@ -117,12 +117,17 @@
     color: var(--cinza-font);
 }
 
-/* ===== Mensagens ===== */
+/* MENSAGENS*/
 .messages {
     flex: 1;
-    padding: 15px;
+    width: auto;
+    height: 100%;
+    padding: auto;
     overflow-y: auto;
-    background: var(--branco);
+    background-color: var(--vermelho-apagado);
+    background: url('/public/assets/images/conteudo/default-images/fundoChatHaikei.png') repeat;
+    background-size: contain;
+    object-fit: contain;
     display: flex;
     flex-direction: column;
     gap: 8px;
