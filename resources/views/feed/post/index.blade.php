@@ -39,7 +39,18 @@ e($texto)
     </div>
 
     <div class="content-post">
-        @foreach($postagens as $postagem)
+
+        <!-- verifica se ta no feed ou no seguindo -->
+        @if($postagens->isEmpty())
+            @if(request()->routeIs('post.index'))
+            <p>Nenhuma postagem encontrada.</p> <!-- alguém coloca um css aqui =P -->
+            @elseif(request()->routeIs('post.seguindo'))
+            <p>Você ainda não está seguindo ninguém. Comece a seguir usuários para ver suas postagens aqui!</p> <!-- aqui tmb lol -->
+            @endif
+        @else
+
+        <!-- Para cada postagem -->
+        @foreach($postagens as $postagem) 
         <div class="corpo-post">
             <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
 
@@ -211,6 +222,7 @@ e($texto)
             </div>
         </div>
         @endforeach
+        @endif
     </div>
 </div>
 
