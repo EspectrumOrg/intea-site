@@ -42,17 +42,19 @@
 
     <!-- Links sidebar-->
     <div class="links">
-        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') ? 'active' : '' }}"
+        <a href="{{ route('post.index') }}" class="nav-link {{ request()->routeIs('post.index') || request()->routeIs('post.seguindo') ? 'active' : '' }}"
             id="home">
-            <span id="simbolo-home" class="material-symbols-outlined" >home</span>
+            <span id="simbolo-home" class="material-symbols-outlined">home</span>
             <h1>Home</h1>
         </a>
 
+        <!-- Movi para post/partials/topo-seguindo para ficar melhor distribuido e parecido com o twitter
         <a href="{{ route('post.seguindo') }}" class="nav-link {{ request()->routeIs('post.seguindo') ? 'active' : '' }}"
             id="seguindo">
             <span id="simbolo-home" class="material-symbols-outlined" >Home</span>
             <h1>Seguindo</h1>
         </a>
+        -->
 
         <a href="{{ route('chat.dashboard') }}" class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
             <span id="simbolo-mensagens" class="material-symbols-outlined">mail</span>

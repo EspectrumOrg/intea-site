@@ -1,5 +1,4 @@
 function abrirModalEditar(id) {
-    console.log("Abrindo modal", id); // <-- teste
     const modalEditarPostagem = document.getElementById('modal-editar-postagem-' + id);
     if (modalEditarPostagem) {
         modalEditarPostagem.classList.remove('hidden')
@@ -10,16 +9,16 @@ function fecharModalEditar(id) {
     const modalEditarPostagem = document.getElementById('modal-editar-postagem-' + id);
     if (modalEditarPostagem) {
         modalEditarPostagem.classList.add('hidden');
-        const form = modalEditarPostagem.querySelector('form');
-        if (form) form.reset();
+        const formEditarPostagem = modalEditarPostagem.querySelector('form');
+        if (formEditarPostagem) formEditarPostagem.reset();
     }
 }
 
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.classList.add('hidden');
-        const form = event.target.querySelector('form');
-        if (form) form.reset();
+        const formEditarPostagem = event.target.querySelector('form');
+        if (formEditarPostagem) formEditarPostagem.reset();
     }
 };
 

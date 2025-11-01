@@ -21,12 +21,12 @@ body {
     display: flex;
     margin: 1rem 0;
     gap: 1rem;
-    border-bottom: 1px solid var(--amarelo);
+    border-bottom: 1px solid var(--laranja);
     width: fit-content;
 }
 
 .suporte-title span {
-    color: var(--amarelo);
+    color: var(--laranja);
     font-size: 3rem;
 }
 
@@ -100,12 +100,12 @@ body {
     background-color: var(--branco);
     transition: .7s;
     color: var(--preto);
-    border: 1px solid var(--amarelo);
+    border: 1px solid var(--laranja);
     cursor: pointer;
 }
 
 .btn-filtrar:hover {
-    background-color: var(--amarelo);
+    background-color: var(--laranja);
     color: var(--branco);
 }
 

@@ -11,7 +11,7 @@
         </div>
 
         <!-- Filtros -->
-        <form method="GET" action="{{ route('suporte.index') }}" class="filtro-form">
+        <form method="GET" action="{{ route('contato.index') }}" class="filtro-form">
             <input type="text" name="search" placeholder="Buscar por email" value="{{ request('search') }}">
             
             <select name="assunto">

@@ -1,9 +1,10 @@
 <!-- style -->
 <link rel="stylesheet" href="{{ asset('assets/css/post/create/modal.css') }}">
 
+
 <div id="modal-editar-comentario-{{ $comentario->id }}" class="modal hidden">
     <div class="modal-content">
-        <button type="button" class="close" onclick="fecharModalEditarComentario('{{ $comentario->id }}')">
+        <button type="button" class="close" onclick="fecharModalEditarComentario('{{$comentario->id}}')">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="modal-content-content">

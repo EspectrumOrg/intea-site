@@ -122,7 +122,7 @@
 }
 
 .form .upload-label:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 

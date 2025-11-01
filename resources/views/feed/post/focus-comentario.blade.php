@@ -42,7 +42,8 @@
                     <button type="button"
                         class="btn-acao editar btn-abrir-modal-edit-comentario"
                         onclick="abrirModalEditarComentario('{{ $comentario->id }}')">
-                        <span class="material-symbols-outlined">edit</span>Editar
+                        <span class="material-symbols-outlined">edit</span>
+                        <p>Editar</p>
                     </button>
                 </li>
                 <li>
@@ -50,7 +51,8 @@
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-acao excluir">
-                            <span class="material-symbols-outlined">delete</span>Excluir
+                            <span class="material-symbols-outlined">delete</span>
+                            <p>Excluir</p>
                         </button>
                     </form>
                 </li>
@@ -58,14 +60,13 @@
                 <!-- Caso não tenha sido quem postou --------------------->
                 <li>
                     @if( Auth::user()->tipo_usuario === 1 )
-                    <form action="{{ route('usuario.destroy', $comentario->usuario->id) }}" method="post" class="form-excluir">
-                        @csrf
-                        @method("delete")
-                        <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
+                    <!-- Botão que abre o modal -->
+                    <div class="form-excluir">
+                        <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
                             <span class="material-symbols-outlined">person_off</span>
-                            Banir usuário
+                            Banir
                         </button>
-                    </form>
+                    </div>
                     @else
                     <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
@@ -90,6 +91,9 @@
 
         <!-- Modal Criação de comentário ($comentario->id) -->
         @include('feed.post.create-resposta-modal', ['comentario' => $comentario])
+
+        <!-- modal banir-->
+        @include('layouts.partials.modal-banimento', ['usuario' => $comentario->usuario])
 
         <!-- Modal de denúncia (um para cada comentario) -->
         <div id="modal-denuncia-comentario-{{ $comentario->id }}" class="modal-denuncia hidden">
@@ -134,27 +138,25 @@
     </div>
 
     <!----------------------------- Curtidas e comentários ----------------------------------->
-    <div class="interacoes">
-        <div class="corpo">
-            <div class="comment">
-                <button type="button" class="button btn-comentar">
-                    <a>
-                        <span class="material-symbols-outlined">chat_bubble</span>
-                        <h1>{{ $comentario->comentarios_count }}</h1>
-                    </a>
-                </button>
-            </div>
-
-            <form method="POST" action="{{ route('curtida.toggle') }}">
-                @csrf
-                <input type="hidden" name="tipo" value="comentario">
-                <input type="hidden" name="id" value="{{ $comentario->id }}">
-                <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <h1>{{ $comentario->curtidas_count }}</h1>
-                </button>
-            </form>
+    <div class="dados-post">
+        <div>
+            <button type="button" class="button btn-comentar">
+                <a>
+                    <span class="material-symbols-outlined">chat_bubble</span>
+                    <h1>{{ $comentario->comentarios_count }}</h1>
+                </a>
+            </button>
         </div>
+
+        <form method="POST" action="{{ route('curtida.toggle') }}">
+            @csrf
+            <input type="hidden" name="tipo" value="comentario">
+            <input type="hidden" name="id" value="{{ $comentario->id }}">
+            <button type="submit" class="button btn-curtir {{ $comentario->curtidas_usuario ? 'curtido' : 'normal' }}">
+                <span class="material-symbols-outlined">favorite</span>
+                <h1>{{ $comentario->curtidas_count }}</h1>
+            </button>
+        </form>
     </div>
 
     <!-------------------------------------------- Form de resposta ---------------------------->
@@ -248,18 +250,16 @@
                     alt="Imagem respsota">
                 @endif
                 <!----------------------------- Curtidas -------------------->
-                <div class="interacoes">
-                    <div class="corpo">
-                        <form method="POST" action="{{ route('curtida.toggle') }}">
-                            @csrf
-                            <input type="hidden" name="tipo" value="comentario">
-                            <input type="hidden" name="id" value="{{ $resposta->id }}">
-                            <button type="submit" class="button btn-curtir {{ $resposta->curtidas_usuario ? 'curtido' : 'normal' }}">
-                                <span class="material-symbols-outlined">favorite</span>
-                                <h1>{{ $resposta->curtidas_count }}</h1>
-                            </button>
-                        </form>
-                    </div>
+                <div class="dados-post">
+                    <form method="POST" action="{{ route('curtida.toggle') }}">
+                        @csrf
+                        <input type="hidden" name="tipo" value="comentario">
+                        <input type="hidden" name="id" value="{{ $resposta->id }}">
+                        <button type="submit" class="button btn-curtir {{ $resposta->curtidas_usuario ? 'curtido' : 'normal' }}">
+                            <span class="material-symbols-outlined">favorite</span>
+                            <h1>{{ $resposta->curtidas_count }}</h1>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,10 +1,6 @@
 @extends('feed.post.template.layout')
 
 @section('main')
-<!-- style -->
-<link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
-
 @php
 use App\Models\Tendencia;
 
@@ -34,23 +30,26 @@ e($texto)
 
 <!-- Conteúdo principal com scroll -->
 <div class="container-post">
+    <div class="opcoes-home-container">
+        @include("feed.post.partials.topo-seguindo")
+    </div>
+
     <div class="create-post">
         @include("feed.post.create")
     </div>
 
     <div class="content-post">
-
         <!-- verifica se ta no feed ou no seguindo -->
         @if($postagens->isEmpty())
-            @if(request()->routeIs('post.index'))
-            <p>Nenhuma postagem encontrada.</p> <!-- alguém coloca um css aqui =P -->
-            @elseif(request()->routeIs('post.seguindo'))
-            <p>Você ainda não está seguindo ninguém. Comece a seguir usuários para ver suas postagens aqui!</p> <!-- aqui tmb lol -->
-            @endif
+        @if(request()->routeIs('post.index'))
+        <p>Nenhuma postagem encontrada.</p> <!-- alguém coloca um css aqui =P -->
+        @elseif(request()->routeIs('post.seguindo'))
+        <p>Você ainda não está seguindo ninguém. Comece a seguir usuários para ver suas postagens aqui!</p> <!-- aqui tmb lol -->
+        @endif
         @else
 
         <!-- Para cada postagem -->
-        @foreach($postagens as $postagem) 
+        @foreach($postagens as $postagem)
         <div class="corpo-post">
             <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
 
@@ -85,7 +84,8 @@ e($texto)
                                 <button type="button"
                                     class="btn-acao editar btn-abrir-modal-edit-postagem"
                                     onclick="abrirModalEditar('{{ $postagem->id }}')">
-                                    <span class="material-symbols-outlined">edit</span>Editar
+                                    <span class="material-symbols-outlined">edit</span>
+                                    <p>Editar</p>
                                 </button>
                             </li>
                             <li>
@@ -93,7 +93,8 @@ e($texto)
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn-acao excluir">
-                                        <span class="material-symbols-outlined">delete</span>Excluir
+                                        <span class="material-symbols-outlined">delete</span>
+                                        <p>Excluir</p>
                                     </button>
                                 </form>
                             </li>
@@ -108,7 +109,6 @@ e($texto)
                                         Banir
                                     </button>
                                 </div>
-
                                 @else
                                 <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                                     <span class="material-symbols-outlined">flag_2</span>Denunciar
@@ -173,6 +173,7 @@ e($texto)
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -4,7 +4,6 @@
 @extends('feed.post.template.layout')
 
 @section('main')
-
 <div class="container-read">
     <div class="content">
         <div class="topo">

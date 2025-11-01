@@ -134,9 +134,9 @@
 .modal-denuncia .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1px solid  var(--branco);
+    border: 1px solid var(--branco);
     border-radius: 6px;
-    background-color:  var(--branco);
+    background-color: var(--branco);
     font-size: 0.95rem;
     appearance: none;
     /* Remove seta padrão do navegador */
@@ -190,7 +190,9 @@
 
 .modal-denuncia button:hover {
     background-color: var(--vermelho-apagado);
-}/* fundo do modal --------------(modal)*/
+}
+
+/* fundo do modal --------------(modal)*/
 .modal-denuncia {
     display: flex;
     /* escondido por padrão */
@@ -252,9 +254,9 @@
 .modal-denuncia .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
-    border: 1px solid  var(--branco);
+    border: 1px solid var(--branco);
     border-radius: 6px;
-    background-color:  var(--branco);
+    background-color: var(--branco);
     font-size: 0.95rem;
     appearance: none;
     /* Remove seta padrão do navegador */

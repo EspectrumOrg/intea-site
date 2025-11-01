@@ -82,7 +82,7 @@
 }
 
 
-/* opcoes perfil ---------------------------------------------------------- */
+/* opcoes perfil -------------------------------------------------------
 .container-comentario-focus .topo .opcoes-perfil {
     display: flex;
     flex-direction: row;
@@ -106,71 +106,18 @@
 .container-comentario-focus .menu-opcoes:hover {
     background-color: var(--branco-light);
 }
-
-/* container do dropdown */
+--- */
+/* container do dropdown 
 .container-comentario-focus .dropdown {
     position: relative;
     display: inline-block;
 }
 
-.container-comentario-focus .dropdown .menu-opcoes img {
-    width: 25px;
-}
-
 .container-comentario-focus .dropdown .menu-opcoes img:hover {
     background-color: var(--branco-light);
-}
+}*/
 
-/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
-.container-comentario-focus .dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--branco);
-    width: 275px;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 0;
-}
-
-/* cada item do dropdown */
-.container-comentario-focus .dropdown .dropdown-content li {
-    list-style: none;
-}
-
-.container-comentario-focus .dropdown .dropdown-content img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.container-comentario-focus .dropdown .dropdown-content li a {
-    display: block;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--preto);
-    text-decoration: none;
-    transition: .2s;
-}
-
-.container-comentario-focus .dropdown .dropdown-content li a:hover {
-    background-color: var(--cinza-font);
-}
-
-.container-comentario-focus .seguir-btn {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
-}
+/* conteúdo do dropdown (inicialmente escondido) --------------------------
 
 .container-comentario-focus .seguir-btn:hover {
     background-color: var(--branco-light);
@@ -182,7 +129,7 @@
 
 .container-comentario-focus .dropdown.ativo .dropdown-content {
     display: block;
-}
+}-----+ */
 
 /* postagem ----------------------------------------------------------------------------------------------*/
 /* texto da postagem */
@@ -369,7 +316,7 @@
 }
 
 .form .upload-label:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -396,87 +343,11 @@
     background-color: var(--azul);
     color: var(--branco);
 }
-/* interações */
-/* interações------------------------------------------------*/
-.interacoes {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 12px;
-    color: var(--cinza);
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.interacoes .corpo {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    border-top: 1px solid var(--branco-light);
-    padding: .5rem 0rem;
-}
 
 .comment {
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.interacoes .button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.interacoes .button a {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.interacoes span {
-    font-size: 20px;
-    padding: .5rem;
-    color: var(--cinza);
-    border-radius: 50%;
-    transition: .3s;
-}
-
-/* curtido ou normal*/
-.interacoes .normal span {
-    color: var(--cinza);
-}
-
-.interacoes .curtido span {
-    color: var(--vermelho);
-}
-
-.interacoes h1 {
-    font-size: 14px;
-    color: var(--cinza);
-    transition: .3s;
-}
-
-/* comentar */
-.btn-comentar:hover h1 {
-    color: var(--azul);
-}
-
-.btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--azul);
-}
-
-/* curtir */
-.btn-curtir:hover h1 {
-    color: var(--vermelho);
-}
-
-.btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
-    color: var(--vermelho);
 }
 
 .comentarios {

@@ -96,7 +96,7 @@ class ComentarioController extends Controller
 
         // Atualiza texto
         $comentario->update([
-            'comentario' => $request->texto_postagem,
+            'comentario' => $request->comentario,
         ]);
 
         $imagemPrincipal = $comentario->imagem;
@@ -122,7 +122,7 @@ class ComentarioController extends Controller
                 }
                 $imagemPrincipal->update(['caminho_imagem' => $caminho]);
             } else {
-                $comentario->imagens()->create(['caminho_imagem' => $caminho]);
+                $comentario->image()->create(['caminho_imagem' => $caminho]);
             }
         }
 
