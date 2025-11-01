@@ -819,7 +819,6 @@
 
 .sidebar-monochrome .logo img,
 .sidebar-monochrome .info img {
-    /* Remove o filter das imagens do logo e foto de perfil */
     filter: none !important;
 }
 
@@ -828,33 +827,43 @@
     filter: grayscale(100%) !important;
 }
 
+/* Cores principais */
 .sidebar-monochrome .nav-link span,
 .sidebar-monochrome .nav-link h1,
 .sidebar-monochrome .info h5,
 .sidebar-monochrome .info h4 {
-    color: #888 !important;
+    color: #000 !important;
+}
+
+/* Hover mais claro pra destacar */
+.sidebar-monochrome .nav-link:hover {
+    background-color: #dcdcdc !important;
+    color: #000 !important;
 }
 
 .sidebar-monochrome .nav-link.active {
-    background-color: #666 !important;
+    background-color: #6d6d6d !important; /* preto suave */
+    color: #fff !important; /* texto branco pra contraste */
+    border: 1px solid #000 !important; /* dá leve destaque */
 }
 
-/* Versão mais específica se precisar */
+
+/* Versão mais específica */
 .sidebar-monochrome .links .nav-link,
 .sidebar-monochrome .links .nav-link span,
 .sidebar-monochrome .links .nav-link h1,
 .sidebar-monochrome .post-button button {
     filter: grayscale(100%) !important;
-    color: #888 !important;
+    color: #000 !important;
 }
 
-/* Garantir que apenas os ícones e textos fiquem monocromáticos */
+/* Garantir que ícones e textos fiquem monocromáticos */
 .sidebar-monochrome .material-symbols-outlined,
 .sidebar-monochrome .nav-link h1,
 .sidebar-monochrome .info .text h5,
 .sidebar-monochrome .info .text h4 {
     filter: grayscale(100%) !important;
-    color: #666 !important;
+    color: #000 !important;
 }
 
 /* Manter cores originais das imagens */
@@ -864,6 +873,7 @@
 .sidebar-monochrome .info img {
     filter: none !important;
 }
+
 
 /* Seção de Acessibilidade - Fundo Branco */
 .config-section {
