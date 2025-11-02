@@ -88,13 +88,13 @@ function appendMensagem(data) {
 
     let avatarHtml = '';
     if (!isRemetente && data.foto) {
-        avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar" width="40" height="40" style="margin-right:5px;">`;
+        avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar">`;
     }
 
     const messageHtml = `
         <div class="${classe} message" style="display:flex; align-items:flex-start; margin-bottom:5px; justify-content:${isRemetente ? 'flex-end' : 'flex-start'};">
             ${isRemetente ? '' : avatarHtml}
-            <p style="margin:0 5px; padding:5px 10px; color:#F2F2F2; border-radius:10px; background:${isRemetente ? '#048ABF' : '#262626'}; max-width:70%;">
+            <p style="margin: 0.75rem 0.25rem; padding:5px 7.5px; color:#F2F2F2; border-radius:1rem; background:${isRemetente ? '#048ABF' : '#262626'}; max-width:70%;">
                 ${data.message}
             </p>
             ${isRemetente ? avatarHtml : ''}

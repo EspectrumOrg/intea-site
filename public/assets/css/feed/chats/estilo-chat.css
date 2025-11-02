@@ -201,7 +201,7 @@
     outline: none;
     
     background-color: var(--vermelho-apagado);
-    background: url('/assets/images/conteudo/default-images/fundoChatHaikei.png') center center no-repeat;
+    background: url('/assets/images/conteudo/default-images/fundo-chat-haikei.png') center center no-repeat;
     background-size: cover;
     object-fit: cover;
 
@@ -223,7 +223,7 @@
 }
 
 /* Bolhas */
-.message {
+.left {
     display: flex;
     align-items: flex-end;
     gap: 8px;
@@ -231,22 +231,34 @@
 }
 
 /* destinatário === lefft*/
-.message .left {
+ .left .message {
     align-self: flex-start;
 }
 
-.message .left p {
+.left img {
+    max-width: 2.75rem;
+    width: 45px;
+    height: 45px;
+    max-height: 2.75rem;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0.5rem 0.25rem;
+}
+
+.left .message  p {
     max-width: 70%;
     padding: 0.75rem 1rem;
+    margin: 0.5rem auto;
     color: var(--branco);
-    background-color: var(--azul-apagado);
+    background-color: var(--preto);
+    border: 1px solid transparent;
     border-radius: 0.6rem 0.6rem 0.6rem 0;
     word-wrap: break-word;
     transition: all 0.4s ease-in-out;
 }
 
-.message .left p:hover {
-    background-color: var(--azul);
+.left .message  p:hover {
+    border-color: var(--azul-apagado);
 }
 
 /* remetente (tu, Capitu) -> right*/
