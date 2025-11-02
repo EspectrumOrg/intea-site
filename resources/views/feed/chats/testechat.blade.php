@@ -6,51 +6,54 @@
 <div class="chat-container" style="display:flex; height: 90vh; gap: 10px;">
     <!-- Lado esquerdo: lista de usuários/conversas -->
     <div class="chat-list">
-       
-
         <h3>Minhas Conversas</h3>
+        
         <!-- Caixa de busca -->
-        <input type="text" id="buscarUsuario" placeholder="Pesquisar usuários" style="width:100%; padding:5px; margin-bottom:10px;">
+         <div class="chat-busca">
+            <input type="text" id="buscarUsuario" placeholder="Pesquisar usuários">
+        </div>
 
-        @if($conversas->isEmpty())
-            <p>Você ainda não possui conversas.</p>
-        @else
-            <ul id="minhas-conversas">
-                @foreach ($conversas as $conversa)
-                    @php
-                        $outroUsuarioId = $conversa->usuario1_id == $usuarioLogado ? $conversa->usuario2_id : $conversa->usuario1_id;
-                        $outroUsuario = \App\Models\Usuario::find($outroUsuarioId);
-                    @endphp
-                    @if($outroUsuario)
-                        <li class="usuario-item" data-id="{{ $outroUsuario->id }}" style="margin-bottom:10px; cursor:pointer;">
-                            <img src="{{ $outroUsuario->foto ? asset('storage/' . $outroUsuario->foto) : asset('storage/default.jpg') }}" 
-                                 width="40" height="40" alt="{{ $outroUsuario->user }}">
-                            <span style="font-weight:bold; color:#048ABF;">
-                                {{ $outroUsuario->user }}
-                            </span>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
-        @endif
+        <div class="chat-list-body">
+            @if($conversas->isEmpty())
+                <p>Você ainda não possui conversas.</p>
+            @else
+                <ul id="minhas-conversas">
+                    @foreach ($conversas as $conversa)
+                        @php
+                            $outroUsuarioId = $conversa->usuario1_id == $usuarioLogado ? $conversa->usuario2_id : $conversa->usuario1_id;
+                            $outroUsuario = \App\Models\Usuario::find($outroUsuarioId);
+                        @endphp
+                        
+                        @if($outroUsuario)
+                            <li class="usuario-item" data-id="{{ $outroUsuario->id }}">
+                                <img src="{{ $outroUsuario->foto ? asset('storage/' . $outroUsuario->foto) : asset('storage/default.jpg') }}"  alt="{{ $outroUsuario->user }}">
+                                <span title="{{ $outroUsuario->user }}">
+                                    {{ $outroUsuario->user }}
+                                </span>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            @endif
+        </div>
     </div>
 
-    <!-- Lado direito: chat -->
-    <div class="chat-window" style="width:70%; display:flex; flex-direction:column; border:1px solid #ccc;">
-        <div class="top" style="padding:10px; border-bottom:1px solid #ccc; display:flex; align-items:center;">
-            <img id="avatar-destinatario" src="" width="50" height="50" alt="Avatar" style="display:none; margin-right:10px;">
-            <div>
-                <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
-                <small id="status-destinatario"></small>
+        <!-- Lado direito: chat -->
+        <div class="chat-window">
+            <div class="top">
+                <img id="avatar-destinatario" src="">
+                <div class="sem-usuario">
+                    <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
+                    <small id="status-destinatario"></small>
+                </div>
             </div>
-        </div>
 
         <div class="messages" id="messages"></div>
 
-        <div class="bottom" style="padding:10px; border-top:1px solid #ccc; display:none;" id="chat-form-container">
+        <div class="bottom" id="chat-form-container">
             <form id="chatForm">
-                <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off" style="width:80%; padding:5px;">
-                <button type="submit" style="padding:5px 10px;">Enviar</button>
+                <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off">
+                <button type="submit">Enviar</button>
             </form>
         </div>
     </div>
@@ -85,13 +88,13 @@ function appendMensagem(data) {
 
     let avatarHtml = '';
     if (!isRemetente && data.foto) {
-        avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar" width="40" height="40" style="margin-right:5px;">`;
+        avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar">`;
     }
 
     const messageHtml = `
         <div class="${classe} message" style="display:flex; align-items:flex-start; margin-bottom:5px; justify-content:${isRemetente ? 'flex-end' : 'flex-start'};">
             ${isRemetente ? '' : avatarHtml}
-            <p style="margin:0 5px; padding:5px 10px; color:#F2F2F2; border-radius:10px; background:${isRemetente ? '#048ABF' : '#262626'}; max-width:70%;">
+            <p style="margin: 0.75rem 0.25rem; padding:5px 7.5px; color:#F2F2F2; border-radius:1rem; background:${isRemetente ? '#048ABF' : '#262626'}; max-width:70%;">
                 ${data.message}
             </p>
             ${isRemetente ? avatarHtml : ''}

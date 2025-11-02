@@ -201,7 +201,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -221,7 +220,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.5px;
+            height: 2.25px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -241,7 +240,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -281,7 +279,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -321,7 +318,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -341,7 +337,7 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2.3px;
+            height: 2px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
@@ -362,7 +358,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -522,7 +517,7 @@
 }
 
 .admin .links a:nth-of-type(1) {
-    color: var(--cor-tema);
+    color: var(--branco);
     transition: all 0.3s ease-in-out;
 
     .material-symbols-outlined {
@@ -542,7 +537,7 @@
 
     &:hover {
         transform: translateX(7.5px);
-        color: var(--azul);
+        color: var(--cor-tema);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -555,7 +550,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -563,7 +557,7 @@
 }
 
 .admin .links a:nth-of-type(2) {
-    color: var(--verde);
+    color: var(--branco);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -583,7 +577,7 @@
 
     &:hover {
         transform: translateX(7.5px);
-        color: var(--verde-apagado);
+        color: var(--verde);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -596,7 +590,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -604,7 +597,7 @@
 }
 
 .admin .links a:nth-of-type(3) {
-    color: var(--rosa);
+    color: var(--branco);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -624,7 +617,7 @@
     
     &:hover {
         transform: translateX(7.5px);
-        color: var(--rosa-apagado);
+        color: var(--laranja);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -638,7 +631,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -646,7 +638,7 @@
 }
 
 .admin .links a:nth-of-type(4) {
-    color: var(--amarelo);
+    color: var(--branco);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -666,7 +658,7 @@
 
     &:hover {
         transform: translateX(7.5px);
-        color: var(--amarelo-apagado);
+        color: var(--amarelo);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -679,7 +671,6 @@
     }
 
     &.active {
-        transform: translateX(7.5px);
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -687,7 +678,7 @@
 }
 
 .admin .links a:nth-of-type(5) {
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -732,7 +723,6 @@
 }
 
 .admin .links .nav-link.active {
-    transform: translateX(5px);
     font-weight: bold;
 }
 
@@ -755,7 +745,7 @@
     color: var(--azul);
 }
 
-/* 🟢 Verde (Usuários) */
+/* 🟢 Verde (Usuários) agora a norma é ficar colorido só no .active em admin */
 .nav-link.verde:hover h1,
 .nav-link.verde:hover span {
     color: var(--verde);
@@ -770,10 +760,10 @@
     color: var(--verde);
 }
 
-/* 💜 Roxo (Denúncias) */
+/* "roxo", mas agora amarElo (Denúncias) */
 .nav-link.roxo:hover h1,
 .nav-link.roxo:hover span {
-    color: var(--roxo);
+    color: var(--amarelo);
 }
 
 .nav-link.roxo.active {
@@ -782,13 +772,13 @@
 
 .nav-link.roxo.active h1,
 .nav-link.roxo.active span {
-    color: var(--roxo);
+    color: var(--amarelo);
 }
 
-/* 💖 Rosa (Suporte) */
+/*  laranjinhaaaaa! Na raça, no peito, do real fasciiiiiii (Suporte) */
 .nav-link.rosa:hover h1,
 .nav-link.rosa:hover span {
-    color: var(--rosa);
+    color: var(--laranja);
 }
 
 .nav-link.rosa.active {
@@ -797,10 +787,10 @@
 
 .nav-link.rosa.active h1,
 .nav-link.rosa.active span {
-    color: var(--rosa);
+    color: var(--laranja);
 }
 
-/* 🔴 Vermelho (Voltar) */
+/* 🔴 Vermelho (Voltar) <-- esse eu não mudarei, mas para de pegar até os emojis do gpt, tá feio já */
 .nav-link.vermelho:hover h1,
 .nav-link.vermelho:hover span {
     color: var(--vermelho);
@@ -823,7 +813,6 @@
 
 .sidebar-monochrome .logo img,
 .sidebar-monochrome .info img {
-    /* Remove o filter das imagens do logo e foto de perfil */
     filter: none !important;
 }
 
@@ -832,33 +821,66 @@
     filter: grayscale(100%) !important;
 }
 
+/* Cores principais */
 .sidebar-monochrome .nav-link span,
 .sidebar-monochrome .nav-link h1,
 .sidebar-monochrome .info h5,
 .sidebar-monochrome .info h4 {
-    color: #888 !important;
+    color: #000 !important;
 }
 
+/* Hover monocromático igual ao colorido */
+.sidebar-monochrome .nav-link {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efeito de underline do ícone */
+.sidebar-monochrome .nav-link .material-symbols-outlined::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.4s ease-in-out;
+}
+
+/* Hover */
+.sidebar-monochrome .nav-link:hover {
+    transform: translateX(7.5px);
+    color: #000 !important;
+}
+
+/* Underline do ícone no hover */
+.sidebar-monochrome .nav-link:hover .material-symbols-outlined::after {
+    width: 100%;
+}
+
+/* Ativo apenas se move */
 .sidebar-monochrome .nav-link.active {
-    background-color: #666 !important;
+    transform: translateX(7.5px);
 }
 
-/* Versão mais específica se precisar */
+
+
+/* Versão mais específica */
 .sidebar-monochrome .links .nav-link,
 .sidebar-monochrome .links .nav-link span,
 .sidebar-monochrome .links .nav-link h1,
 .sidebar-monochrome .post-button button {
     filter: grayscale(100%) !important;
-    color: #888 !important;
+    color: #000 !important;
 }
 
-/* Garantir que apenas os ícones e textos fiquem monocromáticos */
+/* Garantir que ícones e textos fiquem monocromáticos */
 .sidebar-monochrome .material-symbols-outlined,
 .sidebar-monochrome .nav-link h1,
 .sidebar-monochrome .info .text h5,
 .sidebar-monochrome .info .text h4 {
     filter: grayscale(100%) !important;
-    color: #666 !important;
+    color: #000 !important;
 }
 
 /* Manter cores originais das imagens */
@@ -868,6 +890,7 @@
 .sidebar-monochrome .info img {
     filter: none !important;
 }
+
 
 /* Seção de Acessibilidade - Fundo Branco */
 .config-section {
@@ -1037,3 +1060,81 @@ input:checked + .slider:before {
 
 /*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*
 >>>>>>> 25f5d9e86ca09d41f67eb747d1879b644f66c203
+
+
+/* Adicione isso no final do seu CSS, ou na parte de links coloridos/monocromáticos */
+
+/* CONFIGURAÇÕES (6º link) - corrige underline */
+.links a:nth-of-type(6) {
+    color: var(--cor-preto);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
+
+    &.active {
+        transform: translateX(7.5px);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+/* Monocromático - mesma lógica */
+.sidebar-monochrome .links a:nth-of-type(6) {
+    color: #000 !important;
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.4s ease-in-out;
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: #000 !important;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &.active {
+        transform: translateX(7.5px);
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
