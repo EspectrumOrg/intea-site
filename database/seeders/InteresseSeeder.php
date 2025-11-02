@@ -11,7 +11,7 @@ class InteresseSeeder extends Seeder
     public function run()
     {
         // Limpar a tabela antes de popular (opcional)
-        DB::table('interesses')->truncate();
+        //DB::table('interesses')->truncate();
 
         $interesses = [
             [
