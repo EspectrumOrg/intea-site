@@ -21,6 +21,6 @@ class RespostaSuporteMail extends Mailable
     public function build()
     {
         return $this->subject($this->resposta->assunto)
-            ->markdown('components.mails.resposta_suporte');
+            ->view('components.mail.resposta_suporte');
     }
 }

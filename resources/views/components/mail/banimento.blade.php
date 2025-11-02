@@ -56,3 +56,5 @@
 
 <hr>
 <p>Nos contate caso você ache que ouve um engano na sua expulsão.</p>
+
+<p>Atenciosamente,<br><strong>Equipe Espectrum</strong></p>

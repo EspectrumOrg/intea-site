@@ -8,7 +8,6 @@
     <title>Intea - Cadastro</title>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/auth/create.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/auth/create-autista.css') }}">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"   />
 </head>

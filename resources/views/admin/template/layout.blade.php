@@ -9,8 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Intea - Admin</title>
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
-    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
+    <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/admin/usuario-denuncia-geral.css') }}"> <!-- css geral -->
     <!-- icones-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />

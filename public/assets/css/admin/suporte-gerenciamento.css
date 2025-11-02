@@ -47,6 +47,7 @@ body {
     align-items: center;
     background-color: var(--branco);
     color: var(--preto);
+    padding-top: .5rem;
 }
 
 .suporte-gerenciamento .card-header h2 {
@@ -56,7 +57,7 @@ body {
 }
 
 
-/* Tabela ----*/
+/* Tabela ---*/
 .suporte-gerenciamento .card-body {
     padding: 0;
 }
@@ -79,14 +80,40 @@ body {
     text-align: left;
 }
 
-/* Topo tabela*/
-.suporte-gerenciamento .card-header {
-    background-color: var(--cor-fundo);
+/* disposição de itens*/
+.table-suporte thead {
+    background-color: var(--cor-branco);
+    color: var(--preto);
 }
 
-.table-suporte thead {
-    background-color: var(--cor-fundo);
-    color: var(--branco);
+/* Cor texto*/
+.table-suporte td .red-text {
+    color: var(--vermelho);
+}
+
+.table-suporte td .purple-text {
+    color: var(--roxo);
+}
+
+.table-suporte td .yellow-text {
+    color: var(--amarelo);
+}
+
+.table-suporte td .orange-text {
+    color: var(--azul);
+}
+
+.table-suporte td .black-text {
+    color: var(--cor-preto);
+}
+
+.table-suporte .button-open-data {
+    display: flex;
+    padding: 0;
+}
+
+.table-suporte .img-icons {
+    width: 25px;
 }
 
 .table-suporte .motivo_suporte {
@@ -110,7 +137,7 @@ body {
 }
 
 /* Botão Ações -- denúncias----*/
-.table-denuncias .td-acoes {
+.table-suporte .td-acoes {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -118,11 +145,11 @@ body {
 }
 
 
-.table-denuncias .td-acoes span {
+.table-suporte .td-acoes span {
     color: var(--preto);
 }
 
-.table-denuncias tr:nth-child(even) {
+.table-suporte tr:nth-child(even) {
     background-color: var(--branco);
 }
 
@@ -146,7 +173,7 @@ body {
 }
 
 /* Botão Visualizar*/
-.table-denuncias .btn-visualizar span:hover {
+.table-suporte .btn-visualizar span:hover {
     transition: .3s;
     color: var(--azul);
 }
@@ -186,9 +213,141 @@ body {
         flex-direction: column;
     }
 
-    .table-usuarios th,
-    .table-usuarios td {
+    .table-suporte th,
+    .table-suporte td {
         font-size: 0.85rem;
         padding: 0.4rem 0.8rem;
     }
+}
+
+/* ---------- Modal Resposta ---------- */
+.modal-overlay-resposta {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-resposta {
+    background-color: var(--branco);
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 550px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    animation: aparecerModal 0.25s ease;
+}
+
+@keyframes aparecerModal {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-resposta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--laranja);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-resposta-header h5 {
+    margin: 0;
+    color: var(--preto);
+    font-size: 1.2rem;
+}
+
+.close-modal-resposta {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--cinza);
+    cursor: pointer;
+    transition: color .2s;
+}
+
+.close-modal-resposta:hover {
+    color: var(--vermelho);
+}
+
+.modal-resposta-body .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+.modal-resposta-body label {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.modal-resposta-body input,
+.modal-resposta-body textarea {
+    border: 1px solid var(--branco-light);
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.95rem;
+    outline: none;
+    resize: none;
+    transition: border-color .3s;
+}
+
+.modal-resposta-body input:focus,
+.modal-resposta-body textarea:focus {
+    border-color: var(--laranja);
+}
+
+.botoes-modal {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+.btn-cancelar,
+.btn-enviar {
+    padding: 0.6rem 1rem;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.btn-cancelar {
+    background-color: var(--branco);
+    border: 1px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.btn-cancelar:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
+}
+
+.btn-enviar {
+    background-color: var(--branco);
+    border: 1px solid var(--laranja);
+    color: var(--laranja);
+}
+
+.btn-enviar:hover {
+    background-color: var(--laranja);
+    color: var(--branco);
+}
+
+.nada-aqui td {
+    padding: 1rem 0 0 0;
+    font-size: 14px;
+    font-weight: 800;
 }

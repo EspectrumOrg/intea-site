@@ -2,9 +2,16 @@
 
 @section('main')
 <link rel="stylesheet" href="{{ asset('assets/css/admin/suporte-gerenciamento.css') }}">
+<!-- CSS do Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-bdr1sENtJTR1yM0Ff9kxC4jo0B0p8jlzJQYc8jowTgk9kzxRzYfT5mFjZbFzFSJv" crossorigin="anonymous">
+<!-- JS do Bootstrap (necessário para modals) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-2KJxw7Rf9L7/n8+ITbPmxv4R05gVnpRb2VHZgZ8fFqzS9mQ9OH+TGLZxUq5K7vN4" crossorigin="anonymous"></script>
+
 
 <div class="suporte-gerenciamento">
+
     <div class="suporte-inner">
+
         <div class="suporte-title">
             <span class="material-symbols-outlined">support_agent</span>
             <h1>Mensagens de Suporte</h1>
@@ -13,7 +20,7 @@
         <!-- Filtros -->
         <form method="GET" action="{{ route('contato.index') }}" class="filtro-form">
             <input type="text" name="search" placeholder="Buscar por email" value="{{ request('search') }}">
-            
+
             <select name="assunto">
                 <option value="">Todos os assuntos</option>
                 <option value="Recomende mudanças no sistema" {{ request('assunto') == 'Recomende mudanças no sistema' ? 'selected' : '' }}>Recomende mudanças no sistema</option>
@@ -29,6 +36,10 @@
 
         <!-- Tabela -->
         <div class="card">
+            <div class="card-header">
+                <h2>Contatos Feitos</h2>
+            </div>
+
             <div class="card-body">
                 <table class="table-suporte">
                     <thead>
@@ -50,43 +61,53 @@
                             <td>{{ $contato->assunto }}</td>
                             <td>{{ Str::limit($contato->mensagem, 100) }}</td>
                             <td>
-                                <button class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalResponder{{ $contato->id }}">
+                                <button class="btn-visualizar" onclick="abrirModalRespostaSuporte('{{$contato->id}}')">
                                     <span class="material-symbols-outlined">reply</span>
                                 </button>
                             </td>
                         </tr>
 
                         <!-- Modal Responder -->
-                        <div class="modal fade" id="modalResponder{{ $contato->id }}" tabindex="-1" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5>Responder - {{ $contato->name }}</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="{{ route('suporte.resposta') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="destinatario" value="{{ $contato->email }}">
-                                            <div class="mb-3">
-                                                <label>Assunto</label>
-                                                <input type="text" name="assunto" class="form-control" value="Re: {{ $contato->assunto }}" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Mensagem</label>
-                                                <textarea name="mensagem" rows="5" class="form-control" required></textarea>
-                                            </div>
-                                            <div class="text-end">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                <button type="submit" class="btn btn-primary">Enviar Resposta</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                        <div id="modal-resposta-{{ $contato->id }}" class="modal-overlay-resposta">
+                            <div class="modal-resposta">
+                                <div class="modal-resposta-header">
+                                    <h5>Responder - {{ $contato->name }}</h5>
+                                    <button type="button" class="close-modal-resposta" onclick="fecharModalRespostaSuporte('{{$contato->id}}')">&times;</button>
+                                </div>
+                                <div class="modal-resposta-body">
+                                    <form action="{{ route('contato.resposta') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="data_contato" value="{{$contato->created_at}}">
+                                        <input type="hidden" name="id_contato" value="{{$contato->id}}">
+
+                                        <div class="form-group">
+                                            <label>Para:</label>
+                                            <input type="text" name="destinatario" value="{{$contato->email}}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Assunto:</label>
+                                            <input type="text" name="assunto" value="{{$contato->assunto}}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mensagem:</label>
+                                            <input type="text" name="mensagem" value="{{$contato->mensagem}}" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Resposta:</label>
+                                            <textarea name="resposta" rows="5" placeholder="Resposta a mensagem" required></textarea>
+                                        </div>
+                                        <div class="botoes-modal">
+                                            <button type="button" class="btn-cancelar" onclick="fecharModalRespostaSuporte('{{$contato->id}}')">Cancelar</button>
+                                            <button type="submit" class="btn-enviar">Enviar</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                         @empty
-                        <tr><td colspan="6">Nenhuma mensagem encontrada.</td></tr>
+                        <tr class="nada-aqui">
+                            <td colspan="6">Nenhuma mensagem encontrada.</td>
+                        </tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -98,4 +119,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    function abrirModalRespostaSuporte(id) {
+        const modal = document.getElementById(`modal-resposta-${id}`);
+        if (modal) modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalRespostaSuporte(id) {
+        const modal = document.getElementById(`modal-resposta-${id}`);
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.addEventListener('click', (e) => {
+        document.querySelectorAll('.modal-overlay-resposta').forEach(modal => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    });
+</script>
 @endsection

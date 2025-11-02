@@ -22,7 +22,7 @@
                         <div id="hashtag-preview-postagem-edit-{{ $postagem->id }}" class="hashtag-preview"></div>
 
                         <textarea
-                            id="texto_postagem_edit-{{ $postagem->id }}"
+                            id="texto_postagem_edit-{{$postagem->id}}"
                             name="texto_postagem"
                             maxlength="280"
                             rows="3"
@@ -67,7 +67,7 @@
                         </div>
 
                         <div class="contador">
-                            <span class="char-count">0</span>/280
+                            <span class="char-count-postagem-edit-{{$postagem->id}}">0</span>/280
                         </div>
 
                         <div class="botao-submit">

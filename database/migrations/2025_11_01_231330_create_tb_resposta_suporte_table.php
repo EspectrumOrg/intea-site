@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('resposta_suportes', function (Blueprint $table) {
+        Schema::create('tb_resposta_suporte', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
             $table->string('destinatario');
             $table->string('assunto');
-            $table->text('mensagem');
+            $table->string('mensagem');
+            $table->date('data_contato');
+            $table->string('resposta');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('resposta_suportes');
+        Schema::dropIfExists('tb_resposta_suporte');
     }
 };

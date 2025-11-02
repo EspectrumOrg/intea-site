@@ -13,6 +13,9 @@
     pointer-events: none; /* permite clicar no textarea em cima */
 }
 
+.hashtag {
+    color: var(--azul);
+}
 /* form dentro do modal */
 .modal-postar .modal-content {
     padding: 2rem 1rem 1rem 1rem;
@@ -92,7 +95,7 @@
 }
 
 .form-postar .form .upload-label:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -121,7 +124,6 @@
     color: var(--cinza);
     align-self: center;
     margin-left: auto;
-    /* joga pro lado direito */
     margin-right: 1rem;
 }
 

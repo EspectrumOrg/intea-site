@@ -7,18 +7,18 @@ use App\Models\ContatoSuporte;
 use App\Models\RespostaSuporte;
 use App\Mail\Contato;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 class ContatoController extends Controller
 {
     public function index(Request $request)
     { //View
-        $query = ContatoSuporte::query();
+        $query = ContatoSuporte::query()->where('status_contato', 'like', 'pendente');
 
         // Busca por email
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where('email', 'like', "%{$search}%");;
+            $query->where('email', 'like', "%{$search}%");
         }
 
         // Filtros
@@ -78,15 +78,28 @@ class ContatoController extends Controller
             'destinatario' => 'required|email',
             'assunto' => 'required|string|max:255',
             'mensagem' => 'required|string|max:2000',
+            'data_contato' => 'required|date',
+            'id_contato' => 'required|integer',
         ]);
 
+        //Marcar como resolvida
+        $contato = ContatoSuporte::findOrFail($request->id_contato);
+        $contato->status_contato = 'resolvido';
+        $contato->save();
+
+        $id_usuario = Auth::user()->id;
+
+        //enviar email
         $resposta = RespostaSuporte::create([
+            'usuario_id' => $id_usuario,
             'destinatario' => $request->destinatario,
             'assunto' => $request->assunto,
             'mensagem' => $request->mensagem,
+            'data_contato' => $request->data_contato,
+            'resposta' => $request->resposta,
         ]);
 
-        Mail::to($request->destinario)->send(new \App\Mail\RespostaSuporteMail($resposta));
+        Mail::to($request->destinatario)->send(new \App\Mail\RespostaSuporteMail($resposta));
 
         return back()->with('success', 'Resposta enviada com sucesso!');
     }

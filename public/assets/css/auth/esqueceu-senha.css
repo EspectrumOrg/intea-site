@@ -252,7 +252,7 @@ form h2 {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  border-radius: 15% / 100%;
+  border-radius: 25px;
   background-color: var(--branco);
   color: var(--vermelho);
   border: 1px solid var(--vermelho);

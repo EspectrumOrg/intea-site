@@ -16,5 +16,6 @@ class ContatoSuporte extends Model
         'name',
         'assunto',
         'mensagem',
+        'status_contato',
     ];
 }

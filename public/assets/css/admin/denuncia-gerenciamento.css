@@ -47,6 +47,7 @@ body {
     align-items: center;
     background-color: var(--branco);
     color: var(--preto);
+    margin-top: .5rem;
 }
 
 .denuncia-gerenciamento .card-header h2 {
@@ -79,14 +80,9 @@ body {
     text-align: left;
 }
 
-/* Topo tabela*/
-.denuncia-gerenciamento .card-header {
-    background-color: var(--cor-fundo);
-}
-
 .table-denuncias thead {
-    background-color: var(--cor-fundo);
-    color: var(--branco);
+    background-color: var(--cor-branco);
+    color: var(--preto);
 }
 
 .table-denuncias .motivo_denuncia {
@@ -162,6 +158,12 @@ body {
     font-size: 2rem;
     cursor: pointer;
     transition: .3s;
+}
+
+.nada-aqui td {
+    padding: 1rem 0 0 0;
+    font-size: 14px;
+    font-weight: 800;
 }
 
 /* ------------------------ Modal Denúncia*/

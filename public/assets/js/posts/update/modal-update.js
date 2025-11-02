@@ -22,8 +22,8 @@ window.onclick = function(event) {
     }
 };
 
-const textareaEditarPostagem = document.getElementById('post-textarea_edit');
-const charCountEditarPostagem = document.getElementById('char-count');
+const textareaEditarPostagem = document.getElementById('texto_postagem_edit-${id}');
+const charCountEditarPostagem = document.getElementById('char-count-postagem-edit-${id}');
 
 textareaEditarPostagem.addEventListener('input', () => {
     // auto-expand

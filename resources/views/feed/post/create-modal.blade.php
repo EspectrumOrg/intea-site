@@ -22,6 +22,7 @@
 
                         <textarea id="texto_postagem_create_modal"
                             name="texto_postagem"
+                            class="post-textarea"
                             maxlength="280"
                             rows="3"
                             placeholder="Comece uma publicação" required></textarea>

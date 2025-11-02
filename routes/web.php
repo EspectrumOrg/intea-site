@@ -207,6 +207,7 @@ Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
 
     Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
+    Route::post('/suporte/resposta', [ContatoController::class, 'resposta'])->name('contato.resposta');
 });
 
 // Novo sistema de perfil (3 abas)
