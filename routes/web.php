@@ -19,6 +19,7 @@ use App\Http\Controllers\ResponsavelController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeguirController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificacaoController;
 use App\Http\Controllers\PusherController;
 use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,12 @@ use Illuminate\Support\Facades\Log;
 Route::get('/', function () {
     return view('landpage');
 })->name('landpage');
+
+Route::get('/teste', function () {
+    return view('teste');
+})->name('teste');
+
+
 
 Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
 //contato via email, tanto para guests quanto logados
@@ -182,6 +189,13 @@ Route::middleware('auth', 'is_profissional')->group(function () {
     })->name('pagina_saude');
 });
 
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/notificacoes', [NotificacaoController::class, 'index'])->name('notificacoes.index');
+    Route::post('/notificacoes/{id}/aceitar', [NotificacaoController::class, 'aceitar'])->name('notificacoes.aceitar');
+    Route::delete('/notificacoes/{id}', [NotificacaoController::class, 'recusar'])->name('notificacoes.recusar');
+});
 
 
 // Apenas Admin --------------------------------------------------------------------------------------------------------------------------------------------------------------+

@@ -38,6 +38,16 @@
         </div>
     </div>
 
+<<<<<<< HEAD
+        <!-- Lado direito: chat -->
+        <div class="chat-window">
+            <div class="top">
+                <img id="avatar-destinatario" src="">
+                <div class="sem-usuario">
+                    <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
+                    <small id="status-destinatario"></small>
+                </div>
+=======
     <!-- Lado direito: chat -->
     <div class="chat-window" style="width:70%; display:flex; flex-direction:column; border:1px solid #ccc;">
         <div class="top" style="padding:10px; border-bottom:1px solid #ccc; display:flex; align-items:center;">
@@ -45,8 +55,8 @@
             <div>
                 <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
                 <small id="status-destinatario"></small>
+>>>>>>> 46282b1 (teste)
             </div>
-        </div>
 
         <div class="messages" id="messages"></div>
 
