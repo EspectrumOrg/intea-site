@@ -55,7 +55,7 @@
             @foreach($notificacoes as $notificacao)
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     <div>
-                        <strong>{{ $notificacao->solicitante->nome ?? 'Usuário desconhecido' }}</strong>
+                        <strong>{{ $notificacao->solicitante->user ?? 'Usuário desconhecido' }}</strong>
                         quer te seguir.
                     </div>
                     <div>
