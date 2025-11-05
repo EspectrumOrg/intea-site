@@ -3,7 +3,7 @@
 @section('title', 'Chat')
 
 @section('main')
-<div class="chat-container" style="display:flex; height: 90vh; gap: 10px;">
+<div class="chat-container">
     <!-- Lado esquerdo: lista de usuários/conversas -->
     <div class="chat-list">
         <h3>Minhas Conversas</h3>
@@ -38,7 +38,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
         <!-- Lado direito: chat -->
         <div class="chat-window">
             <div class="top">
@@ -47,15 +46,6 @@
                     <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
                     <small id="status-destinatario"></small>
                 </div>
-=======
-    <!-- Lado direito: chat -->
-    <div class="chat-window" style="width:70%; display:flex; flex-direction:column; border:1px solid #ccc;">
-        <div class="top" style="padding:10px; border-bottom:1px solid #ccc; display:flex; align-items:center;">
-            <img id="avatar-destinatario" src="" width="50" height="50" alt="Avatar">
-            <div>
-                <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
-                <small id="status-destinatario"></small>
->>>>>>> 46282b1 (teste)
             </div>
 
         <div class="messages" id="messages"></div>
