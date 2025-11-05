@@ -15,6 +15,7 @@ class ModeracaoController extends Controller
 {
     public function painel($slugInteresse)
     {
+        
         $interesse = Interesse::where('slug', $slugInteresse)->firstOrFail();
         $usuario = Auth::user();
 

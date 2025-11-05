@@ -46,11 +46,17 @@ public function store(Request $request)
     if (!$userToFollow) {
         return redirect()->back()->with('error', 'Usuário não encontrado!');
     }
-
     if ($userToFollow->visibilidade == 0) {
-        return redirect()->back()->with('error', 'não pode Seguir, Conta privada!');
+        \App\Models\Notificacao::create([
+            'solicitante_id' => $user->id,
+            'alvo_id' => $userIdToFollow,
+            'tipo' => 'seguir',
+        ]);
+
+        return redirect()->back()->with('success', 'Solicitação de seguir enviada!');
     }
 
+    // Conta pública → segue diretamente
     $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
 
     if (!$isAlreadyFollowing) {
@@ -116,8 +122,21 @@ public function listarSeguidores($id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+ public function destroy(string $id)
+{
+    /** @var \App\Models\Usuario $user */
+    $user = auth()->user();
+
+    // Verifica se o usuário está realmente seguindo o outro
+    $isFollowing = $user->seguindo()->where('tb_usuario.id', $id)->exists();
+
+    if (!$isFollowing) {
+        return redirect()->back()->with('error', 'Você não está seguindo esse usuário!');
     }
+
+    // Remove o vínculo de "seguindo"
+    $user->seguindo()->detach($id);
+
+    return redirect()->back()->with('success', 'Você deixou de seguir o usuário!');
+}
 }
