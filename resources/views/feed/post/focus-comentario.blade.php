@@ -39,20 +39,20 @@
             <ul class="dropdown-content">
                 @if(Auth::id() === $comentario->usuario->id)
                 <li>
+                    <!-- Editar Comentário -->
                     <button type="button"
                         class="btn-acao editar btn-abrir-modal-edit-comentario"
                         onclick="abrirModalEditarComentario('{{ $comentario->id }}')">
-                        <span class="material-symbols-outlined">edit</span>
-                        <p>Editar</p>
+                        <span class="material-symbols-outlined">edit</span>Editar
                     </button>
                 </li>
                 <li>
+                    <!-- Excluir Comentário -->
                     <form action="{{ route('post.destroy', $comentario->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-acao excluir">
-                            <span class="material-symbols-outlined">delete</span>
-                            <p>Excluir</p>
+                            <span class="material-symbols-outlined">delete</span>Excluir
                         </button>
                     </form>
                 </li>
@@ -60,15 +60,15 @@
                 <!-- Caso não tenha sido quem postou --------------------->
                 <li>
                     @if( Auth::user()->tipo_usuario === 1 )
-                    <!-- Botão que abre o modal -->
+                    <!-- Banir Usuário (caso admin) -->
                     <div class="form-excluir">
-                        <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
-                            <span class="material-symbols-outlined">person_off</span>
-                            Banir
+                        <button type="button" class=" btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
+                            <span class="material-symbols-outlined">person_off</span>Banir
                         </button>
                     </div>
                     @else
-                    <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
+                    <!-- Denunciar Usuário -->
+                    <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
                     </a>
                     @endif
@@ -77,7 +77,7 @@
                     <form action="{{ route('seguir.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $comentario->usuario_id }}">
-                        <button type="submit" class="seguir-btn">
+                        <button type="submit" class="btn-acao seguir-btn">
                             <span class="material-symbols-outlined">person_add</span>Seguir {{ $comentario->usuario->user }}
                         </button>
                     </form>
@@ -236,11 +236,106 @@
             </div>
 
             <div class="dados"> <!--dados-->
-                <a href="{{ route('conta.index', ['usuario_id' => $resposta->usuario->id]) }}">
-                    <strong>{{ $resposta->usuario->apelido }}</strong>
-                </a>
-                <strong>{{ $resposta->usuario->user }}</strong>
-                <span>{{ $resposta->created_at->diffForHumans() }}</span>
+
+                <div class="topo-resposta">
+                    <div class="info-user-resposta">
+                        <a href="{{ route('conta.index', ['usuario_id' => $resposta->usuario->id]) }}">
+                            <strong>{{ $resposta->usuario->apelido }}</strong>
+                        </a>
+                        <strong>{{ $resposta->usuario->user }}</strong>
+                        <span>{{ $resposta->created_at->diffForHumans() }}</span>
+                    </div>
+
+
+                    <div class="dropdown"> <!--------- Dropdown --------->
+                        <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                            <span class="material-symbols-outlined">more_horiz</span>
+                        </button>
+                        <ul class="dropdown-content">
+                            @if(Auth::id() === $resposta->usuario->id)
+                            <li>
+                                <button type="button"
+                                    class="btn-acao editar btn-abrir-modal-edit-comentario"
+                                    onclick="abrirModalEditarComentario('{{ $resposta->id }}')">
+                                    <span class="material-symbols-outlined">edit</span>Editar
+                                </button>
+                            </li>
+                            <li>
+                                <form action="{{ route('post.destroy', $resposta->id) }}" method="POST" style="display:inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-acao excluir">
+                                        <span class="material-symbols-outlined">delete</span>Excluir
+                                    </button>
+                                </form>
+                            </li>
+                            @else
+                            <!-- Caso não tenha sido quem postou --------------------->
+                            <li>
+                                @if( Auth::user()->tipo_usuario === 1 )
+                                <!-- Botão que abre o modal -->
+                                <div class="form-excluir">
+                                    <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $resposta->usuario->id }}')">
+                                        <span class="material-symbols-outlined">person_off</span>Banir
+                                    </button>
+                                </div>
+                                @else
+                                <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $resposta->id }}')">
+                                    <span class="material-symbols-outlined">flag_2</span>Denunciar
+                                </a>
+                                @endif
+                            </li>
+                            <li>
+                                <form action="{{ route('seguir.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ $resposta->usuario_id }}">
+                                    <button type="submit" class="btn-acao seguir-btn">
+                                        <span class="material-symbols-outlined">person_add</span>Seguir {{ $resposta->usuario->user }}
+                                    </button>
+                                </form>
+                            </li>
+                            @endif
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Modal Edição dessa resposta -->
+                @include('feed.post.comentario.comentario-edit', ['comentario' => $resposta])
+
+                <!-- modal banir-->
+                @include('layouts.partials.modal-banimento', ['usuario' => $resposta->usuario])
+
+                <!-- Modal de denúncia (um para cada resposta) -->
+                <div id="modal-denuncia-comentario-{{ $resposta->id }}" class="modal-denuncia hidden">
+                    <div class="modal-content">
+                        <span class="close material-symbols-outlined" onclick="fecharModalDenunciaComentario('{{$resposta->id}}')">close</span>
+                        <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
+                            @csrf
+                            <div class="form">
+                                <input type="hidden" name="tipo" value="comentario">
+                                <input type="hidden" name="id_alvo" value="{{ $resposta->id }}">
+                                <label class="form-label">Motivo Denúncia</label>
+                                <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
+                                    <option value="">Tipo</option>
+                                    <option value="spam">Spam</option>
+                                    <option value="desinformação">Desinformação</option>
+                                    <option value="conteudo_explicito">Conteúdo Explícito</option>
+                                    <option value="discurso_de_odio">Discurso de Ódio</option>
+                                </select>
+                            </div>
+
+                            <div class="form-label">
+                                <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
+                                <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
+                            </div>
+
+                            <div style="display: flex; justify-content: end;">
+                                <button type="submit">Denunciar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <p>{{ $resposta->comentario}}</p>
 
                 @if(!empty($resposta->image))
@@ -250,7 +345,7 @@
                     alt="Imagem respsota">
                 @endif
                 <!----------------------------- Curtidas -------------------->
-                <div class="dados-post">
+                <div class="dados-post dados-post-resposta">
                     <form method="POST" action="{{ route('curtida.toggle') }}">
                         @csrf
                         <input type="hidden" name="tipo" value="comentario">

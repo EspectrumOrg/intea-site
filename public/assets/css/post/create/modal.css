@@ -1,22 +1,3 @@
-.hashtag-preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    padding: 1rem;
-    font-size: 18px;
-    font-family: inherit;
-    color: var(--preto);
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    pointer-events: none; /* permite clicar no textarea em cima */
-}
-
-.hashtag {
-    color: var(--azul);
-}
-/* form dentro do modal */
 .modal-postar .modal-content {
     padding: 2rem 1rem 1rem 1rem;
 }
@@ -25,15 +6,9 @@
     display: flex;
     flex-direction: row;
     background: transparent;
-    /* sem fundo extra */
     box-shadow: none;
     width: 100%;
     padding: 0;
-}
-
-.textfield {
-    position: relative;
-    width: 100%;
 }
 
 /* foto usuário */
@@ -43,20 +18,18 @@
     border-radius: 50%;
 }
 
-.form-postar .textfield textarea {
-    flex: 1;
+.form-postar .textfield .post-textarea-create-modal {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
     padding: 1rem;
     font-size: 18px;
-    border: none;
-    min-height: 50px;
-    /* altura inicial */
-    max-height: 300px;
-    /* limite de crescimento */
+    font-family: inherit;
+    color: transparent;
+    caret-color: var(--preto);
     resize: none;
-    /* impede redimensionamento manual */
-    background-color: var(--branco);
-    color: var(--preto);
-    width: 100%;
+    overflow-y: hidden;
 }
 
 .form-postar .textfield textarea:focus {

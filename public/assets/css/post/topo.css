@@ -78,71 +78,6 @@
     background-color: var(--branco-light);
 }
 
-/* conteúdo do dropdown (inicialmente escondido) --------------------------
-.dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--branco);
-    width: 275px;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 0;
-}
-
-.dropdown .dropdown-content li {
-    list-style: none;
-}
-
-.dropdown .dropdown-content img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.dropdown .dropdown-content li a {
-    display: block;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--preto);
-    text-decoration: none;
-    transition: .2s;
-}
-
-.dropdown .dropdown-content li a:hover {
-    background-color: var(--cinza-font);
-}
-
-.seguir-btn,
-.dropdown .form-excluir button {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
-}
-
-.dropdown .form-excluir button {
-    border-radius: 15px 15px 0 0;
-    display: flex;
-    align-items: center;
-}
-
-.seguir-btn:hover {
-    background-color: var(--branco-light);
-}
-
-.dropdown .form-excluir button:hover {
-    background-color: var(--branco-light);
-    color: var(--vermelho);
-}-----+ */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -153,6 +88,10 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     z-index: 999;
     padding: 0;
+}
+
+.dropdown.ativo .dropdown-content {
+    display: block;
 }
 
 /* cada item do dropdown */
@@ -166,7 +105,7 @@
 }
 
 .dropdown .dropdown-content li a {
-    display: block;
+    display: flex;
     padding: 1rem;
     font-weight: 600;
     color: var(--preto);
@@ -178,55 +117,60 @@
     background-color: var(--cinza-font);
 }
 
-/* estilo base para botões de ação */
+/* estilo base para botões de ação --------------------------------------*/
 .btn-acao {
-    width: 100%;
     display: flex;
+    text-align: start;
+    align-items: center;
+    width: 100%;
     gap: 1rem;
-    text-align: left;
-    padding: .6rem 1rem;
+    padding: 1rem;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
     background-color: transparent;
     color: var(--preto);
     transition: background-color .3s, color .3s, transform .1s;
 }
 
-.seguir-btn {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
+/* banir */
+.btn-excluir-usuario {
+    border-radius: 15px 15px 0 0;
 }
 
-/* hover geral */
-.btn-acao:hover {
-    transform: scale(1);
+.btn-excluir-usuario:hover {
+    background-color: var(--branco-light);
+    color: var(--vermelho);
+}
+
+/* seguir */
+.seguir-btn {
+    border-radius: 0 0 15px 15px;
+}
+
+.seguir-btn:hover {
+    background-color: var(--branco-light);
+    color: var(--azul);
+}
+
+/* denunciar */
+.btn-acao.denunciar {
+    display: flex;
+}
+
+.btn-acao.denunciar {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-acao.denunciar:hover {
+    background-color: var(--branco);
+    color: var(--vermelho);
 }
 
 /* editar */
 .dropdown .editar {
     border-radius: 15px 15px 0 0;
-}
-
-.dropdown .editar p {
-    font-weight: 500;
-    font-size: 17px;
-}
-
-.dropdown .editar span {
-    font-size: 24px;
 }
 
 .btn-acao.editar:hover {
@@ -237,33 +181,9 @@
 /* excluir */
 .btn-acao.excluir:hover {
     background-color: var(--branco-light);
-    color: var(--cor-vermelho);
-}
-
-.dropdown .excluir p {
-    font-weight: 500;
-    font-size: 17px;
-}
-
-.dropdown .excluir span {
-    font-size: 24px;
-}
-
-
-.dropdown .excluir {
-    border-radius: 0 0 15px 15px;
-}
-
-/* denunciar */
-.btn-acao.denunciar:hover {
-    background-color: var(--branco);
     color: var(--vermelho);
 }
 
-.dropdown .dropdown-content {
-    display: none;
-}
-
-.dropdown.ativo .dropdown-content {
-    display: block;
+.dropdown .excluir {
+    border-radius: 0 0 15px 15px;
 }

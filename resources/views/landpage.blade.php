@@ -255,7 +255,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <img src="{{ asset('assets/images/landpage/logoIntea2.png') }}" alt="inTEA">
+        <img src="{{ asset('assets/images/landpage/logo-footer.png') }}" alt="inTEA">
         <div class="footer-social">
           <a href="#" class="social-link" id="instagram">
             <i class="fab fa-instagram"></i>

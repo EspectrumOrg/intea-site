@@ -5,7 +5,7 @@ function abrirModalEditar(id) {
     };
 }
 
-function fecharModalEditar(id) {
+function fecharModalEditarPostagem(id) {
     const modalEditarPostagem = document.getElementById('modal-editar-postagem-' + id);
     if (modalEditarPostagem) {
         modalEditarPostagem.classList.add('hidden');
@@ -20,17 +20,24 @@ window.onclick = function(event) {
         const formEditarPostagem = event.target.querySelector('form');
         if (formEditarPostagem) formEditarPostagem.reset();
     }
-};
+}  
 
-const textareaEditarPostagem = document.getElementById('texto_postagem_edit-${id}');
-const charCountEditarPostagem = document.getElementById('char-count-postagem-edit-${id}');
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".textarea-postagem-edit").forEach(textarea => {
+        const id = textarea.dataset.id;
+        const counter = document.querySelector(`.char-count-postagem-edit[data-id="${id}"]`);
 
-textareaEditarPostagem.addEventListener('input', () => {
-    // auto-expand
-    textareaEditarPostagem.style.height = 'auto';
-    textareaEditarPostagem.style.height = textareaEditarPostagem.scrollHeight + 'px';
+        textarea.addEventListener("input", () => {
 
-    // contador de caracteres
-    const len = textareaEditarPostagem.value.length;
-    charCountEditarPostagem.textContent = `${len}/255`;
-});
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+
+        counter.textContent = `${textarea.value.length}/255`;
+        counter.style.color = textarea.value.length >= 255 ? "red" : "";
+
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+        counter.textContent = `${textarea.value.length}/280`;
+        });
+    })
+})

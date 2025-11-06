@@ -1,20 +1,12 @@
 <!-- Modal de banimento -->
-<div id="modal-banimento-denuncia-{{ $item->id }}" class="modal hidden">
-    <div class="modal-denuncia-content">
+<div id="modal-banimento-denuncia-{{$item->id}}" class="modal hidden">
+    <div class="modal-content">
 
-        <div class="modal-dnuncia-header">
+        <div class="modal-header">
             <h2>Banir Usuário</h2>
-            <button class="modal-banimento-fechar" onclick="fecharModalBanirUsuario('{{$item->id}}')">
+            <button class="modal-fechar" onclick="fecharModalBanimentoDenuncia('{{$item->id}}')">
                 <span class="material-symbols-outlined">close</span>
             </button>
-        </div>
-
-        <!-- Cabeçalho -->
-        <div class="modal-header">
-            <h5 class="modal-title" id="modalBanirUsuarioLabel{{ $item->id }}">
-                Banir Usuário
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
 
         <!-- Corpo -->
@@ -25,27 +17,42 @@
             ?? $item->comentario->usuario;
             @endphp
 
-            <div class="text-center mb-3">
+            <p>denunciante {{ $item->usuarioDenunciante->user}}</p>
+
+            <div class="conteudo-modal">
                 <img src="{{ asset('storage/'.$usuarioAlvo->foto ?? 'assets/images/logos/contas/user.png') }}" class="rounded-circle" width="100" height="100" alt="Foto do usuário">
                 <h5 class="mt-2">{{ $usuarioAlvo->user }}</h5>
                 <p class="text-muted">{{ $usuarioAlvo->apelido ?? 'Sem apelido' }}</p>
             </div>
 
             @if ($item->postagem)
-            <div class="alert alert-secondary">
+            <div class="conteudo-modal">
                 <strong>Postagem relacionada:</strong><br>
-                {{ Str::limit($item->postagem->texto_postagem, 150) }}
+                {{ Str::limit($item->postagem->texto_postagem, 150) }}<br>
+                @if ($item->postagem->imagens && $item->postagem->imagens->isNotEmpty())
+                <img 
+                    src="{{ asset('storage/'.$item->postagem->imagens->first()->caminho_imagem) }}" 
+                    class="foto-conteudo-visualizar">
+                @endif
             </div>
+
             @elseif ($item->comentario)
-            <div class="alert alert-secondary">
+            <div class="conteudo-modal">
                 <strong>Comentário relacionado:</strong><br>
                 {{ Str::limit($item->comentario->comentario, 150) }}
+                @if ($item->comentario->image && $item->comentario->image->isNotEmpty())
+                <img 
+                    src="{{ asset('storage/'.$item->comentario->image->caminho_imagem) }}" 
+                    class="foto-conteudo-visualizar">
+                @endif
             </div>
             @endif
 
-            <form action="{{ route('usuario.destroy', $usuarioAlvo->id) }}" method="POST">
+            <form action="{{ route('usuario.destroy', $usuarioAlvo->id) }}" method="POST" class="form-banimento">
                 @csrf
                 @method('DELETE')
+
+                <h1 class="banir">Banir {{ $usuarioAlvo->user }}</h1>
 
                 <!-- Campo infração -->
                 <label class="form-label">Infração</label>
@@ -74,7 +81,9 @@
                 @endif
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" onclick="fecharModalBanimentoDenuncia('{{$item->id}}')">
+                        Cancelar
+                    </button>
                     <button type="submit" class="btn btn-danger">Confirmar Banimento</button>
                 </div>
             </form>
@@ -84,23 +93,28 @@
 
 <!-- JS -->
 <script>
-    function abrirModalBanimentoUsuarioEspecifico(usuarioId) {
-        const modalBanimentoUsuario = document.getElementById(`modal-banimento-usuario-${usuarioId}`);
-        if (modalBanimentoUsuario) modalBanimentoUsuario.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+    function abrirModalBanimentoDenuncia(id) {
+        const modalBanimentoDenuncia = document.getElementById(`modal-banimento-denuncia-${id}`);
+        if (modalBanimentoDenuncia) {
+            modalBanimentoDenuncia.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
     }
 
-    function fecharModalBanimentoUsuarioEspecifico(usuarioId) {
-        const modalBanimentoUsuario = document.getElementById(`modal-banimento-usuario-${usuarioId}`);
-        if (modalBanimentoUsuario) modalBanimentoUsuario.style.display = 'none';
-        document.body.style.overflow = 'auto';
+    function fecharModalBanimentoDenuncia(id) {
+        const modalBanimentoDenuncia = document.getElementById(`modal-banimento-denuncia-${id}`);
+        if (modalBanimentoDenuncia) {
+            modalBanimentoDenuncia.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
     }
 
+    // Fechar clicando fora
     window.addEventListener('click', function(event) {
-        const todosOsModaisBanimentoUsuarios = document.querySelectorAll('.modal-banimento-overlay');
-        todosOsModaisBanimentoUsuarios.forEach(modal => {
+        const modaisBanimentoDenuncia = document.querySelectorAll('.modal');
+        modaisBanimentoDenuncia.forEach(modal => {
             if (event.target === modal) {
-                modal.style.display = 'none';
+                modal.classList.add('hidden');
                 document.body.style.overflow = 'auto';
             }
         });

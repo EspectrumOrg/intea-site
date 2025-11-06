@@ -3,7 +3,7 @@
 
 <div id="modal-editar-postagem-{{ $postagem->id }}" class="modal hidden">
     <div class="modal-content">
-        <button type="button" class="close" onclick="fecharModalEditar('{{$postagem->id}}')">
+        <button type="button" class="close" onclick="fecharModalEditarPostagem('{{$postagem->id}}')">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="modal-content-content">
@@ -23,6 +23,8 @@
 
                         <textarea
                             id="texto_postagem_edit-{{$postagem->id}}"
+                            class="textarea-postagem-edit"
+                            data-id="{{ $postagem->id}}"
                             name="texto_postagem"
                             maxlength="280"
                             rows="3"
@@ -67,7 +69,7 @@
                         </div>
 
                         <div class="contador">
-                            <span class="char-count-postagem-edit-{{$postagem->id}}">0</span>/280
+                            <span class="char-count-postagem-edit" data-id="{{ $postagem->id}}"></span>
                         </div>
 
                         <div class="botao-submit">

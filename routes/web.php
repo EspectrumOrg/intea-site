@@ -112,6 +112,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
+    Route::delete('/comentario/{id}/destroy', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
 
     Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
 

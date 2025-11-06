@@ -40,13 +40,15 @@
             <ul class="dropdown-content">
                 @if(Auth::id() === $postagem->usuario_id)
                 <li>
+                    <!-- Editar Postagem -->
                     <button type="button"
-                        class="btn-acao editar btn-abrir-modal-edit-postagem"
+                        class="btn-acao editar"
                         onclick="abrirModalEditar('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">edit</span>Editar
                     </button>
                 </li>
                 <li>
+                    <!-- Excluir Postagem -->
                     <form action="{{ route('post.destroy', $postagem->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
@@ -55,29 +57,32 @@
                         </button>
                     </form>
                 </li>
+
                 @else
-                <!-- Caso não tenha sido quem postou --------------------->
+
                 <li>
                     @if( Auth::user()->tipo_usuario === 1 )
-                    <!-- Botão que abre o modal -->
+                    <!-- Banir Usuário -->
                     <div class="form-excluir">
-                        <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
-                            <span class="material-symbols-outlined">person_off</span>
-                            Banir
+                        <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
+                            <span class="material-symbols-outlined">person_off</span>Banir
                         </button>
                     </div>
 
                     @else
-                    <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
+
+                    <!-- Denunciar Usuário -->
+                    <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
                     </a>
                     @endif
                 </li>
                 <li>
+                    <!-- Seguir Usuário -->
                     <form action="{{ route('seguir.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                        <button type="submit" class="seguir-btn">
+                        <button type="submit" class="btn-acao seguir-btn">
                             <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
                         </button>
                     </form>
@@ -257,7 +262,7 @@
                             </button>
                         </li>
                         <li>
-                            <form action="{{ route('post.destroy', $comentario->id) }}" method="POST" style="display:inline">
+                            <form action="{{ route('comentario.destroy', $comentario->id) }}" method="POST" style="display:inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn-acao excluir">
@@ -266,27 +271,28 @@
                             </form>
                         </li>
                         @else
-                        <!-- Caso não tenha sido quem postou --------------------->
+                        <!-- Postagem de terceiro --------------------->
                         <li>
                             @if( Auth::user()->tipo_usuario === 1 )
-                            <!-- Botão que abre o modal -->
+                            <!-- Banir Usuário (caso tipo admin) -->
                             <div class="form-excluir">
                                 <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
-                                    <span class="material-symbols-outlined">person_off</span>
-                                    Banir
+                                    <span class="material-symbols-outlined">person_off</span>Banir
                                 </button>
                             </div>
                             @else
-                            <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
+                            <!-- Denunciar Usuário -->
+                            <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenunciaComentario('{{ $comentario->id }}')">
                                 <span class="material-symbols-outlined">flag_2</span>Denunciar
                             </a>
                             @endif
                         </li>
                         <li>
+                            <!-- Seguir Usuário -->
                             <form action="{{ route('seguir.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $comentario->usuario->id }}">
-                                <button type="submit" class="seguir-btn">
+                                <button type="submit" class="btn-acao seguir-btn">
                                     <span class="material-symbols-outlined">person_add</span>Seguir {{ $comentario->usuario->user }}
                                 </button>
                             </form>

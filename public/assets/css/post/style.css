@@ -1,3 +1,8 @@
+.textfield {
+    position: relative;
+    width: 100%;
+}
+
 /* Corpo */
 .container-post {
     flex: 1;
@@ -322,17 +327,7 @@
     /* cria um novo contexto de empilhamento */
     z-index: 1;
     /* fica acima do overlay */
-    color: var(--azul);
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s;
 }
-
-.hashtag:hover {
-    color: var(--azul-apagado);
-    text-decoration: underline;
-}
-
 /* Força o dropdown a ficar sempre acima de qualquer outro conteúdo do post */
 .container-post .dropdown {
     position: relative;
@@ -349,8 +344,6 @@
 .corpo-post .post-overlay,
 .comentario .comentario-overlay,
 .corpo-post button,
-.comentario button,
-.corpo-post form,
-.comentario form {
+.corpo-post form {
     z-index: 1;
 }

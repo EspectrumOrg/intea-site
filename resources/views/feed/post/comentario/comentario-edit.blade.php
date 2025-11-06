@@ -16,38 +16,40 @@
                     class="user-photo"
                     loading="lazy">
 
-                <form action="{{ route('comentario.update', $comentario->id) }}" method="POST" class="form" enctype="multipart/form-data">
+                <form action="{{ route('comentario.update', $comentario->id) }}" method="POST" class="form form-editar" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="textfield">
                         <div id="hashtag-preview-comentario-edit-{{ $comentario->id }}" class="hashtag-preview"></div>
 
                         <textarea
-                            id="texto_comentario_edit-{{ $comentario->id }}"
+                            id="texto_comentario_edit_{{ $comentario->id }}"
+                            class="textarea-comentario-edit"
+                            data-id="{{ $comentario->id}}"
                             name="comentario"
                             maxlength="280"
                             rows="3"
-                            placeholder="Edite sua publicação" required
+                            placeholder="Edite seu comentário" required
                             autofocus>{{ old('comentario', $comentario->comentario) }}</textarea>
                         <x-input-error class="mt-2" :messages="$errors->get('comentario')" />
 
                         {{-- Preview da imagem --}}
                         @php
-                        $imagem = $comentario->caminho_imagem;
+                        $imagem = $comentario->image;
                         @endphp
 
-                        <input type="hidden" name="remover_imagem" id="remover_imagem_{{ $comentario->id }}" value="0">
+                        <input type="hidden" name="remover_imagem" id="remover_imagem_comentario{{ $comentario->id }}" value="0">
 
-                        <div id="image-preview_comentario_edit-{{ $comentario->id }}"
+                        <div id="image_preview_comentario_edit_{{ $comentario->id }}"
                             class="image-preview"
                             @if ($imagem) style="display: block;" @else style="display: none;" @endif>
 
-                            <img id="preview-img_comentario_edit-{{ $comentario->id }}"
+                            <img id="preview_img_comentario_edit_{{ $comentario->id }}"
                                 src="{{ $imagem ? asset('storage/' . $imagem->caminho_imagem) : '' }}"
                                 alt="Prévia da imagem">
 
                             <button type="button"
-                                id="remove-image_comentario_edit-{{ $comentario->id }}"
+                                id="remove-image-comentario-edit-{{ $comentario->id }}"
                                 class="remove-image">
                                 <span class="material-symbols-outlined">close</span>
                             </button>
@@ -56,11 +58,11 @@
 
                     <div class="content">
                         <div class="extras">
-                            <label for="caminho_imagem_edit_modal_{{ $comentario->id }}" class="upload-label">
+                            <label for="caminho_imagem_edit_comentario_modal_{{ $comentario->id }}" class="upload-label">
                                 <span class="material-symbols-outlined">image</span>
                             </label>
                             <input
-                                id="caminho_imagem_edit_modal_{{ $comentario->id }}"
+                                id="caminho_imagem_edit_comentario_modal_{{ $comentario->id }}"
                                 name="caminho_imagem"
                                 type="file"
                                 accept="image/*"
@@ -68,7 +70,7 @@
                         </div>
 
                         <div class="contador">
-                            <span class="char-count">0</span>/280
+                            <span class="char-count-comentario-edit" data-id="{{ $comentario->id}}"></span>
                         </div>
 
                         <div class="botao-submit">
@@ -84,15 +86,15 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.form-editar').forEach(form => {
-            const id = form.querySelector('form').action.split('/').pop(); // pega o ID do post
+            const id = form.action.split('/').pop(); // pega o ID do post
 
             // Seleciona elementos com base no ID único
             const textareaComentarioEdit = document.getElementById(`texto_comentario_edit_${id}`);
             const previewHashtagComentarioEdit = document.getElementById(`hashtag-preview-comentario-edit-${id}`);
-            const inputFileComentarioEdit = document.getElementById(`caminho_imagem_comentario_edit_${id}`);
-            const previewContainerComentarioEdit = document.getElementById(`image-preview_comentario_edit_${id}`);
-            const previewImageComentarioEdit = document.getElementById(`preview-img_comentario_edit_${id}`);
-            const removeButtonComentarioEdit = document.getElementById(`remove-image_comentario_edit_${id}`);
+            const inputFileComentarioEdit = document.getElementById(`caminho_imagem_edit_comentario_modal_${id}`);
+            const previewContainerComentarioEdit = document.getElementById(`image_preview_comentario_edit_${id}`);
+            const previewImageComentarioEdit = document.getElementById(`preview_img_comentario_edit_${id}`);
+            const removeButtonComentarioEdit = document.getElementById(`remove-image-comentario-edit-${id}`);
 
             // Hashtags coloridas
             if (textareaComentarioEdit && previewHashtagComentarioEdit) {
@@ -101,7 +103,7 @@
                         .replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
                         .replace(/>/g, '&gt;')
-                        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+                        .replace(/#(\w+)/g, '<span class="hashtag-preto">#$1</span>');
                     previewHashtagComentarioEdit.innerHTML = text + '\n';
                 });
             }
@@ -129,39 +131,39 @@
         });
     });
 </script>
-<!-- Preview da Imagem 
+<!-- Preview da Imagem -->
 <script>
 (function() {
-    const postId = "{{ $comentario->id }}";
-    const inputFile = document.getElementById(`caminho_imagem_edit_modal_${postId}`);
-    const previewContainer = document.getElementById(`image-preview_comentario_edit-${postId}`);
-    const previewImage = document.getElementById(`preview-img_comentario_edit-${postId}`);
-    const removeButton = document.getElementById(`remove-image_comentario_edit-${postId}`);
-    const removerInput = document.getElementById(`remover_imagem_${postId}`);
+    const comentarioId = "{{ $comentario->id }}";
+    const inputFileComentarioEditModal = document.getElementById(`caminho_imagem_edit_comentario_modal_${comentarioId}`);
+    const previewContainerComentarioEditModal = document.getElementById(`image_preview_comentario_edit_${comentarioId}`);
+    const previewImageComentarioEditModal = document.getElementById(`preview_img_comentario_edit_${comentarioId}`);
+    const removeButtonComentarioEditModal = document.getElementById(`remove-image-comentario-edit-${comentarioId}`);
+    const removerInputComentarioEditModal = document.getElementById(`remover_imagem_comentario${comentarioId}`);
 
     // Trocar imagem
-    inputFile.addEventListener('change', () => {
-        const file = inputFile.files[0];
+    inputFileComentarioEditModal.addEventListener('change', () => {
+        const file = inputFileComentarioEditModal.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = e => {
-                previewImage.src = e.target.result;
-                previewContainer.style.display = 'block';
-                removerInput.value = 0; // não remover, imagem nova
+                previewImageComentarioEditModal.src = e.target.result;
+                previewContainerComentarioEditModal.style.display = 'block';
+                removerInputComentarioEditModal.value = 0; // não remover, imagem nova
             };
             reader.readAsDataURL(file);
         }
     });
 
     // Remover imagem
-    removeButton.addEventListener('click', () => {
-        inputFile.value = '';
-        previewImage.src = '';
-        previewContainer.style.display = 'none';
-        removerInput.value = 1; // sinaliza para o controller apagar
+    removeButtonComentarioEditModal.addEventListener('click', () => {
+        inputFileComentarioEditModal.value = '';
+        previewImageComentarioEditModal.src = '';
+        previewContainerComentarioEditModal.style.display = 'none';
+        removerInputComentarioEditModal.value = 1; // sinaliza para o controller apagar
     });
 })();
 </script>
--->
 
 <!-- JS -->
+<script src="{{ url('assets/js/posts/comentario/modal-update-comentario.js') }}"></script>

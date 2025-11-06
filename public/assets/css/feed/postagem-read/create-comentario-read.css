@@ -51,12 +51,6 @@
     outline: none;
 }
 
-.hashtag {
-    color: var(--azul);
-    font-weight: 600;
-}
-
-
 /* opções (upload etc) ----------------------------------*/
 .form-create-comentario .form .content {
     display: flex;
