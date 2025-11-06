@@ -1,0 +1,203 @@
+body {
+    background-color: var(--cor-branco);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--cinza);
+    margin: 0;
+}
+
+/* Container principal ----------------(Usuário)-------------*/
+.usuario-gerenciamento {
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+.usuario-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* título */
+.usuario-title {
+    display: flex;
+    margin: 1rem 0;
+    gap: 1rem;
+    border-bottom: 1px solid var(--verde);
+    width: fit-content;
+}
+
+.usuario-title span {
+    color: var(--verde);
+    font-size: 3rem;
+}
+
+/* Card */
+.usuario-gerenciamento .card {
+    background-color: var(--branco);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--branco-light);
+    padding: .5rem;
+    overflow-x: scroll;
+}
+
+/* Header do card */
+.usuario-gerenciamento .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--branco);
+    color: var(--preto);
+}
+
+.usuario-gerenciamento .card-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--preto);
+}
+
+/* Botão Novo */
+.usuario-gerenciamento .btn-novo {
+    background-color: var(--branco);
+    color: var(--verde);
+    padding: .75rem;
+    border: .05rem solid var(--verde);
+    border-radius: 50px / 100%;
+    text-decoration: none;
+    transition: background 0.7s;
+    margin: 0 0 5px 0;
+}
+
+.usuario-gerenciamento .btn-novo:hover {
+    background-color: var(--verde);
+    color: var(--branco);
+}
+
+/* Tabela ---*/
+.usuario-gerenciamento .card-body {
+    padding: 0;
+}
+
+.usuario-gerenciamento .table-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.usuario-gerenciamento .table-usuarios th {
+    border-left: .0 solid var(--branco-light);
+    padding: 0.5rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
+.usuario-gerenciamento .table-usuarios td {
+    padding: 0.25rem;
+    font-size: .8rem;
+    text-align: left;
+}
+
+/* disposição de itens*/
+.table-usuarios thead {
+    background-color: var(--cor-branco);
+    color: var(--preto);
+}
+
+/* Cor texto*/
+.table-usuarios td .red-text {
+    color: var(--vermelho);
+}
+
+.table-usuarios td .purple-text {
+    color: var(--roxo);
+}
+
+.table-usuarios td .yellow-text {
+    color: var(--amarelo);
+}
+
+.table-usuarios td .orange-text {
+    color: var(--azul);
+}
+
+.table-usuarios td .black-text {
+    color: var(--cor-preto);
+}
+
+.table-usuarios .button-open-data {
+    display: flex;
+    padding: 0;
+}
+
+.table-usuarios .img-icons {
+    width: 25px;
+}
+
+/* Botão Ações --usuario*/
+.table-usuarios .td-acoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.table-usuarios .td-acoes span {
+    color: var(--preto);
+}
+
+.table-usuarios tr:nth-child(even) {
+    background-color: var(--cor-branco);
+}
+
+.btn-excluir-usuario,
+.btn-desabilitar,
+.btn-desbanir,
+.btn-visualizar {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Botão Excluir */
+.btn-excluir-usuario span:hover {
+    color: var(--vermelho);
+}
+
+.btn-desabilitar span:hover {
+    color: var(--verde);
+}
+
+/* Botão Visualizar*/
+.table-usuarios .btn-visualizar span:hover {
+    transition: .3s;
+    color: var(--azul);
+}
+
+/* Botão desbanir */
+.btn-desbanir:hover {
+    color: var(--azul);
+}
+
+.btn-excluir-usuario span,
+.btn-desabilitar span,
+.btn-desbanir span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+/* botão filtrar */
+.btn-filtrar {
+    padding: 0.5rem 1rem;
+    border-radius: 50% / 100%;
+    background-color: var(--branco);
+    transition: .7s;
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    cursor: pointer;
+}
+
+.btn-filtrar:hover {
+    background-color: var(--verde);
+    color: var(--branco);
+}

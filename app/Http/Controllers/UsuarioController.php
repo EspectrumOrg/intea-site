@@ -6,14 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
-use App\Models\Admin;
-use App\Models\Autista;
+use App\Models\Banimento;
 use App\Models\ChatPrivado;
-use App\Models\ChatPrivadoModel;
-use App\Models\Comunidade;
-use App\Models\ProfissionalSaude;
-use App\Models\Responsavel;
 use App\Models\seguirModel;
+use Illuminate\Support\Facades\Mail;
 
 class UsuarioController extends Controller
 {
@@ -113,8 +109,8 @@ class UsuarioController extends Controller
     {
 
         $request->validate([
-        'visibilidade' => 'required|in:0,1',
-    ]);
+            'visibilidade' => 'required|in:0,1',
+        ]);
 
         $request->user()->visibilidade = $request->visibilidade;
         $request->user()->save();
@@ -122,30 +118,43 @@ class UsuarioController extends Controller
         return redirect()->back()->with('success', 'Configurações de privacidade atualizadas com sucesso.');
     }
 
-public function buscarUsuarios(Request $request)
-{
-$usuarioId = auth()->id() ?? 0;
-    $search = $request->input('q', '');
+    public function buscarUsuarios(Request $request)
+    {
+        $usuarioId = auth()->id() ?? 0;
+        $search = $request->input('q', '');
 
-    $usuarios = collect();
+        $usuarios = collect();
 
-    if ($search !== '') {
-        $usuarios = Usuario::where('id', '!=', $usuarioId)
-            ->where(function ($q) use ($search) {
-                $q->where('user', 'like', "%{$search}%")
-                  ->orWhere('apelido', 'like', "%{$search}%");
-            })
-            ->orderBy('user', 'asc')
-            ->get(['id','user','apelido','foto']);
+        if ($search !== '') {
+            $usuarios = Usuario::where('id', '!=', $usuarioId)
+                ->where(function ($q) use ($search) {
+                    $q->where('user', 'like', "%{$search}%")
+                        ->orWhere('apelido', 'like', "%{$search}%");
+                })
+                ->orderBy('user', 'asc')
+                ->get(['id', 'user', 'apelido', 'foto']);
+        }
+
+        return response()->json($usuarios);
     }
 
-    return response()->json($usuarios);
-}
-
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         if ($id != 1) {
             $usuario = Usuario::findOrFail($id);
+
+            // Registra a mensagem de banimento -------------(Importante!)
+            $banimento = Banimento::create([
+                'id_usuario' => $usuario->id,
+                'id_admin' => auth()->id(),
+                'infracao' => $request->infracao,
+                'motivo' => $request->motivo,
+                'id_postagem' => $request->id_postagem,
+                'id_comentario' => $request->id_comentario,
+            ]);
+
+            // Enviar email pro user
+            Mail::to($usuario->email)->send(new \App\Mail\BanimentoMail($banimento));
 
             // Exclui comentários do usuário
             $usuario->comentarios()->delete();
@@ -185,7 +194,7 @@ $usuarioId = auth()->id() ?? 0;
 
             session()->flash("warning", "Usuário banido, conteúdo removido do site.");
             return redirect()->back();
-        } else {
+        } else { //Caso Administrador Chefe
             session()->flash("error", "O usuário principal não pode ser banido!");
             return redirect()->back();
         }

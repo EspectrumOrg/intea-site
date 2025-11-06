@@ -22,6 +22,7 @@
 
                         <textarea id="texto_postagem_create_modal"
                             name="texto_postagem"
+                            class="post-textarea-create-modal"
                             maxlength="280"
                             rows="3"
                             placeholder="Comece uma publicação" required></textarea>
@@ -53,7 +54,7 @@
                         </div>
 
                         <div class="contador">
-                            <span class="char-count">0</span>/280
+                            <span class="char-count" id="char-count-create-modal">0</span>/280
                         </div>
 
                         <div class="botao-submit">
@@ -95,3 +96,4 @@
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
 <script src="{{ url('assets/js/posts/create/hashtag-create-modal.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/char-count-modal.js') }}"></script>

@@ -5,32 +5,39 @@ function abrirModalEditarComentario(id) {
     };
 }
 
-function fecharModalEditar(id) {
+function fecharModalEditarComentario(id) {
     const modalEditarComentario = document.getElementById('modal-editar-comentario-' + id);
     if (modalEditarComentario) {
         modalEditarComentario.classList.add('hidden');
         const formEditarComentario = modalEditarComentario.querySelector('form');
-        if (formEditarComentari) formEditarComentari.reset();
+        if (formEditarComentario) formEditarComentario.reset();
     }
 }
 
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.classList.add('hidden');
-        const formEditarComentari = event.target.querySelector('form');
-        if (formEditarComentari) formEditarComentari.reset();
+        const formEditarComentario = event.target.querySelector('form');
+        if (formEditarComentario) formEditarComentario.reset();
     }
 };
 
-const textareaEditarComentario = document.getElementById('post-textarea_edit');
-const charCountEditarComentario = document.getElementById('char-count');
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".textarea-comentario-edit").forEach(textarea => {
+        const idComentarioEditModal = textarea.dataset.id;
+        const counterComentarioEditModal = document.querySelector(`.char-count-comentario-edit[data-id="${idComentarioEditModal}"]`);
 
-textareaEditarComentario.addEventListener('input', () => {
-    // auto-expand
-    textareaEditarComentario.style.height = 'auto';
-    textareaEditarComentario.style.height = textareaEditarComentario.scrollHeight + 'px';
+        textarea.addEventListener("input", () => {
 
-    // contador de caracteres
-    const lenEditarComentari = textareaEditarComentario.value.length;
-    charCountEditarComentario.textContent = `${lenEditarComentari}/255`;
-});
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+
+        counterComentarioEditModal.textContent = `${textarea.value.length}/255`;
+        counterComentarioEditModal.style.color = textarea.value.length >= 255 ? "red" : "";
+
+        textarea.style.height = "auto";
+        textarea.style.height = textarea.scrollHeight + "px";
+        counterComentarioEditModal.textContent = `${textarea.value.length}/280`;
+        });
+    })
+})

@@ -123,19 +123,6 @@
 }
 
 /* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
-.container-read .dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--branco);
-    width: 275px;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 0;
-}
-
-/* cada item do dropdown */
 .container-read .dropdown .dropdown-content li {
     list-style: none;
 }
@@ -143,38 +130,6 @@
 .container-read .dropdown .dropdown-content img {
     width: 20px;
     margin-right: 10px;
-}
-
-.container-read .dropdown .dropdown-content li a {
-    display: block;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--preto);
-    text-decoration: none;
-    transition: .2s;
-}
-
-.container-read .dropdown .dropdown-content li a:hover {
-    background-color: var(--cinza-font);
-}
-
-.container-read .seguir-btn {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
-}
-
-.container-read .seguir-btn:hover {
-    background-color: var(--branco-light);
 }
 
 .container-read .dropdown .dropdown-content {
@@ -279,27 +234,7 @@
     font-size: 14px;
     color: var(--cinza);
     transition: .3s;
-}
-
-/* comentar */
-.btn-comentar:hover h1 {
-    color: var(--azul);
-}
-
-.btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--azul);
-}
-
-/* curtir */
-.btn-curtir:hover h1 {
-    color: var(--vermelho);
-}
-
-.btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
-    color: var(--vermelho);
-}
+} 
 
 /*------------------------------------------------------------------------------- comentários --------------------------------------------------------------------------------------------------------------------------------------------------------*/
 .comentario-overlay {
@@ -429,7 +364,7 @@
 }
 
 .btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -439,7 +374,7 @@
 }
 
 .btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
+    background-color: var(--vermelho-apagado);
     color: var(--vermelho);
 }
 
@@ -467,9 +402,6 @@
     z-index: 1;
     /* fica acima do overlay */
     color: var(--azul);
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s;
 }
 
 .hashtag:hover {
@@ -489,54 +421,6 @@
     z-index: 9999 !important;
 }
 
-/* estilo base para botões de ação */
-.btn-acao {
-    width: 100%;
-    display: flex;
-    gap: 1rem;
-    text-align: left;
-    padding: .6rem 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    background-color: transparent;
-    color: var(--preto);
-    transition: background-color .3s, color .3s, transform .1s;
-}
-
-/* hover geral */
-.btn-acao:hover {
-    transform: scale(1);
-}
-
-/* editar */
-.container-post .editar {
-    border-radius: 15px 15px 0 0;
-}
-
-.btn-acao.editar:hover {
-    background-color: var(--branco-light);
-    color: var(--azul);
-}
-
-/* excluir */
-.btn-acao.excluir:hover {
-    background-color: var(--branco-light);
-    color: var(--vermelho);
-}
-
-.container-post .excluir {
-    border-radius: 0 0 15px 15px;
-}
-
-/* denunciar */
-.btn-acao.denunciar:hover {
-    background-color: var(--branco);
-    color: var(--vermelho);
-}
-
 /* Overlay postagem focus */
 .container-read .comentario-overlay,
 .container-read button,
@@ -549,8 +433,32 @@
 /* Overlay comentários */
 .comentario .comentario-overlay,
 .comentario button,
-.comentario .dropdown,
 .comentario form,
+.comentario .dropdown,
 .comentario a {
     z-index: 1;
+}
+
+/* Overlay comentários */
+.comentario .dropdown{
+    z-index: 2;
+}
+
+/* repetição */
+.textfield textarea {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    caret-color: var(--preto);
+    resize: none;
+    overflow-y: hidden;
+}
+
+.container-read .dropdown .dropdown-content button{
+    z-index: 1 !important;
 }

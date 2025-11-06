@@ -81,120 +81,16 @@
     color: var(--cinza);
 }
 
-
-/* opcoes perfil ---------------------------------------------------------- */
-.container-comentario-focus .topo .opcoes-perfil {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    height: 100%;
-}
-
-.container-comentario-focus .menu-opcoes {
-    font-size: 1.5rem;
-    color: var(--cinza);
-    cursor: pointer;
-    padding: .3rem .3rem;
-    border-radius: 50%;
-    transition: background .2s;
-    display: flex;
-    align-items: center;
-    border: none;
-}
-
-.container-comentario-focus .menu-opcoes:hover {
-    background-color: var(--branco-light);
-}
-
-/* container do dropdown */
-.container-comentario-focus .dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.container-comentario-focus .dropdown .menu-opcoes img {
-    width: 25px;
-}
-
-.container-comentario-focus .dropdown .menu-opcoes img:hover {
-    background-color: var(--branco-light);
-}
-
-/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
-.container-comentario-focus .dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--branco);
-    width: 275px;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 0;
-}
-
-/* cada item do dropdown */
-.container-comentario-focus .dropdown .dropdown-content li {
-    list-style: none;
-}
-
-.container-comentario-focus .dropdown .dropdown-content img {
-    width: 20px;
-    margin-right: 10px;
-}
-
-.container-comentario-focus .dropdown .dropdown-content li a {
-    display: block;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--preto);
-    text-decoration: none;
-    transition: .2s;
-}
-
-.container-comentario-focus .dropdown .dropdown-content li a:hover {
-    background-color: var(--cinza-font);
-}
-
-.container-comentario-focus .seguir-btn {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
-}
-
-.container-comentario-focus .seguir-btn:hover {
-    background-color: var(--branco-light);
-}
-
-.container-comentario-focus .dropdown .dropdown-content {
-    display: none;
-}
-
-.container-comentario-focus .dropdown.ativo .dropdown-content {
-    display: block;
-}
-
-/* postagem ----------------------------------------------------------------------------------------------*/
-/* texto da postagem */
+/* texto da comentario */
 .container-comentario-focus p {
     font-size: 18px;
     color: var(--preto);
     line-height: 1.5;
     text-indent: 1px;
-    padding: 0 .5rem;
+    padding: .5rem;
 }
 
-/* imagem da postagem */
+/* imagem da comentario */
 .container-comentario-focus .image {
     padding: 0 1rem;
 }
@@ -208,13 +104,23 @@
 
 /* texto dados */
 .container-comentario-focus .dados {
-    padding: 1rem 0;
+    padding: 1rem;
 }
 
 .container-comentario-focus .dados h3 {
     font-size: 14px;
     color: var(--cinza);
     font-weight: 400;
+}
+
+.container-comentario-focus .dados-post {
+    padding: 0 1rem;
+}
+
+.container-comentario-focus .dados-post-resposta {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
 }
 
 /* Garante que o overlay e botões fiquem abaixo */
@@ -260,20 +166,8 @@
     width: 100%;
 }
 
-.form-create-resposta-comentario-focus .hashtag-preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    padding: 1rem;
-    font-size: 18px;
-    font-family: inherit;
+.form-create-resposta-comentario-focus .hashtag{
     color: var(--preto);
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    pointer-events: none;
-    /* permite clicar no textarea em cima */
 }
 
 .form-create-resposta-comentario-focus .textfield textarea {
@@ -295,12 +189,6 @@
 .form-create-resposta-comentario-focus .form .textfield textarea:focus {
     outline: none;
 }
-
-.hashtag {
-    color: var(--azul);
-    font-weight: 600;
-}
-
 
 /* opções (upload etc) ----------------------------------*/
 .form-create-resposta-comentario-focus .form .content {
@@ -369,7 +257,7 @@
 }
 
 .form .upload-label:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -396,87 +284,11 @@
     background-color: var(--azul);
     color: var(--branco);
 }
-/* interações */
-/* interações------------------------------------------------*/
-.interacoes {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 12px;
-    color: var(--cinza);
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.interacoes .corpo {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    border-top: 1px solid var(--branco-light);
-    padding: .5rem 0rem;
-}
 
 .comment {
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.interacoes .button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.interacoes .button a {
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-}
-
-.interacoes span {
-    font-size: 20px;
-    padding: .5rem;
-    color: var(--cinza);
-    border-radius: 50%;
-    transition: .3s;
-}
-
-/* curtido ou normal*/
-.interacoes .normal span {
-    color: var(--cinza);
-}
-
-.interacoes .curtido span {
-    color: var(--vermelho);
-}
-
-.interacoes h1 {
-    font-size: 14px;
-    color: var(--cinza);
-    transition: .3s;
-}
-
-/* comentar */
-.btn-comentar:hover h1 {
-    color: var(--azul);
-}
-
-.btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--azul);
-}
-
-/* curtir */
-.btn-curtir:hover h1 {
-    color: var(--vermelho);
-}
-
-.btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
-    color: var(--vermelho);
 }
 
 .comentarios {
@@ -534,4 +346,15 @@
     font-weight: 700;
     color: var(--preto);
     font-size: 14px;
+}
+
+.container-comentario-focus .topo-resposta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.container-comentario-focus .info-user-resposta {
+    display: flex;
+    gap: .5rem;
 }

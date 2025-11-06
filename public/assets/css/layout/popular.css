@@ -20,11 +20,11 @@
 
 .sidebar-header span {
     font-size: 24px;
-    color: var(--vermelho);
+    color: var(--verde);
 }
 
 .sidebar-header h3 {
-    color: var(--vermelho);
+    color: var(--verde);
     margin: 0 0 1rem 0;
     font-size: 24px;
     font-weight: 700;
@@ -59,7 +59,7 @@
 }
 
 .tendencia-contador {
-    color: var(--vermelho);
+    color: var(--verde);
     font-size: 14px;
 }
 
@@ -90,11 +90,12 @@
     padding: 1rem 1.2rem;
     text-decoration: none;
     font-size: 18px;
-    color: var(--vermelho);
+    color: var(--verde);
     transition: .3s;
 }
 
 .ver-mais:hover a {
+    color: var(--verde-apagado);
     color: var(--vermelho-apagado);
 }
 

@@ -10,8 +10,8 @@
 
  .dashboard-root {
      background: var(--branco);
-     padding: 1rem 2rem;
-     min-height: 100%;
+     margin: 2rem auto;
+     padding: 0 2rem;
  }
 
  .dashboard-inner {
@@ -22,13 +22,17 @@
  /* título */
  .dashboard-title {
      display: flex;
-     color: var(--azul);
+     margin: 1rem 0;
      gap: 1rem;
+     border-bottom: 1px solid var(--azul);
+     width: fit-content;
  }
 
  .dashboard-title span {
+     color: var(--azul);
      font-size: 3rem;
  }
+
 
  /* Cards grid */
  .cards-grid {
