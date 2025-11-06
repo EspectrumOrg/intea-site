@@ -1018,7 +1018,7 @@ textarea.input1 {
     min-height: 140px;
     padding: 1.5rem;
     border-radius: 12px;
-    resize: vertical;
+    resize: none;
     line-height: 1.6;
 }
 

@@ -92,9 +92,9 @@ function appendMensagem(data) {
     }
 
     const messageHtml = `
-        <div class="${classe} message" style="display:flex; align-items:flex-start; margin-bottom:5px; justify-content:${isRemetente ? 'flex-end' : 'flex-start'};">
+        <div class="${classe} message"">
             ${isRemetente ? '' : avatarHtml}
-            <p style="margin: 0.75rem 0.25rem; padding:5px 7.5px; color:#F2F2F2; border-radius:1rem; background:${isRemetente ? '#048ABF' : '#262626'}; max-width:70%;">
+            <p>
                 ${data.message}
             </p>
             ${isRemetente ? avatarHtml : ''}
@@ -154,16 +154,16 @@ $("#buscarUsuario").on('keyup', function() {
             lista.html('');
 
             if(res.length === 0) {
-                lista.append('<li>Nenhum usuário encontrado.</li>');
+                lista.append('<p>Nenhum usuário encontrado.</p>');
                 return;
             }
 
             res.forEach(usuario => {
                 let foto = usuario.foto ? "{{ asset('storage') }}/" + usuario.foto : "{{ asset('storage/default.jpg') }}";
                 lista.append(`
-                    <li class="usuario-item" data-id="${usuario.id}" style="margin-bottom:10px; cursor:pointer;">
-                        <img src="${foto}" width="40" height="40" alt="${usuario.user}">
-                        <span style="font-weight:bold; color:#048ABF;">${usuario.user}</span>
+                    <li class="usuario-item" data-id="${usuario.id}">
+                        <img src="${foto}" alt="${usuario.user}">
+                        <span>${usuario.user}</span>
                     </li>
                 `);
             });
@@ -211,5 +211,7 @@ $(document).ready(function() {
         abrirChat(usuario2);
     }
 });
+
+/* $ ('. message. right') . last () . addClass (' lida') ; */
 </script>
 @endsection
