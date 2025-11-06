@@ -81,8 +81,10 @@ channel.bind("chat", function(data) {
     }
 });
 
-// Função para adicionar mensagem no chat
+// Função para adicionar     mensagem no chat
 function appendMensagem(data) {
+    console.log("Mensagem recebida:", data);
+
     const isRemetente = data.remetente_id == usuarioLogado;
     const classe = isRemetente ? 'right' : 'left';
 
@@ -96,6 +98,7 @@ function appendMensagem(data) {
             ${isRemetente ? '' : avatarHtml}
             <p>
                 ${data.message}
+                <small class="hora-msg">${data.hora ?? data.created_at ?? ''}</small>
             </p>
             ${isRemetente ? avatarHtml : ''}
         </div>
@@ -192,7 +195,8 @@ $("#chatForm").submit(function(e) {
             appendMensagem({
                 remetente_id: usuarioLogado,
                 message: res.message,
-                foto: "{{ Auth::user()->foto }}"
+                foto: "{{ Auth::user()->foto }}",
+                 hora: res.hora
             });
             input.val('');
         }

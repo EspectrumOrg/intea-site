@@ -12,16 +12,18 @@ class PusherBroadcast implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  public $message;
-public $remetente_id;
-public $foto;
+    public $message;
+    public $remetente_id;
+    public $foto;
+    public $hora; // <-- importante
 
-public function __construct(string $message, int $remetente_id, ?string $foto = null)
-{
-    $this->message = $message;
-    $this->remetente_id = $remetente_id;
-    $this->foto = $foto; 
-}
+    public function __construct(string $message, int $remetente_id, ?string $foto = null, ?string $hora = null)
+    {
+        $this->message = $message;
+        $this->remetente_id = $remetente_id;
+        $this->foto = $foto;
+        $this->hora = $hora; // <-- aqui você realmente guarda o horário
+    }
 
     public function broadcastOn(): Channel
     {
@@ -31,5 +33,15 @@ public function __construct(string $message, int $remetente_id, ?string $foto = 
     public function broadcastAs(): string
     {
         return 'chat';
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message,
+            'remetente_id' => $this->remetente_id,
+            'foto' => $this->foto,
+            'hora' => $this->hora, 
+        ];
     }
 }

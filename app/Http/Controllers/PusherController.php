@@ -66,13 +66,19 @@ class PusherController extends Controller
         $remetente = \App\Models\Usuario::find($usuario1);
         $foto = $remetente->foto ?? 'default.jpg';
 
-        // Dispara Pusher passando a foto
-        broadcast(new \App\Events\PusherBroadcast($texto, $usuario1, $foto))->toOthers();
+broadcast(new \App\Events\PusherBroadcast(
+    $texto,
+    $usuario1,
+    $foto,
+    $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i')
+))->toOthers();
 
         return response()->json([
-            'message' => $texto,
-            'remetente_id' => $usuario1
-        ]);
+    'message' => $texto,
+    'remetente_id' => $usuario1,
+    'foto' => $foto,
+    'hora' => $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i')
+]);
     }
 
 public function webzap(Request $request)
