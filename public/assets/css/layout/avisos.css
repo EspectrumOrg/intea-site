@@ -30,6 +30,7 @@
 .modal-aviso-padrao-content .icone {
     margin-bottom: 10px;
 }
+
 .modal-aviso-padrao-content span {
     font-size: 4.5rem;
     display: inline-block;
@@ -59,77 +60,132 @@
 }
 
 .closeModalPadrao {
-    padding: 10px 28px;
+    padding: .5rem;
     border: none;
-    border-radius: 8px;
-    color: var(--branco);
+    background-color: var(--branco);
     font-weight: 600;
+    border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 }
 
-/* ============================ */
-/* ESTILOS POR TIPO             */
-/* ============================ */
+.closeModalPadrao span{
+    font-size: 24px;
+    color:  var(--preto);
+}
+
+.closeModalPadrao:hover span {
+    color: var(--preto);
+}
+
+/* sucesso*/ 
 .modal-aviso-padrao.sucesso .modal-aviso-padrao-content {
     border-top: 6px solid var(--azul);
 }
+
 .modal-aviso-padrao.sucesso span {
     color: var(--azul);
 }
-.modal-aviso-padrao.sucesso .closeModalPadrao {
-    background: var(--azul);
-}
-.modal-aviso-padrao.sucesso .closeModalPadrao:hover {
-    background: var(--azul-apagado);
-    transform: scale(1.05);
+
+.modal-aviso-padrao.sucesso .closeModalPadrao span{
+    color: var(--preto);
 }
 
+.modal-aviso-padrao.sucesso .closeModalPadrao:hover span{
+    color: var(--azul);
+}
+
+/* erro*/ 
 .modal-aviso-padrao.erro .modal-aviso-padrao-content {
     border-top: 6px solid var(--vermelho);
 }
+
 .modal-aviso-padrao.erro span {
     color: var(--vermelho);
 }
-.modal-aviso-padrao.erro .closeModalPadrao {
-    background: var(--vermelho);
-}
-.modal-aviso-padrao.erro .closeModalPadrao:hover {
-    background: var(--vermelho);
-    transform: scale(1.05);
+
+.modal-aviso-padrao.erro .closeModalPadrao span{
+    color: var(--preto);
 }
 
+.modal-aviso-padrao.erro .closeModalPadrao:hover span{
+    color: var(--vermelho);
+}
+
+/* aviso*/ 
 .modal-aviso-padrao.aviso .modal-aviso-padrao-content {
     border-top: 6px solid var(--amarelo);
 }
+
 .modal-aviso-padrao.aviso span {
     color: var(--amarelo);
 }
-.modal-aviso-padrao.aviso .closeModalPadrao {
-    background: var(--amarelo);
-    color: var(--cinza);
+
+.modal-aviso-padrao.aviso .closeModalPadrao span{
+    color: var(--preto);
 }
-.modal-aviso-padrao.aviso .closeModalPadrao:hover {
-    background: var(--amarelo);
-    transform: scale(1.05);
+
+.modal-aviso-padrao.aviso .closeModalPadrao:hover span{
+    color: var(--amarelo);
+}
+
+.botao-reconciliacao {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: var(--branco);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
+    border-radius: 25px / 75%;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.botao-reconciliacao:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
 }
 
 /* ============================ */
 /* ANIMAÇÕES                    */
 /* ============================ */
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes scaleUp {
-    from { transform: scale(0.9); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 @keyframes iconPop {
-    0% { transform: scale(0); opacity: 0; }
-    60% { transform: scale(1.2); opacity: 1; }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }

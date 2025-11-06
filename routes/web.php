@@ -102,7 +102,7 @@ Route::resource("responsavel", ResponsavelController::class)->names("responsavel
 
 
 // Usuário Logado PADRÃO --------------------------------------------------------------------------------------------------------------------------------------------------------------+
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'check.ban'])->group(function () {
 
     //Seguindo (precisa estar antes do resource do feed pra não conflitar com o /feed/{postagem} LMAO,
     //se alguém souber contornar isso pode mudar de lugar)
@@ -119,6 +119,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
+    Route::delete('/comentario/{id}/destroy', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
 
     Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
 
@@ -199,10 +200,15 @@ Route::middleware(['auth'])->group(function () {
 
 
 // Apenas Admin --------------------------------------------------------------------------------------------------------------------------------------------------------------+
-Route::middleware(['auth', 'is_admin'])->group(function () {
+Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
 
     // Cadastro de Admin
     Route::resource("admin", AdminController::class)->names("admin");
+
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        ->middleware('auth')
+        ->name('dashboard.index');
 
     // Usuário
     Route::resource("usuario", UsuarioController::class)
@@ -211,13 +217,12 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
 
+    // Denúncias
     Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
 
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth')
-        ->name('dashboard.index');
+    Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
+    Route::post('/suporte/resposta', [ContatoController::class, 'resposta'])->name('contato.resposta');
 });
 
 // Novo sistema de perfil (3 abas)

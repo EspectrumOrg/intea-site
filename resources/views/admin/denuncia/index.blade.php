@@ -1,7 +1,15 @@
 @extends('admin.template.layout')
 
 @section('main')
-<div class="usuario-gerenciamento">
+<!-- css geral -->
+<link rel="stylesheet" href="{{ asset('assets/css/admin/denuncia-gerenciamento.css') }}">
+<!-- CSS do Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-bdr1sENtJTR1yM0Ff9kxC4jo0B0p8jlzJQYc8jowTgk9kzxRzYfT5mFjZbFzFSJv" crossorigin="anonymous">
+<!-- JS do Bootstrap (necessário para modals) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-2KJxw7Rf9L7/n8+ITbPmxv4R05gVnpRb2VHZgZ8fFqzS9mQ9OH+TGLZxUq5K7vN4" crossorigin="anonymous"></script>
+
+
+<div class="denuncia-gerenciamento">
 
     <div class="denuncia-inner">
 
@@ -38,11 +46,10 @@
         <div class="card">
             <div class="card-header">
                 <h2>Denuncias</h2>
-                <a href="#" class="btn-novo">Novo Admin</a>
             </div>
 
             <div class="card-body">
-                <table class="table-usuarios">
+                <table class="table-denuncias">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -53,7 +60,9 @@
                             <th>Data de denuncia</th>
                             <th>Status conta</th>
                             <th>Status denúncia</th>
-                            <th>Ações</th>
+                            <th>Resolvido</th>
+                            <th>Banir</th>
+                            <th>Visualizar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,154 +117,43 @@
                                 @endswitch
                             </td>
                             <td class="button-open-data acoes-denuncia">
-
                                 <div class="td-acoes">
                                     <!-- Usuário ativo → Desabilitar denúncia -->
                                     <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
                                         @csrf
                                         @method("put")
                                         <button type="submit" onclick="return confirm('Você tem certeza que deseja marcar a denúncia como resolvida?');" class="btn-desabilitar">
-                                            <span class="material-symbols-outlined">
-                                                check
-                                            </span>
+                                            <span class="material-symbols-outlined">check</span>
                                         </button>
                                     </form>
-                                    <!-- Banir usuário, postagem → usuário, comentário → usuário -->
-                                    <form action="{{ route('usuario.destroy', $item->usuarioDenunciado->id ?? $item->postagem->usuario->id ?? $item->comentario->usuario->id) }}" method="post">
-                                        @csrf
-                                        @method("delete")
-                                        <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
-                                            <span class="material-symbols-outlined">person_off</span>
-                                        </button>
-                                    </form>
-
-                                    <!-- Botão para abrir o modal -->
-                                    <button type="button" class="btn-visualizar" data-bs-toggle="modal" data-bs-target="#modalVisualizarDenuncia{{ $item->id }}">
-                                        <span class="material-symbols-outlined">open_in_full</span>
-                                    </button>
                                 </div>
+                            </td>
 
+                            <td class="button-open-data acoes-denuncia">
+                                <!-- Banir usuário, postagem → usuário, comentário → usuário -->
+                                <form action="{{ route('usuario.destroy', $item->usuarioDenunciado->id ?? $item->postagem->usuario->id ?? $item->comentario->usuario->id) }}" method="post">
+                                    @csrf
+                                    @method("delete")
+                                    <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoDenuncia('{{$item->id}}')">
+                                        <span class="material-symbols-outlined">person_off</span>
+                                    </button>
+                                </form>
+                                <!-- Inclui o modal banimento -->
+                                @include('admin.denuncia.partials.modal-banimento', ['item' => $item])
 
+                            <td class="button-open-data acoes-denuncia">
 
-                                <!-- Modal ============================================================================================================================================================================================================-->
-                                <div class="modal fade" id="modalVisualizarDenuncia{{ $item->id }}" tabindex="-1" aria-labelledby="modalDenunciaLabel{{ $item->id }}" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-
-                                            <!-- Cabeçalho -->
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="modalDenunciaLabel{{ $item->id }}">
-                                                    @if ($item->usuarioDenunciado)
-                                                    Denúncia de usuário - {{ $item->usuarioDenunciado->user}}
-                                                    @elseif ($item->postagem)
-                                                    Denúncia de postagem - {{ $item->postagem->usuario->user}}
-                                                    @elseif ($item->comentario)
-                                                    Denúncia de comentário - {{ $item->comentario->usuario->user}}
-                                                    @endif
-                                                </h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                                            </div>
-
-                                            <!-- Corpo -->
-                                            <div class="modal-body">
-
-                                                @if ($item->usuarioDenunciado)
-                                                <!-- Usuário -->
-                                                <div class="text-center">
-                                                    <img
-                                                        src="{{ asset('storage/'.$item->usuarioDenunciado->foto ?? 'assets/images/logos/contas/user.png') }}"
-                                                        class="foto-denunciado">
-                                                    <h6>{{ $item->usuarioDenunciado->user }}</h6>
-                                                    <p class="text-muted"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
-                                                </div>
-
-
-
-                                                @elseif ($item->postagem)
-                                                <!-- Postagem -->
-                                                <p>Conteúdo Postagem</p>
-                                                <p>{{ $item->postagem->texto_postagem}}</p>
-
-                                                @if ($item->postagem->imagens->count() > 0)
-                                                <div class="text-center">
-                                                    @foreach ($item->postagem->imagens as $image)
-                                                    <img src="{{ asset('storage/'.$image->caminho_imagem) }}" class="imagem-postagem" alt="Imagem da postagem">
-                                                    @endforeach
-                                                </div>
-                                                @endif
-
-
-
-                                                @elseif ($item->comentario)
-                                                <!-- Comentário -->
-                                                <p>Comentário:</p>
-                                                <p>{{ $item->comentario->comentario}}</p>
-
-                                                @if ($item->comentario->image)
-                                                <div class="text-center">
-                                                    <img src="{{ asset('storage/'.$item->comentario->image->caminho_imagem) }}" class="img-fluid rounded" alt="Imagem do comentário">
-                                                </div>
-                                                @endif
-                                                @endif
-
-                                                <hr>
-
-                                                <!-- Detalhes Denúncias -->
-                                                <div class="detalhes-container">
-                                                    <h1>Detalhes da denúncia</h1>
-                                                    <p><strong>Denunciante:</strong> {{ $item->usuarioDenunciante->user}} / {{ $item->usuarioDenunciante->apelido }}</p>
-                                                    <p><strong>Data:</strong> {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</p>
-                                                    <p><strong>Motivo:</strong> {{ $item->motivo_denuncia }}</p>
-                                                    @if ($item->texto_denuncia)
-                                                    <p><strong>Descrição:</strong> {{ $item->texto_denuncia}}</p>
-                                                    @endif
-
-
-                                                    <hr>
-
-                                                    <!-- Outras Denúncias -->
-                                                    @php
-                                                    $outras = collect();
-                                                    if ($item->usuarioDenunciado) $outras = $item->usuarioDenunciado->denuncias->where('id', '!=', $item->id);
-                                                    if ($item->postagem) $outras = $item->postagem->denuncias->where('id', '!=', $item->id);
-                                                    if ($item->comentario) $outras = $item->comentario->denuncias->where('id', '!=', $item->id);
-                                                    @endphp
-
-                                                    <div class="outras-denuncias">
-                                                        <h1>Denúncias relacionadas:</h1>
-                                                        @if ($outras->count() > 0)
-                                                        <ul>
-                                                            @foreach ($outras as $outra)
-                                                            <li>
-                                                                <strong>Denunciante:</strong> {{ $outra->usuarioDenunciante->user}} -
-                                                                <strong>Data:</strong> {{ \Carbon\Carbon::parse($outra->created_at)->format('d/m/Y H:i') }}<br>
-                                                                <strong>Motivo:</strong> {{ $outra->motivo_denuncia }}<br>
-                                                                @if ($outra->texto_denuncia)
-                                                                <strong>Texto:</strong> {{ $outra->texto_denuncia }}<br>
-                                                                @endif
-                                                                <strong>Status:</strong> {{ $outra->status_denuncia == 1 ? 'Pendente' : 'Resolvida' }}
-                                                            </li>
-                                                            <hr>
-                                                            @endforeach
-                                                        </ul>
-                                                        @else
-                                                        <p>Nenhuma outra denúncia relacionada.</p>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <!-- Rodapé -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- fim modal -->
+                                <!-- Visulalizar -->
+                                <button type="button" class="btn-visualizar" onclick="abrirModalVisualizarDenuncia('{{$item->id}}')">
+                                    <span class="material-symbols-outlined">open_in_full</span>
+                                </button>
+                                <!-- Inclui o modal visualizar denúncia -->
+                                @include('admin.denuncia.partials.modal-visualizar-denuncia', ['item' => $item])
                             </td>
                         </tr>
+
                         @empty
-                        <tr>
+                        <tr class="nada-aqui">
                             <td colspan="10">Nenhuma denúncia encontrada</td>
                         </tr>
                         @endforelse

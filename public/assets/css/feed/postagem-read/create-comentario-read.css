@@ -42,8 +42,7 @@
     padding: 1rem;
     font-size: 18px;
     font-family: inherit;
-    color: transparent; /* texto invisível, mas cursor visível */
-    caret-color: var(--preto); /* deixa o cursor preto */
+    color: var(--preto); 
     resize: none;
     overflow-y: hidden;
 }
@@ -51,12 +50,6 @@
 .form-create-comentario .form .textfield textarea:focus {
     outline: none;
 }
-
-.hashtag {
-    color: var(--azul);
-    font-weight: 600;
-}
-
 
 /* opções (upload etc) ----------------------------------*/
 .form-create-comentario .form .content {
@@ -123,7 +116,7 @@
 }
 
 .form .upload-label:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 

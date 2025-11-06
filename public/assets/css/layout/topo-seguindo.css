@@ -1,0 +1,36 @@
+.topo-home-opcoes {
+    display: flex;
+    border-bottom:1px solid var(--branco-light);
+}
+
+/* aba postagem */
+.topo-home-opcoes .aba-postagem {
+    background-color: var(--branco);
+    width: 50%;
+    height: 100%;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 8px;
+    transition: .4s;
+}
+
+.topo-home-opcoes .aba-postagem {
+    text-decoration: none;
+    color: var(--preto);
+}
+
+.topo-home-opcoes h1 {
+    color: var(--preto);
+}
+
+.topo-home-opcoes .selecionado h1 {
+    color: var(--azul);
+}
+
+.topo-home-opcoes .aba-postagem:hover {
+    background-color: var(--branco-light);
+}
+
+.topo-home-opcoes .selecionado {
+    border-bottom: 1px solid var(--azul);
+}

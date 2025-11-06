@@ -3,7 +3,7 @@
 
 <div id="modal-editar-postagem-{{ $postagem->id }}" class="modal hidden">
     <div class="modal-content">
-        <button type="button" class="close" onclick="fecharModalEditar('{{ $postagem->id }}')">
+        <button type="button" class="close" onclick="fecharModalEditarPostagem('{{$postagem->id}}')">
             <span class="material-symbols-outlined">close</span>
         </button>
         <div class="modal-content-content">
@@ -22,7 +22,9 @@
                         <div id="hashtag-preview-postagem-edit-{{ $postagem->id }}" class="hashtag-preview"></div>
 
                         <textarea
-                            id="texto_postagem_edit-{{ $postagem->id }}"
+                            id="texto_postagem_edit-{{$postagem->id}}"
+                            class="textarea-postagem-edit"
+                            data-id="{{ $postagem->id}}"
                             name="texto_postagem"
                             maxlength="280"
                             rows="3"
@@ -35,7 +37,7 @@
                         $imagem = $postagem->imagens->first();
                         @endphp
 
-                        <input type="hidden" name="remover_imagem" id="remover_imagem_{{ $postagem->id }}" value="0">
+                        <input type="hidden" name="remover_imagem" id="remover_imagem_{{$postagem->id}}" value="0">
 
                         <div id="image-preview_postagem_edit-{{ $postagem->id }}"
                             class="image-preview"
@@ -46,7 +48,7 @@
                                 alt="Prévia da imagem">
 
                             <button type="button"
-                                id="remove-image_postagem_edit-{{ $postagem->id }}"
+                                id="remove-image_postagem_edit-{{$postagem->id}}"
                                 class="remove-image">
                                 <span class="material-symbols-outlined">close</span>
                             </button>
@@ -67,7 +69,7 @@
                         </div>
 
                         <div class="contador">
-                            <span class="char-count">0</span>/280
+                            <span class="char-count-postagem-edit" data-id="{{ $postagem->id}}"></span>
                         </div>
 
                         <div class="botao-submit">
@@ -128,7 +130,7 @@
         });
     });
 </script>
-<!-- Preview da Imagem 
+<!-- Preview da Imagem ------------------------------------------------>
 <script>
 (function() {
     const postId = "{{ $postagem->id }}";
@@ -161,7 +163,8 @@
     });
 })();
 </script>
--->
+
 
 <!-- JS -->
+<script src="{{ url('assets/js/posts/update/modal-update.js') }}"></script>
 <script src="{{ url('assets/js/posts/update/hashtag-postagem-edit.js') }}"></script>

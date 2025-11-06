@@ -5,6 +5,7 @@
     <div class="modal-content">
         <button type="button"
             class="close"
+            style="z-index: 1;"
             onclick="fecharModalComentar('{{ $postagem->id }}')">
             <span class="material-symbols-outlined">close</span>
         </button>
@@ -23,7 +24,7 @@
                 <form action="{{ route('post.comentario', ['tipo' => 'postagem', 'id' => $postagem->id]) }}" method="POST" class="form" enctype="multipart/form-data">
                     @csrf
                     <div class="textfield">
-                        <div id="hashtag-preview-create-comentario-modal-{{$postagem->id}}" class="hashtag-preview"></div>
+                        <div id="hashtag-preview-create-comentario-modal-{{$postagem->id}}" class="hashtag-preview hashtag-preview-comentarios-create"></div>
 
                         <textarea id="texto_comentario_create_modal_{{ $postagem->id }}"
                             name="comentario"
@@ -74,7 +75,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // Para cada postagem, adiciona listeners únicos
+    // Para cada comentário, adiciona listeners únicos
     document.querySelectorAll('[id^="modal-comentar-"]').forEach(modal => {
         const idCreateComentarioModal = modal.id.split('-').pop(); // pega o ID do post
 

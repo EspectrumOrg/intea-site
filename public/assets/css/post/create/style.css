@@ -11,42 +11,21 @@
     gap: 1rem;
 }
 
-.create-post .form img {
+.create-post .foto-perfil-create {
+    border-radius: 50%;
+    border: 1px solid var(--azul);
+    height: 40px;
+    width: 40px;
+}
+
+.create-post .form .image-preview {
     margin-top: .5rem;
     max-width: 100%;
     border-radius: 12px;
     border: 1px solid var(--branco-light);
-    max-width: 40vh ;
 }
-
-.create-post .foto-perfil-create {
-    border-radius: 50%;
-    border: 1px solid var(--azul);
-}
-
 .create-post .form form {
     width: 100%;
-}
-
-.textfield {
-    position: relative;
-    width: 100%;
-}
-
-.hashtag-preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    padding: 1rem;
-    font-size: 18px;
-    font-family: inherit;
-    color: var(--preto);
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    pointer-events: none;
-    /* permite clicar no textarea em cima */
 }
 
 .textfield textarea {
@@ -57,10 +36,8 @@
     padding: 1rem;
     font-size: 18px;
     font-family: inherit;
-    color: transparent;
-    /* texto invisível, mas cursor visível */
+    color: var(--preto);
     caret-color: var(--preto);
-    /* deixa o cursor preto */
     resize: none;
     overflow-y: hidden;
 }
@@ -68,12 +45,6 @@
 .create-post .form .textfield textarea:focus {
     outline: none;
 }
-
-.hashtag {
-    color: var(--azul);
-    font-weight: 600;
-}
-
 
 /* opções (upload etc) ----------------------------------*/
 .create-post .form .content {
@@ -179,7 +150,7 @@
 
 .image-preview img {
     width: 100%;
-    object-fit: cover;
+    object-fit: scale-down;
     border-radius: 10px;
     border: 1px solid var(--branco-light);
 }

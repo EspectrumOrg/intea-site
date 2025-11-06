@@ -136,7 +136,7 @@ class PostagemController extends Controller
                 'id_postagem' => $postagem->id,
             ]);
         }
-        return redirect()->route('post.index')->with('success', 'Postado, confira já!');
+        return redirect()->back()->with('success', 'Postado, confira já!');
     }
 
     /**
@@ -214,7 +214,7 @@ class PostagemController extends Controller
             }
         }
 
-        return redirect()->route('post.index')->with('success', 'Postagem atualizada com êxito!');
+        return redirect()->back()->with('success', 'Postagem atualizada com êxito!');
     }
 
     /**
@@ -240,6 +240,6 @@ class PostagemController extends Controller
             }
         }
 
-        return redirect()->route('post.index')->with('success', 'Postagem exclúida com êxito!');
+        return redirect()->route('post.index')->with('success', 'Postagem excluída com êxito!');
     }
 }

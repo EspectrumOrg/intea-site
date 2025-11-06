@@ -18,7 +18,7 @@
     text-decoration: none;
     transition: 0.3s;
     text-decoration-color: var(--cor-preto);
-    z-index: 9998 !important;
+    z-index: 998 !important;
 }
 
 .topo .info-perfil a:hover {
@@ -78,8 +78,7 @@
     background-color: var(--branco-light);
 }
 
-/* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
-.dropdown .dropdown-content {
+.dropdown-content {
     display: none;
     position: absolute;
     right: 0;
@@ -89,6 +88,10 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     z-index: 999;
     padding: 0;
+}
+
+.dropdown.ativo .dropdown-content {
+    display: block;
 }
 
 /* cada item do dropdown */
@@ -102,7 +105,7 @@
 }
 
 .dropdown .dropdown-content li a {
-    display: block;
+    display: flex;
     padding: 1rem;
     font-weight: 600;
     color: var(--preto);
@@ -114,144 +117,73 @@
     background-color: var(--cinza-font);
 }
 
-.seguir-btn,
-.dropdown .form-excluir button {
+/* estilo base para botões de ação --------------------------------------*/
+.btn-acao {
     display: flex;
+    text-align: start;
+    align-items: center;
+    width: 100%;
     gap: 1rem;
+    padding: 1rem;
+    border: none;
     font-size: 15px;
     font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
     cursor: pointer;
-    transition: .3s;
-    text-align: start;
+    background-color: transparent;
+    color: var(--preto);
+    transition: background-color .3s, color .3s, transform .1s;
 }
 
-.dropdown .form-excluir button {
+/* banir */
+.btn-excluir-usuario {
     border-radius: 15px 15px 0 0;
-    display: flex;
-    align-items: center;
 }
 
-.seguir-btn:hover {
-    background-color: var(--branco-light);
-}
-
-.dropdown .form-excluir button:hover {
+.btn-excluir-usuario:hover {
     background-color: var(--branco-light);
     color: var(--vermelho);
 }
 
-.dropdown .dropdown-content {
-    display: none;
+/* seguir */
+.seguir-btn {
+    border-radius: 0 0 15px 15px;
 }
 
-.dropdown.ativo .dropdown-content {
-    display: block;
+.seguir-btn:hover {
+    background-color: var(--branco-light);
+    color: var(--azul);
 }
 
-/* conteúdo da caixa do modal */
-.modal-denuncia .modal-content {
-    background: var(--branco);
-    padding: 4rem 1rem 1rem 1rem;
-    border-radius: 15px;
-    width: 600px;
-    position: relative;
+/* denunciar */
+.btn-acao.denunciar {
     display: flex;
-    align-items: flex-start;
 }
 
-/* Espaçamento */
-.modal-denuncia .form {
-    margin-bottom: 1rem;
+.btn-acao.denunciar {
+    border-radius: 15px 15px 0 0;
 }
 
-/* campos */
-.modal-denuncia .form-label {
-    display: block;
-    font-weight: 600;
-    color: var(--cor-preto);
-    margin-bottom: 0.3rem;
+.btn-acao.denunciar:hover {
+    background-color: var(--branco);
+    color: var(--vermelho);
 }
 
-/* input */
-.modal-denuncia .form-control {
-    width: 100%;
-    padding: 0.6rem 0.8rem;
-    border: 1px solid var(--branco-light);
-    border-radius: 6px;
+/* editar */
+.dropdown .editar {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-acao.editar:hover {
     background-color: var(--branco-light);
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
+    color: var(--azul);
 }
 
-.modal-denuncia .form-control:focus {
-    border-color: var(--vermelho);
-    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
-    outline: none;
-}
-
-/* Form Select */
-.modal-denuncia .form-select {
-    width: 100%;
-    padding: 0.55rem 0.75rem;
-    border: 1px solid var(--branco-light);
-    border-radius: 6px;
+/* excluir */
+.btn-acao.excluir:hover {
     background-color: var(--branco-light);
-    font-size: 0.95rem;
-    appearance: none;
-    /* Remove seta padrão do navegador */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
+    color: var(--vermelho);
 }
 
-/* Hover */
-.modal-denuncia .form-select:hover {
-    border-color: var(--vermelho);
-}
-
-/* Focus */
-.modal-denuncia .form-select:focus {
-    border-color: var(--vermelho);
-    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
-    outline: none;
-}
-
-/* Adicionando seta personalizada */
-.modal-denuncia .form-select {
-    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23017373" d="M0 0l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 10px 5px;
-}
-
-/* botão de fechar */
-.modal-denuncia .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* botão de denunciar */
-.modal-denuncia button {
-    background-color: var(--vermelho);
-    color: var(--branco);
-    font-size: 14px;
-    font-weight: bold;
-    padding: .6rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color .2s, transform .1s;
-}
-
-.modal-denuncia button:hover {
-    background-color: var(--vermelho);
+.dropdown .excluir {
+    border-radius: 0 0 15px 15px;
 }

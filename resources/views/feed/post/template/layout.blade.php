@@ -16,6 +16,7 @@
     <!-- postagens -->
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
     <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
@@ -53,10 +54,8 @@
 
 <!-- postagens  -->
 <script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
-<script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
-<script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
-<script src="{{ url('assets/js/posts/update/modal-update.js') }}"></script>
+<script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
 
 <!-- read comentários -->
 <script src="{{ url('assets/js/posts/read/char-count.js') }}"></script>
@@ -64,8 +63,7 @@
 <script src="{{ url('assets/js/posts/read/create-resposta-comentario-focus.js') }}"></script>
 
 <script src="{{ url('assets/js/posts/comentario/modal-denuncia-comentario.js') }}"></script>
-<script src="{{ url('assets/js/posts/comentario/modal-update-comentario.js') }}"></script>
-
+<script src="{{ url('assets/js/posts/read/char-count-focus.js') }}"></script>
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
 

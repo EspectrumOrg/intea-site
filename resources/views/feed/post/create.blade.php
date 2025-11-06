@@ -12,10 +12,10 @@
         <div class="textfield">
             <div id="hashtag-preview" class="hashtag-preview"></div>
 
-            <textarea id="texto_postagem" 
-                name="texto_postagem" 
+            <textarea id="texto_postagem"
+                name="texto_postagem"
                 maxlength="280"
-                rows="1" 
+                rows="1"
                 placeholder="Comece uma publicação" required></textarea>
             <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
 
@@ -78,4 +78,5 @@
 </script>
 
 <!-- JS -->
- <script src="{{ url('assets/js/posts/create/hashtag-create.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/hashtag-create.js') }}"></script>
+<script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
