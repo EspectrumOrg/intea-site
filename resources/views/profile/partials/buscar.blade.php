@@ -1,21 +1,18 @@
-<!-- Campo de busca estilizado -->
-<div class="buscar-container" style="margin-bottom: 30px;">
-    <h2 style="font-size: 20px; margin-bottom: 10px;">Buscar Usuários</h2>
-
-    <!-- Input de busca -->
-    <input 
-        type="text" 
-        id="buscarInputPerfil" 
-        placeholder="Digite o nome ou apelido..."
-        class="input-barra-pesquisa"
-        style="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;outline:none; margin-bottom:10px;">
-
-    <!-- Lista de usuários -->
-    <div id="listaUsuariosPerfil" class="user-list"></div>
-</div>
-
 <!-- Importa o CSS -->
 <link rel="stylesheet" href="{{ asset('assets/css/layout/barra-pesquisa.css') }}">
+
+<div class="buscar-container">
+
+    <div class="buscar-container">
+        <input 
+            class="input-barra-pesquisa"
+            type="text" 
+            id="buscarInputPerfil" 
+            placeholder="Buscar">
+        <span class="material-symbols-outlined">search</span>
+        <div id="listaUsuariosPerfil" class="user-list"></div>
+    </div>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -24,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!inputBuscar || !lista) return;
 
-    // Rota Laravel
+    // Mantém a mesma lógica de URL
     const buscarUrl = "{{ route('buscar.usuarios') }}";
 
     inputBuscar.addEventListener('input', function() {
