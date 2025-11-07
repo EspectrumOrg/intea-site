@@ -271,6 +271,15 @@ class Usuario extends Authenticatable
       ->get();
   }
 
+/*
+public function obterInteressesSugeridos($limite = 6)
+{
+    $servicoInteresses = app('servico.interesses');
+    $sugestoes = $servicoInteresses->sugerirInteressesUsuario($this, $limite);
+    
+    return collect($sugestoes)->pluck('interesse');
+}
+*/
   public function obterEstatisticasModeracao()
   {
     return [

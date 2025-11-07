@@ -60,11 +60,11 @@ class Postagem extends Model
     }
 
     public function interesses()
-{
-    return $this->belongsToMany(Interesse::class, 'interesse_postagem', 'postagem_id', 'interesse_id')
-                ->withPivot('tipo', 'categorizado_por', 'observacao')
-                ->withTimestamps();
-}
+    {
+        return $this->belongsToMany(Interesse::class, 'interesse_postagem', 'postagem_id', 'interesse_id')
+                    ->withPivot('tipo', 'categorizado_por', 'observacao')
+                    ->withTimestamps();
+    }
 
     public function tendencias()
     {
