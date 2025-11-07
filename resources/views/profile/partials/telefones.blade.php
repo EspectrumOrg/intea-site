@@ -19,14 +19,14 @@
                     </div>
                     <div class="telefone-actions">
                         @if(!$telefone->is_principal)
-                            <button type="button" class="btn-action" onclick="definirPrincipal({{ $telefone->id }})" title="Definir como principal">
+                            <button type="button" class="btn-action" onclick="definirPrincipal('{{ $telefone->id }}')" title="Definir como principal">
                                 <span class="material-symbols-outlined">star</span>
                             </button>
                         @endif
-                        <button type="button" class="btn-action" onclick="editarTelefone({{ $telefone->id }})" title="Editar">
+                        <button type="button" class="btn-action" onclick="editarTelefone('{{ $telefone->id }}')" title="Editar">
                             <span class="material-symbols-outlined">edit</span>
                         </button>
-                        <button type="button" class="btn-action btn-danger" onclick="excluirTelefone({{ $telefone->id }})" title="Excluir">
+                        <button type="button" class="btn-action btn-danger" onclick="excluirTelefone('{{ $telefone->id }}')" title="Excluir">
                             <span class="material-symbols-outlined">delete</span>
                         </button>
                     </div>

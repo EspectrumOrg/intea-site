@@ -114,16 +114,61 @@ e($texto)
                                 </a>
                                 @endif
                             </li>
-                            <li>
-                                <!-- Seguir Usuário -->
-                                <form action="{{ route('seguir.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                                    <button type="submit" class="btn-acao seguir-btn">
-                                        <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
-                                    </button>
-                                </form>
-                            </li>
+                         <li>
+    @php
+        $authUser = Auth::user();
+        $isFollowing = $authUser->seguindo->contains($postagem->usuario_id);
+        $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+            ->where('alvo_id', $postagem->usuario_id)
+            ->where('tipo', 'seguir')
+            ->exists();
+    @endphp
+
+    @if ($authUser->id !== $postagem->usuario_id)
+
+        {{-- Se já segue → sempre mostrar Deixar de seguir --}}
+        @if ($isFollowing)
+            <form action="{{ route('seguir.destroy', $postagem->usuario_id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-acao deixar-btn">
+                    <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+                </button>
+            </form>
+
+        {{-- Usuário privado (não está seguindo) --}}
+        @elseif ($postagem->usuario->visibilidade == 0)
+            @if ($pedidoFeito)
+                 <form action="{{ route('seguir.cancelar', $postagem->usuario_id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn-acao seguir-btn">
+            <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+        </button>
+    </form>
+            @else
+                <form action="{{ route('seguir.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                    <button type="submit" class="btn-acao seguir-btn">
+                        <span class="material-symbols-outlined">person_add</span> Pedir para seguir
+                    </button>
+                </form>
+            @endif
+
+        {{-- Usuário público (não está seguindo) --}}
+        @else
+            <form action="{{ route('seguir.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                <button type="submit" class="btn-acao seguir-btn">
+                    <span class="material-symbols-outlined">person_add</span> Seguir {{ $postagem->usuario->user }}
+                </button>
+            </form>
+        @endif
+
+    @endif
+</li>
                             @endif
                         </ul>
                     </div>

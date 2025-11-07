@@ -98,3 +98,11 @@
     padding: 1rem;
     background-color: var(--branco);
 }
+.cpf-privado {
+    color: #999;
+}
+
+.cpf-publico {
+    color: green;
+    font-weight: bold;
+}

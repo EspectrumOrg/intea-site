@@ -66,6 +66,8 @@ Route::post('/update-theme-preference', function (Illuminate\Http\Request $reque
 
         $user = Auth::user();
         $user->tema_preferencia = $request->tema_preferencia;
+        /** @var \App\Models\User $user */
+
         $user->save();
 
         Log::info('Preferência de tema atualizada', [
@@ -145,6 +147,8 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     // Seguir
     Route::post('/seguir/{user}', [SeguirController::class, 'store'])->name('seguir.store');
     Route::post('/seguir', [SeguirController::class, 'store'])->name('seguir.store');
+    Route::delete('/seguir/{user}', [SeguirController::class, 'destroy'])->name('seguir.destroy');
+    Route::delete('/seguir/pedido/{user}', [SeguirController::class, 'cancelarPedido'])->name('seguir.cancelar');
 
     // Mensagens
     Route::get('/mensagem', function () {

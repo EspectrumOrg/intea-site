@@ -41,6 +41,7 @@ public function store(Request $request)
         return redirect()->back()->with('error', 'Você não pode seguir a si mesmo!');
     }
 
+    
     $userToFollow = \App\Models\Usuario::find($userIdToFollow);
 
     if (!$userToFollow) {
@@ -55,8 +56,6 @@ public function store(Request $request)
 
         return redirect()->back()->with('success', 'Solicitação de seguir enviada!');
     }
-
-    // Conta pública → segue diretamente
     $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
 
     if (!$isAlreadyFollowing) {
@@ -138,5 +137,21 @@ public function listarSeguidores($id)
     $user->seguindo()->detach($id);
 
     return redirect()->back()->with('success', 'Você deixou de seguir o usuário!');
+}
+public function cancelarPedido($userId)
+{
+    $user = auth()->user();
+
+    $notificacao = \App\Models\Notificacao::where('solicitante_id', $user->id)
+        ->where('alvo_id', $userId)
+        ->where('tipo', 'seguir')
+        ->first();
+
+    if ($notificacao) {
+        $notificacao->delete();
+        return redirect()->back()->with('success', 'Pedido cancelado.');
+    }
+
+    return redirect()->back()->with('error', 'Nenhum pedido encontrado.');
 }
 }
