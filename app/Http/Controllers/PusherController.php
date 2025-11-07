@@ -146,6 +146,8 @@ public function webzap(Request $request)
                         'remetente_id' => $msg->remetente_id,
                         'message' => $msg->texto,
                         'foto' => $remetente->foto ?? 'default.jpg',
+                        'hora' => $msg->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
+
                     ];
                 });
         }
