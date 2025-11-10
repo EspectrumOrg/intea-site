@@ -128,7 +128,7 @@
                                 <h2>Informações do Perfil</h2>
                             </header>
                             <!-- Botão que abre o modal -->
-                            @if(auth()->id() == $user->id && $user->tipo_usuario == 3)
+                            @if($user->tipo_usuario === 3)
                                 <button id="btnAbrirModalPerfil" class="abrir-modal-btn">
                                     <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
                                 </button>
@@ -166,18 +166,21 @@
                             <div id="modalRemoverDependente" class="modal-overlay" style="display: none;">
                                 <div class="modal-box">
                                     <h2>Remover Dependente</h2>
-                                    <form id="removerDependenteForm" method="POST">
+                                    <form id="removerDependenteForm" method="POST" action="{{ route('dependente.remover') }}">
                                         @csrf
                                         @method('DELETE')
             
-                                        <div class="form-group">
-                                            <label for="dependente_id">Selecione o dependente:</label>
-                                            <select name="dependente_id" id="dependente_id" required>
-                                                <option value="">-- Escolha um dependente --</option>
-                                                @foreach($user->autistas ?? [] as $autista)
-                                                    <option value="{{ $autista->id }}">{{ $autista->nome }}</option>
-                                                @endforeach
-                                            </select>
+                                        <select name="dependente_id" id="dependente_id" required>
+                                            <option value="">-- Escolha um dependente --</option>
+                                            @if($autista && $autista->count())
+                                            @foreach($autista as $autistas)
+                                                <option value="{{ $autista->id }}">
+                                                    {{ $autista->usuario->apelido ?? 'Sem nome' }}
+                                                </option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+
                                         </div>
 
                                         <p class="alerta">
@@ -191,6 +194,7 @@
                                     </form>
                                 </div>
                             </div>
+                            
                             <div class="profile-info-grid">
                                 <div class="info-item">
                                     <strong>Nome:</strong>

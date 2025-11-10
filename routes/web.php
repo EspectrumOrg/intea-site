@@ -194,5 +194,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
 });
 
+Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])
+    ->name('dependente.remover')
+    ->middleware('auth');
+
 
 require __DIR__ . '/auth.php';

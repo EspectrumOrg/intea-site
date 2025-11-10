@@ -57,11 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalPerfil = document.getElementById('modalPerfil');
     const modalRemover = document.getElementById('modalRemoverDependente');
 
-    const abrirPerfil = document.getElementById('abrirModalPerfil');
-    const fecharPerfil = document.getElementById('fecharModalPerfil');
-    const abrirRemover = document.getElementById('abrirModalRemover');
-    const fecharRemover = document.getElementById('fecharModalRemover');
-
+const abrirPerfil = document.getElementById('btnAbrirModalPerfil'); // ✅ corrigido
+const fecharPerfil = document.getElementById('fecharModalPerfil');
+const abrirRemover = document.getElementById('abrirModalRemover');
+const fecharRemover = document.getElementById('fecharModalRemover');
     // Modal de adicionar dependente
     if (abrirPerfil && modalPerfil && fecharPerfil) {
         abrirPerfil.addEventListener('click', () => modalPerfil.style.display = 'flex');

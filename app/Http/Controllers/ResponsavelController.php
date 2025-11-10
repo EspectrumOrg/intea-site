@@ -109,6 +109,84 @@ if ($usuario && $usuario->tipo_usuario == 3) {
     }
 }
 
+public function removeDependente(Request $request)
+{
+    Log::info('Início do método removeDependente', $request->all());
+
+    $validator = Validator::make($request->all(), [
+        'dependente_id' => 'required|integer|exists:tb_autista,id',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors()
+        ], 422);
+    }
+
+    try {
+        $autista = Autista::find($request->dependente_id);
+
+        if (!$autista) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Autista não encontrado.'
+            ], 404);
+        }
+
+        $responsavelId = auth()->id();
+
+        // Verifica se o usuário é realmente responsável por esse autista
+        $vinculo = Responsavel::where('usuario_id', $responsavelId)
+            ->where('cipteia_autista', $autista->cipteia_autista)
+            ->first();
+
+        if (!$vinculo) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Você não é responsável por este autista.'
+            ], 404);
+        }
+
+        // 🔄 Desvincula o autista do responsável
+        if ($autista->responsavel_id == $vinculo->id) {
+            $autista->responsavel_id = null;
+            $autista->save();
+        }
+
+        Log::info("Usuário {$responsavelId} desvinculou o dependente {$autista->id}");
+
+        // Verifica se o usuário ainda possui outros dependentes
+        $aindaTemDependentes = Responsavel::where('usuario_id', $responsavelId)
+            ->whereHas('autistas') // caso queira contar apenas vinculados
+            ->exists();
+
+        // 🔄 Se não tiver mais dependentes, volta o tipo de usuário para 3 (Comunidade)
+        if (!$aindaTemDependentes) {
+            $usuario = Usuario::find($responsavelId);
+            if ($usuario && $usuario->tipo_usuario == 5) {
+                $usuario->tipo_usuario = 3;
+                $usuario->save();
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Dependente desvinculado com sucesso.'
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error('Erro ao desvincular dependente: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Erro ao desvincular dependente.'
+        ], 500);
+    }
+}
+
+
+
     public function index() {
         
     }

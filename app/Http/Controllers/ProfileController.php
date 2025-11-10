@@ -34,7 +34,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = null;
-        $autista = null;
+        $autista = collect(); // ao invés de null
 
         // 🔥 Postagens populares (as mais curtidas)
         $postsPopulares = Postagem::withCount('curtidas')
@@ -69,7 +69,7 @@ class ProfileController extends Controller
                 $usuarioLogado = auth()->user();
                 $autista = Autista::with('usuario')
                 ->where('responsavel_id', $usuarioLogado->id)
-                ->first(); // ou ->get() se houver mais de um
+                ->get(); // ou ->get() se houver mais de um
                 break;
         }
 
