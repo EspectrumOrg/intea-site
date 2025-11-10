@@ -30,6 +30,8 @@ return new class extends Migration
             $table->integer('visibilidade')->default(1); // publica ou privada
             $table->integer('tipo_usuario'); //FK
             $table->string('status_conta');
+            $table->string('tema_preferencia')->default('colorido');
+            $table->string('tema_interface')->default('claro'); 
             $table->rememberToken();
             $table->timestamps();
         });
@@ -51,6 +53,7 @@ return new class extends Migration
         Schema::dropIfExists('tb_postagem');
         Schema::dropIfExists('tb_comentario');
         Schema::dropIfExists('tb_curtida');
+        Schema::dropIfExists('tb_resposta_suporte');
         Schema::dropIfExists('tb_denuncia');
         Schema::dropIfExists('tb_seguir');
         Schema::dropIfExists('tb_usuario');

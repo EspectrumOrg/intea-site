@@ -44,14 +44,14 @@ body {
 /* logo ======= */
 .logo-container {
     position: absolute;
-    top: 15%;
-    left: 45%;
+    top: 3rem;
+    left: 47.5%;
     transform: translate(-10%, -10%);
     border: none;
 }
 
 .logo-container img {
-    width: 250px;
+    width: 150px;
     transition: 0.3s;
     cursor: pointer;
 }
@@ -66,7 +66,7 @@ body {
     background: var(--branco);
     border-radius: 8px;
     padding: 0 1rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     transition: height .32s ease;
 }
@@ -74,6 +74,7 @@ body {
 /* Título */
 .form .descricao {
     padding: 0 5px 15px 5px;
+    margin-top: 2rem;
 }
 
 .form .descricao h2 {
@@ -127,6 +128,7 @@ body {
 .registro {
     text-align: center;
     margin-top: 1rem;
+    margin-bottom: 2rem;
 }
 
 .registro a {

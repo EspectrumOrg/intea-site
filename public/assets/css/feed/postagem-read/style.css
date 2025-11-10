@@ -43,11 +43,13 @@
 
 /* bloco topo da postagem ----------------------------------------------------------------------------------*/
 .container-read .postagem-foco {
+    position: relative;
+    max-width: 100%;
     background-color: var(--branco);
+    padding: 1rem 1rem 0 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem;
 }
 
 .container-read .foto-perfil {
@@ -77,7 +79,7 @@
 .container-read .foto-perfil h2 {
     font-size: 15px;
     font-weight: 500;
-    color: var(--cinza-texto);
+    color: var(--cinza);
 }
 
 
@@ -121,19 +123,6 @@
 }
 
 /* conteúdo do dropdown (inicialmente escondido) -------------------------------+ */
-.container-read .dropdown .dropdown-content {
-    display: none;
-    position: absolute;
-    right: 0;
-    background-color: var(--branco);
-    width: 275px;
-    border-radius: 15px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 0;
-}
-
-/* cada item do dropdown */
 .container-read .dropdown .dropdown-content li {
     list-style: none;
 }
@@ -141,38 +130,6 @@
 .container-read .dropdown .dropdown-content img {
     width: 20px;
     margin-right: 10px;
-}
-
-.container-read .dropdown .dropdown-content li a {
-    display: block;
-    padding: 1rem;
-    font-weight: 600;
-    color: var(--preto);
-    text-decoration: none;
-    transition: .2s;
-}
-
-.container-read .dropdown .dropdown-content li a:hover {
-    background-color: var(--cinza-font);
-}
-
-.container-read .seguir-btn {
-    display: flex;
-    gap: 1rem;
-    font-size: 15px;
-    font-weight: 600;
-    padding: 1rem;
-    width: 100%;
-    border: none;
-    border-radius: 0 0 15px 15px;
-    color: var(--preto);
-    cursor: pointer;
-    transition: .3s;
-    text-align: start;
-}
-
-.container-read .seguir-btn:hover {
-    background-color: var(--branco-light);
 }
 
 .container-read .dropdown .dropdown-content {
@@ -218,14 +175,12 @@
 
 /* interações------------------------------------------------*/
 .interacoes {
-    margin-top: .75rem;
+    display: flex;
+    justify-content: space-between;
     font-size: 12px;
     color: var(--cinza);
-    margin: auto;
-    display: flex;
-    flex-direction: row;
     gap: 2rem;
-    padding: 0rem 1rem;
+    padding: 1rem;
 }
 
 .interacoes .corpo {
@@ -279,135 +234,34 @@
     font-size: 14px;
     color: var(--cinza);
     transition: .3s;
-}
+} 
 
-/* comentar */
-.btn-comentar:hover h1 {
-    color: var(--azul);
-}
-
-.btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
-    color: var(--azul);
-}
-
-/* curtir */
-.btn-curtir:hover h1 {
-    color: var(--vermelho);
-}
-
-.btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
-    color: var(--vermelho);
-}
-
-
-
-/* formulário de comentário ------------------------------------------*/
-.form-comentario {
-    padding: 1rem;
-}
-
-.form-comentario form {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-comentario form .foto-perfil img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.form-comentario textarea {
+/*------------------------------------------------------------------------------- comentários --------------------------------------------------------------------------------------------------------------------------------------------------------*/
+.comentario-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: .75rem;
-    margin-bottom: .5rem;
-    border-radius: 12px;
-    background: transparent;
-    border: none;
-    resize: none;
-    color: var(--preto);
-    font-size: 15px;
+    height: 100%;
+    z-index: 1;
 }
 
-.form-comentario textarea:focus {
-    outline: none;
+.comentario-overlay:hover {
+    background-color: 0, 0, rgba(0, 0, 0, 0.08);
 }
 
-/* label customizada */
-.form-comentario form img {
-    width: 20px;
-}
-
-.form-comentario form img:hover {
-    transform: scale(1.05);
-}
-
-.form-comentario form .upload-label {
-    cursor: pointer;
-    color: var(--azul);
-    font-weight: bold;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    transition: color .2s;
-}
-
-.form-comentario form .upload-label:hover {
-    color: var(--azul);
-}
-
-/* esconder input file padrão */
-.form-comentario form .input-file {
-    display: none;
-}
-
-.form-comentario form .contador {
-    font-size: 16px;
-    color: var(--cinza);
-    align-self: center;
-    margin-left: auto;
-    /* joga pro lado direito */
-    margin-right: 1rem;
-}
-
-/* botão */
-.form-comentario form .botao-submit {
-    display: flex;
-    flex-direction: column-reverse;
-}
-
-.form-comentario form .botao-postar {
-    align-self: flex-end;
-    background-color: var(--preto);
-    color: var(--branco);
-    font-size: 14px;
-    font-weight: bold;
-    padding: .3rem 1.5rem;
-    border: none;
-    border-radius: 25% / 100%;
-    cursor: pointer;
-    transition: background-color .2s, transform .1s;
-}
-
-.form-comentario form .botao-postar:hover {
-    background-color: var(--azul);
-    transform: scale(1.03);
-}
-
-/* comentários ---------------------------------------------------------------------------------------*/
 .comentarios {
     background-color: var(--branco);
 }
 
 .comentario {
-    border-top: 1px solid var(--cinza-borda);
-    padding: 1rem;
+    position: relative;
+    border-top: 1px solid var(--branco-light);
+    padding: .5rem 1rem;
     font-size: 14px;
     color: var(--preto);
     display: flex;
+    width: 100%;
     flex-direction: row;
 }
 
@@ -417,16 +271,25 @@
     align-items: flex-start;
 }
 
-.comentario .foto-comentario img {
-    width: 50px;
-    height: 50px;
+.comentario .foto-comentario img,
+.foto-user-padrao {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: none;
+    border: 1px solid var(--azul);
+    object-fit: cover;
 }
 
 .comentario .dados {
     width: 100%;
     padding: 0 1rem;
+}
+
+.dados img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
 }
 
 .comentario strong {
@@ -436,7 +299,7 @@
 
 /* comentário ------------------------------------------*/
 .interacoes-comentarios {
-    margin-top: .75rem;
+    margin-top: .25rem;
     font-size: 12px;
     color: var(--cinza);
     margin: auto;
@@ -449,6 +312,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    margin-top: 1rem;
 }
 
 .comment {
@@ -500,7 +364,7 @@
 }
 
 .btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -510,8 +374,25 @@
 }
 
 .btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
+    background-color: var(--vermelho-apagado);
     color: var(--vermelho);
+}
+
+/*comentário conteúdo ---------------------------------------------*/
+.corpo-content .coment-perfil {
+    margin: .5rem 0;
+}
+
+.corpo-content .coment-perfil p {
+    font-size: 14px;
+    color: var(--preto);
+}
+
+.corpo-content .image-post img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: .75rem;
+    border: 1px solid var(--branco-light);
 }
 
 /*adicionais ---------------------------------------------*/
@@ -521,9 +402,6 @@
     z-index: 1;
     /* fica acima do overlay */
     color: var(--azul);
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s;
 }
 
 .hashtag:hover {
@@ -543,50 +421,44 @@
     z-index: 9999 !important;
 }
 
-/* estilo base para botões de ação */
-.btn-acao {
+/* Overlay postagem focus */
+.container-read .comentario-overlay,
+.container-read button,
+.container-read form,
+.container-read .dropdown,
+.container-read a {
+    z-index: 1;
+}
+
+/* Overlay comentários */
+.comentario .comentario-overlay,
+.comentario button,
+.comentario form,
+.comentario .dropdown,
+.comentario a {
+    z-index: 1;
+}
+
+/* Overlay comentários */
+.comentario .dropdown{
+    z-index: 2;
+}
+
+/* repetição */
+.textfield textarea {
+    position: relative;
+    background: transparent;
     width: 100%;
-    display: flex;
-    gap: 1rem;
-    text-align: left;
-    padding: .6rem 1rem;
     border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    background-color: transparent;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
     color: var(--preto);
-    transition: background-color .3s, color .3s, transform .1s;
+    caret-color: var(--preto);
+    resize: none;
+    overflow-y: hidden;
 }
 
-/* hover geral */
-.btn-acao:hover {
-    transform: scale(1);
-}
-
-/* editar */
-.container-post .editar {
-    border-radius: 15px 15px 0 0;
-}
-
-.btn-acao.editar:hover {
-    background-color: var(--branco-light);
-    color: var(--azul);
-}
-
-/* excluir */
-.btn-acao.excluir:hover {
-    background-color: var(--branco-light);
-    color: var(--vermelho);
-}
-
-.container-post .excluir {
-    border-radius: 0 0 15px 15px;
-}
-
-/* denunciar */
-.btn-acao.denunciar:hover {
-    background-color: var(--branco);
-    color: var(--vermelho);
+.container-read .dropdown .dropdown-content button{
+    z-index: 1 !important;
 }

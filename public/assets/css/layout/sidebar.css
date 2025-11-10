@@ -24,7 +24,12 @@
     align-items: flex-start;
 }
 
-.container-sidebar .logo img {
+
+.container-sidebar .logo a {
+    transition: .7s;
+}
+
+.container-sidebar .logo a img {
     width: 75px;
     border-radius: 50%;
     padding: .25rem;
@@ -32,8 +37,8 @@
     cursor: pointer;
 }
 
-.container-sidebar .logo img:hover {
-    border: solid 0.5px var(--cor-destaque);
+.container-sidebar .logo a:hover img {
+    background-color: var(--cinza-texto);
 }
 
 /* container de info do usuário ---------------------------------------------------------------*/
@@ -51,7 +56,7 @@
 }
 
 .container-sidebar .info:hover {
-    background-color: var(--cinza-font);
+    background-color: var(--cinza-texto);
 }
 
 /* imagem usuário */
@@ -59,7 +64,9 @@
     width: 40px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid var(--azul);
 }
+
 
 /* textos */
 .container-sidebar .info .text {
@@ -88,7 +95,6 @@
     background: var(--branco);
     border: .1px solid var(--cinza-font);
     border-radius: 15px;
-    padding: .75rem 0;
     list-style: none;
     width: 275px;
     box-shadow: 0 .8rem 1rem 0 rgba(0, 0, 0, 0.7);
@@ -104,9 +110,18 @@
     padding: 1rem;
 }
 
+.dropdown-checar-perfil #li-checar-perfil-siedebar-01 {
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+}
 
 .dropdown-checar-perfil #li-checar-perfil-siedebar-01:hover {
     background-color: var(--cinza-font);
+}
+
+.dropdown-checar-perfil #li-checar-perfil-siedebar-02 {
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 14px;
 }
 
 .dropdown-checar-perfil #li-checar-perfil-siedebar-02:hover {
@@ -147,14 +162,14 @@
     border-radius: 50px / 100%;
     /*color: var(--preto); só no modo claro + monocromático*/
     text-decoration: none;
+    text-rendering: optimizeLegibility;
     transition: all 0.3s ease-in-out;
 }
 
 /* Colorido para modo normal*/
 .links a:nth-of-type(1) {
     color: var(--cor-tema);
-    border: 1px solid transparent;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     .material-symbols-outlined {
         position: relative;
@@ -173,8 +188,8 @@
 
     &:hover {
         /*color: cor-texto ou branco; se monocromático*/
-        border: 1px solid var(--cor-tema);
-        transition: all 0.4s ease-in-out;
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
             width: 100%;
@@ -186,14 +201,15 @@
     }
 
     &.active {
-        border: 1px solid var(--cor-tema);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
     }
 }
 
 .links a:nth-of-type(2) {
     color: var(--vermelho);
-    border: 1px solid transparent;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     .material-symbols-outlined {
         position: relative;
@@ -204,15 +220,15 @@
             left: 0;
             bottom: -2px;
             width: 0;
-            height: 2px;
+            height: 2.25px;
             background-color: currentColor;
             transition: width 0.4s ease-in-out;
         }
     }
 
     &:hover {
-        border-color: var(--vermelho);
-        transition: all 0.4s ease-in-out;
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
             width: 100%;
@@ -224,14 +240,15 @@
     }
 
     &.active {
-        border: 1px solid var(--vermelho-fraco);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
     }
 }
 
 .links a:nth-of-type(3) {
     color: var(--verde);
-    border: 1px solid transparent;
-    transition: all 0.4s ease-in-out;
+    transition: all 0.3s ease-in-out;
 
     .material-symbols-outlined {
         position: relative;
@@ -249,7 +266,8 @@
     }
 
     &:hover {
-        border-color: var(--verde);
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
             width: 100%;
@@ -261,13 +279,14 @@
     }
 
     &.active {
-        border: 1px solid var(--verde);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
     }
 }
 
 .links a:nth-of-type(4) {
-    color: var(--cor-secundaria);
-    border: 1px solid transparent;
+    color: var(--amarelo);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -286,7 +305,8 @@
     }
 
     &:hover {
-        border-color: var(--cor-secundaria);
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
             width: 100%;
@@ -298,13 +318,14 @@
     }
 
     &.active {
-        border: 1px solid var(--amarelo);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
     }
 }
 
 .links a:nth-of-type(5) {
     color: var(--roxo);
-    border: 1px solid transparent;
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -321,9 +342,10 @@
             transition: width 0.4s ease-in-out;
         }
     }
-    
+
     &:hover {
-        border-color:  var(--roxo);
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
             width: 100%;
@@ -332,16 +354,18 @@
 
     &:active {
         opacity: 80%;
+        transition: 0.05s;
     }
 
     &.active {
-        border: 1px solid var(--roxo);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
     }
 }
 
 .links a:nth-of-type(6) {
-    color: var(--azul);
-    border: 1px solid transparent;
+    color: var(--cor-preto);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -360,8 +384,9 @@
     }
 
     &:hover {
-        border-color: var(--cor-tema-apagado);
-        
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
+
         .material-symbols-outlined::after {
             width: 100%;
         }
@@ -369,10 +394,6 @@
 
     &:active {
         opacity: 80%;
-    }
-
-    &.active {
-        border: 1px solid var(--cor-tema-apagado);
     }
 }
 
@@ -401,18 +422,18 @@
 /* Post Button --------------------------------------------------------- */
 .post-button {
     display: flex;
-    align-items: flex-start;
-    width: 50%;
+    justify-content: center;
+    width: 100%;
     padding: 0px;
-    margin: 0px;
 }
 
 .post-button button {
-    color: var(--cor-tema);
-    font-size: 1.25rem;
+    color: var(--azul);
+    font-size: 17px;
     font-weight: 600;
-    padding-left: 1rem;
-    border: none;
+    min-width: 90%;
+    padding: .75rem 1rem;
+    border: 1px solid var(--azul);
     outline: none;
     border-radius: 50px / 100%;
     cursor: pointer;
@@ -420,8 +441,8 @@
 }
 
 .post-button button:hover {
-    color: var(--cor-tema);
-    text-decoration: underline var(--cor-tema);
+    color: var(--branco);
+    background-color: var(--azul);
 }
 
 /* Parte Admin -----------------------------------------------------------------------+*/
@@ -432,55 +453,58 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem 0 2rem 0;
     width: 290px;
     height: 100vh;
-    padding: 1rem 0rem 1rem 0;
+    padding: 2rem 0rem 1rem 0;
     background-color: var(--cor-fundo);
 }
 
-/* Topo Texto --*/
-.admin .texto-superior {
-    width: 100%;
-    padding: 0 2rem;
-    margin-bottom: 2rem;
-}
-
-.admin .texto-superior h1 {
-    font-size: 22px;
-    text-align: left;
-    letter-spacing: 1.5px;
-    font-weight: 400;
-    color: var(--branco-light);
-}
-
 /* Topo Admin --*/
-.admin .admin-topo {
+.admin-topo {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    text-align: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    width: 100%;
 }
 
-.admin .text {
+.admin-topo .foto-administrador {
+    height: 85px;
+    width: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--azul);
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.admin-topo .foto-administrador:hover {
+    transform: scale(1.05);
+}
+
+.admin-topo .text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .1rem;
+    gap: .2rem;
 }
 
-.admin .admin-topo h1 {
-    font-size: 16px;
-    color: var(--branco);
-}
-
-.admin .admin-topo h2 {
-    font-size: 14px;
+.admin-topo h2 {
+    font-size: 18px;
     color: var(--azul);
+    font-weight: 600;
 }
 
-/* links --*/
-/* estilo individual dos links */
+.admin-topo h1 {
+    font-size: 15px;
+    color: var(--branco);
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Base dos links */
 .admin .links .nav-link {
     display: flex;
     flex-direction: row;
@@ -489,22 +513,628 @@
     border-radius: 50px / 100%;
     color: var(--branco);
     text-decoration: none;
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.4s ease;
+}
+
+.admin .links a:nth-of-type(1) {
+    color: var(--branco);
     transition: all 0.3s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: var(--cor-tema);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
+
+    &.active {
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+.admin .links a:nth-of-type(2) {
+    color: var(--branco);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2.5px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: var(--verde);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
+
+    &.active {
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+.admin .links a:nth-of-type(3) {
+    color: var(--branco);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+    
+    &:hover {
+        transform: translateX(7.5px);
+        color: var(--laranja);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+        transition: 0.05s;
+    }
+
+    &.active {
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+.admin .links a:nth-of-type(4) {
+    color: var(--branco);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: var(--amarelo);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
+
+    &.active {
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+.admin .links a:nth-of-type(5) {
+    color: var(--vermelho);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: var(--vermelho-apagado);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
 }
 
 .admin .links .nav-link h1 {
     font-size: 16px;
+    margin-left: 8px;
 }
 
-/* hover e ativo */
+/* Hover e ativo genérico */
 .admin .links .nav-link:hover {
     transform: translateX(5px);
-    background-color: var(--cor-fundo);
-    color: var(--azul-apagado);
+    background: transparent;
 }
 
-.admin .links .active {
-    color: var(--azul);
-    transform: translateX(5px);
+.admin .links .nav-link.active {
+    font-weight: bold;
+}
 
+/* ================================================================
+   Cores individuais
+   ================================================================ */
+
+/* 🔵 Azul (Dashboard) */
+.nav-link.azul:hover h1,
+.nav-link.azul:hover span {
+    color: var(--azul);
+}
+
+.nav-link.azul.active {
+    color: var(--branco);
+}
+
+.nav-link.azul.active h1,
+.nav-link.azul.active span {
+    color: var(--azul);
+}
+
+/* 🟢 Verde (Usuários) agora a norma é ficar colorido só no .active em admin */
+.nav-link.verde:hover h1,
+.nav-link.verde:hover span {
+    color: var(--verde);
+}
+
+.nav-link.verde.active {
+    color: var(--branco);
+}
+
+.nav-link.verde.active h1,
+.nav-link.verde.active span {
+    color: var(--verde);
+}
+
+/* "roxo", mas agora amarElo (Denúncias) */
+.nav-link.roxo:hover h1,
+.nav-link.roxo:hover span {
+    color: var(--amarelo);
+}
+
+.nav-link.roxo.active {
+    color: var(--branco);
+}
+
+.nav-link.roxo.active h1,
+.nav-link.roxo.active span {
+    color: var(--amarelo);
+}
+
+/*  laranjinhaaaaa! Na raça, no peito, do real fasciiiiiii (Suporte) */
+.nav-link.rosa:hover h1,
+.nav-link.rosa:hover span {
+    color: var(--laranja);
+}
+
+.nav-link.rosa.active {
+    color: var(--branco);
+}
+
+.nav-link.rosa.active h1,
+.nav-link.rosa.active span {
+    color: var(--laranja);
+}
+
+/* 🔴 Vermelho (Voltar) <-- esse eu não mudarei, mas para de pegar até os emojis do gpt, tá feio já */
+.nav-link.vermelho:hover h1,
+.nav-link.vermelho:hover span {
+    color: var(--vermelho);
+}
+
+.nav-link.vermelho.active {
+    color: var(--branco);
+}
+
+.nav-link.vermelho.active h1,
+.nav-link.vermelho.active span {
+    color: var(--vermelho);
+}
+
+
+/*BASICAMENTE, A PARTIR DAQUI É TUDO ENVOLVENDO MONOCROMATICO E BOTÃO DA SIDE BAR, ATÉ O PRÓXIMO ASSIM QUE EU VOU MARCAR PARA SABER DE ONDE A ONDE*/
+.sidebar-monochrome {
+    /* Remove o filter do container principal */
+}
+
+.sidebar-monochrome .logo img,
+.sidebar-monochrome .info img {
+    filter: none !important;
+}
+
+.sidebar-monochrome .nav-link,
+.sidebar-monochrome .post-button button {
+    filter: grayscale(100%) !important;
+}
+
+/* Cores principais */
+.sidebar-monochrome .nav-link span,
+.sidebar-monochrome .nav-link h1,
+.sidebar-monochrome .info h5,
+.sidebar-monochrome .info h4 {
+    color: #000 !important;
+}
+
+/* Hover monocromático igual ao colorido */
+.sidebar-monochrome .nav-link {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Efeito de underline do ícone */
+.sidebar-monochrome .nav-link .material-symbols-outlined::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: currentColor;
+    transition: width 0.4s ease-in-out;
+}
+
+/* Hover */
+.sidebar-monochrome .nav-link:hover {
+    transform: translateX(7.5px);
+    color: #000 !important;
+}
+
+/* Underline do ícone no hover */
+.sidebar-monochrome .nav-link:hover .material-symbols-outlined::after {
+    width: 100%;
+}
+
+/* Ativo apenas se move */
+.sidebar-monochrome .nav-link.active {
+    transform: translateX(7.5px);
+}
+
+
+
+/* Versão mais específica */
+.sidebar-monochrome .links .nav-link,
+.sidebar-monochrome .links .nav-link span,
+.sidebar-monochrome .links .nav-link h1,
+.sidebar-monochrome .post-button button {
+    filter: grayscale(100%) !important;
+    color: #000 !important;
+}
+
+/* Garantir que ícones e textos fiquem monocromáticos */
+.sidebar-monochrome .material-symbols-outlined,
+.sidebar-monochrome .nav-link h1,
+.sidebar-monochrome .info .text h5,
+.sidebar-monochrome .info .text h4 {
+    filter: grayscale(100%) !important;
+    color: #000 !important;
+}
+
+/* Manter cores originais das imagens */
+.sidebar-monochrome .logo,
+.sidebar-monochrome .logo img,
+.sidebar-monochrome .info,
+.sidebar-monochrome .info img {
+    filter: none !important;
+}
+
+
+/* Seção de Acessibilidade - Fundo Branco */
+.config-section {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 0;
+    margin: 20px 0;
+    border: 1px solid #e1e5e9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.config-section h3 {
+    color: var(--cor-tema); /* Azul do seu tema */
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    padding: 20px 24px;
+    background: #ffffff;
+    border-bottom: 2px solid var(--cor-tema); /* Linha azul abaixo do título */
+    text-align: center; /* Centralizado */
+    text-transform: uppercase; /* Opcional - para ficar mais destacado */
+    letter-spacing: 0.5px; /* Opcional - para melhor legibilidade */
+}
+
+/* Item de configuração - fundo branco */
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #ffffff;
+    transition: background-color 0.2s ease;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-item:hover {
+    background: #f8f9fa;
+}
+
+/* Informações do setting - cores para fundo branco */
+.setting-info {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.setting-info h4 {
+    margin: 0 0 8px 0;
+    color: #1a1a1a; /* Preto suave para melhor contraste */
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.setting-info p {
+    margin: 0;
+    color: #666; /* Cinza para a descrição */
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* Switch Toggle - mantendo o estilo mas ajustando cores */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    flex-shrink: 0;
+    margin-top: 4px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+    background-color: var(--cor-tema); /* Azul quando ativo */
+}
+
+input:checked + .slider:before {
+    transform: translateX(30px);
+}
+
+/* Efeito de foco para acessibilidade */
+.switch input:focus + .slider {
+    box-shadow: 0 0 0 3px rgba(4, 138, 191, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .config-section {
+        margin: 16px 0;
+    }
+    
+    .config-section h3 {
+        padding: 16px 20px;
+        font-size: 1.1rem;
+    }
+    
+    .setting-item {
+        padding: 20px;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .setting-info {
+        padding-right: 0;
+    }
+    
+    .switch {
+        align-self: flex-start;
+        margin-top: 0;
+    }
+}
+
+/* Transição suave para o modo monocromático */
+.container-sidebar .content {
+    transition: filter 0.3s ease, background-color 0.3s ease;
+}
+
+.sidebar-monochrome .nav-link,
+.sidebar-monochrome .nav-link span,
+.sidebar-monochrome .nav-link h1,
+.sidebar-monochrome .info h5,
+.sidebar-monochrome .info h4,
+.sidebar-monochrome .post-button button {
+    transition: all 0.3s ease;
+}
+
+/* Feedback messages */
+.feedback-message {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*
+>>>>>>> 25f5d9e86ca09d41f67eb747d1879b644f66c203
+
+
+/* Adicione isso no final do seu CSS, ou na parte de links coloridos/monocromáticos */
+
+/* CONFIGURAÇÕES (6º link) - corrige underline */
+.links a:nth-of-type(6) {
+    color: var(--cor-preto);
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.4s ease-in-out;
+        }
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        text-rendering: optimizeLegibility;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &:active {
+        opacity: 80%;
+    }
+
+    &.active {
+        transform: translateX(7.5px);
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+}
+
+/* Monocromático - mesma lógica */
+.sidebar-monochrome .links a:nth-of-type(6) {
+    color: #000 !important;
+    transition: all 0.4s ease-in-out;
+
+    .material-symbols-outlined::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.4s ease-in-out;
+    }
+
+    &:hover {
+        transform: translateX(7.5px);
+        color: #000 !important;
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
+
+    &.active {
+        transform: translateX(7.5px);
+
+        .material-symbols-outlined::after {
+            width: 100%;
+        }
+    }
 }

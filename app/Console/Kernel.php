@@ -8,20 +8,31 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * Define the application's command schedule.
+     * Define os commands da aplicação
      */
-    protected function schedule(Schedule $schedule): void
+    protected $commands = [
+        Commands\LimparModeracaoExpirada::class,
+        Commands\SugerirInteressesPostagens::class,
+    ];
+
+    /**
+     * Define o agendamento dos commands
+     */
+    protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // Executar DIARIAMENTE às 3:00 AM
+        $schedule->command('moderacao:limpar-expirada')->dailyAt('03:00');
+        
+        // Executar a cada HORA
+        $schedule->command('interesses:sugerir --todas')->hourly();
     }
 
     /**
-     * Register the commands for the application.
+     * Registrar os commands
      */
-    protected function commands(): void
+    protected function commands()
     {
         $this->load(__DIR__.'/Commands');
-
         require base_path('routes/console.php');
     }
 }

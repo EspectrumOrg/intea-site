@@ -7,20 +7,19 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Intea - Feed</title>
+    <title>Intea - Home</title>
     <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
     <!-- layout geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/layout/navbar.css') }}">
     <!-- postagens -->
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
-    <!-- comentario -->
-    <link rel="stylesheet" href="{{ asset('assets/css/post/comentario/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
     <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
 </head>
 
 <body>
@@ -36,34 +35,35 @@
                 @yield("main")
             </div>
 
-            <!-- conteúdo popular  -->
+            <!-- barra de pesquisa, popular  -->
             <div class="content-popular">
+                @include('feed.post.partials.buscar')
+
                 @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
 
-        
+
         <!-- Modal Criação de postagem -->
         @include('feed.post.create-modal')
 
-        <!-- modal de avisos 
-        @include("layouts.partials.avisos")-->
+        <!-- modal de avisos -->
+        @include("layouts.partials.avisos")
     </div>
 </body>
 
 <!-- postagens  -->
 <script src="{{ url('assets/js/posts/carregar-comentarios-post.js') }}"></script>
-<script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
 <script src="{{ url('assets/js/posts/mostrar-mais.js') }}"></script>
-<script src="{{ url('assets/js/posts/create/char-count.js') }}"></script>
-<script src="{{ url('assets/js/posts/update/modal-update.js') }}"></script>
-
-<!-- comentario -->
-<script src="{{ url('assets/js/posts/comentario/modal.js') }}"></script>
+<script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
 
 <!-- read comentários -->
 <script src="{{ url('assets/js/posts/read/char-count.js') }}"></script>
+<script src="{{ url('assets/js/posts/read/hashtag-comentario-read.js') }}"></script>
+<script src="{{ url('assets/js/posts/read/create-resposta-comentario-focus.js') }}"></script>
 
+<script src="{{ url('assets/js/posts/comentario/modal-denuncia-comentario.js') }}"></script>
+<script src="{{ url('assets/js/posts/read/char-count-focus.js') }}"></script>
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
 

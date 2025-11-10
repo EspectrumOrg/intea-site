@@ -5,7 +5,7 @@
     <link rel="shortcut icon" type="imagex/png" href="{{ url('assets/images/logos/intea/39.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intea - grupos</title>
+    <title>Intea - Grupos</title>
     <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <!-- layout geral -->
@@ -25,13 +25,15 @@
             </div>
 
             <!-- conteúdo principal  -->
-            <div class="container-main grupos-style">
+            <div class="container-main estilo-geral">
                 @yield("main")
             </div>
 
             <!-- conteúdo popular  -->
             <div class="content-popular">
-                @include('feed.post.partials.sidebar-popular')
+            @include('feed.post.partials.buscar')
+
+            @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
     </div>

@@ -1,0 +1,186 @@
+/* ----------------------------- create posts ------------------------------- */
+.form-create-comentario {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--branco);
+    padding: 1rem;
+    border-bottom: 1px solid var(--branco-light);
+}
+
+.form-create-comentario .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.form-create-comentario .textfield {
+    position: relative;
+    width: 100%;
+}
+
+.form-create-comentario .hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none; /* permite clicar no textarea em cima */
+}
+
+.form-create-comentario .textfield textarea {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto); 
+    resize: none;
+    overflow-y: hidden;
+}
+
+.form-create-comentario .form .textfield textarea:focus {
+    outline: none;
+}
+
+/* opções (upload etc) ----------------------------------*/
+.form-create-comentario .form .content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: .5rem 0;
+    border-top: 1px solid var(--branco-light);
+    margin: auto;
+    margin-top: .5rem;
+    width: 100%;
+}
+
+.form-create-comentario .form .content .extras {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* label customizada */
+.form-create-comentario .form .upload-label img {
+    width: 20px;
+}
+
+.form-create-comentario .form .upload-label img:hover {
+    transform: scale(1.05);
+}
+
+.form-create-comentario .form .upload-label {
+    cursor: pointer;
+    color: var(--azul);
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: color .2s;
+}
+
+.form-create-comentario .form .upload-label:hover {
+    color: var(--azul);
+}
+
+/* esconder input file padrão */
+.form-create-comentario .form .input-file {
+    display: none;
+}
+
+.form-create-comentario .form .contador {
+    font-size: 16px;
+    color: var(--cinza);
+    align-self: center;
+    margin-left: auto; /* joga pro lado direito */
+    margin-right: 1rem;
+}
+/* icon image -------------------*/
+.form .upload-label span {
+    font-size: 20px;
+    padding: .5rem;
+    border-radius: 50%;
+    color: var(--preto);
+    transition: .3s;
+}
+
+.form .upload-label:hover span {
+    background-color: var(--branco);
+    color: var(--azul);
+}
+
+/* botão */
+.form-create-comentario .form .botao-submit {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.form-create-comentario .form .botao-postar {
+    align-self: flex-end;
+    background-color: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
+    font-size: 14px;
+    font-weight: bold;
+    padding: .75rem;
+    border-radius: 25% / 50%;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.form-create-comentario .form .botao-postar:hover {
+    background-color: var(--azul);
+    color: var(--branco);
+}
+
+/* ----------------------------- preview imagem ------------------------------- */
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.image-preview img {
+    width: 100%;
+    max-height: 25vh;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--branco-light);
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: var(--branco);
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.image-preview .remove-image:hover {
+    background-color: var(--azul-apagado);
+}
+
+.image-preview .remove-image span {
+    color: var(--branco);
+}

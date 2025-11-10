@@ -103,7 +103,8 @@ public function update_responsavel(Request $request, $id)
             'tipo_usuario' => 'required|in:2',
             'status_conta' => 'required|in:1',
             'numero_telefone' => 'required|array|min:1',
-            'numero_telefone.*' => 'required|string|max:20'
+            'numero_telefone.*' => 'required|string|max:20',
+            'foto' => 'image|mimes:png,jpg,gif|max:4096', //foto perfil
         ]);
 
         if ($validator->fails()) {
@@ -136,6 +137,11 @@ public function update_responsavel(Request $request, $id)
             return response()->json(['message' => 'CPF inválido.'], 422);
         }
 
+        if ($request->hasFile('foto')) {
+            // salva em storage/app/arquivos/perfil/fotos
+            $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
+        }
+
 
         $user_usuario = $request->user ?? $request->apelido ?? '';
 
@@ -148,6 +154,7 @@ public function update_responsavel(Request $request, $id)
                 'genero' => $request->genero,
                 'data_nascimento' => $request->data_nascimento,
                 'apelido' => $request->apelido,
+                'foto' => $path,
                 'tipo_usuario' => $request->tipo_usuario,
                 'status_conta' => $request->status_conta,
             ]);
@@ -206,18 +213,29 @@ public function update_responsavel(Request $request, $id)
     private static function validaCPF($cpf)
     {
         $cpf = preg_replace('/[^0-9]/', '', $cpf);
-        if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf)) return false;
+        if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf))
+            return false;
 
         for ($t = 9; $t < 11; $t++) {
-            for ($d = 0, $c = 0; $c < $t; $c++) $d += $cpf[$c] * (($t + 1) - $c);
+            for ($d = 0, $c = 0; $c < $t; $c++)
+                $d += $cpf[$c] * (($t + 1) - $c);
             $d = ((10 * $d) % 11) % 10;
-            if ($cpf[$c] != $d) return false;
+            if ($cpf[$c] != $d)
+                return false;
         }
         return true;
     }
 
-    public function show(string $id) {}
-    public function edit(string $id) {}
-    public function update(Request $request, string $id) {}
-    public function destroy(string $id) {}
+    public function show(string $id)
+    {
+    }
+    public function edit(string $id)
+    {
+    }
+    public function update(Request $request, string $id)
+    {
+    }
+    public function destroy(string $id)
+    {
+    }
 }

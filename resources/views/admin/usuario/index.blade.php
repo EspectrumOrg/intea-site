@@ -1,6 +1,9 @@
 @extends('admin.template.layout')
 
 @section('main')
+<!-- css geral -->
+<link rel="stylesheet" href="{{ asset('assets/css/admin/usuario-gerenciamento.css') }}">
+
 <div class="usuario-gerenciamento">
 
     <div class="usuario-inner">
@@ -18,7 +21,6 @@
                 <option value="1" {{ request('tipo_usuario') == 1 ? 'selected' : '' }}>Admin</option>
                 <option value="2" {{ request('tipo_usuario') == 2 ? 'selected' : '' }}>Autistas</option>
                 <option value="3" {{ request('tipo_usuario') == 3 ? 'selected' : '' }}>Comunidade</option>
-                <option value="4" {{ request('tipo_usuario') == 4 ? 'selected' : '' }}>Profissionais de Saúde</option>
                 <option value="5" {{ request('tipo_usuario') == 5 ? 'selected' : '' }}>Responsáveis</option>
             </select>
 
@@ -98,28 +100,25 @@
                                 Desconhecido
                                 @endswitch
                             </td>
-                            </td>
                             <td>
                                 @if($item->status_conta == 1)
                                 <!-- Usuário ativo → Mostrar botão de banir -->
-                                <form action="{{ route('usuario.destroy', $item->id) }}" method="post" class="form-excluir">
-                                    @csrf
-                                    @method("delete")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
-                                        <span class="material-symbols-outlined">
-                                            person_off
-                                        </span>
-                                    </button>
-                                </form>
+                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $item->id }}')">
+                                    <span class="material-symbols-outlined">person_off</span>
+                                    Banir
+                                </button>
+
+                                <!-- Inclui o modal -->
+                                @include('layouts.partials.modal-banimento', ['usuario' => $item])
+
                                 @elseif($item->status_conta == 2)
                                 <!-- Usuário banido → Mostrar botão de desbanir -->
                                 <form action="{{ route('usuario.desbanir', $item->id) }}" method="post" class="form-desbanir">
                                     @csrf
                                     @method("patch")
                                     <button type="submit" onclick="return confirm('Você tem certeza que deseja desbanir esse usuário?');" class="btn-desbanir">
-                                        <span class="material-symbols-outlined">
-                                            person_add
-                                        </span>
+                                        <span class="material-symbols-outlined">person_add</span>
+                                        Desbanir
                                     </button>
                                 </form>
                                 @else

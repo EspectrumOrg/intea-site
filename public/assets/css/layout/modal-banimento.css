@@ -1,0 +1,158 @@
+.modal-banimento-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+    animation: fadeInModal 0.2s ease;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-banimento-content {
+    background: var(--branco);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    width: 40vw;
+    max-width: 450px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: slideUpModal 0.25s ease;
+}
+
+@keyframes slideUpModal {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-banimento-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--branco-light);
+    padding-bottom: .5rem;
+}
+
+.modal-banimento-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--vermelho);
+}
+
+.modal-banimento-fechar {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--cinza);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.modal-banimento-fechar:hover span {
+    color: var(--vermelho);
+}
+
+/* dados user*/
+.modal-banimento-usuario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.modal-banimento-usuario img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.modal-banimento-usuario h3 {
+    margin-top: .5rem;
+    color: var(--azul);
+    text-align: center;
+}
+
+.modal-banimento-usuario .nome-usuario-banimento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-banimento-usuario .descricao-usuario-banimento p{
+    font-size: 14px;
+    text-align: center;
+    color: var(--preto);
+}
+
+.modal-banimento-form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--preto);
+}
+
+.modal-banimento-form select,
+.modal-banimento-form textarea {
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid var(--branco-light);
+    border-radius: .5rem;
+    transition: .3s;
+    resize: none;
+    outline: none;
+}
+
+.modal-banimento-form select:focus,
+.modal-banimento-form textarea:focus {
+    border-color: var(--vermelho);
+}
+
+.modal-banimento-botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: .5rem;
+    margin-top: 1rem;
+}
+
+.modal-banimento-cancelar {
+    background: var(--cinza);
+    color: var(--branco);
+    border: none;
+    border-radius: .5rem;
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+
+.modal-banimento-confirmar {
+    background: var(--branco);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
+    border-radius: 25px;
+    padding: .5rem 1rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.modal-banimento-confirmar:hover {
+    background: var(--vermelho);
+    color: var(--branco);
+}

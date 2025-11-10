@@ -2,19 +2,32 @@
     background: var(--branco); 
     border-radius: 15px;
     padding-top: 1rem;
-    margin: 0 0 0 2rem;
+    margin: 2rem 0 0 2rem;
     width: 350px;
     border: 1px solid var(--branco-light);
     position: sticky;
-    top: 1rem;
+    z-index: 100;
+    top: 5rem;
+}
+
+/* Título Header */
+.sidebar-header {
+    display: flex;
+    flex-direction: row;
+    padding-left: 1rem;
+    gap: .5rem;
+}
+
+.sidebar-header span {
+    font-size: 24px;
+    color: var(--verde);
 }
 
 .sidebar-header h3 {
-    color: var(--preto);
+    color: var(--verde);
     margin: 0 0 1rem 0;
     font-size: 24px;
     font-weight: 700;
-    text-indent: 1rem;
 }
 
 .tendencias-list {
@@ -46,10 +59,11 @@
 }
 
 .tendencia-contador {
-    color: var(--cinza);
+    color: var(--verde);
     font-size: 14px;
 }
 
+/* Sem tendências */
 .no-tendencias {
     text-align: center;
     padding: 1rem;
@@ -76,5 +90,53 @@
     padding: 1rem 1.2rem;
     text-decoration: none;
     font-size: 18px;
-    color: var(--azul);
+    color: var(--verde);
+    transition: .3s;
 }
+
+.ver-mais:hover a {
+    color: var(--verde-apagado);
+    color: var(--vermelho-apagado);
+}
+
+
+/* MONOCROMATICO */
+.sidebar-tendencias-monochrome {
+    filter: none;
+}
+
+.sidebar-tendencias-monochrome * {
+    filter: grayscale(100%);
+}
+
+.sidebar-tendencias-monochrome .sidebar-header,
+.sidebar-tendencias-monochrome .tendencia-item,
+.sidebar-tendencias-monochrome .tendencia-nome,
+.sidebar-tendencias-monochrome .tendencia-contador,
+.sidebar-tendencias-monochrome .ver-mais a,
+.sidebar-tendencias-monochrome .no-tendencias p,
+.sidebar-tendencias-monochrome .material-symbols-outlined {
+    filter: grayscale(100%);
+    color: #000 !important;
+}
+
+.sidebar-tendencias-monochrome .sidebar-header h3 {
+    color: #000 !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-nome {
+    color: #000 !important;
+}
+
+.sidebar-tendencias-monochrome .tendencia-contador {
+    color: #111 !important;
+}
+
+.sidebar-tendencias-monochrome .ver-mais a {
+    color: #000 !important;
+    background-color: #f8f8f8 !important;
+    border: 1px solid #333 !important;
+    border-bottom-left-radius: 15px !important;
+    border-bottom-right-radius: 15px !important;
+}
+

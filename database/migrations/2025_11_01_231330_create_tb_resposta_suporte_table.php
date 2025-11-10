@@ -8,26 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tb_fone_usuario', function (Blueprint $table) {
+        Schema::create('tb_resposta_suporte', function (Blueprint $table) {
             $table->id();
             $table->foreignId('usuario_id')->constrained('tb_usuario')->onDelete('cascade');
-            $table->string('numero_telefone');
+            $table->string('destinatario');
+            $table->string('assunto');
+            $table->string('mensagem');
+            $table->date('data_contato');
+            $table->string('resposta');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('tb_fone_usuario');
+        Schema::dropIfExists('tb_resposta_suporte');
     }
 };

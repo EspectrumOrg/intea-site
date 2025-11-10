@@ -22,48 +22,64 @@
     --verde-apagado: #036d31;
     --azul: #2A71B1;
     --azul-apagado: #1c4a73;
-    --amarelo: #F2E500;
-    --amarelo-apagado: #b1a902;
+    --amarelo: #F2B705;
+    --amarelo-apagado: #E0B122;
+    --laranja: #F25C05;
+    --laranja-apagado: #c44c06;
     --roxo: #6D398B;
     --roxo-apagado: #452557;
+    --laranja: #F29A05;
+    --laranja-apagado: #F27505;
     --rosa: #C4027D;
     --rosa-apagado: #8b0259;
     /* ===================================== textos =============================================*/
     --preto: #0D0D0D;
+    --cinza: #2f3336;
     --cinza-borda: #2f3336;
+    --cinza-texto: #ccc;
     --cinza-font: #b3b3b3;
     --branco: #F2F2F2;
     --branco-light: #ccc;
 }
 
 * {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
-/* Estilo para hashtags no texto -- LOCAL TEMPORÁRIO, POIS NÃO SEI ONDE FICA O ESTILO DE TODA A FEED, FERMINO BROTHER */
 .post-content {
     color: var(--preto);
     line-height: 1.5;
     white-space: pre-wrap;
-    /* Mantém quebras de linha */
     word-wrap: break-word;
-    /* Quebra palavras longas */
 }
 
 .hashtag {
     color: var(--azul);
-    /* Azul do seu tema (#048ABF) */
-    font-weight: 600;
-    /* Texto em negrito */
     text-decoration: none;
-    /* Sem sublinhado */
     transition: color 0.3s ease;
-    /* Transição suave de cor */
+}
+
+.hashtag-preto {
+    color: var(--perto);
+    text-decoration: none;
 }
 
 .hashtag:hover {
     color: var(--azul-apagado);
-    /* Azul mais escuro no hover */
     text-decoration: underline;
-    /* Sublinhado ao passar mouse */
+}
+
+.hashtag-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    pointer-events: none;
 }

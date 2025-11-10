@@ -19,18 +19,24 @@ body {
 /* título */
 .usuario-title {
     display: flex;
-    color: var(--preto);
+    margin: 1rem 0;
+    gap: 1rem;
+    border-bottom: 1px solid var(--verde);
+    width: fit-content;
 }
 
 .usuario-title span {
+    color: var(--verde);
     font-size: 3rem;
 }
 
 /* Card */
 .usuario-gerenciamento .card {
     background-color: var(--branco);
-    border-radius: var(--border-radius);
+    border-radius: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--branco-light);
+    padding: .5rem;
     overflow-x: scroll;
 }
 
@@ -39,32 +45,34 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--cor-fundo);
+    background-color: var(--branco);
+    color: var(--preto);
 }
 
 .usuario-gerenciamento .card-header h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: var(--branco);
+    color: var(--preto);
 }
 
 /* Botão Novo */
 .usuario-gerenciamento .btn-novo {
-    background-color: var(--cor-fundo);
-    color: var(--branco);
+    background-color: var(--branco);
+    color: var(--verde);
     padding: .75rem;
-    border: .05rem solid var(--branco-light);
+    border: .05rem solid var(--verde);
     border-radius: 50px / 100%;
     text-decoration: none;
-    font-weight: bold;
     transition: background 0.7s;
+    margin: 0 0 5px 0;
 }
 
 .usuario-gerenciamento .btn-novo:hover {
-    background-color: var(--azul);
+    background-color: var(--verde);
+    color: var(--branco);
 }
 
-/* Tabela */
+/* Tabela ---*/
 .usuario-gerenciamento .card-body {
     padding: 0;
 }
@@ -82,24 +90,15 @@ body {
 }
 
 .usuario-gerenciamento .table-usuarios td {
-    border-top: 1px solid var(--branco-light);
     padding: 0.25rem;
     font-size: .8rem;
     text-align: left;
 }
 
-/* Topo tabela*/
-.usuario-gerenciamento .card-header {
-    background-color: var(--cor-fundo);
-}
-
+/* disposição de itens*/
 .table-usuarios thead {
-    background-color: var(--cor-fundo);
-    color: var(--branco);
-}
-
-.table-usuarios .motivo_denuncia {
-    font-size: .8rem;
+    background-color: var(--cor-branco);
+    color: var(--preto);
 }
 
 /* Cor texto*/
@@ -126,17 +125,18 @@ body {
 .table-usuarios .button-open-data {
     display: flex;
     padding: 0;
-    flex-direction: row-reverse;
 }
 
 .table-usuarios .img-icons {
     width: 25px;
 }
 
-/* Botão Ações*/
+/* Botão Ações --usuario*/
 .table-usuarios .td-acoes {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
 
@@ -145,7 +145,7 @@ body {
 }
 
 .table-usuarios tr:nth-child(even) {
-    background-color: var(--branco);
+    background-color: var(--cor-branco);
 }
 
 .btn-excluir-usuario,
@@ -186,119 +186,18 @@ body {
     transition: .3s;
 }
 
-/* Filtros */
-.filtro-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: .5rem;
-}
-
-.filtro-form input:focus {
-    outline: none;
-    border-color: var(--azul);
-}
-
-.filtro-form input,
-.filtro-form select {
-    padding: 0.5rem;
-    border-radius: 25% / 100%;
-    border: 1px solid var(--branco-light);
-}
-
-.filtro-form select {
-    padding: 0.5rem;
-    border: 1px solid var(--branco-light);
-}
-
-.filtro-form select:focus {
-    outline: none;
-}
-
-tr:hover,
-.table-usuarios tr:nth-child(even):hover {
-    transition: .3s;
-    background: var(--cor-branco);
-}
-
-
+/* botão filtrar */
 .btn-filtrar {
     padding: 0.5rem 1rem;
     border-radius: 50% / 100%;
-    background-color: var(--cor-fundo);
+    background-color: var(--branco);
     transition: .7s;
-    color: var(--branco);
-    border: none;
+    color: var(--verde);
+    border: 1px solid var(--verde);
     cursor: pointer;
 }
 
 .btn-filtrar:hover {
-    background-color: var(--azul);
-}
-
-/* ------------------------ Modal Denúncia*/
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .filtro-form {
-        flex-direction: column;
-    }
-
-    .table-usuarios th,
-    .table-usuarios td {
-        font-size: 0.85rem;
-        padding: 0.4rem 0.8rem;
-    }
-}
-
-
-/* ================= PAGINAÇÃO ================= */
-.paginacao {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 5px;
-    flex-wrap: wrap;
-}
-
-.paginacao ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 5px;
-}
-
-.paginacao li {
-    display: inline-block;
-}
-
-.paginacao li a,
-.paginacao li span {
-    display: block;
-    padding: 8px 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    color: var(--preto);
-    background-color: var(--branco);
-    border: 1px solid var(--azul-apagado);
-    transition: all 0.25s ease;
-    font-weight: 500;
-}
-
-.paginacao li a:hover {
-    background-color: var(--azul);
-    border-color: var(--azul);
+    background-color: var(--verde);
     color: var(--branco);
-}
-
-.paginacao li span {
-    background-color: var(--azul);
-    border-color: var(--azul);
-    font-weight: 700;
-}
-
-/* Desativado */
-.paginacao li.disabled span {
-    opacity: 0.5;
-    cursor: not-allowed;
 }

@@ -1,103 +1,181 @@
-.grupos-style h1 {
-    font-size: var(--texto-titulo);
-    color: var(--branco);
-    margin-bottom: 20px;
-    text-align: center;
+.grupos-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    border: 1px solid var(--branco-light);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);   /*0 0.35rem 0.85rem rgba(170, 156, 5, 0.2);*/
+    font-family: Helvetica, Verdana, Geneva, Tahoma, sans-serif;
+    margin: 1rem;
+    margin-bottom: 2.5rem;
+    padding: 1rem;
 }
 
-.grupos-style form {
+.grupos-container .logo {
+    max-height: 5.5rem;
+    max-width: 5.5rem;
+    image-rendering: optimizeQuality;
+}
+
+.grupos-container img {
+    width: 100%;
+    max-height: 100%;
+}
+
+.grupos-container h1 {
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: Helvetica, verdana, sans-serif;
+    color: var(--preto);
+    margin: auto;
+    text-align: justify;
+}
+
+.estilo.geral {
     background: var(--branco);
     padding: 1rem 2rem;
-    width: 100%;
+    margin: 1rem;
     border: 1px solid var(--branco-light);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-.grupos-style .form-group {
-    margin-bottom: 15px;
+.grupos-style {
+    background: var(--branco);
+    padding: 1rem 2rem;
+    margin: 1rem;
+    border: 1px solid var(--branco-light);
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .grupos-style label {
     display: block;
     font-weight: 600;
+    font-size: 1rem;
     color: var(--preto);
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
+    margin-left: 0.1rem;
 }
 
 .grupos-style input[type="text"],
 .grupos-style input[type="file"] {
     width: 100%;
-    padding: 10px;
-    background-color: var(--branco-light);
+    padding: 0.75rem;
+    margin: 0rem auto 0.5rem auto;
+    background-color: var(--branco);
     color: var(--preto);
-    border: 1px solid var(--branco-light);
-    border-radius: 8px;
-    font-size: 14px;
-    transition: border 0.2s ease;
+    border: 1.5px solid var(--branco-light);
+    border-radius: 1rem;
+    font-size: 0.9rem;
+    transition: border 0.1s ease;
 }
 
 .grupos-style input:focus {
-    border-color: var(--azul);
+    border-color: var(--amarelo);
     outline: none;
 }
 
+input[type="file"]::-webkit-file-upload-button {
+  background-color: var(--branco);
+  color: var(--preto);
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: var(--branco);
+  color: var(--preto);
+  border: 1px solid var(--branco-light);
+  border-radius: 1rem;
+  width: fit-content;
+  cursor: pointer;
+  transition: border 0.3s ease-in-out;
+}
+
+input[type="file"]:hover::file-selector-button {
+  border-color: var(--amarelo);
+}
+
 .grupos-style .botao {
-    width: 100%;
-    background-color: var(--azul);
-    color: var(--branco);
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
+    width: 30%;
+    min-width: fit-content;
+    background-color: var(--branco);
+    color: var(--azul);
+    padding: 0.5rem;
+    margin: 0.75rem auto;
+    border: 1px solid var(--azul);
+    border-radius: 1rem;
     cursor: pointer;
     font-weight: bold;
     font-size: var(--texto-padrao);
-    transition: background-color 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 .grupos-style .botao:hover {
+    color: var(--branco);
     background-color: var(--azul);
+    border-color: var(--azul);
 }
 
-.grupos-style .grupo {
-    background: var(--cinza);
-    border: 1px solid var(--cinza-borda);
+.grupos-style-dois {
+    background: var(--branco);
+    border: 1px solid var(--amarelo);
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-    padding: 20px;
-    margin-top: 25px;
+    padding: 0.75rem 0rem;
+    margin: 1rem auto;
+    max-width: 94.5%;
+    color: var(--branco);
+}
+
+.grupos-style-dois h2 {
+    color: var(--preto);
+    font-size: 1.75rem;
+    margin-left: 1rem;
+    margin-bottom: 8px;
+}
+
+.grupos-style-dois p {
+    color: var(--preto);
+    font-size: 1rem;
+    padding: .25rem;
+    margin-left: 1rem;
+}
+
+.groupBanner {
     width: 100%;
-    max-width: 500px;
-    color: var(--branco);
-}
-
-.grupos-style .grupo h2 {
-    color: var(--azul);
-    font-size: var(--texto-secundario);
-    margin-bottom: 10px;
-}
-
-.grupos-style .grupo p {
-    color: var(--branco-light);
-    font-size: var(--texto-padrao);
-}
-
-.grupos-style .grupo img {
-    border-radius: 10px;
-    margin-top: 10px;
-    border: 1px solid var(--cinza-borda);
-}
-
-.grupos-style .btn-entrar {
-    background-color: var(--verde);
-    color: var(--branco);
+    image-rendering: optimizeQuality;
+    object-fit: contain;
+    outline: none;
     border: none;
-    padding: 10px 15px;
+    padding: 0;
+    margin: 0;
+}
+
+.grupos-style-dois .btn-group {
+    min-width: fit-content;
+    max-width: 3rem;
+    background-color: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
     border-radius: 8px;
+
+    min-width: fit-content;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
     cursor: pointer;
     font-weight: 600;
-    margin-top: 15px;
-    transition: background 0.3s ease;
+    font-size: 1.25rem;
+    
+    transition: all 0.3s ease-in-out;
 }
 
-.grupos-style .btn-entrar:hover {
-    background-color: var(--verde);
+.grupos-style-dois .btn-group:hover {
+    background-color: var(--azul);
+    color: var(--branco );
 }

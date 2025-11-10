@@ -1,0 +1,199 @@
+/* Filtros */
+.filtro-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: .5rem;
+}
+
+.filtro-form input:focus {
+    outline: none;
+    border-color: var(--azul);
+}
+
+.filtro-form input,
+.filtro-form select {
+    padding: 0.5rem 1.8rem 0.5rem 0.5rem;
+    border-radius: 25px;
+    border: 1px solid var(--branco-light);
+    background-color: var(--branco);
+    font: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23888' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 1rem;
+}
+
+.filtro-form select:focus {
+    outline: none;
+    border-color: var(--azul);
+}
+
+tr:hover,
+.table-usuarios tr:nth-child(even):hover {
+    transition: .3s;
+    background: var(--cinza-texto);
+}
+
+/* Ações ------------------------------ */
+.btn-excluir-usuario,
+.btn-desabilitar,
+.btn-desbanir,
+.btn-visualizar {
+    background-color: transparent;
+    border: none;
+    flex: 1;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
+.btn-excluir-usuario span,
+.btn-desabilitar span,
+.btn-desbanir span {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.td-acoes {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.td-acoes span {
+    color: var(--preto);
+}
+
+tr:nth-child(even) {
+    background-color: var(--cor-branco);
+}
+
+
+/* Botão deesabilitar*/
+.btn-desabilitar span:hover {
+    color: var(--verde);
+}
+
+.btn-desabilitar:hover {
+    color: var(--verde);
+}
+
+/* Botão Visualizar*/
+.btn-visualizar span:hover {
+    transition: .3s;
+    color: var(--azul);
+}
+
+.btn-visualizar:hover {
+    color: var(--azul);
+}
+
+/* Botão desbanir ---*/
+.btn-desbanir:hover {
+    color: var(--azul);
+}
+
+.btn-desbanir span:hover {
+    color: var(--azul);
+}
+
+/* Botão Excluir ---*/
+.btn-excluir-usuario:hover {
+    color: var(--vermelho);
+}
+
+.btn-excluir-usuario span:hover {
+    color: var(--vermelho);
+}
+
+
+
+
+/* paginação */
+.paginacao li:first-child,
+.paginacao li:last-child {
+    display: none !important;
+}
+.paginacao {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.paginacao nav {
+    display: flex;
+    justify-content: center;
+}
+
+.paginacao ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.paginacao li {
+    display: flex;
+}
+
+.paginacao li a,
+.paginacao li span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid var(--azul-apagado);
+    background: var(--branco);
+    color: var(--preto);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+/* Hover */
+.paginacao li a:hover {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: var(--branco);
+    transform: translateY(-2px);
+}
+
+/* Página atual */
+.paginacao li.active span {
+    background: var(--azul);
+    color: var(--branco);
+    border-color: var(--azul);
+    font-weight: 700;
+}
+
+/* Botões desativados (ex: “Anterior” quando na 1ª página) */
+.paginacao li.disabled span {
+    background: var(--cinza-claro);
+    border-color: var(--cinza-claro);
+    color: #aaa;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Ícones de setas ou textos como “Anterior” / “Próximo” */
+.paginacao li:first-child a,
+.paginacao li:last-child a {
+    padding: 0 14px;
+    font-weight: 600;
+}

@@ -1,3 +1,8 @@
+.textfield {
+    position: relative;
+    width: 100%;
+}
+
 /* Corpo */
 .container-post {
     flex: 1;
@@ -63,7 +68,12 @@
 }
 
 .container-post .corpo-post .foto-perfil a {
-    z-index: 9998 !important;
+    z-index: 998 !important;
+}
+
+.container-post .corpo-post .foto-perfil img {
+    border-radius: 50%;
+    border: 1px solid var(--azul);
 }
 
 /* conteúdo postagem */
@@ -90,14 +100,14 @@
 
 /* Imagem Post*/
 .container-post .image-post img {
-    max-width: 100%;
-    border-radius: 7.5%;
     margin-top: .5rem;
-    border: none;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--branco-light);
 }
 
 /* Dados e informações ----------------------------------------------------------*/
-.container-post .dados-post {
+.dados-post {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -118,7 +128,7 @@
     align-items: center;
 }
 
-.container-post .dados-post span {
+.dados-post span {
     font-size: 20px;
     padding: .5rem;
     color: var(--cinza);
@@ -127,15 +137,15 @@
 }
 
 /* curtido ou normal*/
-.container-post .dados-post .normal span {
+.dados-post .normal span {
     color: var(--cinza);
 }
 
-.container-post .dados-post .curtido span {
+.dados-post .curtido span {
     color: var(--cor-vermelho);
 }
 
-.container-post .dados-post h1 {
+.dados-post h1 {
     font-size: 14px;
     color: var(--cinza);
     transition: .3s;
@@ -147,7 +157,7 @@
 }
 
 .btn-comentar:hover span {
-    background-color: rgba(208, 219, 231, 0.95);
+    background-color: var(--branco);
     color: var(--azul);
 }
 
@@ -156,9 +166,85 @@
     color: var(--cor-vermelho);
 }
 
-.btn-curtir:hover span{
+.btn-curtir:hover span {
+    background-color: var(--vermelho);
+    color: var(--vermelho-apagado);
+}
+
+/* interações------------------------------------------------*/
+.interacoes {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+    color: var(--cinza);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.interacoes .corpo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    border-top: 1px solid var(--branco-light);
+    padding: .5rem 0rem;
+}
+
+.interacoes .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.interacoes span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+/* curtido ou normal*/
+.interacoes .normal span {
+    color: var(--cinza);
+}
+
+.interacoes .curtido span {
+    color: var(--vermelho);
+}
+
+.interacoes h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--azul);
+}
+
+.btn-comentar:hover span {
+    background-color: var(--branco);
+    color: var(--azul);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--vermelho);
+}
+
+.btn-curtir:hover span {
     background-color: rgba(242, 34, 34, 0.50);
-    color: var(--cor-vermelho);
+    color: var(--vermelho);
 }
 
 /* lista de comentários -------------------------------------------------------------------------------------*/
@@ -236,80 +322,12 @@
 }
 
 /* container do dropdown -----------------------------------------------------------------------------------------*/
-.dropdown-content {
-    list-style: none;
-    margin: 0;
-    padding: .5rem;
-    background: var(--branco);
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    gap: .3rem;
-}
-
-/* estilo base para botões de ação */
-.btn-acao {
-    width: 100%;
-    display: flex;
-    gap: 1rem;
-    text-align: left;
-    padding: .6rem 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    background-color: transparent;
-    color: var(--preto);
-    transition: background-color .3s, color .3s, transform .1s;
-}
-
-/* hover geral */
-.btn-acao:hover {
-    transform: scale(1);
-}
-
-/* editar */
-.container-post .editar {
-    border-radius: 15px 15px 0 0;
-}
-
-.btn-acao.editar:hover {
-    background-color: var(--branco-light);
-    color: var(--azul);
-}
-
-/* excluir */
-.btn-acao.excluir:hover {
-    background-color: var(--branco-light);
-    color: var(--cor-vermelho);
-}
-
-.container-post .excluir {
-    border-radius: 0 0 15px 15px;
-}
-
-/* denunciar */
-.btn-acao.denunciar:hover {
-    background-color: #ffcccb;
-    color: var(--vermelho);
-}
-
 .hashtag {
-    position: relative; /* cria um novo contexto de empilhamento */
-    z-index: 1; /* fica acima do overlay */
-    color: var(--azul);
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s;
+    position: relative;
+    /* cria um novo contexto de empilhamento */
+    z-index: 1;
+    /* fica acima do overlay */
 }
-
-.hashtag:hover {
-    color: var(--azul-apagado);
-    text-decoration: underline;
-}
-
 /* Força o dropdown a ficar sempre acima de qualquer outro conteúdo do post */
 .container-post .dropdown {
     position: relative;
@@ -324,6 +342,7 @@
 
 /* Garante que o overlay e botões fiquem abaixo */
 .corpo-post .post-overlay,
+.comentario .comentario-overlay,
 .corpo-post button,
 .corpo-post form {
     z-index: 1;

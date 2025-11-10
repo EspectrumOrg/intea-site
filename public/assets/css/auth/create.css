@@ -37,14 +37,14 @@ body {
 /* logo ======= */
 .logo-container {
     position: absolute;
-    top: 15%;
-    left: 45%;
+    top: 3rem;
+    left: 47.5%;
     transform: translate(-10%, -10%);
     border: none;
 }
 
 .logo-container img {
-    width: 250px;
+    width: 150px;
     transition: 0.3s;
     cursor: pointer;
 }
@@ -111,7 +111,7 @@ select:focus {
 /* botões ---+*/
 .btn {
     padding: 10px 16px;
-    border-radius: 50% / 100%;
+    border-radius: 25px;
     min-width: 100px;
     cursor: pointer;
     font-weight: 600;

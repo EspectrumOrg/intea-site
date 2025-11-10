@@ -1,7 +1,6 @@
-<!-- style -->
-<link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
-<link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
+@extends('feed.post.template.layout')
 
+@section('main')
 @php
 use App\Models\Tendencia;
 
@@ -31,11 +30,25 @@ e($texto)
 
 <!-- Conteúdo principal com scroll -->
 <div class="container-post">
+    <div class="opcoes-home-container">
+        @include("feed.post.partials.topo-seguindo")
+    </div>
+
     <div class="create-post">
         @include("feed.post.create")
     </div>
 
     <div class="content-post">
+        <!-- verifica se ta no feed ou no seguindo -->
+        @if($postagens->isEmpty())
+        @if(request()->routeIs('post.index'))
+        <p>Nenhuma postagem encontrada.</p> <!-- alguém coloca um css aqui =P -->
+        @elseif(request()->routeIs('post.seguindo'))
+        <p>Você ainda não está seguindo ninguém. Comece a seguir usuários para ver suas postagens aqui!</p> <!-- aqui tmb lol -->
+        @endif
+        @else
+
+        <!-- Para cada postagem -->
         @foreach($postagens as $postagem)
         <div class="corpo-post">
             <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
@@ -56,7 +69,7 @@ e($texto)
                 <div class="topo"> <!-- info conta -->
                     <div class="info-perfil">
                         <a href="{{ route('conta.index', ['usuario_id' => $postagem->usuario_id]) }}">
-                            <h1>{{ Str::limit($postagem->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                            <h1>{{ Str::limit($postagem->usuario->apelido ?? 'Desconhecido', 25, '...') }}</h1>
                         </a>
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>
@@ -66,10 +79,11 @@ e($texto)
                             <span class="material-symbols-outlined">more_horiz</span>
                         </button>
                         <ul class="dropdown-content">
+                            <!-- Postagem do usuário --------------------->
                             @if(Auth::id() === $postagem->usuario_id)
                             <li>
                                 <button type="button"
-                                    class="btn-acao editar btn-abrir-modal-edit-postagem"
+                                    class="btn-acao editar"
                                     onclick="abrirModalEditar('{{ $postagem->id }}')">
                                     <span class="material-symbols-outlined">edit</span>Editar
                                 </button>
@@ -84,32 +98,77 @@ e($texto)
                                 </form>
                             </li>
                             @else
-                            <!-- Caso não tenha sido quem postou --------------------->
+                            <!-- Postagem de terceiro --------------------->
                             <li>
                                 @if( Auth::user()->tipo_usuario === 1 )
-                                <form action="{{ route('usuario.destroy', $postagem->usuario_id) }}" method="post" class="form-excluir">
-                                    @csrf
-                                    @method("delete")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja banir esse usuário?');" class="btn-excluir-usuario">
-                                        <span class="material-symbols-outlined">person_off</span>
-                                        Banir usuário
+                                <!-- Banir Usuário (caso tipo admin)-->
+                                <div class="form-excluir">
+                                    <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
+                                        <span class="material-symbols-outlined">person_off</span>Banir
                                     </button>
-                                </form>
+                                </div>
                                 @else
-                                <a style="display: flex; gap:1rem; border-radius: 15px 15px 0 0;" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
+                                <!-- Denunciar Usuário -->
+                                <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                                     <span class="material-symbols-outlined">flag_2</span>Denunciar
                                 </a>
                                 @endif
                             </li>
-                            <li>
-                                <form action="{{ route('seguir.store') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                                    <button type="submit" class="seguir-btn">
-                                        <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
-                                    </button>
-                                </form>
-                            </li>
+                         <li>
+    @php
+        $authUser = Auth::user();
+        $isFollowing = $authUser->seguindo->contains($postagem->usuario_id);
+        $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+            ->where('alvo_id', $postagem->usuario_id)
+            ->where('tipo', 'seguir')
+            ->exists();
+    @endphp
+
+    @if ($authUser->id !== $postagem->usuario_id)
+
+        {{-- Se já segue → sempre mostrar Deixar de seguir --}}
+        @if ($isFollowing)
+            <form action="{{ route('seguir.destroy', $postagem->usuario_id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn-acao deixar-btn">
+                    <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+                </button>
+            </form>
+
+        {{-- Usuário privado (não está seguindo) --}}
+        @elseif ($postagem->usuario->visibilidade == 0)
+            @if ($pedidoFeito)
+                 <form action="{{ route('seguir.cancelar', $postagem->usuario_id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn-acao seguir-btn">
+            <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+        </button>
+    </form>
+            @else
+                <form action="{{ route('seguir.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                    <button type="submit" class="btn-acao seguir-btn">
+                        <span class="material-symbols-outlined">person_add</span> Pedir para seguir
+                    </button>
+                </form>
+            @endif
+
+        {{-- Usuário público (não está seguindo) --}}
+        @else
+            <form action="{{ route('seguir.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                <button type="submit" class="btn-acao seguir-btn">
+                    <span class="material-symbols-outlined">person_add</span> Seguir {{ $postagem->usuario->user }}
+                </button>
+            </form>
+        @endif
+
+    @endif
+</li>
                             @endif
                         </ul>
                     </div>
@@ -159,6 +218,7 @@ e($texto)
                             </button>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -166,20 +226,12 @@ e($texto)
         <!-- Modal Edição dessa postagem -->
         @include('feed.post.edit', ['postagem' => $postagem])
 
-
         <!-- Modal Criação de comentário ($postagem->id) -->
-        <div id="modal-comentar-{{ $postagem->id }}" class="modal hidden">
-            <div class="modal-content">
-                <button type="button"
-                    class="close"
-                    onclick="fecharModalComentar('{{ $postagem->id }}')">
-                    <span class="material-symbols-outlined">close</span>
-                </button>
-                <div class="modal-content-content">
-                    @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
-                </div>
-            </div>
-        </div>
+        @include('feed.post.create-comentario-modal', ['postagem' => $postagem])
+
+        <!-- modal banir-->
+        @include('layouts.partials.modal-banimento', ['usuario' => $postagem->usuario])
+
 
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
@@ -216,6 +268,7 @@ e($texto)
             </div>
         </div>
         @endforeach
+        @endif
     </div>
 </div>
 
@@ -273,3 +326,4 @@ e($texto)
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>
+@endsection

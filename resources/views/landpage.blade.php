@@ -2,9 +2,10 @@
 <html lang="pt-br">
 
 <head>
+  <link rel="shortcut icon" type="imagex/png" href="{{ url('assets/images/logos/intea/39.png') }}">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comunidade Autista</title>
+  <title>Intea</title>
   <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('assets/css/auth/landpage.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
@@ -16,13 +17,21 @@
   <nav class="navbar">
     <div class="navbar-container">
       <div class="logo-container">
-        <a href="{{ route('login') }}"><img src="{{ asset('assets/images/landpage/logoIntea2.png') }}" alt="inTEA - Comunidade Autista" class="logo-img"></a>
+        <a href="{{ route('login') }}"><img src="{{ asset('assets/images/landpage/logoIntea2.png') }}"
+            alt="inTEA - Comunidade Autista" class="logo-img"></a>
       </div>
+
+      <button class="mobile-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
       <div class="navbar-links">
-        <a href="#hero" id="landpage-nav-01" class="nav-link animated-underline">Home</a>
-        <a href="#solutions" id="landpage-nav-02" class="nav-link animated-underline">Qualidades</a>
-        <a href="#features" id="landpage-nav-03" class="nav-link animated-underline">Funcionalidades</a>
-        <a href="#contact" id="landpage-nav-04" class="nav-link animated-underline">Fale conosco</a>
+        <a href="#hero" class="nav-link animated-underline">Home</a>
+        <a href="#solutions" class="nav-link animated-underline">Qualidades</a>
+        <a href="#features" class="nav-link animated-underline">Funcionalidades</a>
+        <a href="#contact" class="nav-link animated-underline">Fale conosco</a>
       </div>
     </div>
   </nav>
@@ -36,7 +45,8 @@
           <span class="text-azul-solido">a comunidade autista</span>
         </h1>
         <p class="hero-description">
-          Um espaço seguro, compreensivo e construído com a comunidade, onde você pode ser verdadeiramente você. Conecte-se, compartilhe experiências e encontre suporte que entende suas necessidades.
+          Um espaço seguro, compreensivo e construído com a comunidade, onde você pode ser verdadeiramente você.
+          Conecte-se, compartilhe experiências e encontre suporte que entende suas necessidades.
         </p>
         <div class="hero-buttons">
           <a href="{{ route('login') }}"><button class="btn-primary">Entrar</button></a>
@@ -48,7 +58,8 @@
         </div>
       </div>
       <div class="hero-image">
-        <img src="{{ asset('assets/images/landpage/feliz.jpg') }}" alt="Comunidade unida - inTEA" class="hero-image-floating">
+        <img src="{{ asset('assets/images/landpage/feliz.jpg') }}" alt="Comunidade unida - inTEA"
+          class="hero-image-floating">
   </section>
 
   <!-- SOLUTIONS SECTION OTIMIZADA -->
@@ -56,47 +67,57 @@
     <div class="container">
       <div class="solutions-content">
         <div class="solutions-header">
-          <span class="solution-tag">Apoio e Comunidade</span>
+          <span class="solution-tag-vermelho">Apoio e Comunidade</span>
           <h2 class="section-title">
-            <span class="gradient-text">Criado para a</span>
-            <span class="text-azul-solido">comunidade autista</span>
+            <span class="gradient-text-solution">Criado para a</span>
+            <span class="text-vermelho-solido">comunidade autista</span>
           </h2>
           <p class="section-description">
-            A comunidade autista enfrenta muitos desafios, principalmente com a dificuldade na comunicação e conexão com outras pessoas, estamos aqui para resolver esse problema.
+            A comunidade autista enfrenta muitos desafios, principalmente com a dificuldade na comunicação e conexão com
+            outras pessoas, estamos aqui para resolver esse problema.
           </p>
         </div>
         <div class="solutions-grid">
           <div class="solution-item">
             <div class="solution-icon">
               <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
               </svg>
             </div>
             <div class="solution-text">
               <h3>Validação e Identificação</h3>
-              <p>Encontre pessoas que compartilham experiências similares, reduzindo a sensação de isolamento e proporcionando um senso de pertencimento genuíno.</p>
+              <p>Encontre pessoas que compartilham experiências similares, reduzindo a sensação de isolamento e
+                proporcionando um senso de pertencimento genuíno.</p>
             </div>
           </div>
           <div class="solution-item">
             <div class="solution-icon">
               <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
               </svg>
             </div>
             <div class="solution-text">
               <h3>Troca de Experiências</h3>
-              <p>Compartilhe estratégias, descobertas e insights sobre como navegar em um mundo neurotípico, aprendendo com a sabedoria coletiva da comunidade.</p>
+              <p>Compartilhe estratégias, descobertas e insights sobre como navegar em um mundo neurotípico, aprendendo
+                com a sabedoria coletiva da comunidade.</p>
             </div>
           </div>
           <div class="solution-item">
             <div class="solution-icon">
               <svg viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
               </svg>
             </div>
             <div class="solution-text">
               <h3>Crescimento Pessoal</h3>
-              <p>Um ambiente seguro para desenvolver habilidades sociais no seu próprio ritmo, com respeito às suas necessidades individuais e limites sensoriais.</p>
+              <p>Um ambiente seguro para desenvolver habilidades sociais no seu próprio ritmo, com respeito às suas
+                necessidades individuais e limites sensoriais.</p>
             </div>
           </div>
         </div>
@@ -108,13 +129,14 @@
   <section id="features" class="section features">
     <div class="container">
       <div class="features-header text-center">
-        <span class="solution-tag">Nossas funcionalidades</span>
+        <span class="solution-tag-verde">Nossas funcionalidades</span>
         <h2 class="section-title">
-          <span class="gradient-text">Tudo que você precisa</span>
-          <span class="text-azul-solido">para se conectar</span>
+          <span class="gradient-text-verde">Tudo que você precisa</span>
+          <span class="text-verde-solido">para se conectar</span>
         </h2>
         <p class="section-description">
-          Nossa plataforma oferece todas as ferramentas e recursos necessários para criar uma comunidade inclusiva e acolhedora para pessoas no espectro autista.
+          Nossa plataforma oferece todas as ferramentas e recursos necessários para criar uma comunidade inclusiva e
+          acolhedora para pessoas no espectro autista.
         </p>
       </div>
       <div class="features-grid">
@@ -151,14 +173,15 @@
             <img src="{{ asset('assets/images/landpage/família.png') }}" alt="Controle Responsável">
           </div>
           <h3>Controle Responsável</h3>
-          <p>Para os autistas de menos de 18 anos, temos a opção de um controle de suas contas por seus responsáveis.</p>
+          <p>Para os autistas de menos de 18 anos, temos a opção de um controle de suas contas por seus responsáveis.
+          </p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <img src="{{ asset('assets/images/landpage/psicologia.png') }}" alt="Profissionais Credenciados">
           </div>
-          <h3>Profissionais Credenciados</h3>
-          <p>Encontre profissionais em autismo credenciados, que poderão fornecer seus serviços.</p>
+          <h3>Profissionais</h3>
+          <p>Encontre profissionais em autismo, que poderão fornecer seus serviços.</p>
         </div>
       </div>
     </div>
@@ -180,29 +203,39 @@
         @csrf
 
         @auth
-        <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
-        <input type="hidden" name="name" value="{{ Auth::user()->nome }}" required>
+          <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
+          <input type="hidden" name="name" value="{{ Auth::user()->apelido }}" required>
         @endauth
 
         @guest
-        <div class="wrap-input1 validate-input" data-validate="Nome é necessário">
-          <input class="input1" type="text" name="name" maxlength="255" placeholder="Nome" required>
-          <span class="shadow-input1"></span>
-        </div>
+          <div class="wrap-input1 validate-input" data-validate="Nome é necessário">
+            <input class="input1" type="text" name="name" maxlength="255" placeholder="Nome" required>
+            <span class="shadow-input1"></span>
+          </div>
 
-        <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
-          <input class="input1" type="text" name="email" maxlength="100" placeholder="Ex.: abc@xyz.com" required>
-          <span class="shadow-input1"></span>
-        </div>
+          <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
+            <input class="input1" type="text" name="email" maxlength="100" placeholder="E-mail" required>
+            <span class="shadow-input1"></span>
+          </div>
         @endguest
         <!-- OBS: A ordem dos inputs name e email n importa nesse caso, tá certo-->
 
-        <div class="wrap-input1 validate-input" data-validate="Assunto é necessário">
-          <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
-          <span class="shadow-input1"></span>
+        <div class="selectAssunto" data-validate="Assunto é necessário">
+          <!-- <input class="input1" type="text" name="assunto" maxlength="255" placeholder="Assunto" required>
+          <span class="shadow-input1"></span> -->
+
+          <select class="select-cls" name="assunto" id="assunto" required>
+            <option value="" disabled selected hidden>Escolha de quê deseja tratar</option>
+            <option value="Recomende mudanças no sistema">Recomende mudanças no sistema</option>
+            <option value="Consulta por vagas de emprego">Consulte vagas de emprego</option>
+            <option value="Tire sua dúvida">Tire sua dúvida</option>
+            <option value="Reconsideração de banimento">Reconsideração de banimento</option>
+            <option value="Informação de bug/erro encontrado">Informação de bug/erro encontrado</option>
+            <option value="Comunicações comerciais/governamentais">Comunicações comerciais/governamentais</option>
+          </select>
         </div>
 
-        <div class="wrap-input1 validate-input" data-validate="menssagem é necessária">
+        <div class="wrap-input1 validate-input" data-validate="mensagem é necessária">
           <textarea class="input1" name="mensagem" maxlength="755" placeholder="Mensagem" required></textarea>
           <span class="shadow-input1"></span>
         </div>
@@ -222,7 +255,7 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="footer-logo">
-        <img src="{{ asset('assets/images/landpage/logoIntea2.png') }}" alt="inTEA">
+        <img src="{{ asset('assets/images/landpage/logo-footer.png') }}" alt="inTEA">
         <div class="footer-social">
           <a href="#" class="social-link" id="instagram">
             <i class="fab fa-instagram"></i>
@@ -251,75 +284,35 @@
       </div>
       <div class="footer-about">
         <span>Sobre a empresa</span>
-        <p>Valorizamos soluções empáticas, contando com membros que vivenciam diretamente as realidades que abordamos. Convidamos parceiros a se juntarem a nós para transformar realidades e tornar visível o invisível.</p>
+        <p>Valorizamos soluções empáticas, contando com membros que vivenciam diretamente as realidades que abordamos.
+          Convidamos parceiros a se juntarem a nós para transformar realidades e tornar visível o invisível.</p>
       </div>
     </div>
   </footer>
 
   <script>
-    // Script otimizado para funcionalidades essenciais
-    document.addEventListener('DOMContentLoaded', function() {
-      // Smooth scroll para links de navegação
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-          e.preventDefault();
-          const target = document.querySelector(this.getAttribute('href'));
-          if (target) {
-            target.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        });
-      });
-
-      // Menu mobile simples
+    // Menu Mobile
+    document.addEventListener('DOMContentLoaded', function () {
       const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
       const navbarLinks = document.querySelector('.navbar-links');
 
       if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-          navbarLinks.style.display = navbarLinks.style.display === 'flex' ? 'none' : 'flex';
+        mobileMenuBtn.addEventListener('click', function () {
+          this.classList.toggle('active');
+          navbarLinks.classList.toggle('active');
         });
       }
 
-      // Animação de entrada para cards
-      const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-          }
+      // Fechar menu ao clicar em um link
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenuBtn.classList.remove('active');
+          navbarLinks.classList.remove('active');
         });
-      }, observerOptions);
-
-      // Observar elementos para animação
-      document.querySelectorAll('.feature-card, .solution-item').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
       });
     });
-
-    // JavaScript navbar scroll
-    window.addEventListener('scroll', function() {
-      const navbar = document.querySelector('.navbar');
-      if (window.scrollY > 480) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
   </script>
-
-  <!-- Modal aviso -->
-  @include('layouts.partials.avisos')
 </body>
 
 </html>

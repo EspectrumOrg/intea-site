@@ -31,26 +31,40 @@ class SeguirController extends Controller
      * Store a newly created resource in storage.
      */
 
+public function store(Request $request)
+{
+    /** @var \App\Models\Usuario $user */
+    $user = auth()->user();
+    $userIdToFollow = $request->input('user_id');
 
-    public function store(Request $request)
-    {
-        /** @var \App\Models\Usuario $user */
-
-        $user = auth()->user();
-        $userIdToFollow = $request->input('user_id');
-
-        if ($user->id != $userIdToFollow) {
-            $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
-
-            if (!$isAlreadyFollowing) {
-                $user->seguindo()->attach($userIdToFollow);
-            }
-        }
-
-        
-
-        return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+    if ($user->id == $userIdToFollow) {
+        return redirect()->back()->with('error', 'Você não pode seguir a si mesmo!');
     }
+
+    
+    $userToFollow = \App\Models\Usuario::find($userIdToFollow);
+
+    if (!$userToFollow) {
+        return redirect()->back()->with('error', 'Usuário não encontrado!');
+    }
+    if ($userToFollow->visibilidade == 0) {
+        \App\Models\Notificacao::create([
+            'solicitante_id' => $user->id,
+            'alvo_id' => $userIdToFollow,
+            'tipo' => 'seguir',
+        ]);
+
+        return redirect()->back()->with('success', 'Solicitação de seguir enviada!');
+    }
+    $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
+
+    if (!$isAlreadyFollowing) {
+        $user->seguindo()->attach($userIdToFollow);
+    }
+
+    return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+}
+
        // Contar quantos usuários o usuário está seguindo
     public function countSeguindo($id)
     {
@@ -107,8 +121,37 @@ public function listarSeguidores($id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+ public function destroy(string $id)
+{
+    /** @var \App\Models\Usuario $user */
+    $user = auth()->user();
+
+    // Verifica se o usuário está realmente seguindo o outro
+    $isFollowing = $user->seguindo()->where('tb_usuario.id', $id)->exists();
+
+    if (!$isFollowing) {
+        return redirect()->back()->with('error', 'Você não está seguindo esse usuário!');
     }
+
+    // Remove o vínculo de "seguindo"
+    $user->seguindo()->detach($id);
+
+    return redirect()->back()->with('success', 'Você deixou de seguir o usuário!');
+}
+public function cancelarPedido($userId)
+{
+    $user = auth()->user();
+
+    $notificacao = \App\Models\Notificacao::where('solicitante_id', $user->id)
+        ->where('alvo_id', $userId)
+        ->where('tipo', 'seguir')
+        ->first();
+
+    if ($notificacao) {
+        $notificacao->delete();
+        return redirect()->back()->with('success', 'Pedido cancelado.');
+    }
+
+    return redirect()->back()->with('error', 'Nenhum pedido encontrado.');
+}
 }

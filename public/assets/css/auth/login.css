@@ -1,22 +1,24 @@
-* {
-    box-sizing: border-box
+/* Container geral */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--branco);
 }
 
-/* Container geral */
-.container {
-    background: var(--branco);
+/* Formulário div*/
+.login-content {
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 100vh;
-    margin: 0;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
 }
 
 /* botão voltar */
 .voltar {
     position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
     border: none;
 }
 
@@ -32,20 +34,20 @@
 
 .voltar:hover span {
     background-color: var(--branco-light);
-    color: var(--azul);
+    color: var(--vermelho);
 }
 
-/* logo ======= */
+/* Logo -------------------------*/
 .logo-container {
     position: absolute;
-    top: 15%;
-    left: 45%;
+    top: 3rem;
+    left: 47.5%;
     transform: translate(-10%, -10%);
     border: none;
 }
 
 .logo-container img {
-    width: 250px;
+    width: 150px;
     transition: 0.3s;
     cursor: pointer;
 }
@@ -55,18 +57,17 @@
 }
 
 /* Formulário */
-form {
-    width: 420px;
+.login-form {
     background: var(--branco);
-    border-radius: 8px;
-    padding: 0 1rem;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, .08);
-    overflow: hidden;
-    transition: height .32s ease;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Título */
-form h2 {
+.login-form h2 {
     text-align: center;
     font-size: 26px;
     margin-bottom: 1.5rem;
@@ -141,38 +142,13 @@ form h2 {
 
 .form-actions a {
     font-size: 14px;
-    color: var(--vermelho);
+    color: var(--azul);
     text-decoration: none;
     transition: .3s;
 }
 
 .form-actions a:hover {
-    color: var(--vermelho-apagado);
-}
-
-/*  Opções login */
-.options-login {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem .5rem;
-}
-
-.options-login button {
-    padding: 10px 16px;
-    border-radius: 50% / 100%;
-    border: 0;
-    cursor: pointer;
-    font-weight: 600;
-    transition: .3s;
-    border: 1px solid var(--azul);
-    background-color: var(--branco);
-    color: var(--azul);
-}
-
-.options-login button:hover {
-    background-color: var(--azul);
-    color: var(--branco);
+    color: var(--azul-apagado);
 }
 
 /* Link para registro */
@@ -182,14 +158,14 @@ form h2 {
 }
 
 .register-link a {
-    color: var(--verde);
+    color: var(--azul);
     font-weight: bold;
     text-decoration: none;
     transition: .3s;
 }
 
 .register-link a:hover {
-    color: var(--verde-apagado);
+    color: var(--azul-apagado);
 }
 
 /* Mensagens de erro */
@@ -202,7 +178,7 @@ form h2 {
 /* Status da sessão */
 .session-status {
     background: var(--branco);
-    color: var(--verde);
+    color: var(--azul);
     padding: 0.8rem;
     border-radius: 6px;
     text-align: center;
@@ -233,7 +209,7 @@ form h2 {
 }
 
 .close {
-    color: var(--branco);
+    color: var(--branco-light);
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -241,5 +217,50 @@ form h2 {
 }
 
 .close:hover {
-    color:var(--preto);
+    color: var(--preto);
+}
+
+.contact1-form-btn {
+    align-self: flex-end;
+    background-color: var(--branco);
+    color: var(--azul);
+    font-size: 14px;
+    font-weight: bold;
+    padding: .75rem;
+    border: 1px solid var(--azul);
+    border-radius: 25% / 50%;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.contact1-form-btn:hover {
+    background-color: var(--azul);
+    color: var(--branco);
+}
+
+.contact1-form-btn i {
+    margin-left: 7px;
+    transition: all 0.4s;
+}
+
+.contact1-form-btn:hover i {
+    transform: translateX(10px);
+}
+
+.text-senha {
+    position: relative;
+}
+
+.beto {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.material-symbols-outlined {
+    margin-top: 20px;
+    margin-left: 20px;
+    color: var(--cor-preto);
 }
