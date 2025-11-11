@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Usuario;
 use App\Models\Autista;
 use App\Models\Genero;
@@ -42,7 +43,7 @@ class AutistaController extends Controller
 
 public function update_responsavel(Request $request, $id)
 {
-    $usuario = auth()->user(); // Usuário logado (responsável)
+    $usuario = auth()->user();
     $responsavel = Responsavel::where('usuario_id', $usuario->id)->firstOrFail();
 
     $autista = Autista::where('id', $id)
@@ -59,6 +60,7 @@ public function update_responsavel(Request $request, $id)
         'email' => 'required|email|max:255',
         'cpf' => 'required|string|max:14',
         'data_nascimento' => 'nullable|date',
+        'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
 
     $usuarioAutista = $autista->usuario;
@@ -67,12 +69,21 @@ public function update_responsavel(Request $request, $id)
     $usuarioAutista->email = $validated['email'];
     $usuarioAutista->cpf = $validated['cpf'];
     $usuarioAutista->data_nascimento = $validated['data_nascimento'] ?? null;
+
+    if ($request->hasFile('foto')) {
+        if ($usuarioAutista->foto && Storage::disk('public')->exists($usuarioAutista->foto)) {
+            Storage::disk('public')->delete($usuarioAutista->foto);
+        }
+
+        $path = $request->file('foto')->store('fotos_autistas', 'public');
+        $usuarioAutista->foto = $path;
+    }
+
     $usuarioAutista->save();
 
     return redirect()->route('profile.show')
                      ->with('status', 'autista-updated');
 }
-
 
 
     public function index()

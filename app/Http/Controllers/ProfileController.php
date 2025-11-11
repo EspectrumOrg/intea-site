@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Postagem;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

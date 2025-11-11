@@ -34,10 +34,7 @@ public function addDependente(Request $request)
     ]);
 
     if ($validator->fails()) {
-        return response()->json([
-            'success' => false,
-            'errors' => $validator->errors()
-        ], 422);
+        return redirect()->route('profile.show');
     }
 
     try {
@@ -45,24 +42,18 @@ public function addDependente(Request $request)
 
         // 🔍 Busca autista
         $autista = Autista::query()
-    ->when($cpf, function ($query) use ($cpf) {
-        // Garantir que estamos fazendo a busca corretamente pelo cpf associado ao usuario
-        $query->whereHas('usuario', function ($q) use ($cpf) {
-            $q->where('cpf', $cpf);
-        });
-    })
-    ->when($request->filled('ciptea'), function ($query) use ($request) {
-        // Verificar se o ciptea_autista está correto
-        $query->where('cipteia_autista', $request->ciptea);
-    })
-    ->first();
-
+            ->when($cpf, function ($query) use ($cpf) {
+                $query->whereHas('usuario', function ($q) use ($cpf) {
+                    $q->where('cpf', $cpf);
+                });
+            })
+            ->when($request->filled('ciptea'), function ($query) use ($request) {
+                $query->where('cipteia_autista', $request->ciptea);
+            })
+            ->first();
 
         if (!$autista) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Autista não encontrado.'
-            ], 404);
+            return redirect()->route('profile.show');
         }
 
         $responsavelId = auth()->id();
@@ -73,41 +64,38 @@ public function addDependente(Request $request)
             ->exists();
 
         if ($jaExiste) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Você já é responsável por esse autista.'
-            ], 409);
+            return redirect()->route('profile.show');
         }
 
-        $usuario = auth()->user();
-
         // 🧩 Cria o vínculo na tabela de responsáveis
-// Cria o vínculo na tabela de responsáveis
-$novoVinculo = Responsavel::create([
-    'usuario_id' => $responsavelId,
-    'cipteia_autista' => $autista->cipteia_autista,
-]);
+        $novoVinculo = Responsavel::create([
+            'usuario_id' => $responsavelId,
+            'cipteia_autista' => $autista->cipteia_autista,
+        ]);
 
-// Atualiza o autista com o ID do registro de responsável (não do usuário)
-if (is_null($autista->responsavel_id)) {
-    $autista->responsavel_id = $novoVinculo->id; // <- aqui muda
-    $autista->save();
-}
+        // Atualiza o autista com o ID do registro de responsável
+        if (is_null($autista->responsavel_id)) {
+            $autista->responsavel_id = $novoVinculo->id;
+            $autista->save();
+        }
 
-// 🔄 Atualiza o tipo de usuário (Comunidade → Responsável)
-$usuario = Usuario::find($responsavelId);
-if ($usuario && $usuario->tipo_usuario == 3) {
-    $usuario->tipo_usuario = 5;
-    $usuario->save();
-}
-
+        // 🔄 Atualiza o tipo de usuário (Comunidade → Responsável)
+        $usuario = Usuario::find($responsavelId);
+        if ($usuario && $usuario->tipo_usuario == 3) {
+            $usuario->tipo_usuario = 5;
+            $usuario->save();
+        }
 
         Log::info("Usuário {$responsavelId} agora é responsável pelo autista {$autista->id}");
 
+        return redirect()->route('profile.show');
+
     } catch (\Exception $e) {
         Log::error('Erro ao vincular dependente: ' . $e->getMessage());
+        return redirect()->route('profile.show');
     }
 }
+
 
 public function removeDependente(Request $request)
 {
@@ -118,20 +106,14 @@ public function removeDependente(Request $request)
     ]);
 
     if ($validator->fails()) {
-        return response()->json([
-            'success' => false,
-            'errors' => $validator->errors()
-        ], 422);
+        return redirect()->route('profile.show');
     }
 
     try {
         $autista = Autista::find($request->dependente_id);
 
         if (!$autista) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Autista não encontrado.'
-            ], 404);
+            return redirect()->route('profile.show');
         }
 
         $responsavelId = auth()->id();
@@ -142,10 +124,7 @@ public function removeDependente(Request $request)
             ->first();
 
         if (!$vinculo) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Você não é responsável por este autista.'
-            ], 404);
+            return redirect()->route('profile.show');
         }
 
         // 🔄 Desvincula o autista do responsável
@@ -173,18 +152,11 @@ public function removeDependente(Request $request)
             }
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Dependente desvinculado e vínculo removido com sucesso.'
-        ]);
+        return redirect()->route('profile.show');
 
     } catch (\Exception $e) {
         Log::error('Erro ao desvincular dependente: ' . $e->getMessage());
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Erro ao desvincular dependente.'
-        ], 500);
+        return redirect()->route('profile.show');
     }
 }
 
