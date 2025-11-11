@@ -24,15 +24,16 @@
 
             <select name="motivo_denuncia">
                 <option value="">Todos os motivos</option>
-                <option value="spam" {{ request('motivo_denuncia') == "spam" ? 'selected' : '' }}>Spam</option>
-                <option value="falsidade" {{ request('motivo_denuncia') == "falsidade" ? 'selected' : '' }}>Desinformação</option>
-                <option value="conteudo_explicito" {{ request('motivo_denuncia') == "conteudo_explicito" ? 'selected' : '' }}>Conteúdo Explícito</option>
-                <option value="discurso_de_odio" {{ request('motivo_denuncia') == "discurso_de_odio" ? 'selected' : '' }}>Discurso de Ódio</option>
-            </select>
-
-            <select name="status_denuncia">
-                <option value="1" style="color: green;" {{ request('status_denuncia') == '1' ? 'selected' : '' }}>Pendente</option>
-                <option value="0" style="color: red;" {{ request('status_denuncia') == '0' ? 'selected' : '' }}>Resolvida</option>
+                <option value="odio" {{ request('motivo_denuncia') == "odio" ? 'selected' : '' }}>Ódio ou Discriminação</option>
+                <option value="abuso_e_assedio" {{ request('motivo_denuncia') == "abuso_e_assedio" ? 'selected' : '' }}>Abuso ou Assédio</option>
+                <option value="discurso_de_odio" {{ request('motivo_denuncia') == "discurso_de_odio" ? 'selected' : '' }}>Ameaças ou Incitação à Violência</option>
+                <option value="seguranca_infantil" {{ request('motivo_denuncia') == "seguranca_infantil" ? 'selected' : '' }}>Segurança Infantil</option>
+                <option value="privacidade" {{ request('motivo_denuncia') == "privacidade" ? 'selected' : '' }}>Privacidade</option>
+                <option value="comportamentos_ilegais_e_regulamentados" {{ request('motivo_denuncia') == "comportamentos_ilegais_e_regulamentados" ? 'selected' : '' }}>Atividades Ilegais</option>
+                <option value="spam" {{ request('motivo_denuncia') == "spam" ? 'selected' : '' }}>Spam ou Engajamento Artificial</option>
+                <option value="suicidio_ou_automutilacao" {{ request('motivo_denuncia') == "suicidio_ou_automutilacao" ? 'selected' : '' }}>Risco à Integridade Pessoal</option>
+                <option value="personificacao" {{ request('motivo_denuncia') == "personificacao" ? 'selected' : '' }}>Falsa Identidade</option>
+                <option value="entidades_violentas_e_odiosas" {{ request('motivo_denuncia') == "entidades_violentas_e_odiosas" ? 'selected' : '' }}>Grupos Extremistas</option>
             </select>
 
             <select name="ordem">
@@ -54,7 +55,6 @@
                         <tr>
                             <th>#</th>
                             <th>Feito por</th>
-                            <th>User</th>
                             <th>Usuario denunciado</th>
                             <th>Motivo</th>
                             <th>Data de denuncia</th>
@@ -69,20 +69,33 @@
                         @forelse($denuncias as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->usuarioDenunciante->apelido }}</td>
                             <td>{{ $item->usuarioDenunciante->user }}</td>
                             <td>{{ $item->postagem->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
                             <td>
-                                @if( $item->motivo_denuncia == 'spam')
-                                <p class="motivo_denuncia red-text">Spam</p>
-                                @elseif( $item->motivo_denuncia == 'desinformacao')
-                                <p class="motivo_denuncia orange-text">Desinformação</p>
-                                @elseif( $item->motivo_denuncia == 'conteudo_explicito')
-                                <p class="motivo_denuncia purple-text">Conteúdo explícito</p>
-                                @elseif( $item->motivo_denuncia == 'discurso_de_odio')
-                                <p class="motivo_denuncia black-text">Discurso de ódio</p>
+                                @php
+                                $motivos = [
+                                'odio' => ['Ódio ou Discriminação', 'red-text'],
+                                'abuso_e_assedio' => ['Abuso ou Assédio', 'orange-text'],
+                                'discurso_de_odio' => ['Ameaças ou Incitação à Violência', 'black-text'],
+                                'seguranca_infantil' => ['Segurança Infantil', 'purple-text'],
+                                'privacidade' => ['Privacidade', 'blue-text'],
+                                'comportamentos_ilegais_e_regulamentados' => ['Atividades Ilegais', 'brown-text'],
+                                'spam' => ['Spam ou Engajamento Artificial', 'green-text'],
+                                'suicidio_ou_automutilacao' => ['Risco à Integridade Pessoal', 'pink-text'],
+                                'personificacao' => ['Falsa Identidade', 'teal-text'],
+                                'entidades_violentas_e_odiosas' => ['Grupos Extremistas', 'dark-red-text'],
+                                ];
+                                @endphp
+
+                                @if(isset($motivos[$item->motivo_denuncia]))
+                                <p class="motivo_denuncia {{ $motivos[$item->motivo_denuncia][1] }}">
+                                    {{ $motivos[$item->motivo_denuncia][0] }}
+                                </p>
+                                @else
+                                <p class="motivo_denuncia gray-text">Motivo não reconhecido</p>
                                 @endif
                             </td>
+
                             <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
                             <td>
                                 @switch($item->usuarioDenunciado->status_conta ?? $item->postagem->usuario->status_conta ?? $item->comentario->usuario->status_conta)

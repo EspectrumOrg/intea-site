@@ -13,15 +13,11 @@ class DenunciaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Denuncia::query();
+        $query = Denuncia::query()->where('status_denuncia', 'pendente');
 
         // Filtros
         if ($request->filled('motivo_denuncia')) {
             $query->where('motivo_denuncia', $request->motivo_denuncia);
-        }
-
-        if ($request->filled('status_denuncia')) {
-            $query->where('status_denuncia', $request->status_denuncia);
         }
 
         // Ordenação
