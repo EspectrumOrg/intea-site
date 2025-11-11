@@ -107,7 +107,6 @@
 .dropdown-checar-perfil li {
     display: flex;
     transition: .3s;
-    padding: 1rem;
 }
 
 .dropdown-checar-perfil #li-checar-perfil-siedebar-01 {
@@ -133,6 +132,7 @@
     font-size: 18px;
     color: black;
     width: 100%;
+    padding: 1rem;
 }
 
 .dropdown-checar-perfil li form {

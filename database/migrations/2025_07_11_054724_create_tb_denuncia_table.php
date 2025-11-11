@@ -17,7 +17,7 @@ return new class extends Migration
             // Quem fez a denúncia
             $table->foreignId('id_usuario_denunciante')->constrained('tb_usuario')->onDelete('cascade');
 
-            // O que foi denunciado (usuários, postagem ou comentario)
+            // O que foi denunciado (usuário, postagem ou comentario)
             $table->foreignId('id_usuario_denunciado')
                 ->nullable()
                 ->constrained('tb_usuario')

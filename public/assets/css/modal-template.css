@@ -32,6 +32,13 @@
     display: none !important;
 }
 
+.modal-content .texto-next-close-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border: none;
+
+}
 /* ---------- BOTÃO FECHAR ---------- */
 .modal-content .close {
     position: absolute;
@@ -100,10 +107,9 @@
     outline: none;
 }
 
-/* fundo do modal --------------(modal)*/
+/* Modal Denúncia --------------------------------------------------------*/
 .modal-denuncia {
     display: flex;
-    /* escondido por padrão */
     position: fixed;
     z-index: 9999;
     left: 0;
@@ -117,28 +123,24 @@
     padding-top: 2.5rem;
 }
 
-/* conteudo modal */
-.modal-denuncia .modal-content {
-    background: var(--branco);
-    padding: 4rem 1rem 1rem 1rem;
-    border-radius: 15px;
-    width: 600px;
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-}
-
 /* Espaçamento */
 .modal-denuncia .form {
     margin-bottom: 1rem;
 }
 
+.form_realizar_denuncia {
+    display: flex;
+    flex-direction: column;
+    max-height: 60vh;
+    overflow-y: scroll;
+}
+
 /* campos */
 .modal-denuncia .form-label {
-    display: block;
+    font-size: 24px;
     font-weight: 600;
     color: var(--cor-preto);
-    margin-bottom: 0.3rem;
+    margin: 0 2rem 0.5rem 2rem;
 }
 
 /* input */
@@ -158,7 +160,27 @@
     outline: none;
 }
 
-/* Form select */
+.modal-denuncia .opcao-denuncia {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1rem 2rem;
+}
+
+.modal-denuncia .opcao-denuncia label{
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--preto);
+}
+
+.modal-denuncia .opcao-denuncia p{
+    font-size: 14px;
+    color: var(--cinza-borda);
+    margin-top: .25rem;
+}
+
+/* Form select 
 .modal-denuncia .form-select {
     width: 100%;
     padding: 0.55rem 0.75rem;
@@ -167,14 +189,13 @@
     background-color: var(--branco);
     font-size: 0.95rem;
     appearance: none;
-    /* Remove seta padrão */
     -webkit-appearance: none;
     -moz-appearance: none;
     transition: all 0.3s ease;
     cursor: pointer;
 }
-
-/* coloca a img personalizada */
+*/
+/* coloca a img personalizada 
 .modal-denuncia .form-select {
     background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23017373" d="M0 0l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
@@ -190,7 +211,7 @@
     border-color: var(--vermelho);
     box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
     outline: none;
-}
+}*/
 
 /* close button */
 .modal-denuncia .close {

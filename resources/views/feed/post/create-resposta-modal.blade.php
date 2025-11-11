@@ -28,40 +28,44 @@
                         </div>
                     </div>
 
-                    <img
-                        src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
-                        alt="foto de perfil"
-                        class="user-photo"
-                        style="object-fit: cover;"
-                        loading="lazy">
+                    <div class="ligacao-comentario-resposta">
+                        <p>Resposta a {{ $comentario->usuario->user }} e {{ $comentario->postagem->usuario->user }}</p>
+                    </div>
 
-                    <h1> {{ $comentario->postagem->titulo}} </h1>
 
                     <form action="{{ route('post.comentario', ['tipo' => 'comentario','id' => $comentario->id]) }}" method="POST" class="form" enctype="multipart/form-data">
-                        @csrf
+                        <div class="form-resposta-modal">
+                            <img
+                                src="{{ Auth::user()->foto ? url('storage/' . Auth::user()->foto) : asset('assets/images/logos/contas/user.png') }}"
+                                alt="foto de perfil"
+                                class="user-photo"
+                                style="object-fit: cover;"
+                                loading="lazy">
+                            @csrf
 
-                        <div class="textfield">
-                            <div id="hashtag-preview-create-resposta-modal-{{$comentario->id}}" class="hashtag-preview"></div>
+                            <div class="textfield">
+                                <div id="hashtag-preview-create-resposta-modal-{{$comentario->id}}" class="hashtag-preview"></div>
 
-                            <textarea id="texto_resposta_create_modal_{{ $comentario->id }}"
-                                name="comentario"
-                                maxlength="280"
-                                rows="3"
-                                placeholder="Responda a publicação de {{ $comentario->postagem->usuario->user }}" required
-                                style="width: 100%;"></textarea>
-                            <x-input-error class="mt-2" :messages="$errors->get('comentario')" />
+                                <textarea id="texto_resposta_create_modal_{{ $comentario->id }}"
+                                    name="comentario"
+                                    maxlength="280"
+                                    rows="3"
+                                    placeholder="Responda a publicação de {{ $comentario->postagem->usuario->user }}" required
+                                    style="width: 100%;"></textarea>
+                                <x-input-error class="mt-2" :messages="$errors->get('comentario')" />
 
-                            {{-- Preview da imagem --}}
-                            <div id="image-preview_create_resposta_modal_{{ $comentario->id }}" class="image-preview" style="display: none;">
-                                <img id="preview-img_create_resposta_modal_{{ $comentario->id }}" src="" alt="Prévia da imagem">
-                                <button type="button" id="remove-image_create_resposta_modal_{{ $comentario->id }}" class="remove-image">
-                                    <span class="material-symbols-outlined">
-                                        close
-                                    </span>
-                                </button>
+                                {{-- Preview da imagem --}}
+                                <div id="image-preview_create_resposta_modal_{{ $comentario->id }}" class="image-preview" style="display: none;">
+                                    <img id="preview-img_create_resposta_modal_{{ $comentario->id }}" src="" alt="Prévia da imagem">
+                                    <button type="button" id="remove-image_create_resposta_modal_{{ $comentario->id }}" class="remove-image">
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                         <div class="content">
                             <div class="extras">
                                 <label for="caminho_imagem_modal_{{ $comentario->id}}" class="upload-label">

@@ -135,6 +135,21 @@
 }
 
 /* ----------------------------- resposta modal ------------------------------- */
+.ligacao-comentario-resposta {
+    margin: .5rem 1.2rem;
+    padding: 1rem;
+    border-left: 1px solid var(--azul);
+}
+.ligacao-comentario-resposta p {
+    font-size: 14px;
+    color: var(--preto);
+}
+
+.form-resposta-modal {
+    display: flex;
+    flex-direction: row;
+}
+
 .resposta {
     display: flex;
     flex-direction: column;
