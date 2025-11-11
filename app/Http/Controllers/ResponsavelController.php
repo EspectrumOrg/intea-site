@@ -154,11 +154,14 @@ public function removeDependente(Request $request)
             $autista->save();
         }
 
-        Log::info("Usuário {$responsavelId} desvinculou o dependente {$autista->id}");
+        // 🗑️ Remove o registro do responsável (vínculo)
+        $vinculo->delete();
+
+        Log::info("Usuário {$responsavelId} desvinculou e removeu o vínculo do dependente {$autista->id}");
 
         // Verifica se o usuário ainda possui outros dependentes
         $aindaTemDependentes = Responsavel::where('usuario_id', $responsavelId)
-            ->whereHas('autistas') // caso queira contar apenas vinculados
+            ->whereHas('autistas')
             ->exists();
 
         // 🔄 Se não tiver mais dependentes, volta o tipo de usuário para 3 (Comunidade)
@@ -172,7 +175,7 @@ public function removeDependente(Request $request)
 
         return response()->json([
             'success' => true,
-            'message' => 'Dependente desvinculado com sucesso.'
+            'message' => 'Dependente desvinculado e vínculo removido com sucesso.'
         ]);
 
     } catch (\Exception $e) {
@@ -184,6 +187,7 @@ public function removeDependente(Request $request)
         ], 500);
     }
 }
+
 
 
 
