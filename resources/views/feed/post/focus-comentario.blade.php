@@ -98,30 +98,14 @@
         <!-- Modal de denúncia (um para cada comentario) -->
         <div id="modal-denuncia-comentario-{{ $comentario->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
+                <h3 class="texto-next-close-button">Coletando informações</h3>
                 <span class="close material-symbols-outlined" onclick="fecharModalDenunciaComentario('{{$comentario->id}}')">close</span>
                 <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
                     @csrf
-                    <div class="form">
-                        <input type="hidden" name="tipo" value="comentario">
-                        <input type="hidden" name="id_alvo" value="{{ $comentario->id }}">
-                        <label class="form-label">Motivo Denúncia</label>
-                        <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
-                            <option value="">Tipo</option>
-                            <option value="spam">Spam</option>
-                            <option value="desinformação">Desinformação</option>
-                            <option value="conteudo_explicito">Conteúdo Explícito</option>
-                            <option value="discurso_de_odio">Discurso de Ódio</option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="tipo" value="comentario">
+                    <input type="hidden" name="id_alvo" value="{{ $comentario->id }}">
 
-                    <div class="form-label">
-                        <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
-                        <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
-                    </div>
-
-                    <div style="display: flex; justify-content: end;">
-                        <button type="submit">Denunciar</button>
-                    </div>
+                    @include('layouts.partials.modal-denuncia')
                 </form>
             </div>
         </div>
@@ -308,30 +292,14 @@
                 <!-- Modal de denúncia (um para cada resposta) -->
                 <div id="modal-denuncia-comentario-{{ $resposta->id }}" class="modal-denuncia hidden">
                     <div class="modal-content">
+                        <h3 class="texto-next-close-button">Coletando informações</h3>
                         <span class="close material-symbols-outlined" onclick="fecharModalDenunciaComentario('{{$resposta->id}}')">close</span>
                         <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
                             @csrf
-                            <div class="form">
-                                <input type="hidden" name="tipo" value="comentario">
-                                <input type="hidden" name="id_alvo" value="{{ $resposta->id }}">
-                                <label class="form-label">Motivo Denúncia</label>
-                                <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
-                                    <option value="">Tipo</option>
-                                    <option value="spam">Spam</option>
-                                    <option value="desinformação">Desinformação</option>
-                                    <option value="conteudo_explicito">Conteúdo Explícito</option>
-                                    <option value="discurso_de_odio">Discurso de Ódio</option>
-                                </select>
-                            </div>
+                            <input type="hidden" name="tipo" value="comentario">
+                            <input type="hidden" name="id_alvo" value="{{ $resposta->id }}">
 
-                            <div class="form-label">
-                                <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
-                                <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
-                            </div>
-
-                            <div style="display: flex; justify-content: end;">
-                                <button type="submit">Denunciar</button>
-                            </div>
+                            @include('layouts.partials.modal-denuncia.blade.php')
                         </form>
                     </div>
                 </div>

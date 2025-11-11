@@ -114,61 +114,61 @@ e($texto)
                                 </a>
                                 @endif
                             </li>
-                         <li>
-    @php
-        $authUser = Auth::user();
-        $isFollowing = $authUser->seguindo->contains($postagem->usuario_id);
-        $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
-            ->where('alvo_id', $postagem->usuario_id)
-            ->where('tipo', 'seguir')
-            ->exists();
-    @endphp
+                            <li>
+                                @php
+                                $authUser = Auth::user();
+                                $isFollowing = $authUser->seguindo->contains($postagem->usuario_id);
+                                $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+                                ->where('alvo_id', $postagem->usuario_id)
+                                ->where('tipo', 'seguir')
+                                ->exists();
+                                @endphp
 
-    @if ($authUser->id !== $postagem->usuario_id)
+                                @if ($authUser->id !== $postagem->usuario_id)
 
-        {{-- Se já segue → sempre mostrar Deixar de seguir --}}
-        @if ($isFollowing)
-            <form action="{{ route('seguir.destroy', $postagem->usuario_id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn-acao deixar-btn">
-                    <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
-                </button>
-            </form>
+                                {{-- Se já segue → sempre mostrar Deixar de seguir --}}
+                                @if ($isFollowing)
+                                <form action="{{ route('seguir.destroy', $postagem->usuario_id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-acao deixar-btn">
+                                        <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+                                    </button>
+                                </form>
 
-        {{-- Usuário privado (não está seguindo) --}}
-        @elseif ($postagem->usuario->visibilidade == 0)
-            @if ($pedidoFeito)
-                 <form action="{{ route('seguir.cancelar', $postagem->usuario_id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn-acao seguir-btn">
-            <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
-        </button>
-    </form>
-            @else
-                <form action="{{ route('seguir.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                    <button type="submit" class="btn-acao seguir-btn">
-                        <span class="material-symbols-outlined">person_add</span> Pedir para seguir
-                    </button>
-                </form>
-            @endif
+                                {{-- Usuário privado (não está seguindo) --}}
+                                @elseif ($postagem->usuario->visibilidade == 0)
+                                @if ($pedidoFeito)
+                                <form action="{{ route('seguir.cancelar', $postagem->usuario_id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-acao seguir-btn">
+                                        <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+                                    </button>
+                                </form>
+                                @else
+                                <form action="{{ route('seguir.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                                    <button type="submit" class="btn-acao seguir-btn">
+                                        <span class="material-symbols-outlined">person_add</span> Pedir para seguir
+                                    </button>
+                                </form>
+                                @endif
 
-        {{-- Usuário público (não está seguindo) --}}
-        @else
-            <form action="{{ route('seguir.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
-                <button type="submit" class="btn-acao seguir-btn">
-                    <span class="material-symbols-outlined">person_add</span> Seguir {{ $postagem->usuario->user }}
-                </button>
-            </form>
-        @endif
+                                {{-- Usuário público (não está seguindo) --}}
+                                @else
+                                <form action="{{ route('seguir.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                                    <button type="submit" class="btn-acao seguir-btn">
+                                        <span class="material-symbols-outlined">person_add</span> Seguir {{ $postagem->usuario->user }}
+                                    </button>
+                                </form>
+                                @endif
 
-    @endif
-</li>
+                                @endif
+                            </li>
                             @endif
                         </ul>
                     </div>
@@ -236,6 +236,7 @@ e($texto)
         <!-- Modal de denúncia (um para cada postagem) -->
         <div id="modal-denuncia-postagem-{{ $postagem->id }}" class="modal-denuncia hidden">
             <div class="modal-content">
+                <h3 class="texto-next-close-button">Coletando informações</h3>
                 <span class="close"
                     onclick="fecharModalDenuncia('{{$postagem->id}}')">
                     <span class="material-symbols-outlined">close</span>
@@ -243,27 +244,10 @@ e($texto)
 
                 <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
                     @csrf
-                    <div class="form">
-                        <input type="hidden" name="tipo" value="postagem">
-                        <input type="hidden" name="id_alvo" value="{{ $postagem->id }}">
-                        <label class="form-label">Motivo Denúncia</label>
-                        <select class="form-select" id="motivo_denuncia" name="motivo_denuncia" required>
-                            <option value="">Tipo</option>
-                            <option value="spam">Spam</option>
-                            <option value="desinformacao">Desinformação</option>
-                            <option value="conteudo_explicito">Conteúdo Explícito</option>
-                            <option value="discurso_de_odio">Discurso de Ódio</option>
-                        </select>
-                    </div>
+                    <input type="hidden" name="tipo" value="postagem">
+                    <input type="hidden" name="id_alvo" value="{{ $postagem->id }}">
 
-                    <div class="form-label">
-                        <input class="form-control" name="texto_denuncia" type="text" placeholder="Explique o porquê da denúncia" value="{{ old('texto_denuncia') }}" required autocomplete="off">
-                        <x-input-error class="mt-2" :messages="$errors->get('texto_denuncia')" />
-                    </div>
-
-                    <div style="display: flex; justify-content: end;">
-                        <button type="submit">Denunciar</button>
-                    </div>
+                    @include('layouts.partials.modal-denuncia')
                 </form>
             </div>
         </div>
