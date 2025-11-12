@@ -25,6 +25,12 @@ use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\{
+    FeedController,
+    InteresseController,
+    PreferenciasUsuarioController,
+    ModeracaoController
+};
 
 /*
 |--------------------------------------------------------------------------
@@ -267,6 +273,38 @@ Route::middleware('auth')->group(function () {
 Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])
     ->name('dependente.remover')
     ->middleware('auth');
+// Sistema de interesses
+
+//  Feeds Principais (usando /inicio para evitar conflito)
+Route::get('/inicio', [FeedController::class, 'principal'])->name('feed.principal');
+Route::get('/inicio/personalizado', [FeedController::class, 'personalizado'])->name('feed.personalizado');
+Route::get('/inicio/interesse/{interesse}', [FeedController::class, 'porInteresse'])->name('feed.interesse');
+
+// Navegação
+Route::get('/i/{slug}', [FeedController::class, 'porInteresse']);
+
+//  ONBOARDING (primeiro acesso)
+Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
+Route::post('/api/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
+Route::post('/api/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
+
+//  INTERESSES
+Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
+Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
+
+//  SEGUIR/DEIXAR INTERESSES 
+Route::post('/api/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
+Route::post('/api/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
+Route::get('/api/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
+
+//  Moderação
+Route::middleware(['auth'])->group(function () {
+    Route::get('/moderacao/{interesse}/painel', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
+    Route::post('/api/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');
+    Route::post('/api/moderacao/postagens/{postagem}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.restaurar-postagem');
+    Route::post('/api/moderacao/interesses/{interesse}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.adicionar-palavra-proibida');
+    Route::post('/api/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
+});
 
 
 require __DIR__ . '/auth.php';
