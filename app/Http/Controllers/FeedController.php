@@ -9,6 +9,29 @@ use Illuminate\Support\Facades\Auth;
 
 class FeedController extends Controller
 {
+
+    public function principal()
+    {
+        $usuario = Auth::user();
+        
+        // Se não completou onboarding, redireciona
+        if (!$usuario->onboardingConcluido()) {
+            return redirect()->route('onboarding');
+        }
+
+        // Feed básico - todas as postagens
+        $postagens = Postagem::with(['usuario', 'imagens'])
+                    ->where('bloqueada_auto', false)
+                    ->where('removida_manual', false)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(20);
+
+        $interessesUsuario = $usuario->interesses;
+
+        return view('feed.principal', compact('postagens', 'interessesUsuario'));
+    }
+
+    
     public function index()
     {
         $usuario = Auth::user();
@@ -53,9 +76,40 @@ class FeedController extends Controller
                     ->paginate(15);
 
         $usuarioSegue = Auth::user()->segueInteresse($interesse->id);
+        
+    $interessesUsuario = Auth::user()->interesses;
 
-        return view('feed.interesse', compact('postagens', 'interesse', 'usuarioSegue'));
+    return view('feed.interesse', compact('postagens', 'interesse', 'usuarioSegue', 'interessesUsuario'));
     }
+
+    public function personalizado()
+{
+    $usuario = Auth::user();
+    
+    // Se não completou onboarding, redireciona
+    if (!$usuario->onboardingConcluido()) {
+        return redirect()->route('onboarding');
+    }
+
+    if ($usuario->interesses()->count() === 0) {
+        return redirect()->route('feed.principal')
+                       ->with('info', 'Siga alguns interesses para ter um feed personalizado');
+    }
+
+    // Feed personalizado - postagens dos interesses do usuário
+    $postagens = Postagem::with(['usuario', 'imagens', 'interesses'])
+                ->whereHas('interesses', function($query) use ($usuario) {
+                    $query->whereIn('interesses.id', $usuario->interesses()->pluck('interesses.id'));
+                })
+                ->where('bloqueada_auto', false)
+                ->where('removida_manual', false)
+                ->orderBy('created_at', 'desc')
+                ->paginate(20);
+
+    $interessesUsuario = $usuario->interesses;
+
+    return view('feed.personalizado', compact('postagens', 'interessesUsuario'));
+}
 
     public function interessesMistos(Request $request)
     {
