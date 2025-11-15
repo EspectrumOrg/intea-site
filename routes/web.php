@@ -259,12 +259,18 @@ Route::middleware('auth')->group(function () {
 
 // rotas para adicionar dependente via responsavel
 // routes/web.php
+
 Route::post('/responsavel/{id}/adicionar-dependente', [ResponsavelController::class, 'addDependente'])->name('responsavel.adicionar_dependente');
 
 
-// rotas para edição dos dados do autista via responsavel
-// routes/web.php
+// rotas do responsavel ---------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+Route::middleware(['auth', 'is_responsavel', 'check.ban'])->group(function () {
+
+    Route::get('/painel-responsavel', [\App\Http\Controllers\ResponsavelPainelController::class, 'edit'])
+    ->middleware(['auth', 'is_responsavel'])
+    ->name('responsavel.painel');
+    
 Route::middleware('auth')->group(function () {
     Route::get('/autistas/{id}/editar', [App\Http\Controllers\AutistaController::class, 'edit_responsavel'])->name('autistas.edit_responsavel');
     Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
@@ -273,7 +279,9 @@ Route::middleware('auth')->group(function () {
 Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])
     ->name('dependente.remover')
     ->middleware('auth');
-// Sistema de interesses
+});
+
+// Sistema de interesses----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 //  Feeds Principais (usando /inicio para evitar conflito)
 Route::get('/inicio', [FeedController::class, 'principal'])->name('feed.principal');
