@@ -10,7 +10,6 @@
         <span class="material-symbols-outlined">search</span>
     <div id="listaUsuarios" class="user-list"></div>
 </div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const inputBuscar = document.getElementById('buscar');
@@ -18,7 +17,6 @@
 
         if (!inputBuscar || !lista) return;
 
-        // URL absoluta usando Blade
         const buscarUrl = "{{ route('buscar.usuarios') }}";
 
         inputBuscar.addEventListener('input', function() {
@@ -40,22 +38,38 @@
                     }
 
                     usuarios.forEach(u => {
-                        const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
-
                         const a = document.createElement('a');
-                        a.href = `/conta/${u.id}`;
-                        a.className = 'link-barra-pesquisa'
+                        
+                        // 🔹 Define a URL de destino
+                        if (u.tipo === 'tendencia') {
+                            a.href = `/tendencias/${u.id}`;
+                        } else {
+                            a.href = `/conta/${u.id}`;
+                        }
 
-                        a.innerHTML = `
-                        <img 
-                            class="foto-usuario-barra-pesquisa"
-                            src="${fotoUrl}" 
-                            alt="${u.user}">
-                        <div class="info-barra-pesquisa">
-                            <h1>${u.user}</h1>
-                            <p>${u.apelido ?? ''}</p>
-                        </div>
-                    `;
+                        a.className = 'link-barra-pesquisa';
+
+                        // 🔹 Monta o conteúdo (sem imagem se for tendência)
+                        if (u.tipo === 'tendencia') {
+                            a.innerHTML = `
+                                <div class="info-barra-pesquisa">
+                                    <h1 style="color:#007bff;">${u.user}</h1>
+                                    <p>${u.apelido ?? ''}</p>
+                                </div>
+                            `;
+                        } else {
+                            const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
+                            a.innerHTML = `
+                                <img 
+                                    class="foto-usuario-barra-pesquisa"
+                                    src="${fotoUrl}" 
+                                    alt="${u.user}">
+                                <div class="info-barra-pesquisa">
+                                    <h1>${u.user}</h1>
+                                    <p>${u.apelido ?? ''}</p>
+                                </div>
+                            `;
+                        }
 
                         lista.appendChild(a);
                     });

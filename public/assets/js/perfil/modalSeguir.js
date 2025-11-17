@@ -92,3 +92,81 @@ const fecharRemover = document.getElementById('fecharModalRemover');
         });
     }
 });
+document.addEventListener('DOMContentLoaded', function() {
+            // Controle das abas
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
+            const prevBtn = document.querySelector('.tab-scroll-prev');
+            const nextBtn = document.querySelector('.tab-scroll-next');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    // Remove classe active de todos os botões e conteúdos
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    // Adiciona classe active ao botão clicado e conteúdo correspondente
+                    this.classList.add('active');
+                    const targetContent = document.getElementById(`${tabId}-tab`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Controle do scroll horizontal
+            function updateScrollButtons() {
+                if (!tabsWrapper || !prevBtn || !nextBtn) return;
+                const scrollLeft = tabsWrapper.scrollLeft;
+                const scrollWidth = tabsWrapper.scrollWidth;
+                const clientWidth = tabsWrapper.clientWidth;
+
+                // Mostra/oculta botões baseado no scroll
+                prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
+                nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' : 'none';
+
+                // Ativa/desativa botões
+                prevBtn.disabled = scrollLeft <= 0;
+                nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
+            }
+
+            // Eventos dos botões de scroll
+            if (prevBtn && nextBtn && tabsWrapper) {
+                prevBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({ left: -200, behavior: 'smooth' });
+                });
+                nextBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({ left: 200, behavior: 'smooth' });
+                });
+
+                // Atualiza botões quando scrollar
+                tabsWrapper.addEventListener('scroll', updateScrollButtons);
+
+                // Atualiza botões no carregamento e redimensionamento
+                window.addEventListener('resize', updateScrollButtons);
+                updateScrollButtons();
+            }
+
+            // Scroll suave para a aba ativa se estiver fora da view
+            function scrollToActiveTab() {
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab && tabsWrapper) {
+                    const tabRect = activeTab.getBoundingClientRect();
+                    const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+                    if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
+                        activeTab.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'nearest', 
+                            inline: 'center' 
+                        });
+                    }
+                }
+            }
+
+            // Recalcula scroll quando mudar de aba
+            tabButtons.forEach(button => {
+                button.addEventListener('click', scrollToActiveTab);
+            });
+        });

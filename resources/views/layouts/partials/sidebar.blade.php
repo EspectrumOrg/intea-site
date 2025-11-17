@@ -88,6 +88,12 @@
             <h1>Administração</h1>
         </a>
         @endcan
+        @can("visualizar-responsavel")
+            <a href="{{ route('responsavel.painel') }}" class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}">
+                <span id="simbolo-responsavel" class="material-symbols-outlined">supervisor_account</span>
+                <h1>Responsáveis</h1>
+            </a>
+        @endcan
 
 
         <!-- Modal de criação de postagem --------------------------------------------------------------------------->

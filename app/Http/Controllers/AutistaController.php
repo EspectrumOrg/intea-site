@@ -38,7 +38,7 @@ class AutistaController extends Controller
         abort(404, 'Autista não encontrado ou você não tem permissão para editá-lo.');
     }
 
-    return view('profile.dados-autista-responsavel', compact('autista'));
+    return view('responsavel.dados-autista-responsavel', compact('autista'));
 }
 
 public function update_responsavel(Request $request, $id)
@@ -81,7 +81,7 @@ public function update_responsavel(Request $request, $id)
 
     $usuarioAutista->save();
 
-    return redirect()->route('profile.show')
+    return redirect()->route('responsavel.painel')
                      ->with('status', 'autista-updated');
 }
 

@@ -30,5 +30,8 @@ class AuthServiceProvider extends ServiceProvider
          Gate::define('visualizar-profissional', function (Usuario $usuario) {
             return $usuario->tipo_usuario === 4;
         });
+        Gate::define('visualizar-responsavel', function (Usuario $usuario) {
+        return $usuario->tipo_usuario == 5;
+        });
     }
 }

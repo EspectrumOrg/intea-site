@@ -1,0 +1,682 @@
+/* Onboarding */
+.onboarding-body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.onboarding-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.onboarding-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.logo-section .logo {
+    width: 50px;
+    height: 50px;
+}
+
+.logo-section h1 {
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* Grid de Interesses */
+.interesses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.interesse-card {
+    border: 2px solid #e1e5e9;
+    border-radius: 15px;
+    padding: 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.interesse-card:hover {
+    border-color: #3B82F6;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.interesse-checkbox {
+    display: none;
+}
+
+.interesse-checkbox:checked + .interesse-label {
+    border-color: #3B82F6;
+    background-color: #3B82F6;
+    color: white;
+}
+
+.interesse-checkbox:checked + .interesse-label .interesse-icon {
+    background-color: rgba(255,255,255,0.2) !important;
+    color: white !important;
+}
+
+.interesse-label {
+    display: block;
+    padding: 25px;
+    cursor: pointer;
+    border-radius: 13px;
+    transition: all 0.3s ease;
+}
+
+.interesse-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.interesse-nome {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.interesse-descricao {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.interesse-stats {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.interesse-stats .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* Ações do Onboarding */
+.onboarding-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 12px 30px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3B82F6;
+    color: white;
+}
+
+.btn-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-primary:not(:disabled):hover {
+    background: #2563eb;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #666;
+    border: 2px solid #e1e5e9;
+}
+
+.btn-secondary:hover {
+    border-color: #3B82F6;
+    color: #3B82F6;
+}
+
+/* Feed Header */
+.feed-header {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.feed-header.principal {
+    border-left: 4px solid #3B82F6;
+}
+
+.feed-header.interesse {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.interesse-header-info {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.interesse-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.interesse-info {
+    flex: 1;
+}
+
+.interesse-titulo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.interesse-descricao {
+    color: #666;
+    margin: 0 0 10px 0;
+}
+
+.interesse-stats-header {
+    display: flex;
+    gap: 15px;
+}
+
+.interesse-stats-header .stat {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Ações do Interesse */
+.interesse-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-seguir, .btn-info {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-seguir {
+    background: #3B82F6;
+    color: white;
+}
+
+.btn-seguir.seguindo {
+    background: #10B981;
+}
+
+.btn-info {
+    background: #f1f5f9;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Navegação entre Feeds */
+.feed-navigation {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.nav-feed {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #666;
+    border: 2px solid #e1e5e9;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.nav-feed:hover {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    transform: translateY(-2px);
+}
+
+/* Interesses Rápidos no Header */
+.interesses-rapidos {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.interesses-lista {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.interesse-rapido {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    color: #64748b;
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+}
+
+.interesse-rapido:hover {
+    background: #3B82F6;
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* Badges de Interesse nas Postagens */
+.post-interesses {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.interesse-badge-mini {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.interesse-badge-mini:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.mais-interesses {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+
+/* Empty State */
+.empty-feed {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.empty-feed .material-symbols-outlined {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.empty-feed h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.empty-feed p {
+    margin-bottom: 20px;
+}
+
+/* Sidebar */
+.nav-section {
+    margin-top: 20px;
+}
+
+.section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 10px;
+    padding: 0 15px;
+}
+
+.interesse-nav-item {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px !important;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+}
+
+.interesse-nav-item:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.interesse-badge {
+    background: #ef4444;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    margin-left: auto;
+}
+/* Página de Interesses */
+.interesses-page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.interesses-page-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.interesses-page-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.interesses-section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e1e5e9;
+}
+
+/* Filtros */
+.interesses-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: 2px solid #e1e5e9;
+    background: white;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+    background: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* Cards de Interesses */
+.interesses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.interesse-card-large {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.interesse-card-large:hover {
+    transform: translateY(-5px);
+}
+
+.interesse-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.interesse-icon-large {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.interesse-body {
+    padding: 0 20px 20px;
+}
+
+.interesse-body p {
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.interesse-actions {
+    padding: 0 20px 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-visitar-interesse {
+    padding: 8px 16px;
+    background: #3B82F6;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn-visitar-interesse:hover {
+    background: #2563eb;
+}
+
+.btn-deixar-seguir {
+    padding: 8px 16px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn-deixar-seguir:hover {
+    background: #dc2626;
+}
+
+/* Grid Completo de Interesses */
+.interesses-grid-full {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.interesse-card-full {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.interesse-card-full:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+.interesse-badge {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+}
+
+.interesse-content-full {
+    flex: 1;
+}
+
+.interesse-content-full h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.interesse-desc {
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.interesse-meta {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.badge-destaque {
+    background: #f59e0b;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.interesse-actions-full {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-seguir-interesse {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-seguir-interesse {
+    background: #3B82F6;
+    color: white;
+}
+
+.btn-seguir-interesse.seguindo {
+    background: #10B981;
+}
+
+.btn-saiba-mais {
+    padding: 8px 12px;
+    background: #f1f5f9;
+    color: #64748b;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.btn-saiba-mais:hover {
+    background: #e1e5e9;
+}
+
+/* Paginação */
+.interesses-pagination {
+    margin-top: 30px;
+    text-align: center;
+}

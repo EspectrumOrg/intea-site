@@ -2,16 +2,13 @@
 <link rel="stylesheet" href="{{ asset('assets/css/layout/barra-pesquisa.css') }}">
 
 <div class="buscar-container">
-
-    <div class="buscar-container">
-        <input 
-            class="input-barra-pesquisa"
-            type="text" 
-            id="buscarInputPerfil" 
-            placeholder="Buscar">
-        <span class="material-symbols-outlined">search</span>
-        <div id="listaUsuariosPerfil" class="user-list"></div>
-    </div>
+    <input 
+        class="input-barra-pesquisa"
+        type="text" 
+        id="buscarInputPerfil" 
+        placeholder="Buscar">
+    <span class="material-symbols-outlined">search</span>
+    <div id="listaUsuariosPerfil" class="user-list"></div>
 </div>
 
 <script>
@@ -21,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (!inputBuscar || !lista) return;
 
-    // Mantém a mesma lógica de URL
     const buscarUrl = "{{ route('buscar.usuarios') }}";
 
     inputBuscar.addEventListener('input', function() {
@@ -43,22 +39,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
 
                 usuarios.forEach(u => {
-                    const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
-
                     const a = document.createElement('a');
-                    a.href = `/conta/${u.id}`;
                     a.className = 'link-barra-pesquisa';
+                    a.href = u.tipo === 'tendencia' ? `/tendencias/${u.id}` : `/conta/${u.id}`;
 
-                    a.innerHTML = `
-                        <img 
-                            class="foto-usuario-barra-pesquisa"
-                            src="${fotoUrl}" 
-                            alt="${u.user}">
-                        <div class="info-barra-pesquisa">
-                            <h1>${u.user}</h1>
-                            <p>${u.apelido ?? ''}</p>
-                        </div>
-                    `;
+                      if (u.tipo === 'tendencia') {
+                            a.innerHTML = `
+                                <div class="info-barra-pesquisa">
+                                    <h1 style="color:#007bff;">${u.user}</h1>
+                                    <p>${u.apelido ?? ''}</p>
+                                </div>
+                            `;
+                        } else {
+                        // Mostra usuário normal com foto e apelido
+                        const fotoUrl = u.foto ? `/storage/${u.foto}` : '/storage/default.jpg';
+                        a.innerHTML = `
+                            <img 
+                                class="foto-usuario-barra-pesquisa"
+                                src="${fotoUrl}" 
+                                alt="${u.user}">
+                            <div class="info-barra-pesquisa">
+                                <h1>${u.user}</h1>
+                                <p>${u.apelido ?? ''}</p>
+                            </div>
+                        `;
+                    }
 
                     lista.appendChild(a);
                 });
