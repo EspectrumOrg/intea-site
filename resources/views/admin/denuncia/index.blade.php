@@ -59,7 +59,6 @@
                             <th>Motivo</th>
                             <th>Data de denuncia</th>
                             <th>Status conta</th>
-                            <th>Status denúncia</th>
                             <th>Resolvido</th>
                             <th>Banir</th>
                             <th>Visualizar</th>
@@ -109,20 +108,6 @@
 
                                 @case(2)
                                 Conta excluída
-                                @break
-
-                                @default
-                                Desconhecido
-                                @endswitch
-                            </td>
-                            <td>
-                                @switch($item->status_denuncia)
-                                @case('resolvida')
-                                Resolvida
-                                @break
-
-                                @case('pendente')
-                                Pendente
                                 @break
 
                                 @default

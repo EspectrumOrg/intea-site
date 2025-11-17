@@ -5,7 +5,7 @@
         <a href="{{ route('post.index') }}"
             class="aba-postagem {{ request()->routeIs('post.index') ? 'selecionado' : '' }}"
             id="home">
-            <h1>Home</h1>
+            <h1>Para você</h1>
         </a>
 
         <a href="{{ route('post.seguindo') }}"
