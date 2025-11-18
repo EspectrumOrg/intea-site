@@ -131,6 +131,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
 
     Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
 
+Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notificacao.index');
 
     // Grupo
     Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
@@ -205,6 +206,7 @@ Route::middleware('auth', 'is_profissional')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/notificacoes', [NotificacaoController::class, 'index'])->name('notificacoes.index');
     Route::post('/notificacoes/{id}/aceitar', [NotificacaoController::class, 'aceitar'])->name('notificacoes.aceitar');
+  Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::delete('/notificacoes/{id}', [NotificacaoController::class, 'recusar'])->name('notificacoes.recusar');
 });
 

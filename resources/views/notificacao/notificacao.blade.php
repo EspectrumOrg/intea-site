@@ -7,6 +7,15 @@
 
     {{-- Bootstrap (CDN) --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <!-- layout geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/estilo-chat.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/style.css') }}">
+
+
+
 
     <style>
         body {
@@ -35,6 +44,15 @@
 </head>
 <body>
 
+ <div class="layout">
+        <div class="container-content">
+            <!-- conteúdo sidebar  -->
+            <div class="container-sidebar">
+                @include("layouts.partials.sidebar")
+            </div>
+
+
+
 <div class="container">
     <h2>Solicitações de Seguir</h2>
 
@@ -47,17 +65,29 @@
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
-    {{-- Lista de notificações --}}
-    @if($notificacoes->isEmpty())
-        <p class="text-center text-muted">Você não tem solicitações pendentes.</p>
-    @else
-        <ul class="list-group">
-            @foreach($notificacoes as $notificacao)
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+{{-- Lista de notificações --}}
+@if($notificacoes->isEmpty())
+    <p class="text-center text-muted">Você não tem notificações.</p>
+@else
+    <ul class="list-group">
+        @foreach($notificacoes as $notificacao)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                {{-- LINK PARA A CONTA DO USUÁRIO --}}
+                @php
+                    $linkConta = route('conta.index', $notificacao->solicitante_id);
+                    $nomeUsuario = $notificacao->solicitante->user ?? 'Usuário desconhecido';
+                @endphp
+
+                {{-- TIPOS DE NOTIFICAÇÃO --}}
+                @if($notificacao->tipo === 'seguir')
                     <div>
-                        <strong>{{ $notificacao->solicitante->user ?? 'Usuário desconhecido' }}</strong>
-                        quer te seguir.
+                        <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
+                            {{ $nomeUsuario }}
+                        </a>
+                        enviou uma solicitação para seguir você.
                     </div>
+
                     <div>
                         <form action="{{ route('notificacoes.aceitar', $notificacao->id) }}" method="POST" class="d-inline">
                             @csrf
@@ -70,10 +100,31 @@
                             <button type="submit" class="btn btn-danger btn-sm">Recusar</button>
                         </form>
                     </div>
-                </li>
-            @endforeach
-        </ul>
-    @endif
+
+              @elseif($notificacao->tipo === 'seguindo_voce')
+    <div>
+        <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
+            {{ $nomeUsuario }}
+        </a>
+        começou a seguir você.
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-success">Novo seguidor</span>
+
+        {{-- BOTÃO OK PARA REMOVER A NOTIFICAÇÃO --}}
+        <form action="{{ route('notificacao.destroy', $notificacao->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-primary btn-sm">OK</button>
+        </form>
+    </div>
+@endif
+
+            </li>
+        @endforeach
+    </ul>
+@endif
 </div>
 
 </body>

@@ -56,13 +56,20 @@ public function store(Request $request)
 
         return redirect()->back()->with('success', 'Solicitação de seguir enviada!');
     }
-    $isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
+$isAlreadyFollowing = $user->seguindo()->where('tb_usuario.id', $userIdToFollow)->exists();
 
-    if (!$isAlreadyFollowing) {
-        $user->seguindo()->attach($userIdToFollow);
-    }
+if (!$isAlreadyFollowing) {
 
-    return redirect()->back()->with('success', 'Você está seguindo o usuário!');
+    $user->seguindo()->attach($userIdToFollow);
+
+    \App\Models\Notificacao::create([
+        'solicitante_id' => $user->id,     
+        'alvo_id' => $userIdToFollow,      
+        'tipo' => 'seguindo_voce',
+    ]);
+}
+
+return redirect()->back()->with('success', 'Você está seguindo o usuário!');
 }
 
        // Contar quantos usuários o usuário está seguindo

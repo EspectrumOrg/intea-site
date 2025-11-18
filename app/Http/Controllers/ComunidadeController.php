@@ -53,6 +53,7 @@ class ComunidadeController extends Controller
                 'email' => 'required|email|unique:tb_usuario,email',
                 'senha' => 'required|string|min:6|max:255',
                 'senha_confirmacao' => 'required|same:senha',
+                'cpf' => 'required|max:20|unique:tb_usuario,cpf',
                 'genero' => 'required|integer',
                 'data_nascimento' => 'required|date',
                 'foto' => 'image|mimes:png,jpg,gif|max:4096', //foto perfil
@@ -84,6 +85,20 @@ class ComunidadeController extends Controller
                     ->withInput();
             }
 
+            $limparCPF = function ($cpf) {
+                return preg_replace('/[^0-9]/', '', $cpf);
+            };
+
+            $cpfRequest = $limparCPF($request->cpf);
+
+            if (Usuario::where('cpf', $cpfRequest)->exists()) {
+                return response()->json(['message' => 'CPF já cadastrado.'], 409);
+            }
+
+            if (!self::validaCPF($cpfRequest)) {
+                return response()->json(['message' => 'CPF inválido.'], 422);
+            }
+
             // Inserir foto
             if ($request->hasFile('foto')) {
                 // salva em storage/app/arquivos/perfil/fotos
@@ -96,6 +111,7 @@ class ComunidadeController extends Controller
                 'apelido' => $request->apelido,
                 'email' => $request->email,
                 'senha' => bcrypt($request->senha),
+                'cpf' => $cpfRequest,
                 'genero' => $request->genero,
                 'data_nascimento' => $request->data_nascimento,
                 'foto' => $path,
@@ -126,5 +142,21 @@ class ComunidadeController extends Controller
                 ->withErrors(['erro' => 'Erro interno ao salvar dados. Tente novamente mais tarde.'])
                 ->withInput();
         }
+    }
+
+    private static function validaCPF($cpf)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $cpf);
+        if (strlen($cpf) != 11 || preg_match('/(\d)\1{10}/', $cpf))
+            return false;
+
+        for ($t = 9; $t < 11; $t++) {
+            for ($d = 0, $c = 0; $c < $t; $c++)
+                $d += $cpf[$c] * (($t + 1) - $c);
+            $d = ((10 * $d) % 11) % 10;
+            if ($cpf[$c] != $d)
+                return false;
+        }
+        return true;
     }
 }

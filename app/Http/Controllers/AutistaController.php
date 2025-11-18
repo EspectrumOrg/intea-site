@@ -119,7 +119,8 @@ public function update_responsavel(Request $request, $id)
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
+            Log::warning('Falha na validação:', $validator->errors()->toArray());
+                 return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -147,12 +148,12 @@ public function update_responsavel(Request $request, $id)
         if (!self::validaCPF($cpfRequest)) {
             return response()->json(['message' => 'CPF inválido.'], 422);
         }
+        $path = null; // <-- CORREÇÃO: Inicializa $path
 
         if ($request->hasFile('foto')) {
             // salva em storage/app/arquivos/perfil/fotos
             $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
         }
-
 
         $user_usuario = $request->user ?? $request->apelido ?? '';
 
@@ -187,7 +188,7 @@ public function update_responsavel(Request $request, $id)
             if ($idade < 18) {
                 $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
 
-                // Busca o usuário do responsável pelo CPF
+                // 1. Busca o USUÁRIO do responsável pelo CPF
                 $cuidadorUsuario = Usuario::where('cpf', $cpfRespLimpo)->first();
 
                 if (!$cuidadorUsuario) {
@@ -196,9 +197,25 @@ public function update_responsavel(Request $request, $id)
                     ], 422);
                 }
 
-                // Usa o ID do usuário encontrado como responsável
-                $idCuidador = $cuidadorUsuario->id;
+                // 2. Busca ou Cria o registro na tabela Responsavel
+                // O método firstOrCreate busca pelo 'usuario_id'. Se não encontrar, ele cria.
+                $registroResponsavel = Responsavel::firstOrCreate(
+                    ['usuario_id' => $cuidadorUsuario->id],
+                    ['cipteia_autista' => $request->CipteiaAutista]
+                    // Se houver outros campos necessários na tabela Responsavel (como tipo, status, etc.), 
+                    // eles devem ser passados como segundo array, por exemplo:
+                    // ['tipo' => 'Legal']
+                );
+
+                if ($cuidadorUsuario->tipo_usuario != 5) {
+                    $cuidadorUsuario->tipo_usuario = 5;
+                    $cuidadorUsuario->save();
+                }
+
+                // 3. Usa o ID do registro Responsavel para a associação
+                $idCuidador = $registroResponsavel->id;
             }
+            
             Autista::create([
                 'cipteia_autista' => $request->CipteiaAutista,
                 'status_cipteia_autista' => 'Ativo',

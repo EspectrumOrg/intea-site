@@ -21,6 +21,10 @@
     <input id="user" class="user-input" name="user" type="text" maxlength="255" placeholder="@name" required />
     <div class="error" data-error-for="user"></div>
 
+    <label for="cpf">CPF *</label>
+    <input id="cpf" name="cpf" type="text" maxlength="14" placeholder="123.456.789-10" class="cpf-input" required />
+    <div class="error" data-error-for="cpf"></div>
+
     <div class="controls">
       <div></div>
       <button type="button" class="btn primary next" disabled>Próximo</button>
@@ -54,7 +58,7 @@
 
   <!-- informações -->
   <div class="step" data-step="2">
-  <br>
+    <br>
     <h2>Informações</h2>
     <label for="data_nascimento">Data de Nascimento *</label>
     <input id="data_nascimento" name="data_nascimento" type="date" required />
@@ -78,7 +82,7 @@
 
   <!-- senha -->
   <div class="step" data-step="3">
-  <br>
+    <br>
     <h2>Conta</h2>
     <label for="senha">Senha *</label>
     <input id="senha" name="senha" type="password" minlength="6" required />
@@ -100,7 +104,7 @@
 
   <!-- foto -->
   <div class="step" data-step="4">
-  <br>
+    <br>
     <h2>Foto de Perfil</h2>
 
     <div class="photo-preview" id="photoPreview">

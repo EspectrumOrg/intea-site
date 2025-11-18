@@ -39,6 +39,11 @@
             </li>
         </ul>
     </div>
+@php  
+    $totalNotificacoes = \App\Models\Notificacao::where('alvo_id', auth()->id())
+        ->whereIn('tipo', ['seguindo_voce', 'seguir','solicitacao_aceita', 'seguir'])
+        ->count();
+@endphp
 
     <!-- Links sidebar-->
     <div class="links">
@@ -67,11 +72,29 @@
             <h1>Perfil</h1>
         </a>
 
-        <a href="{{ route('grupo.index') }}" class="nav-link {{ request()->routeIs('grupo.index') ? 'active' : '' }}"
-            id="config">
-            <span id="simbolo-grupos" class="material-symbols-outlined">group</span>
-            <h1>Grupos</h1>
-        </a>
+<a href="{{ route('notificacao.index') }}" 
+   class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}"
+   id="config">
+
+    <span id="simbolo-grupos" class="material-symbols-outlined">group</span>
+
+    <h1 style="display: flex; align-items: center; gap: 6px;">
+        Notificações
+
+        @if($totalNotificacoes > 0)
+            <span style="
+                background: #14b814;
+                color: white;
+                padding: 2px 8px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: bold;
+            ">
+                {{ $totalNotificacoes }}
+            </span>
+        @endif
+    </h1>
+</a>
 
         <a href="{{ route('configuracao.config') }}"
             class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}">
