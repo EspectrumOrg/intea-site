@@ -1,6 +1,9 @@
 @extends('auth.template.layout')
 
 @section('main')
+
+<div class="page-create-autista">
+
 <link rel="stylesheet" href="{{ asset('assets/css/auth/create-autista.css') }}">
 
 <form id="multiForm" method="post" action="{{ route('autista.store') }}" enctype="multipart/form-data" novalidate>
@@ -8,6 +11,7 @@
 
     <!-- DADOS PESSOAIS -->
     <div class="step active" data-step="0">
+        <br>
         <h2>Dados pessoais</h2>
         <label for="apelido">Nome *</label>
         <input id="apelido" name="apelido" type="text" maxlength="255" placeholder="Nome Usuário" required />
@@ -21,6 +25,7 @@
             <div></div>
             <button type="button" class="btn primary next" disabled>Próximo</button>
         </div>
+        <br>
     </div>
 
     <!-- IDENTIFICAÇÃO -->
@@ -123,7 +128,6 @@
     </div>
 </form>
 
-
 <script>
     function verificarIdade() {
         const inputData = document.getElementById('data_nascimento');
@@ -144,14 +148,11 @@
             idade--;
         }
 
-        if (idade < 18) {
-            cpfResponsavelField.style.display = 'block';
-        } else {
-            cpfResponsavelField.style.display = 'none';
-        }
+        cpfResponsavelField.style.display = idade < 18 ? 'block' : 'none';
     }
 
-    // Verifica também ao carregar a página (útil após erro de validação)
     window.addEventListener('DOMContentLoaded', verificarIdade);
 </script>
+
+</div> {{-- FECHA page-create-autista --}}
 @endsection
