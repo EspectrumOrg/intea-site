@@ -30,6 +30,7 @@
 
     <!-- IDENTIFICAÇÃO -->
     <div class="step" data-step="1">
+        <br>
         <h2>Identificação</h2>
 
         <label for="cpf">CPF *</label>
@@ -63,10 +64,12 @@
             <button type="button" class="btn ghost prev">Anterior</button>
             <button type="button" class="btn primary next" disabled>Próximo</button>
         </div>
+        <br>
     </div>
 
     <!-- CONTATO -->
     <div class="step" data-step="2">
+    <br>
         <h2>Contato</h2>
         <label for="email">Email *</label>
         <input id="email" name="email" type="email" placeholder="name@example.com" required />
@@ -85,10 +88,12 @@
             <button type="button" class="btn ghost prev">Anterior</button>
             <button type="button" class="btn primary next" disabled>Próximo</button>
         </div>
+        <br>
     </div>
 
     <!-- CONTA -->
     <div class="step" data-step="3">
+    <br>
         <h2>Conta</h2>
         <label for="senha">Senha *</label>
         <input id="senha" name="senha" type="password" minlength="6" required />
@@ -105,10 +110,12 @@
             <button type="button" class="btn ghost prev">Anterior</button>
             <button type="button" class="btn primary next" disabled>Próximo</button>
         </div>
+        <br>
     </div>
 
     <!-- FOTO -->
     <div class="step" data-step="4">
+    <br>
         <h2>Foto de Perfil</h2>
         <div class="photo-preview" id="photoPreview"><span>Prévia</span></div>
 
@@ -125,6 +132,7 @@
             <button type="button" class="btn ghost prev">Anterior</button>
             <button type="submit" class="btn primary submit" disabled>Criar Conta</button>
         </div>
+        <br>
     </div>
 </form>
 
@@ -152,6 +160,24 @@
     }
 
     window.addEventListener('DOMContentLoaded', verificarIdade);
+
+    window.addEventListener('DOMContentLoaded', () => {
+    const steps = document.querySelectorAll('.step');
+    const form = document.querySelector('form');
+
+    let maxHeight = 0;
+
+    steps.forEach(step => {
+        step.style.display = 'block'; // força medir
+        const h = step.offsetHeight;
+        if (h > maxHeight) maxHeight = h;
+        step.style.display = ''; // volta ao normal
+    });
+
+    form.style.height = maxHeight + 100 + 'px'; // +100 para margem interna
+    form.style.overflowY = 'auto';
+});
+
 </script>
 
 </div> {{-- FECHA page-create-autista --}}

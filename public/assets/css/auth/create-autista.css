@@ -21,6 +21,14 @@ form {
     transition: height .32s ease;
 }
 
+form {
+    max-height: 75vh; /* altura máxima visível */
+    overflow-y: auto; /* ativa barra de rolagem interna */
+    overflow-x: hidden;
+    padding-right: 1rem; /* evita corte do conteúdo */
+}
+
+
 .step {
     display: none;
 }
@@ -167,4 +175,18 @@ select:focus {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+form::-webkit-scrollbar {
+    width: 6px;
+}
+
+form::-webkit-scrollbar-track {
+    background: var(--branco-light);
+    border-radius: 10px;
+}
+
+form::-webkit-scrollbar-thumb {
+    background: var(--azul);
+    border-radius: 10px;
 }

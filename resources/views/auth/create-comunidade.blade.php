@@ -1,11 +1,17 @@
 @extends('auth.template.layout')
 
 @section('main')
+
+<button class="voltar" onclick="history.back()">
+  <span class="material-symbols-outlined">arrow_back</span>
+</button>
+
 <form id="multiForm" method="post" action="{{ route('comunidade.store') }}" enctype="multipart/form-data" novalidate>
   @csrf
 
   <!-- dados pessoais -->
   <div class="step active" data-step="0">
+    <br>
     <h2>Dados pessoais</h2>
     <label for="apelido">Nome *</label>
     <input id="apelido" name="apelido" type="text" maxlength="255" placeholder="Nome Usuário" required />
@@ -19,10 +25,12 @@
       <div></div>
       <button type="button" class="btn primary next" disabled>Próximo</button>
     </div>
+    <br>
   </div>
 
   <!-- contato -->
   <div class="step" data-step="1">
+    <br>
     <h2>Contato</h2>
     <label for="email">Email *</label>
     <input id="email" name="email" type="email" required />
@@ -41,10 +49,12 @@
       <button type="button" class="btn ghost prev">Anterior</button>
       <button type="button" class="btn primary next" disabled>Próximo</button>
     </div>
+    <br>
   </div>
 
   <!-- informações -->
   <div class="step" data-step="2">
+  <br>
     <h2>Informações</h2>
     <label for="data_nascimento">Data de Nascimento *</label>
     <input id="data_nascimento" name="data_nascimento" type="date" required />
@@ -63,10 +73,12 @@
       <button type="button" class="btn ghost prev">Anterior</button>
       <button type="button" class="btn primary next" disabled>Próximo</button>
     </div>
+    <br>
   </div>
 
   <!-- senha -->
   <div class="step" data-step="3">
+  <br>
     <h2>Conta</h2>
     <label for="senha">Senha *</label>
     <input id="senha" name="senha" type="password" minlength="6" required />
@@ -83,10 +95,12 @@
       <button type="button" class="btn ghost prev">Anterior</button>
       <button type="button" class="btn primary next" disabled>Próximo</button>
     </div>
+    <br>
   </div>
 
   <!-- foto -->
   <div class="step" data-step="4">
+  <br>
     <h2>Foto de Perfil</h2>
 
     <div class="photo-preview" id="photoPreview">
@@ -106,6 +120,7 @@
     <div class="controls">
       <button type="button" class="btn ghost prev">Anterior</button>
       <button type="submit" class="btn primary submit" disabled>Criar Conta</button>
+      <br>
     </div>
   </div>
 </form>
