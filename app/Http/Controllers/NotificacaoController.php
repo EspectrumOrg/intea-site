@@ -8,18 +8,31 @@ use App\Models\Notificacao;
 class NotificacaoController extends Controller
 {
     // Lista todas as notificações que o usuário recebeu
-    public function index()
-    {
-        $user = auth()->user();
+   
 
-        $notificacoes = Notificacao::where('alvo_id', $user->id)
-            ->where('tipo', 'seguir')
-            ->with('solicitante') // carrega dados de quem enviou
-            ->latest()
-            ->get();
+public function index()
+{
+    $notificacoes = \App\Models\Notificacao::where('alvo_id', auth()->id())
+        ->whereIn('tipo', ['seguindo_voce', 'solicitacao_aceita', 'seguir']) 
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        return view('notificacao.notificacao', compact('notificacoes'));
-    }
+    return view('notificacao.notificacao', compact('notificacoes'));
+}
+
+
+
+public function destroy($id)
+{
+    $notificacao = \App\Models\Notificacao::where('alvo_id', auth()->id())
+        ->where('id', $id)
+        ->firstOrFail();
+
+    $notificacao->delete();
+
+    return redirect()->back()->with('success', 'Notificação removida.');
+}
+
 
    public function aceitar($id)
 {
