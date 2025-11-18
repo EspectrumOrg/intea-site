@@ -320,7 +320,7 @@ body {
     border-radius: 25px;
     border: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.7s;
     font-weight: 600;
 }
 
@@ -338,7 +338,7 @@ body {
 .btn-enviar {
     background-color: var(--branco);
     border: 1px solid var(--amarelo);
-    color: var(--amarelo);
+    color: var(--preto);
 }
 
 .btn-enviar:hover {

@@ -14,12 +14,6 @@ Uma nova mensagem foi enviada através do Intea. Confira:
 
 ---
 
-**Resposta:**
-
-> {{ $respostaContato }}
-
----
-
 Mensagenss relevantes devem ser respondidas o quanto antes.  
 
 Contatos podem ser acessados na aba de <strong>suporte</strong> da área de administração.

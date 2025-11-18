@@ -991,7 +991,7 @@ body {
 
 .input1:focus {
     background: var(--branco);
-    border-color: var(--azul-hover);
+    border-color: var(--azul-principal);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1),
         0 4px 12px rgba(37, 99, 235, 0.1);
     transform: translateY(-1px);
@@ -1248,7 +1248,7 @@ textarea.input1 {
 
 .container-contact1-form-btn {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     margin-top: var(--espaco-lg);
 }
 

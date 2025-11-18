@@ -53,7 +53,7 @@
                             <th>Nome</th>
                             <th>User</th>
                             <th>Email</th>
-                            <th>Data Nascimento</th>
+                            <th>Idade</th>
                             <th>Tipo Usuário</th>
                             <th>Data de Login</th>
                             <th>Status</th>
@@ -64,10 +64,10 @@
                         @forelse($usuario as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->nome }}</td>
+                            <td>{{ $item->apelido }}</td>
                             <td>{{ $item->user }}</td>
                             <td>{{ $item->email }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->data_nascimento)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->data_nascimento)->age }} anos</td>
                             <td>
                                 @if($item->tipo_usuario === 1)
                                 Admin

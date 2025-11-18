@@ -5,12 +5,14 @@
 <hr>
 
 <h3><strong>Assunto: </strong>{{ $resposta->assunto }}</h3>
-<p>{{ $resposta->mensagem }}</p>
+<p><strong>Mensagem: </strong>{{ $resposta->mensagem }}</p>
 
+<hr>
+<p><strong>Resposta: </strong>{{ $resposta->resposta }}</p>
 <hr>
 
 <p>Se ainda restar alguma dúvida, basta responder este e-mail para continuarmos ajudando.</p>
 
 <p>Nos contate caso você tenha outra reclamação/sugestão.</p>
 
-<p>Atenciosamente,<br><strong>Equipe Espectrum</strong></p>
+<p>Mensagem para <strong>Equipe Espectrum</strong></p>

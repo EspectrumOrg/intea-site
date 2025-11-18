@@ -203,20 +203,20 @@
         @csrf
 
         @auth
-          <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
-          <input type="hidden" name="name" value="{{ Auth::user()->apelido }}" required>
+        <input type="hidden" name="email" value="{{ Auth::user()->email }}" required>
+        <input type="hidden" name="name" value="{{ Auth::user()->apelido }}" required>
         @endauth
 
         @guest
-          <div class="wrap-input1 validate-input" data-validate="Nome é necessário">
-            <input class="input1" type="text" name="name" maxlength="255" placeholder="Nome" required>
-            <span class="shadow-input1"></span>
-          </div>
+        <div class="wrap-input1 validate-input" data-validate="Nome é necessário">
+          <input class="input1" type="text" name="name" maxlength="255" placeholder="Nome" required>
+          <span class="shadow-input1"></span>
+        </div>
 
-          <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
-            <input class="input1" type="text" name="email" maxlength="100" placeholder="E-mail" required>
-            <span class="shadow-input1"></span>
-          </div>
+        <div class="wrap-input1 validate-input" data-validate="Coloque um email válido:">
+          <input class="input1" type="text" name="email" maxlength="100" placeholder="E-mail" required>
+          <span class="shadow-input1"></span>
+        </div>
         @endguest
         <!-- OBS: A ordem dos inputs name e email n importa nesse caso, tá certo-->
 
@@ -290,14 +290,17 @@
     </div>
   </footer>
 
+  <!-- modal de avisos -->
+  @include("layouts.partials.avisos")
+
   <script>
     // Menu Mobile
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
       const navbarLinks = document.querySelector('.navbar-links');
 
       if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function () {
+        mobileMenuBtn.addEventListener('click', function() {
           this.classList.toggle('active');
           navbarLinks.classList.toggle('active');
         });

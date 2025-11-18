@@ -49,7 +49,8 @@
                             <th>Email</th>
                             <th>Assunto</th>
                             <th>Mensagem</th>
-                            <th>Ações</th>
+                            <th>Feito há</th>
+                            <th>Responder</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +61,7 @@
                             <td>{{ $contato->email }}</td>
                             <td>{{ $contato->assunto }}</td>
                             <td>{{ Str::limit($contato->mensagem, 100) }}</td>
+                            <td>{{ $contato->created_at->diffForHumans() }}</td>
                             <td>
                                 <button class="btn-visualizar" onclick="abrirModalRespostaSuporte('{{$contato->id}}')">
                                     <span class="material-symbols-outlined">reply</span>
@@ -90,7 +92,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Mensagem:</label>
-                                            <input type="text" name="mensagem" value="{{$contato->mensagem}}" readonly>
+                                            <textarea name="mensagem" rows="3" placeholder="Resposta a mensagem" readonly>{{$contato->mensagem}}</textarea>
                                         </div>
                                         <div class="form-group">
                                             <label>Resposta:</label>
