@@ -147,9 +147,9 @@
                                     </header>
 
                                     <div class="profile-info-grid">
-                                        <div class="info-item">
-                                            <strong>Nome:</strong>
-                                            <span>{{ $user->nome }}</span>
+                                    <div class="info-item">
+                                            <strong>Apelido:</strong>
+                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                         </div>
 
                                         <div class="info-item">
@@ -157,10 +157,6 @@
                                             <span>{{ $user->email }}</span>
                                         </div>
 
-                                        <div class="info-item">
-                                            <strong>Apelido:</strong>
-                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
-                                        </div>
 
                                         <div class="info-item">
                                             <strong>CPF:</strong>
@@ -215,7 +211,7 @@
                                         <button id="btnAbrirModalPerfil" class="abrir-modal-btn">
                                             <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
                                         </button>
-                                    @elseif($user->tipo_usuario === 5)
+                                    @else
                                         <button id="abrirModalRemover" class="abrir-modal-btn">
                                             <span class="material-symbols-outlined">remove_circle</span> Retirar Dependente
                                         </button>
@@ -258,9 +254,11 @@
                                                 <select name="dependente_id" id="dependente_id" required>
                                                     <option value="">-- Escolha um dependente --</option>
                                                     @if($autista && $autista->count())
+                                                        @foreach($autista as $autistas)
                                                             <option value="{{ $autista->id }}">
                                                                 {{ $autista->usuario->apelido ?? 'Sem nome' }}
                                                             </option>
+                                                        @endforeach
                                                     @endif
                                                 </select>
 

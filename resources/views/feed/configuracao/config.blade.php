@@ -1,13 +1,15 @@
 @php
+use App\Models\Tendencia;
 use App\Models\Postagem;
 
-if (!isset($postsPopulares)) {
-    $postsPopulares = Postagem::withCount('curtidas')
-        ->with(['imagens', 'usuario'])
-        ->orderByDesc('curtidas_count')
-        ->take(5)
-        ->get();
-}
+$postsPopulares = Postagem::withCount('curtidas')
+            ->with(['imagens', 'usuario'])
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+$tendenciasPopulares = Tendencia::populares(7)->get();
+
 @endphp
 <!doctype html>
 <html lang="pt-br">
@@ -86,7 +88,10 @@ if (!isset($postsPopulares)) {
                     @endif
                 </div>
             </div>
-            @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])        
+            <div class="content-popular">
+                    @include('profile.partials.buscar')
+                    @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])
+                </div>
         </div>
     </div>
 <script>
