@@ -192,18 +192,12 @@
 
                                     <div class="profile-info-grid">
                                         <div class="info-item">
-                                            <strong>Nome:</strong>
-                                            <span>{{ $user->nome }}</span>
+                                            <strong>Apelido:</strong>
+                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                         </div>
-
                                         <div class="info-item">
                                             <strong>Email:</strong>
                                             <span>{{ $user->email }}</span>
-                                        </div>
-
-                                        <div class="info-item">
-                                            <strong>Apelido:</strong>
-                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                         </div>
 
                                         <div class="info-item">

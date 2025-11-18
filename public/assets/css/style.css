@@ -83,3 +83,76 @@
     word-wrap: break-word;
     pointer-events: none;
 }
+
+.profile-action-buttons {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Botão base */
+.profile-action-buttons button,
+.profile-action-buttons .btn-mensagem {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.25s ease, transform 0.2s ease;
+    text-decoration: none;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Botão Seguir */
+.seguir-btn {
+    background-color: #00C853; /* verde vivo */
+    color: #FFFFFF;            /* branco para contraste */
+}
+.seguir-btn:hover {
+    background-color: #00E676; /* verde neon suave */
+    transform: translateY(-1px);
+}
+
+
+/* Botão Deixar de seguir */
+.deixar-btn {
+    background-color: #ffebee; /* rosa claro */
+    color: #c62828; /* vermelho escuro */
+}
+.deixar-btn:hover {
+    background-color: #ffcdd2;
+    transform: translateY(-1px);
+}
+
+/* Botão Pedido enviado */
+.seguir-btn span.material-symbols-outlined {
+    font-size: 18px;
+}
+.seguir-btn:disabled,
+.seguir-btn[disabled] {
+    background-color: #eeeeee;
+    color: #9e9e9e;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Botão Mensagem */
+.btn-mensagem {
+    background-color: #e3f2fd; /* azul muito claro */
+    color: #1565c0; /* azul médio */
+}
+.btn-mensagem:hover {
+    background-color: #bbdefb;
+    transform: translateY(-1px);
+}
+
+/* Ícones */
+.material-symbols-outlined {
+    font-size: 18px;
+    vertical-align: middle;
+}
