@@ -75,19 +75,63 @@
                                         </div>
                                     </div>
 
-                                    @if(auth()->id() != $user->id)
-                                        <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
-                                            <form action="{{ route('seguir.store') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                                <button type="submit" class="seguir-btn">
-                                                    <span class="material-symbols-outlined">person_add</span> Seguir
-                                                </button>
-                                            </form>
-                                            <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
-                                                <span class="material-symbols-outlined">message</span> Mensagem
-                                            </a>
-                                        </div>
+                                  @if(auth()->id() != $user->id)
+  @php
+    $authUser = auth()->user();
+    $isFollowing = $authUser->seguindo->contains($user->id);
+    $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+        ->where('alvo_id', $user->id)
+        ->where('tipo', 'seguir')
+        ->exists();
+@endphp
+
+<div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
+
+    {{-- Botão Seguir / Pedir / Deixar de seguir --}}
+    @if($isFollowing)
+        <form action="{{ route('seguir.destroy', $user->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="deixar-btn">
+                <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+            </button>
+        </form>
+
+    @elseif($user->visibilidade == 0)
+        @if($pedidoFeito)
+            <form action="{{ route('seguir.cancelar', $user->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="seguir-btn">
+                    <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+                </button>
+            </form>
+        @else
+            <form action="{{ route('seguir.store') }}" method="POST">
+                @csrf
+                <input type="hidden" name="user_id" value="{{ $user->id }}">
+                <button type="submit" class="seguir-btn">
+                    <span class="material-symbols-outlined">person_add</span> Pedir para seguir
+                </button>
+            </form>
+        @endif
+
+    @else
+        <form action="{{ route('seguir.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="user_id" value="{{ $user->id }}">
+            <button type="submit" class="seguir-btn">
+                <span class="material-symbols-outlined">person_add</span> Seguir
+            </button>
+        </form>
+    @endif
+
+    <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
+        <span class="material-symbols-outlined">message</span> Mensagem
+    </a>
+
+</div>
+
                                     @endif
                                 </div>
                             </div>
@@ -148,18 +192,12 @@
 
                                     <div class="profile-info-grid">
                                         <div class="info-item">
-                                            <strong>Nome:</strong>
-                                            <span>{{ $user->nome }}</span>
+                                            <strong>Apelido:</strong>
+                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                         </div>
-
                                         <div class="info-item">
                                             <strong>Email:</strong>
                                             <span>{{ $user->email }}</span>
-                                        </div>
-
-                                        <div class="info-item">
-                                            <strong>Apelido:</strong>
-                                            <span>{{ $user->apelido ?? 'Não informado' }}</span>
                                         </div>
 
                                         <div class="info-item">
@@ -337,6 +375,7 @@
                                     <!-- Inclui os formulários de configurações -->
                                     @include('profile.partials.update-profile-information-form')
                                     @include('profile.partials.update-password-form')
+                                    @include('profile.partials.update-privacy-form')
                                     @include('profile.partials.delete-user-form')
                                 </div>
                             @endif
