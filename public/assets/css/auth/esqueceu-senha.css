@@ -11,8 +11,8 @@
 /* botão voltar */
 .voltar {
   position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
+  top: 20px;
+  left: 20px;
   border: none;
 }
 

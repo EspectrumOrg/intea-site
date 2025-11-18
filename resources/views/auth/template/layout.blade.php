@@ -21,7 +21,6 @@
     </div>
 
 
-
     <!-- Logo -->
     <div class="logo-container">
         <a href="{{ route('register') }}">

@@ -8,14 +8,14 @@
 
     <!-- DADOS PESSOAIS -->
     <div class="step active" data-step="0">
-        <h2>Dados Pessoais</h2>
-        <label for="nome">Nome Completo *</label>
-        <input id="nome" name="nome" type="text" placeholder="Nome Sobrenome" required />
-        <div class="error" data-error-for="nome"></div>
-
-        <label for="apelido">Nome de Usuário *</label>
-        <input id="apelido" name="apelido" type="text" placeholder="nomeConta" required />
+        <h2>Dados pessoais</h2>
+        <label for="apelido">Nome *</label>
+        <input id="apelido" name="apelido" type="text" maxlength="255" placeholder="Nome Usuário" required />
         <div class="error" data-error-for="apelido"></div>
+
+        <label for="user">User *</label>
+        <input id="user" class="user-input" name="user" type="text" maxlength="255" placeholder="@name" required />
+        <div class="error" data-error-for="user"></div>
 
         <div class="controls">
             <div></div>
@@ -85,10 +85,6 @@
     <!-- CONTA -->
     <div class="step" data-step="3">
         <h2>Conta</h2>
-        <label for="user">User *</label>
-        <input id="user" name="user" type="text" placeholder="@usuario" required />
-        <div class="error" data-error-for="user"></div>
-
         <label for="senha">Senha *</label>
         <input id="senha" name="senha" type="password" minlength="6" required />
         <div class="error" data-error-for="senha"></div>
@@ -112,8 +108,13 @@
         <div class="photo-preview" id="photoPreview"><span>Prévia</span></div>
 
         <label for="foto">Selecione uma foto *</label>
-        <input id="foto" name="foto" type="file" accept="image/*" required />
-        <div class="error" data-error-for="foto"></div>
+        <div class="extras">
+            <label for="foto" class="upload-label">
+                <span class="material-symbols-outlined">image</span>
+            </label>
+            <input id="foto" name="foto" type="file" accept="image/png, image/jpeg, image/jpg, image/gif" class="input-file" required>
+            <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+        </div>
 
         <div class="controls">
             <button type="button" class="btn ghost prev">Anterior</button>

@@ -27,7 +27,7 @@
         </a>
     </div>
 
-    <form id="multiFormAdmin" class="form-cadastro"  method="post" action="{{ route('admin.store') }}"> <!-- Formulário -->
+    <form id="multiFormAdmin" class="form-cadastro" method="post" action="{{ route('admin.store') }}"> <!-- Formulário -->
         @csrf
 
         <!-- dados pessoais -->
@@ -120,8 +120,13 @@
             </div>
 
             <label for="foto">Selecione uma foto *</label>
-            <input id="fotoAdmin" name="foto" type="file" accept="image/png, image/jpeg, image/jpg, image/gif" required />
-            <div class="error" data-error-for="foto"></div>
+            <div class="extras">
+                <label for="foto" class="upload-label">
+                    <span class="material-symbols-outlined">image</span>
+                </label>
+                <input id="foto" name="foto" type="file" accept="image/png, image/jpeg, image/jpg, image/gif" class="input-file" required>
+                <x-input-error class="mt-2" :messages="$errors->get('foto')" />
+            </div>
 
             <div class="controls">
                 <button type="button" class="btn ghost prev">Anterior</button>

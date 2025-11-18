@@ -62,7 +62,7 @@
                     @if( Auth::user()->tipo_usuario === 1 )
                     <!-- Banir Usuário (caso admin) -->
                     <div class="form-excluir">
-                        <button type="button" class=" btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
+                        <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
                             <span class="material-symbols-outlined">person_off</span>Banir
                         </button>
                     </div>
@@ -259,7 +259,7 @@
                                 @if( Auth::user()->tipo_usuario === 1 )
                                 <!-- Botão que abre o modal -->
                                 <div class="form-excluir">
-                                    <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $resposta->usuario->id }}')">
+                                    <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $resposta->usuario->id }}')">
                                         <span class="material-symbols-outlined">person_off</span>Banir
                                     </button>
                                 </div>
@@ -299,7 +299,7 @@
                             <input type="hidden" name="tipo" value="comentario">
                             <input type="hidden" name="id_alvo" value="{{ $resposta->id }}">
 
-                            @include('layouts.partials.modal-denuncia.blade.php')
+                            @include('layouts.partials.modal-denuncia')
                         </form>
                     </div>
                 </div>

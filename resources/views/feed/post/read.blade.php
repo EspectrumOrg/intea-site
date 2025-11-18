@@ -260,7 +260,7 @@
                             @if( Auth::user()->tipo_usuario === 1 )
                             <!-- Banir Usuário (caso tipo admin) -->
                             <div class="form-excluir">
-                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
+                                <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $comentario->usuario->id }}')">
                                     <span class="material-symbols-outlined">person_off</span>Banir
                                 </button>
                             </div>

@@ -17,6 +17,8 @@
     border-radius: 25px;
     border: 1px solid var(--branco-light);
     background-color: var(--branco);
+    transition: .3s;
+    cursor: pointer;
     font: inherit;
     appearance: none;
     -webkit-appearance: none;
@@ -25,6 +27,11 @@
     background-repeat: no-repeat;
     background-position: right 0.7rem center;
     background-size: 1rem;
+}
+
+.filtro-form input:hover,
+.filtro-form select:hover {
+    border-color: var(--azul-apagado);
 }
 
 .filtro-form select:focus {

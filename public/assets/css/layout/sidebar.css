@@ -617,7 +617,7 @@
     
     &:hover {
         transform: translateX(7.5px);
-        color: var(--laranja);
+        color: var(--amarelo);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -658,7 +658,7 @@
 
     &:hover {
         transform: translateX(7.5px);
-        color: var(--amarelo);
+        color: var(--vermelho);
         text-rendering: optimizeLegibility;
 
         .material-symbols-outlined::after {
@@ -760,25 +760,25 @@
     color: var(--verde);
 }
 
-/* "roxo", mas agora amarElo (Denúncias) */
-.nav-link.roxo:hover h1,
-.nav-link.roxo:hover span {
+/*amarElo (Denúncias) */
+.nav-link.amarelo:hover h1,
+.nav-link.amarelo:hover span {
     color: var(--amarelo);
 }
 
-.nav-link.roxo.active {
+.nav-link.amarelo.active {
     color: var(--branco);
 }
 
-.nav-link.roxo.active h1,
-.nav-link.roxo.active span {
+.nav-link.amarelo.active h1,
+.nav-link.amarelo.active span {
     color: var(--amarelo);
 }
 
 /*  laranjinhaaaaa! Na raça, no peito, do real fasciiiiiii (Suporte) */
 .nav-link.rosa:hover h1,
 .nav-link.rosa:hover span {
-    color: var(--laranja);
+    color: var(--amarelo);
 }
 
 .nav-link.rosa.active {
@@ -787,7 +787,7 @@
 
 .nav-link.rosa.active h1,
 .nav-link.rosa.active span {
-    color: var(--laranja);
+    color: var(--amarelo);
 }
 
 /* 🔴 Vermelho (Voltar) <-- esse eu não mudarei, mas para de pegar até os emojis do gpt, tá feio já */

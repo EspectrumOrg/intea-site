@@ -180,39 +180,6 @@
     margin-top: .25rem;
 }
 
-/* Form select 
-.modal-denuncia .form-select {
-    width: 100%;
-    padding: 0.55rem 0.75rem;
-    border: 1px solid var(--branco-light);
-    border-radius: 6px;
-    background-color: var(--branco);
-    font-size: 0.95rem;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-*/
-/* coloca a img personalizada 
-.modal-denuncia .form-select {
-    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><path fill="%23017373" d="M0 0l5 5 5-5z"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 0.75rem center;
-    background-size: 10px 5px;
-}
-
-.modal-denuncia .form-select:hover {
-    border-color: var(--vermelho);
-}
-
-.modal-denuncia .form-select:focus {
-    border-color: var(--vermelho);
-    box-shadow: 0 0 0 3px rgba(203, 213, 56, 0.3);
-    outline: none;
-}*/
-
 /* close button */
 .modal-denuncia .close {
     position: absolute;

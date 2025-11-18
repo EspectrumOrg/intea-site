@@ -24,6 +24,8 @@
 
 .voltar span {
     font-size: 20px;
+    margin-top: 20px;
+    margin-left: 20px;
     padding: .5rem;
     color: var(--preto);
     background: none;
@@ -257,10 +259,4 @@
     flex-direction: row;
     align-items: center;
 
-}
-
-.material-symbols-outlined {
-    margin-top: 20px;
-    margin-left: 20px;
-    color: var(--cor-preto);
 }

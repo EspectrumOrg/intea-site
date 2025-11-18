@@ -56,11 +56,9 @@
                             <th>#</th>
                             <th>Feito por</th>
                             <th>Usuario denunciado</th>
+                            <th>O que foi Denunciado</th>
                             <th>Motivo</th>
                             <th>Data de denuncia</th>
-                            <th>Status conta</th>
-                            <th>Resolvido</th>
-                            <th>Banir</th>
                             <th>Visualizar</th>
                         </tr>
                     </thead>
@@ -70,6 +68,15 @@
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->usuarioDenunciante->user }}</td>
                             <td>{{ $item->postagem->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
+                            <td>
+                                @if ($item->usuarioDenunciado)
+                                Usuário
+                                @elseif ($item->postagem)
+                                Postagem
+                                @elseif ($item->comentario)
+                                Comentário
+                                @endif
+                            </td>
                             <td>
                                 @php
                                 $motivos = [
@@ -96,48 +103,6 @@
                             </td>
 
                             <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
-                            <td>
-                                @switch($item->usuarioDenunciado->status_conta ?? $item->postagem->usuario->status_conta ?? $item->comentario->usuario->status_conta)
-                                @case(0)
-                                Banido
-                                @break
-
-                                @case(1)
-                                Ativo
-                                @break
-
-                                @case(2)
-                                Conta excluída
-                                @break
-
-                                @default
-                                Desconhecido
-                                @endswitch
-                            </td>
-                            <td class="button-open-data acoes-denuncia">
-                                <div class="td-acoes">
-                                    <!-- Usuário ativo → Desabilitar denúncia -->
-                                    <form action="{{ route('denuncia.resolve', $item->id) }}" method="post">
-                                        @csrf
-                                        @method("put")
-                                        <button type="submit" onclick="return confirm('Você tem certeza que deseja marcar a denúncia como resolvida?');" class="btn-desabilitar">
-                                            <span class="material-symbols-outlined">check</span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-
-                            <td class="button-open-data acoes-denuncia">
-                                <!-- Banir usuário, postagem → usuário, comentário → usuário -->
-                                <form action="{{ route('usuario.destroy', $item->usuarioDenunciado->id ?? $item->postagem->usuario->id ?? $item->comentario->usuario->id) }}" method="post">
-                                    @csrf
-                                    @method("delete")
-                                    <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoDenuncia('{{$item->id}}')">
-                                        <span class="material-symbols-outlined">person_off</span>
-                                    </button>
-                                </form>
-                                <!-- Inclui o modal banimento -->
-                                @include('admin.denuncia.partials.modal-banimento', ['item' => $item])
 
                             <td class="button-open-data acoes-denuncia">
 

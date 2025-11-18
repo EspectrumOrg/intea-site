@@ -21,12 +21,12 @@ body {
     display: flex;
     margin: 1rem 0;
     gap: 1rem;
-    border-bottom: 1px solid var(--amarelo);
+    border-bottom: 1px solid var(--vermelho);
     width: fit-content;
 }
 
 .denuncia-title span {
-    color: var(--amarelo);
+    color: var(--vermelho);
     font-size: 3rem;
 }
 
@@ -82,7 +82,7 @@ body {
 
 .nada-aqui td {
     padding: 1rem !important;
-    font-weight:600 !important;
+    font-weight: 600 !important;
     color: var(--cinza-borda) !important;
 }
 
@@ -101,13 +101,13 @@ body {
     border-radius: 50% / 100%;
     background-color: var(--branco);
     transition: .7s;
-    color: var(--preto);
-    border: 1px solid var(--amarelo);
+    color: var(--vermelho);
+    border: 1px solid var(--vermelho);
     cursor: pointer;
 }
 
 .btn-filtrar:hover {
-    background-color: var(--amarelo);
+    background-color: var(--vermelho);
     color: var(--branco);
 }
 
@@ -129,7 +129,6 @@ body {
 }
 
 .btn-excluir-usuario,
-.btn-desabilitar,
 .btn-desbanir,
 .btn-visualizar {
     background-color: transparent;
@@ -158,15 +157,7 @@ body {
     color: var(--azul);
 }
 
-.btn-excluir-usuario span,
-.btn-desabilitar span,
-.btn-desbanir span {
-    font-size: 2rem;
-    cursor: pointer;
-    transition: .3s;
-}
-
-/* ------------------------ Modal Denúncia*/
+/* ------------------------ Modal Denúncia*---------------------------------------------*/
 .modal {
     overflow-y: scroll;
 }
@@ -175,9 +166,9 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
+    padding: 2rem 0 .5rem 0;
     width: 90%;
-    max-width: 1000px;
+    max-width: 600px;
     color: var(--preto);
     animation: fadeInModal 0.25s ease;
 }
@@ -188,19 +179,30 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    border-bottom: 2px solid var(--vermelho);
-    padding-bottom: 0.5rem;
-}
-
-.modal-header h2 {
-    font-size: 1.5rem;
-    color: var(--preto);
-    margin: 0;
+    border-bottom: 1px solid var(--cinza-font);
+    padding: 0.5em 2rem;
 }
 
 .modal-header .titulo {
-    font-size: 1rem;
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--preto);
 }
+
+.modal-header .sublinhado {
+    text-decoration: underline;
+    margin: 0 4px;
+}
+
+.modal-header .red {
+    color: var(--vermelho);
+}
+
+.modal-header .blue {
+    color: var(--azul);
+}
+
 
 /* Botão fechar */
 .modal-fechar {
@@ -217,7 +219,82 @@ body {
 
 .corpo-visualizar {
     display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+
+/* TABS ---------------------------------------------------------------------*/
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--branco-light);
+    margin-bottom: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding: .7rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--branco);
+    border: none;
+    border-bottom: 1px solid var(--branco);
+    font-weight: 600;
+    transition: .3s;
+}
+
+.tab:hover {
+    background: var(--cinza-font);
+}
+
+.tab.active {
+    color: var(--vermelho);
+    border-bottom: 1px solid var(--vermelho);
+}
+
+/* CONTEÚDO */
+.tab-content {
+    width: 100%;
+    padding: 0 0 0 2rem;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Botão de banir */
+.btn-banir {
+    margin-top: 1rem;
+    background: var(--vermelho);
+    border: none;
+    padding: .7rem 1rem;
+    border-radius: 25px / 100%;
+    font-weight: 600;
+    color: var(--branco);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-banir:hover {
+    background-color: var(--vermelho-apagado);
+}
+
+.ban-title {
+    display: flex;
     flex-direction: row;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.ban-title .sublinhado {
+    margin: 0 4px;
+    text-decoration: underline;
+    color: var(--vermelho);
 }
 
 /* Corpo */
@@ -267,9 +344,9 @@ body {
 
 .form-banimento {
     background-color: var(--branco);
-    border-left: 1px solid var(--branco-light);
-    padding: 1rem;
-    width: 350px;
+    padding-right: 2rem;
+    margin-bottom: 1rem;
+    width: 100%;
 }
 
 .form-banimento h1 {
@@ -281,24 +358,32 @@ body {
 .form-label {
     font-weight: 600;
     color: var(--preto);
-    margin-bottom: 0.4rem;
+    margin: .75rem 0 .5rem 0;
     display: block;
 }
 
 .form-select,
 .form-control {
-    width: 100%;
+    width: 95%;
     border-radius: 8px;
     border: 1px solid var(--branco-light);
     padding: 0.6rem;
     outline: none;
+    resize: none;
     transition: border-color 0.3s ease;
     background-color: var(--branco);
+    margin-left: 1rem;
+}
+
+
+.form-select:hover,
+.form-control:hover {
+    border-color: var(--vermelho-apagado);
 }
 
 .form-select:focus,
 .form-control:focus {
-    border-color: var(--amarelo);
+    border-color: var(--vermelho);
 }
 
 /* Botões */
@@ -338,10 +423,90 @@ body {
 }
 
 .modal-footer {
-    padding: 1rem 0;
+    display: flex;
+    justify-content: end;
+    padding: 1rem 2rem;
     width: 100%;
-    border-top: 1px solid var(--vermelho);
+    border-top: 1px solid var(--cinza-font);
 }
+
+
+/* botão de marcar como resolvida*/
+.btn-resolver {
+    border-radius: 25px / 100%;
+    padding: 0.4rem 0.8rem;
+    background-color: var(--branco);
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    transition: .5s;
+    font-size: 16px;
+}
+
+.btn-resolver:hover {
+    background-color: var(--verde);
+    color: var(--branco);
+}
+
+/* Detalhes */
+.corpo-visualizar .detalhes-container {
+    background: #fff;
+    padding: 1.3rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+}
+
+/* Título */
+.corpo-visualizar .detalhes-container h1 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.corpo-visualizar .detalhes-container p {
+    display: flex;
+    gap: .5rem;
+    margin: .35rem 0;
+    font-size: 15px;
+}
+
+.corpo-visualizar .detalhes-container strong {
+    width: 120px;
+    font-weight: 600;
+    color: #444;
+}
+
+.corpo-visualizar .detalhes-container hr {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* ----- Outras Denúncias ----- */
+.corpo-visualizar .outras-denuncias h1 {
+    font-size: 18px;
+    margin-bottom: .7rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.corpo-visualizar .outras-denuncias ul {
+    margin-left: 1rem;
+}
+
+.corpo-visualizar .outras-denuncias li {
+    margin: .3rem 0;
+    font-size: 14.5px;
+    color: #444;
+}
+
+.corpo-visualizar .outras-denuncias p {
+    font-size: 14.5px;
+    color: #666;
+}
+
 
 /* Animação */
 @keyframes fadeInModal {

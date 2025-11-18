@@ -150,7 +150,7 @@
 
 .image-preview img {
     width: 100%;
-    object-fit: scale-down;
+    object-fit: cover;
     border-radius: 10px;
     border: 1px solid var(--branco-light);
 }

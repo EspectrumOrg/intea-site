@@ -21,12 +21,12 @@ body {
     display: flex;
     margin: 1rem 0;
     gap: 1rem;
-    border-bottom: 1px solid var(--laranja);
+    border-bottom: 1px solid var(--amarelo);
     width: fit-content;
 }
 
 .suporte-title span {
-    color: var(--laranja);
+    color: var(--amarelo);
     font-size: 3rem;
 }
 
@@ -127,12 +127,12 @@ body {
     background-color: var(--branco);
     transition: .7s;
     color: var(--preto);
-    border: 1px solid var(--laranja);
+    border: 1px solid var(--amarelo);
     cursor: pointer;
 }
 
 .btn-filtrar:hover {
-    background-color: var(--laranja);
+    background-color: var(--amarelo);
     color: var(--branco);
 }
 
@@ -257,7 +257,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid var(--laranja);
+    border-bottom: 2px solid var(--amarelo);
     padding-bottom: 0.5rem;
     margin-bottom: 1rem;
 }
@@ -305,7 +305,7 @@ body {
 
 .modal-resposta-body input:focus,
 .modal-resposta-body textarea:focus {
-    border-color: var(--laranja);
+    border-color: var(--amarelo);
 }
 
 .botoes-modal {
@@ -337,12 +337,12 @@ body {
 
 .btn-enviar {
     background-color: var(--branco);
-    border: 1px solid var(--laranja);
-    color: var(--laranja);
+    border: 1px solid var(--amarelo);
+    color: var(--amarelo);
 }
 
 .btn-enviar:hover {
-    background-color: var(--laranja);
+    background-color: var(--amarelo);
     color: var(--branco);
 }
 

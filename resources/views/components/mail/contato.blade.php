@@ -1,8 +1,6 @@
 @component('mail::message')
 # Novo contato recebido de {{ $emailContato }}
 
-    Aviso!
-
 Uma nova mensagem foi enviada através do Intea. Confira:
 
 **Remetente:** {{ $nomeContato }}  
@@ -16,15 +14,16 @@ Uma nova mensagem foi enviada através do Intea. Confira:
 
 ---
 
+**Resposta:**
 
-Recomendamos que mensagens relevantes sejam respondidas o quanto antes.  
-Caso a mensagem seja de um usuário banido, por favor, consulte um administrador do sistema.
+> {{ $respostaContato }}
 
-@component('mail::button', ['url' => route('landpage')])
-Acessar o site
-@endcomponent
+---
 
-At.te,  
-Equipe {{ config('app.name') }}
+Mensagenss relevantes devem ser respondidas o quanto antes.  
+
+Contatos podem ser acessados na aba de <strong>suporte</strong> da área de administração.
+
+<p>Mensagem para <strong>Equipe Espectrum</strong></p>
 
 @endcomponent

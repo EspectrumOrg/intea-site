@@ -26,14 +26,14 @@
         </a>
 
         <a href="{{ route('contato.index')}}" 
-            class="nav-link roxo" 
-            id="denuncia">
+            class="nav-link amarelo {{ request()->routeIs('contato.index') ? 'active' : '' }}" 
+            id="suporte">
             <span class="material-symbols-outlined">contact_support</span>
             <h1>Suporte</h1>
         </a>
 
         <a href="{{ route('denuncia.index')}}" 
-            class="nav-link rosa {{ request()->routeIs('denuncia.index') ? 'active' : '' }}" 
+            class="nav-link vermelho {{ request()->routeIs('denuncia.index') ? 'active' : '' }}" 
             id="denuncia">
             <span class="material-symbols-outlined">flag_2</span>
             <h1>Denúncias</h1>
