@@ -52,12 +52,12 @@
                         </button>
                     </a>
 
-                    <!-- create responsavel -->
+                    <!-- create responsavel
                     <a href="{{ route('responsavel.create') }}">
                         <button class="botao-responsavel" type="submit" class="btn-primary">
                             Responsavel
                         </button>
-                    </a>
+                    </a> -->
                 </div>
 
                 <!-- Login -->
