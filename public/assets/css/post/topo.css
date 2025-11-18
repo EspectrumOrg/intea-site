@@ -154,6 +154,16 @@
     color: var(--azul);
 }
 
+/* dixar seguir */
+.deixar-btn {
+    border-radius: 0 0 15px 15px;
+}
+
+.deixar-btn:hover {
+    background-color: var(--branco-light);
+    color: var(--vermelho);
+}
+
 /* denunciar */
 .btn-acao.denunciar {
     display: flex;

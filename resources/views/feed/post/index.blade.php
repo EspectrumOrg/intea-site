@@ -74,7 +74,7 @@ e($texto)
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>
 
-                    <div class="dropdown"> <!-- opções postagem -->
+                    <div class="dropdown"> <!-- OPÇÕES POSTAGEM (COISO QUE FICA NOS PONTINHOS PRETOS LÁ) ========-->
                         <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
                             <span class="material-symbols-outlined">more_horiz</span>
                         </button>
@@ -114,6 +114,7 @@ e($texto)
                                 </a>
                                 @endif
                             </li>
+                            <!-- Parte de seguir (do nicolas) -->
                             <li>
                                 @php
                                 $authUser = Auth::user();

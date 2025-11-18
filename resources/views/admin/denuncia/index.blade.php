@@ -58,7 +58,7 @@
                             <th>Usuario denunciado</th>
                             <th>O que foi Denunciado</th>
                             <th>Motivo</th>
-                            <th>Data de denuncia</th>
+                            <th>Feita</th>
                             <th>Visualizar</th>
                         </tr>
                     </thead>
@@ -102,7 +102,7 @@
                                 @endif
                             </td>
 
-                            <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
+                            <td>{{ $item->created_at->diffForHumans() }}</td>
 
                             <td class="button-open-data acoes-denuncia">
 

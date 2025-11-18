@@ -49,7 +49,7 @@
                             <th>Email</th>
                             <th>Assunto</th>
                             <th>Mensagem</th>
-                            <th>Feito há</th>
+                            <th>Feito</th>
                             <th>Responder</th>
                         </tr>
                     </thead>

@@ -33,14 +33,14 @@
             </div>
         </div>
 
-        <div class="dropdown"> <!--------- Dropdown --------->
+        <div class="dropdown"> <!-- OPÇÕES POSTAGEM (COISO QUE FICA NOS PONTINHOS PRETOS LÁ) ========-->
             <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
                 <span class="material-symbols-outlined">more_horiz</span>
             </button>
             <ul class="dropdown-content">
+                <!-- Postagem do usuário --------------------->
                 @if(Auth::id() === $postagem->usuario_id)
                 <li>
-                    <!-- Editar Postagem -->
                     <button type="button"
                         class="btn-acao editar"
                         onclick="abrirModalEditar('{{ $postagem->id }}')">
@@ -48,7 +48,6 @@
                     </button>
                 </li>
                 <li>
-                    <!-- Excluir Postagem -->
                     <form action="{{ route('post.destroy', $postagem->id) }}" method="POST" style="display:inline">
                         @csrf
                         @method('DELETE')
@@ -57,35 +56,78 @@
                         </button>
                     </form>
                 </li>
-
                 @else
-
+                <!-- Postagem de terceiro --------------------->
                 <li>
                     @if( Auth::user()->tipo_usuario === 1 )
-                    <!-- Banir Usuário -->
+                    <!-- Banir Usuário (caso tipo admin)-->
                     <div class="form-excluir">
                         <button type="button" class="btn-acao btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $postagem->usuario->id }}')">
                             <span class="material-symbols-outlined">person_off</span>Banir
                         </button>
                     </div>
-
                     @else
-
                     <!-- Denunciar Usuário -->
                     <a class="btn-acao denunciar" href="javascript:void(0)" onclick="abrirModalDenuncia('{{ $postagem->id }}')">
                         <span class="material-symbols-outlined">flag_2</span>Denunciar
                     </a>
                     @endif
                 </li>
+                <!-- Parte de seguir (do nicolas) -->
                 <li>
-                    <!-- Seguir Usuário -->
+                    @php
+                    $authUser = Auth::user();
+                    $isFollowing = $authUser->seguindo->contains($postagem->usuario_id);
+                    $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+                    ->where('alvo_id', $postagem->usuario_id)
+                    ->where('tipo', 'seguir')
+                    ->exists();
+                    @endphp
+
+                    @if ($authUser->id !== $postagem->usuario_id)
+
+                    {{-- Se já segue → sempre mostrar Deixar de seguir --}}
+                    @if ($isFollowing)
+                    <form action="{{ route('seguir.destroy', $postagem->usuario_id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-acao deixar-btn">
+                            <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+                        </button>
+                    </form>
+
+                    {{-- Usuário privado (não está seguindo) --}}
+                    @elseif ($postagem->usuario->visibilidade == 0)
+                    @if ($pedidoFeito)
+                    <form action="{{ route('seguir.cancelar', $postagem->usuario_id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn-acao seguir-btn">
+                            <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+                        </button>
+                    </form>
+                    @else
                     <form action="{{ route('seguir.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
                         <button type="submit" class="btn-acao seguir-btn">
-                            <span class="material-symbols-outlined">person_add</span>Seguir {{ $postagem->usuario->user }}
+                            <span class="material-symbols-outlined">person_add</span> Pedir para seguir
                         </button>
                     </form>
+                    @endif
+
+                    {{-- Usuário público (não está seguindo) --}}
+                    @else
+                    <form action="{{ route('seguir.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="user_id" value="{{ $postagem->usuario_id }}">
+                        <button type="submit" class="btn-acao seguir-btn">
+                            <span class="material-symbols-outlined">person_add</span> Seguir {{ $postagem->usuario->user }}
+                        </button>
+                    </form>
+                    @endif
+
+                    @endif
                 </li>
                 @endif
             </ul>
@@ -232,11 +274,12 @@
                     <h2>{{ $comentario->usuario->user }} . {{ $comentario->created_at->shortAbsoluteDiffForHumans() }}</h2>
                 </div>
 
-                <div class="dropdown"> <!-- opções comentario -->
+                <div class="dropdown"> <!-- OPÇÕES POSTAGEM (COISO QUE FICA NOS PONTINHOS PRETOS LÁ) ========-->
                     <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
                         <span class="material-symbols-outlined">more_horiz</span>
                     </button>
                     <ul class="dropdown-content">
+                        <!-- Postagem do usuário --------------------->
                         @if(Auth::id() === $comentario->usuario->id)
                         <li>
                             <button type="button"
@@ -271,15 +314,61 @@
                             </a>
                             @endif
                         </li>
+                        <!-- Parte de seguir (do nicolas) -->
                         <li>
-                            <!-- Seguir Usuário -->
+                            @php
+                            $authUser = Auth::user();
+                            $isFollowing = $authUser->seguindo->contains($comentario->usuario->id);
+                            $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+                            ->where('alvo_id', $comentario->usuario->id)
+                            ->where('tipo', 'seguir')
+                            ->exists();
+                            @endphp
+
+                            @if ($authUser->id !== $comentario->usuario->id)
+
+                            {{-- Se já segue → sempre mostrar Deixar de seguir --}}
+                            @if ($isFollowing)
+                            <form action="{{ route('seguir.destroy', $comentario->usuario->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-acao deixar-btn">
+                                    <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
+                                </button>
+                            </form>
+
+                            {{-- Usuário privado (não está seguindo) --}}
+                            @elseif ($comentario->usuario->visibilidade == 0)
+                            @if ($pedidoFeito)
+                            <form action="{{ route('seguir.cancelar', $comentario->usuario->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-acao seguir-btn">
+                                    <span class="material-symbols-outlined">hourglass_empty</span> Pedido enviado
+                                </button>
+                            </form>
+                            @else
                             <form action="{{ route('seguir.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="user_id" value="{{ $comentario->usuario->id }}">
                                 <button type="submit" class="btn-acao seguir-btn">
-                                    <span class="material-symbols-outlined">person_add</span>Seguir {{ $comentario->usuario->user }}
+                                    <span class="material-symbols-outlined">person_add</span> Pedir para seguir
                                 </button>
                             </form>
+                            @endif
+
+                            {{-- Usuário público (não está seguindo) --}}
+                            @else
+                            <form action="{{ route('seguir.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $comentario->usuario->id }}">
+                                <button type="submit" class="btn-acao seguir-btn">
+                                    <span class="material-symbols-outlined">person_add</span> Seguir {{ $comentario->usuario->user }}
+                                </button>
+                            </form>
+                            @endif
+
+                            @endif
                         </li>
                         @endif
                     </ul>
