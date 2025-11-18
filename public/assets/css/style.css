@@ -46,12 +46,6 @@
     font-family: Helvetica, Arial, sans-serif;
 }
 
-.post-content {
-    color: var(--preto);
-    line-height: 1.5;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
 
 .hashtag {
     color: var(--azul);
