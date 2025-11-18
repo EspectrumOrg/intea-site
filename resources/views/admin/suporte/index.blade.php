@@ -106,7 +106,7 @@
                         </div>
                         @empty
                         <tr class="nada-aqui">
-                            <td colspan="6">Nenhuma mensagem encontrada.</td>
+                            <td colspan="10">Nenhuma denúncia encontrada</td>
                         </tr>
                         @endforelse
                     </tbody>

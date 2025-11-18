@@ -347,7 +347,8 @@ body {
 }
 
 .nada-aqui td {
-    padding: 1rem 0 0 0;
-    font-size: 14px;
-    font-weight: 800;
+    padding: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: var(--cinza-borda) !important;
 }
