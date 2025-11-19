@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="interesse-actions">
-                        <a href="{{ route('feed.interesse', $interesse->slug) }}" class="btn-visitar-interesse">
+                        <a href="{{ route('post.interesse', $interesse->slug) }}" class="btn-visitar-interesse">
                             Ver Feed
                         </a>
                         <button class="btn-deixar-seguir" data-interesse-id="{{ $interesse->id }}">

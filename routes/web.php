@@ -43,6 +43,9 @@ use App\Http\Controllers\{
 
 // Início
 Route::get('/', function () {
+    if (Auth::check()) {
+        return redirect()->route('post.index');
+    }
     return view('landpage');
 })->name('landpage');
 
@@ -119,7 +122,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     // Feed e postagens
     Route::resource("feed", PostagemController::class)
         ->names("post")
-        ->parameters(["feed" => "post"]);
+        ->parameters(["feed" => "post"]); 
     Route::post('/feed/curtida', [CurtidaController::class, 'toggleCurtida'])->name('curtida.toggle');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
     // Comentários
@@ -285,36 +288,40 @@ Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDepen
 
 // Sistema de interesses----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-//  Feeds Principais (usando /inicio para evitar conflito)
-Route::get('/inicio', [FeedController::class, 'principal'])->name('feed.principal');
-Route::get('/inicio/personalizado', [FeedController::class, 'personalizado'])->name('feed.personalizado');
-Route::get('/inicio/interesse/{interesse}', [FeedController::class, 'porInteresse'])->name('feed.interesse');
+// Sistema de interesses----------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-// Navegação
-Route::get('/i/{slug}', [FeedController::class, 'porInteresse']);
+// Feeds 
+Route::middleware(['auth', 'check.ban'])->group(function () {
+    Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
+    Route::get('/personalizado', [PostagemController::class, 'personalizado'])->name('post.personalizado');
+    Route::get('/interesse/{slug}', [PostagemController::class, 'porInteresse'])->name('post.interesse');
+});
 
-//  ONBOARDING (primeiro acesso)
-Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
-Route::post('/api/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
-Route::post('/api/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
+Route::get('/i/{slug}', [PostagemController::class, 'porInteresse']);
+
+//  ONBOARDING 
+Route::middleware(['auth', 'check.ban'])->group(function () {
+    Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
+    Route::post('/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
+    Route::post('/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
+});
 
 //  INTERESSES
 Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
 Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
 
-//  SEGUIR/DEIXAR INTERESSES 
-Route::post('/api/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
-Route::post('/api/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
-Route::get('/api/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
+//  SEGUIR/DEIXAR INTERESSES
+Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
+Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
+Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
 
 //  Moderação
 Route::middleware(['auth'])->group(function () {
     Route::get('/moderacao/{interesse}/painel', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
-    Route::post('/api/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');
-    Route::post('/api/moderacao/postagens/{postagem}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.restaurar-postagem');
-    Route::post('/api/moderacao/interesses/{interesse}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.adicionar-palavra-proibida');
-    Route::post('/api/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
+    Route::post('/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');
+    Route::post('/moderacao/postagens/{postagem}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.restaurar-postagem');
+    Route::post('/moderacao/interesses/{interesse}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.adicionar-palavra-proibida');
+    Route::post('/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
 });
-
 
 require __DIR__ . '/auth.php';
