@@ -174,7 +174,7 @@
 
 /* Feed Header */
 .feed-header {
-    background: white;
+    background: #D0D6D9;
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
@@ -809,7 +809,7 @@
 
 /* Feed Header com topo-seguindo inline */
 .feed-header {
-    background: white;
+    background: var(--branco);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
