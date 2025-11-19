@@ -28,6 +28,11 @@ class PostagemController extends Controller
     public function index()
     {
         $userId = Auth::id();
+        
+        // Verificar se precisa fazer onboarding
+        if (!Auth::user()->onboardingConcluido()) {
+            return redirect()->route('onboarding');
+        }
 
         $posts = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count')
