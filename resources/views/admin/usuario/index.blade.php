@@ -27,7 +27,7 @@
             <select name="status_conta">
                 <option value="" {{ request('status_conta') == null ? 'selected' : '' }}>Todos status</option>
                 <option value="1" {{ request('status_conta') == '1' ? 'selected' : '' }}>Ativa</option>
-                <option value="0" {{ request('status_conta') == '0' ? 'selected' : '' }}>Banida</option>
+                <option value="2" {{ request('status_conta') == '0' ? 'selected' : '' }}>Banida</option>
             </select>
 
 

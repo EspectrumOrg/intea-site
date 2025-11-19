@@ -11,7 +11,7 @@
                 <span class="material-symbols-outlined">arrow_back</span>
             </a>
             <div class="text">
-                <h1>Comentário de {{$comentario->usuario->user}}</h1>
+                <h1>Comentário</h1>
             </div>
         </div>
     </div>
@@ -273,7 +273,7 @@
                         <a href="{{ route('conta.index', ['usuario_id' => $resposta->usuario->id]) }}">
                             <strong>{{ $resposta->usuario->apelido }}</strong>
                         </a>
-                        <strong>{{ $resposta->usuario->user }}</strong>
+                        <span>{{ $resposta->usuario->user }} . </strong>
                         <span>{{ $resposta->created_at->diffForHumans() }}</span>
                     </div>
 

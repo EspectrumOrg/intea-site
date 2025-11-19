@@ -131,7 +131,7 @@
 .dados-post span {
     font-size: 20px;
     padding: .5rem;
-    color: var(--cinza);
+    color: var(--preto);
     border-radius: 50%;
     transition: .3s;
 }
@@ -150,27 +150,6 @@
     color: var(--cinza);
     transition: .3s;
 }
-
-/* comentar */
-.btn-comentar:hover h1 {
-    color: var(--azul);
-}
-
-.btn-comentar:hover span {
-    background-color: var(--branco);
-    color: var(--azul);
-}
-
-/* curtir */
-.btn-curtir:hover h1 {
-    color: var(--cor-vermelho);
-}
-
-.btn-curtir:hover span {
-    background-color: var(--vermelho);
-    color: var(--vermelho-apagado);
-}
-
 /* interações------------------------------------------------*/
 .interacoes {
     display: flex;
@@ -233,7 +212,7 @@
 }
 
 .btn-comentar:hover span {
-    background-color: var(--branco);
+    background-color: rgba(208, 219, 231, 0.95);
     color: var(--azul);
 }
 
@@ -243,7 +222,7 @@
 }
 
 .btn-curtir:hover span {
-    background-color: rgba(242, 34, 34, 0.50);
+    background-color: rgba(230, 78, 78, 0.5);
     color: var(--vermelho);
 }
 
