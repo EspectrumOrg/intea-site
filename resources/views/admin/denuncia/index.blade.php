@@ -67,7 +67,7 @@
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->usuarioDenunciante->user }}</td>
-                            <td>{{ $item->postagem->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
+                            <td>{{ $item->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
                             <td>
                                 @if ($item->usuarioDenunciado)
                                 Usuário
