@@ -4,7 +4,6 @@
     --azul-hover: #1d4ed8;
     --azul-light: #dbeafe;
     --branco: #F2F2F2;
-    --branco-light: #f8fafc;
     --preto: #1e293b;
     --cinza: #64748b;
     --cinza-light: #cbd5e1;
@@ -72,7 +71,7 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.625rem 1.25rem;
-    background: var(--branco-light);
+    background: #f8fafc;
     color: var(--preto);
     border-radius: 6px;
     font-weight: 600;
