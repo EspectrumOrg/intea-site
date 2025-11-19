@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Interesse;
 use App\Models\Postagem;
+use App\Models\Tendencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,13 +19,16 @@ class InteresseController extends Controller
         $usuariosPopulares = $interesse->usuariosPopulares(6);
         $postagensDestacadas = $interesse->postagensDestacadas(5);
         $usuarioSegue = $usuario ? $interesse->usuarioSegue($usuario->id) : false;
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
         
         return view('interesses.show', compact(
             'interesse', 
             'postagens', 
             'usuariosPopulares',
             'postagensDestacadas',
-            'usuarioSegue'
+            'usuarioSegue',
+            'tendenciasPopulares',
         ));
     }
 
@@ -85,8 +89,11 @@ class InteresseController extends Controller
         
         $usuario = Auth::user();
         $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
         
-        return view('interesses.index', compact('interesses', 'interessesUsuario'));
+        return view('interesses.index', compact('interesses', 'interessesUsuario', 'tendenciasPopulares'));
     }
 
     public function postagens($slug, Request $request)
