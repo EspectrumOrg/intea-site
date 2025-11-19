@@ -16,7 +16,6 @@
     <div class="search-container">
         <form method="GET" action="{{ route('tendencias.index') }}" class="search-form" id="searchForm">
             <div class="search-input-group">
-                <span class="search-icon material-symbols-outlined">search</span>
                 <input 
                     type="text" 
                     name="search" 
