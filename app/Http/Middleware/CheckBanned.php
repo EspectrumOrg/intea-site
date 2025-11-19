@@ -16,7 +16,7 @@ class CheckBanned
         /** @var \App\Models\Usuario $user */
         $user = Auth::user();
 
-        if ($user && $user->status_conta === 2) {
+        if ($user && $user->status_conta == 2) {
             $ultimoBanimento = $user->banimentos()->latest()->first();
             $motivo = $ultimoBanimento->motivo ?? 'Sua conta foi banida.';
 
@@ -24,7 +24,7 @@ class CheckBanned
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect()->route('login')->with('ban_reason', $motivo);
+            return redirect()->route('login')->with('ban_reason', 'Sua conta foi banida. Para mais informações, por favor, acesse seu e-mail e contate a empresa.');
         }
 
         return $next($request);
