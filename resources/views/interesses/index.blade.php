@@ -125,63 +125,6 @@
     </section>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Filtros
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const interesseCards = document.querySelectorAll('.interesse-card-full');
-    
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const filter = this.dataset.filter;
-            
-            // Ativar botão
-            filterBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Filtrar cards
-            interesseCards.forEach(card => {
-                if (filter === 'all') {
-                    card.style.display = 'flex';
-                } else if (filter === 'destaque') {
-                    card.style.display = card.dataset.category === 'destaque' ? 'flex' : 'none';
-                } else if (filter === 'popular') {
-                    card.style.display = card.dataset.popular === 'popular' ? 'flex' : 'none';
-                }
-            });
-        });
-    });
-    
-    // Botões Seguir/Deixar de seguir
-    document.querySelectorAll('.btn-seguir-interesse, .btn-deixar-seguir').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const interesseId = this.dataset.interesseId;
-            const isSeguindo = this.classList.contains('seguindo');
-            const isDeixarSeguir = this.classList.contains('btn-deixar-seguir');
-            
-            const url = (isSeguindo || isDeixarSeguir) 
-                ? `/api/interesses/${interesseId}/deixar-seguir`
-                : `/api/interesses/${interesseId}/seguir`;
-            
-            fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sucesso) {
-                    location.reload(); // Recarregar para atualizar a interface
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('Erro ao processar ação');
-            });
-        });
-    });
-});
-</script>
+<!-- Incluir o JavaScript externo -->
+<script src="{{ asset('assets/js/interesses/seguir-interesse.js') }}"></script>
 @endsection
