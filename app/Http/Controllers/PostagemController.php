@@ -26,69 +26,77 @@ class PostagemController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $userId = Auth::id();
-        
-        // Verificar se precisa fazer onboarding
-        if (!Auth::user()->onboardingConcluido()) {
-            return redirect()->route('onboarding');
-        }
-
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
-
-        // Feed principal - todas as postagens visíveis
-        $postagens = $this->postagem
-            ->with(['imagens', 'usuario', 'interesses'])
-            ->whereHas('usuario', function ($q) use ($userId) {
-                $q->where('visibilidade', 1)
-                    ->orWhere('id', $userId)
-                    ->orWhere(function ($q2) use ($userId) {
-                        $q2->where('visibilidade', 0)
-                            ->whereHas('seguidores', function ($q3) use ($userId) {
-                                $q3->where('segue_id', $userId);
-                            });
-                    });
-            })
-            ->where('bloqueada_auto', false)
-            ->where('removida_manual', false)
-            ->orderByDesc('created_at')
-            ->paginate(20);
-
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-        $interessesUsuario = Auth::user()->interesses;
-
-        return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
+{
+    $userId = Auth::id();
+    
+    // Verificar se precisa fazer onboarding
+    if (!Auth::user()->onboardingConcluido()) {
+        return redirect()->route('onboarding');
     }
+
+    $posts = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
+
+    // Feed principal - EXCLUIR postagens de interesses específicos
+    $postagens = $this->postagem
+        ->with(['imagens', 'usuario', 'interesses'])
+        ->whereHas('usuario', function ($q) use ($userId) {
+            $q->where('visibilidade', 1)
+                ->orWhere('id', $userId)
+                ->orWhere(function ($q2) use ($userId) {
+                    $q2->where('visibilidade', 0)
+                        ->whereHas('seguidores', function ($q3) use ($userId) {
+                            $q3->where('segue_id', $userId);
+                        });
+                });
+        })
+        ->where('bloqueada_auto', false)
+        ->where('removida_manual', false)
+        // EXCLUIR postagens que estão em interesses específicos
+        ->whereDoesntHave('interesses', function ($query) {
+            $query->where('tipo', 'manual'); // Postagens diretas em interesses
+        })
+        ->orderByDesc('created_at')
+        ->paginate(20);
+
+    $tendenciasPopulares = Tendencia::populares(7)->get();
+    $interessesUsuario = Auth::user()->interesses;
+
+    return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
+}
 
     public function seguindo()
-    {
-        $userId = Auth::id();
+{
+    $userId = Auth::id();
 
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
+    $posts = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
 
-        $postagens = $this->postagem
-            ->with(['imagens', 'usuario', 'interesses'])
-            ->whereHas('usuario', function ($q) use ($userId) {
-                $q->whereHas('seguidores', function ($q2) use ($userId) {
-                    $q2->where('segue_id', $userId);
-                })->orWhere('id', $userId);
-            })
-            ->where('bloqueada_auto', false)
-            ->where('removida_manual', false)
-            ->orderByDesc('created_at')
-            ->paginate(20);
+    $postagens = $this->postagem
+        ->with(['imagens', 'usuario', 'interesses'])
+        ->whereHas('usuario', function ($q) use ($userId) {
+            $q->whereHas('seguidores', function ($q2) use ($userId) {
+                $q2->where('segue_id', $userId);
+            })->orWhere('id', $userId);
+        })
+        ->where('bloqueada_auto', false)
+        ->where('removida_manual', false)
+        // EXCLUIR postagens que estão em interesses específicos
+        ->whereDoesntHave('interesses', function ($query) {
+            $query->where('tipo', 'manual');
+        })
+        ->orderByDesc('created_at')
+        ->paginate(20);
 
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-        $interessesUsuario = Auth::user()->interesses;
+    $tendenciasPopulares = Tendencia::populares(7)->get();
+    $interessesUsuario = Auth::user()->interesses;
 
-        return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
-    }
+    return view('feed.post.index', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
+}
 
     /**
      * Feed personalizado por interesses
@@ -100,50 +108,50 @@ class PostagemController extends Controller
  * Feed personalizado por interesses
  */
 public function personalizado()
-    {
-        $userId = Auth::id();
-        
-        if (Auth::user()->interesses()->count() === 0) {
-            return redirect()->route('post.index')
-                           ->with('info', 'Siga alguns interesses para ter um feed personalizado');
-        }
-
-        $interessesIds = Auth::user()->interesses()->pluck('interesses.id');
-
-        // Postagens populares para sidebar
-        $posts = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
-
-        // Feed personalizado
-        $postagens = $this->postagem
-            ->with(['imagens', 'usuario', 'interesses'])
-            ->whereHas('interesses', function($query) use ($interessesIds) {
-                $query->whereIn('interesses.id', $interessesIds);
-            })
-            ->where(function ($q) use ($userId) {
-                $q->whereHas('usuario', function ($q2) use ($userId) {
-                    $q2->where('visibilidade', 1)
-                        ->orWhere('id', $userId)
-                        ->orWhere(function ($q3) use ($userId) {
-                            $q3->where('visibilidade', 0)
-                                ->whereHas('seguidores', function ($q4) use ($userId) {
-                                    $q4->where('segue_id', $userId);
-                                });
-                        });
-                });
-            })
-            ->where('bloqueada_auto', false)
-            ->where('removida_manual', false)
-            ->orderByDesc('created_at')
-            ->paginate(20);
-
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-        $interessesUsuario = Auth::user()->interesses;
-
-        return view('feed.post.personalizado', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
+{
+    $userId = Auth::id();
+    
+    if (Auth::user()->interesses()->count() === 0) {
+        return redirect()->route('post.index')
+                       ->with('info', 'Siga alguns interesses para ter um feed personalizado');
     }
+
+    $interessesIds = Auth::user()->interesses()->pluck('interesses.id');
+
+    // Postagens populares para sidebar
+    $posts = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
+
+    // Feed personalizado - INCLUIR postagens de interesses
+    $postagens = $this->postagem
+        ->with(['imagens', 'usuario', 'interesses'])
+        ->whereHas('interesses', function($query) use ($interessesIds) {
+            $query->whereIn('interesses.id', $interessesIds);
+        })
+        ->where(function ($q) use ($userId) {
+            $q->whereHas('usuario', function ($q2) use ($userId) {
+                $q2->where('visibilidade', 1)
+                    ->orWhere('id', $userId)
+                    ->orWhere(function ($q3) use ($userId) {
+                        $q3->where('visibilidade', 0)
+                            ->whereHas('seguidores', function ($q4) use ($userId) {
+                                $q4->where('segue_id', $userId);
+                            });
+                    });
+            });
+        })
+        ->where('bloqueada_auto', false)
+        ->where('removida_manual', false)
+        ->orderByDesc('created_at')
+        ->paginate(20);
+
+    $tendenciasPopulares = Tendencia::populares(7)->get();
+    $interessesUsuario = Auth::user()->interesses;
+
+    return view('feed.post.personalizado', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario'));
+}
 
     /**
      * Feed por Interesse Específico
@@ -213,12 +221,9 @@ public function personalizado()
         $imagem_postagem = $this->imagem_postagem->all();
 
         return view('feed.post.index', compact('imagem_postagem', 'postagens'));
-
-    /**
-     * Store a newly created resource in storage.
-     */
         }
-    public function store(Request $request)
+
+   public function store(Request $request)
 {
     $user = Auth::user();
 
@@ -226,7 +231,8 @@ public function personalizado()
         'texto_postagem' => 'required|string|max:1000',
         'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
         'interesse_id' => 'nullable|exists:interesses,id',
-        'interesse_slug' => 'nullable|string',
+        'interesses_ids' => 'nullable|array',
+        'interesses_ids.*' => 'exists:interesses,id',
     ]);
 
     // Criar Postagem
@@ -238,19 +244,8 @@ public function personalizado()
     // Processar hashtags
     $postagem->processarHashtags($request->texto_postagem);
 
-    // Vincular ao interesse específico
-    $interesseId = $this->obterInteresseId($request);
-    if ($interesseId) {
-        $postagem->interesses()->attach($interesseId, [
-            'tipo' => 'manual',
-            'categorizado_por' => $user->id,
-            'observacao' => 'Postagem direta no interesse'
-        ]);
-        
-        // Atualizar contador do interesse
-        $interesse = Interesse::find($interesseId);
-        $interesse->atualizarContadores();
-    }
+    // Processar interesses baseado no contexto
+    $this->processarInteressesPostagem($postagem, $request, $user);
 
     // Criar Imagens
     if ($request->hasFile('caminho_imagem')) {
@@ -264,6 +259,65 @@ public function personalizado()
     return redirect()->back()->with('success', 'Postagem criada com sucesso!');
 }
 
+/**
+ * Processa os interesses da postagem baseado no contexto
+ */
+private function processarInteressesPostagem(Postagem $postagem, Request $request, $user)
+{
+    // MODO 1: Interesse Específico (vindo de qualquer formulário em página de interesse)
+    if ($request->filled('interesse_id')) {
+        $this->vincularInteresseUnico($postagem, $request->interesse_id, $user);
+        return;
+    }
+
+    // MODO 2: Feed Personalizado (Múltipla seleção)
+    if ($request->filled('interesses_ids')) {
+        // Se selecionou "todos" ou array vazio, usa todos os interesses do usuário
+        if (in_array('todos', $request->interesses_ids) || empty($request->interesses_ids)) {
+            $interessesIds = $user->interesses->pluck('id')->toArray();
+        } else {
+            $interessesIds = $request->interesses_ids;
+        }
+        
+        $this->vincularInteressesMultiplos($postagem, $interessesIds, $user);
+        return;
+    }
+
+    // MODO 3: Feed Geral - Sem interesse específico
+    // A postagem ficará apenas no feed geral (não será vinculada a nenhum interesse)
+}
+
+private function vincularInteresseUnico(Postagem $postagem, $interesseId, $user)
+{
+    $postagem->interesses()->attach($interesseId, [
+        'tipo' => 'manual',
+        'categorizado_por' => $user->id,
+        'observacao' => 'Postagem direta no interesse'
+    ]);
+
+    $this->atualizarContadorInteresse($interesseId);
+}
+
+private function vincularInteressesMultiplos(Postagem $postagem, array $interessesIds, $user)
+{
+    foreach ($interessesIds as $interesseId) {
+        $postagem->interesses()->attach($interesseId, [
+            'tipo' => 'manual',
+            'categorizado_por' => $user->id,
+            'observacao' => 'Postagem do feed personalizado'
+        ]);
+
+        $this->atualizarContadorInteresse($interesseId);
+    }
+}
+
+private function atualizarContadorInteresse($interesseId)
+{
+    $interesse = Interesse::find($interesseId);
+    if ($interesse) {
+        $interesse->atualizarContadores();
+    }
+}
 /**
  * Obtém o ID do interesse baseado na requisição
  */

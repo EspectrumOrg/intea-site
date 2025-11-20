@@ -25,12 +25,9 @@ use App\Mail\Contato;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\{
-    FeedController,
-    InteresseController,
-    PreferenciasUsuarioController,
-    ModeracaoController
-};
+use App\Http\Controllers\InteresseController;
+use App\Http\Controllers\PreferenciasUsuarioController;
+use App\Http\Controllers\ModeracaoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,10 +50,7 @@ Route::get('/teste', function () {
     return view('teste');
 })->name('teste');
 
-
-
 Route::post('/contato', [ContatoController::class, 'store'])->name('contato.store');
-//contato via email, tanto para guests quanto logados
 
 Route::get('/feed/configuracao/config', function () {
     $user = Auth::user();
@@ -75,8 +69,6 @@ Route::post('/update-theme-preference', function (Illuminate\Http\Request $reque
 
         $user = Auth::user();
         $user->tema_preferencia = $request->tema_preferencia;
-        /** @var \App\Models\User $user */
-
         $user->save();
 
         Log::info('Preferência de tema atualizada', [
@@ -90,14 +82,13 @@ Route::post('/update-theme-preference', function (Illuminate\Http\Request $reque
         return response()->json(['success' => false, 'message' => $e->getMessage()]);
     }
 })->middleware('auth');
-/// POR FAVOR
 
-// somente para quem não está logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
-Route::get('/login', function () { // Login
+// somente para quem não está logado
+Route::get('/login', function () {
     return view('auth.login');
 })->middleware('guest')->name('login');
 
-Route::get('/cadastro', function () { // Tipo Conta
+Route::get('/cadastro', function () {
     return view('auth.register');
 })->middleware('guest')->name('cadastro.index');
 
@@ -110,13 +101,31 @@ Route::resource("profissional", ProfissionalSaudeController::class)->names("prof
 // Cadastro de Responsável
 Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
 
-
-
-// Usuário Logado PADRÃO --------------------------------------------------------------------------------------------------------------------------------------------------------------+
+// Usuário Logado PADRÃO
 Route::middleware(['auth', 'check.ban'])->group(function () {
 
-    //Seguindo (precisa estar antes do resource do feed pra não conflitar com o /feed/{postagem} LMAO,
-    //se alguém souber contornar isso pode mudar de lugar)
+    // ========== INTERESSES - PRIMEIRO (PARA EVITAR CONFLITOS) ==========
+    Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
+    Route::get('/interesses/criar', [InteresseController::class, 'create'])->name('interesses.create');
+    Route::post('/interesses', [InteresseController::class, 'store'])->name('interesses.store');
+    Route::get('/interesses/pesquisar', [InteresseController::class, 'pesquisar'])->name('interesses.pesquisar');
+    Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
+    Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
+    Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
+    Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
+
+    // Feeds por interesse
+    Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
+    Route::get('/personalizado', [PostagemController::class, 'personalizado'])->name('post.personalizado');
+    Route::get('/interesse/{slug}', [PostagemController::class, 'porInteresse'])->name('post.interesse');
+    Route::get('/i/{slug}', [PostagemController::class, 'porInteresse']);
+
+    // ONBOARDING
+    Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
+    Route::post('/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
+    Route::post('/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
+
+    // ========== FEED E POSTAGENS ==========
     Route::get('/feed/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
 
     // Feed e postagens
@@ -125,6 +134,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
         ->parameters(["feed" => "post"]); 
     Route::post('/feed/curtida', [CurtidaController::class, 'toggleCurtida'])->name('curtida.toggle');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
+    
     // Comentários
     Route::resource("comentario", ComentarioController::class)->names('comentario');
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
@@ -133,8 +143,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     Route::delete('/comentario/{id}/destroy', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
 
     Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
-
-Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notificacao.index');
+    Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notificacao.index');
 
     // Grupo
     Route::get('/grupo', [GruposControler::class, 'exibirGrupos'])->name('grupo.index');
@@ -142,14 +151,11 @@ Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notif
     Route::post('/grupo/criar', [GruposControler::class, 'criarGrupo'])->name('grupos.inserir');
 
     Route::get('/chat-test', function () {
-        return view('chat-test'); // Se tiver uma view
-        // ou
-        return file_get_contents(resource_path('views/chat-test.php'));
+        return view('chat-test');
     });
 
     // Denúncias
     Route::post('/denuncia', [DenunciaController::class, 'store'])->name('denuncia.store');
-    // Checagem denúncias
     Route::resource("denuncia", DenunciaController::class)
         ->names("denuncia")
         ->parameters(["denuncia" => "denuncias"]);
@@ -175,20 +181,13 @@ Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notif
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/usuario/{id}/seguindo/count', [SeguirController::class, 'countSeguindo']);
     Route::get('/usuario/{id}/seguidores/count', [SeguirController::class, 'countSeguidores']);
-    Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])
-        ->name('usuario.listar.seguindo');
-    // Lista os usuários que seguem este usuário
-    Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidores'])
-
-        ->name('usuario.listar.seguidores');
+    Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])->name('usuario.listar.seguindo');
+    Route::get('/usuario/{id}/seguidores', [SeguirController::class, 'listarSeguidores'])->name('usuario.listar.seguidores');
 
     Route::get('/buscar-usuarios-chat', [ChatPrivadoController::class, 'buscarUsuarioschat'])->name('buscar.usuarios.chat');
-
     Route::get('/conversas', [UsuarioController::class, 'teste'])->name('teste');
     Route::get('/chat', [PusherController::class, 'webzap'])->name('chat.dashboard');
-
     Route::get('/chat/carregar', [PusherController::class, 'carregarChat'])->name('chat.carregar');
-
     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 
     // Atualizar visibilidade de usuário
@@ -196,61 +195,53 @@ Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notif
         ->name('usuario.update_privacidade');
 });
 
-
-// Profissional de Saúde Logado --------------------------------------------------------------------------------------------------------------------------------------------------------------+
+// Profissional de Saúde Logado
 Route::middleware('auth', 'is_profissional')->group(function () {
     Route::get('/pagina_saude', function () {
         return view('paginas/profissional_saude/inicio_profissional_saude');
     })->name('pagina_saude');
 });
 
-
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/notificacoes', [NotificacaoController::class, 'index'])->name('notificacoes.index');
     Route::post('/notificacoes/{id}/aceitar', [NotificacaoController::class, 'aceitar'])->name('notificacoes.aceitar');
-  Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
+    Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::delete('/notificacoes/{id}', [NotificacaoController::class, 'recusar'])->name('notificacoes.recusar');
 });
 
-
-// Apenas Admin --------------------------------------------------------------------------------------------------------------------------------------------------------------+
+// Apenas Admin
 Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
-
-    // Cadastro de Admin
     Route::resource("admin", AdminController::class)->names("admin");
-
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])
-        ->middleware('auth')
-        ->name('dashboard.index');
-
-    // Usuário
-    Route::resource("usuario", UsuarioController::class)
-        ->names("usuario")
-        ->parameters(["usuario" => "usuarios"]);
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::resource("usuario", UsuarioController::class)->names("usuario")->parameters(["usuario" => "usuarios"]);
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
-
-    // Denúncias
     Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
-
     Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
     Route::post('/suporte/resposta', [ContatoController::class, 'resposta'])->name('contato.resposta');
 });
 
-// Novo sistema de perfil (3 abas)
+// Rotas públicas
 Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
-
-// Rotas de tendências
 Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
 Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
-
-// Rotas da API para tendências
 Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
 Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+
+// API pública para interesses
+Route::get('/api/interesses/slug/{slug}', function($slug) {
+    $interesse = \App\Models\Interesse::where('slug', $slug)->first();
+    if (!$interesse) {
+        return response()->json(['error' => 'Interesse não encontrado'], 404);
+    }
+    return response()->json([
+        'id' => $interesse->id,
+        'nome' => $interesse->nome,
+        'slug' => $interesse->slug
+    ]);
+});
 
 // Rotas para gerenciamento de telefones
 Route::middleware('auth')->group(function () {
@@ -261,61 +252,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/telefones/{id}/dados', [App\Http\Controllers\TelefoneController::class, 'getDados'])->name('telefones.dados');
 });
 
-
 // rotas para adicionar dependente via responsavel
-// routes/web.php
-
 Route::post('/responsavel/{id}/adicionar-dependente', [ResponsavelController::class, 'addDependente'])->name('responsavel.adicionar_dependente');
 
-
-// rotas do responsavel ---------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
+// rotas do responsavel
 Route::middleware(['auth', 'is_responsavel', 'check.ban'])->group(function () {
-
-    Route::get('/painel-responsavel', [\App\Http\Controllers\ResponsavelPainelController::class, 'edit'])
-    ->middleware(['auth', 'is_responsavel'])
-    ->name('responsavel.painel');
-    
-Route::middleware('auth')->group(function () {
+    Route::get('/painel-responsavel', [\App\Http\Controllers\ResponsavelPainelController::class, 'edit'])->name('responsavel.painel');
     Route::get('/autistas/{id}/editar', [App\Http\Controllers\AutistaController::class, 'edit_responsavel'])->name('autistas.edit_responsavel');
     Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
+    Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])->name('dependente.remover');
 });
 
-Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])
-    ->name('dependente.remover')
-    ->middleware('auth');
-});
-
-// Sistema de interesses----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-// Sistema de interesses----------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-// Feeds 
-Route::middleware(['auth', 'check.ban'])->group(function () {
-    Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
-    Route::get('/personalizado', [PostagemController::class, 'personalizado'])->name('post.personalizado');
-    Route::get('/interesse/{slug}', [PostagemController::class, 'porInteresse'])->name('post.interesse');
-});
-
-Route::get('/i/{slug}', [PostagemController::class, 'porInteresse']);
-
-//  ONBOARDING 
-Route::middleware(['auth', 'check.ban'])->group(function () {
-    Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
-    Route::post('/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
-    Route::post('/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
-});
-
-//  INTERESSES
-Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
-Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
-
-//  SEGUIR/DEIXAR INTERESSES
-Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
-Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
-Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
-
-//  Moderação
+// Moderação
 Route::middleware(['auth'])->group(function () {
     Route::get('/moderacao/{interesse}/painel', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
     Route::post('/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');

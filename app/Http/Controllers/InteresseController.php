@@ -7,6 +7,8 @@ use App\Models\Postagem;
 use App\Models\Tendencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 
 class InteresseController extends Controller
 {
@@ -81,20 +83,20 @@ class InteresseController extends Controller
     }
 
     public function index()
-    {
-        $interesses = Interesse::ativos()
-                    ->withCount('seguidores')
-                    ->orderBy('seguidores_count', 'desc')
-                    ->paginate(12);
-        
-        $usuario = Auth::user();
-        $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
+{
+    $interesses = Interesse::ativos()
+        ->withCount('seguidores')
+        ->orderBy('seguidores_count', 'desc')
+        ->paginate(12)
+        ->onEachSide(1) // Mostra apenas 1 página antes e depois da atual
+        ->withQueryString();
 
-        $tendenciasPopulares = Tendencia::populares(7)->get();
+    $usuario = Auth::user();
+    $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
+    $tendenciasPopulares = Tendencia::populares(7)->get();
 
-        
-        return view('interesses.index', compact('interesses', 'interessesUsuario', 'tendenciasPopulares'));
-    }
+    return view('interesses.index', compact('interesses', 'interessesUsuario', 'tendenciasPopulares'));
+}
 
     public function postagens($slug, Request $request)
     {
@@ -162,4 +164,125 @@ class InteresseController extends Controller
             'interesse' => $interesse
         ]);
     }
+
+    /**
+     * Mostrar formulário de criação de interesse
+     */
+    public function create()
+    {
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+        return view('interesses.create', compact('tendenciasPopulares'));
+    }
+
+    /**
+     * Salvar novo interesse
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nome' => 'required|string|max:50|unique:interesses,nome',
+            'descricao' => 'required|string|max:200',
+            'sobre' => 'nullable|string|max:1000',
+            'icone' => 'required|string|max:50',
+            'cor' => 'required|string|size:7', // #FFFFFF
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'nome.required' => 'O nome do interesse é obrigatório',
+            'nome.max' => 'O nome não pode ter mais de 50 caracteres',
+            'nome.unique' => 'Já existe um interesse com este nome',
+            'descricao.required' => 'A descrição é obrigatória',
+            'descricao.max' => 'A descrição não pode ter mais de 200 caracteres',
+            'icone.required' => 'Selecione um ícone',
+            'cor.required' => 'Selecione uma cor',
+        ]);
+
+        try {
+            // Criar slug único
+            $slug = Str::slug($request->nome);
+            $counter = 1;
+            $originalSlug = $slug;
+            
+            while (Interesse::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $counter;
+                $counter++;
+            }
+
+            // Processar banner se enviado
+            $bannerPath = null;
+            if ($request->hasFile('banner')) {
+                $bannerPath = $request->file('banner')->store('arquivos/interesses/banners', 'public');
+            }
+
+            // Criar interesse
+            $interesse = Interesse::create([
+                'nome' => $request->nome,
+                'slug' => $slug,
+                'descricao' => $request->descricao,
+                'sobre' => $request->sobre,
+                'icone' => $request->icone,
+                'cor' => $request->cor,
+                'banner' => $bannerPath,
+                'contador_membros' => 1, // O criador é o primeiro membro
+                'contador_postagens' => 0,
+                'destaque' => false,
+                'ativo' => true,
+                'moderacao_ativa' => true,
+                'limite_alertas_ban' => 3,
+                'dias_expiracao_alerta' => 30,
+            ]);
+
+            // O criador automaticamente segue o interesse
+            Auth::user()->seguirInteresse($interesse->id, true);
+
+            // Tornar o criador moderador
+            $interesse->moderadores()->attach(Auth::id(), [
+                'cargo' => 'fundador',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('success', 'Interesse criado com sucesso! Você é o moderador fundador.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Erro ao criar interesse: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Pesquisar interesses
+     */
+    public function pesquisar(Request $request)
+    {
+        $query = $request->get('q');
+        
+        if (!$query) {
+            return redirect()->route('interesses.index');
+        }
+
+        $interesses = Interesse::ativos()
+            ->where(function($q) use ($query) {
+                $q->where('nome', 'LIKE', "%{$query}%")
+                  ->orWhere('descricao', 'LIKE', "%{$query}%")
+                  ->orWhere('sobre', 'LIKE', "%{$query}%");
+            })
+            ->withCount('seguidores')
+            ->orderBy('seguidores_count', 'desc')
+            ->paginate(12);
+
+        $usuario = Auth::user();
+        $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        return view('interesses.pesquisa', compact(
+            'interesses', 
+            'interessesUsuario', 
+            'tendenciasPopulares',
+            'query'
+        ));
+    }
+
+
 }
