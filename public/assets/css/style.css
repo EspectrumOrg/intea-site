@@ -84,3 +84,15 @@
     gap: 10px;
     flex-wrap: wrap;
 }
+
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--branco-light);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--azul);
+}
