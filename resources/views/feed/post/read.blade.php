@@ -7,7 +7,7 @@
 <div class="container-read">
     <div class="content">
         <div class="topo">
-            <a class="voltar" href="{{ route('post.index') }}">
+            <a class="voltar" href="javascript:void(0)" onclick="history.back()">
                 <span class="material-symbols-outlined">arrow_back</span>
             </a>
             <div class="text">

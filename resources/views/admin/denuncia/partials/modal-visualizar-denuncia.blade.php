@@ -41,8 +41,8 @@
                             <img
                                 src="{{ asset('storage/'.$item->usuarioDenunciado->foto ?? 'assets/images/logos/contas/user.png') }}"
                                 class="foto-denunciado">
-                            <h6>{{ $item->usuarioDenunciado->user }}</h6>
-                            <p class="text-muted"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
+                            <h6 style="font-size: 18px; color: black; font-weight: 600;">{{ $item->usuarioDenunciado->user }}</h6>
+                            <p class="text-muted" style="padding: 0 1rem;"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
                         </div>
 
                         @elseif ($item->postagem)
