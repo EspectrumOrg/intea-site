@@ -1,10 +1,10 @@
 <!-- icons and style -->
 <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
+<link rel="stylesheet" href="{{ url('assets/css/interesses.css') }}">
 <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-<div
-    class="content {{ Auth::check() && Auth::user()->tema_preferencia == 'monocromatico' ? 'sidebar-monochrome' : '' }}">
+<div class="content {{ Auth::check() && Auth::user()->tema_preferencia == 'monocromatico' ? 'sidebar-monochrome' : '' }}">
 
     <!-- Logo -->
     <div class="logo">
@@ -44,81 +44,75 @@
 
     <!-- Links sidebar-->
     <div class="links">
+        <!-- HOME (1) -->
         <a href="{{ route('post.index') }}"
             class="nav-link {{ request()->routeIs('post.index') || request()->routeIs('post.seguindo') ? 'active' : '' }}"
             id="home">
-            <span id="simbolo-home" class="material-symbols-outlined">home</span>
+            <span class="material-symbols-outlined">home</span>
             <h1>Home</h1>
         </a>
 
-        <!-- Movi para post/partials/topo-seguindo para ficar melhor distribuido e parecido com o twitter
-        <a href="{{ route('post.seguindo') }}" class="nav-link {{ request()->routeIs('post.seguindo') ? 'active' : '' }}"
-            id="seguindo">
-            <span id="simbolo-home" class="material-symbols-outlined" >Home</span>
-            <h1>Seguindo</h1>
+        <!-- INTERESSES (2) - NOVA ABA -->
+        <a href="{{ route('interesses.index') }}"
+            class="nav-link {{ request()->routeIs('interesses.index') || request()->routeIs('interesses.show') ? 'active' : '' }}"
+            id="interesses">
+            <span class="material-symbols-outlined">category</span>
+            <h1>Interesses</h1>
         </a>
-        -->
 
+        <!-- MENSAGENS (3) -->
         <a href="{{ route('chat.dashboard') }}"
             class="nav-link {{ request()->routeIs('chat.dashboard') ? 'active' : '' }}" id="message">
-            <span id="simbolo-mensagens" class="material-symbols-outlined">mail</span>
+            <span class="material-symbols-outlined">mail</span>
             <h1>Mensagens</h1>
         </a>
 
+        <!-- PERFIL (4) -->
         <a href="{{ route('profile.show') }}" class="nav-link {{ request()->routeIs('profile.show') ? 'active' : '' }}"
             id="profile">
-            <span id="simbolo-perfil" class="material-symbols-outlined">person</span>
+            <span class="material-symbols-outlined">person</span>
             <h1>Perfil</h1>
         </a>
 
+        <!-- NOTIFICAÇÕES (5) -->
         <a href="{{ route('notificacao.index') }}"
-            class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}" id="config">
-
-            <span class="material-symbols-outlined"> notifications </span>
-
+            class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}" id="notificacoes">
+            <span class="material-symbols-outlined">notifications</span>
             <h1 style="display: flex; align-items: center; gap: 6px;">
                 Notificações
-
                 @if($totalNotificacoes > 0)
-                        <span style="
-                        background: #14b814;
-                        color: white;
-                        padding: 2px 8px;
-                        border-radius: 12px;
-                        font-size: 12px;
-                        font-weight: bold;
-                    ">
-                            {{ $totalNotificacoes }}
-                        </span>
+                    <span style="background: #14b814; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                        {{ $totalNotificacoes }}
+                    </span>
                 @endif
             </h1>
         </a>
 
+        <!-- CONFIGURAÇÕES (6) -->
         <a href="{{ route('configuracao.config') }}"
-            class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}">
-            <span id="simbolo-config" class="material-symbols-outlined">settings</span>
+            class="nav-link {{ request()->routeIs('configuracao.config') ? 'active' : '' }}" id="config">
+            <span class="material-symbols-outlined">settings</span>
             <h1>Configurações</h1>
         </a>
 
-
-
         @can("visualizar-admin")
+            <!-- ADMINISTRAÇÃO (7) -->
             <a href="{{ route('dashboard.index') }}"
-                class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}">
+                class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="admin">
                 <span class="material-symbols-outlined">manage_accounts</span>
                 <h1>Administração</h1>
             </a>
         @endcan
+        
         @can("visualizar-responsavel")
+            <!-- RESPONSÁVEIS (8) -->
             <a href="{{ route('responsavel.painel') }}"
-                class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}">
-                <span id="simbolo-responsavel" class="material-symbols-outlined">supervisor_account</span>
+                class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}" id="responsavel">
+                <span class="material-symbols-outlined">supervisor_account</span>
                 <h1>Responsáveis</h1>
             </a>
         @endcan
 
-
-        <!-- Modal de criação de postagem --------------------------------------------------------------------------->
         <div class="post-button">
             <button type="button" id="postagem-modal" onclick="abrirModalPostar()">Postar</button>
         </div>

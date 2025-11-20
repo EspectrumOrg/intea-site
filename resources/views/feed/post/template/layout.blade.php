@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/topo.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/post/style.css') }}">
+    <!-- interesses -->
+    <link rel="stylesheet" href="{{ asset('assets/css/interesses.css') }}">
     <!-- read -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/modal.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
@@ -38,11 +40,9 @@
             <!-- barra de pesquisa, popular  -->
             <div class="content-popular">
                 @include('feed.post.partials.buscar')
-
                 @include('feed.post.partials.sidebar-popular')
             </div>
         </div>
-
 
         <!-- Modal Criação de postagem -->
         @include('feed.post.create-modal')
@@ -66,5 +66,10 @@
 <script src="{{ url('assets/js/posts/read/char-count-focus.js') }}"></script>
 <!-- postagen dropdown -->
 <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
+
+<!-- interesses -->
+<script src="{{ url('assets/js/interesses/seguir-interesse.js') }}"></script>
+<script src="{{ url('assets/js/interesses/sidebar-interesses.js') }}"></script>
+<script src="{{ asset('assets/js/posts/selecao-interesse.js') }}"></script>
 
 </html>

@@ -31,7 +31,7 @@
 /* BARRA DE PESQUISA — NOVA      */
 
 .search-container {
-    width: clamp(260px, 75%, 480px); /* 🔥 Barra MENOR visualmente */
+    width: clamp(260px, 75%, 480px); 
     margin: 0 auto 1.8rem;
     position: relative;
 }
@@ -43,9 +43,9 @@
     border-radius: 14px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.06);
     overflow: hidden;
-    padding-left: 2.6rem; /* 🔥 Mantém ícone sem estourar */
     position: relative;
 }
+
 
 .search-icon {
     position: absolute;
@@ -142,23 +142,61 @@
 /* INFORMAÇÕES DE RESULTADO      */
 
 .results-info {
-    margin-bottom: 1.4rem;
+    margin-bottom: 1.2rem;
     margin-right: 2%;
 }
 
 .search-results-header {
-    background: var(--branco-light);
-    padding: .8rem .9rem;
-    border-radius: 10px;
+    background: var(--branco);
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    border: 1px solid var(--branco-light);
+    margin-top: .6rem;
+    gap: 1rem;
+    margin-left: 7%;
+    margin-right: 4.5%;
 }
 
+.search-results-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul-escuro);
+}
+
+.search-results-header .clear-results {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+
+    color: var(--roxo);
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: .2s;
+}
+
+.search-results-header .clear-results:hover {
+    opacity: .7;
+}
+
+.search-results-header .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+/* QTD DE RESULTADOS */
 .results-count {
     text-align: right;
     color: var(--cinza);
     font-size: .85rem;
+    margin-top: .3rem;
 }
+
 
 /* GRID DAS TENDÊNCIAS           */
 

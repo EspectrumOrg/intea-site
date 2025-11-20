@@ -223,6 +223,14 @@ body {
     width: 100%;
 }
 
+.foto-denunciado {
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    border: none;
+    border: 1px solid var(--vermelho) !important;
+}
+
 
 /* TABS ---------------------------------------------------------------------*/
 .tabs {

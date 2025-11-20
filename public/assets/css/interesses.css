@@ -174,7 +174,7 @@
 
 /* Feed Header */
 .feed-header {
-    background: white;
+    background: #D0D6D9;
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
@@ -189,6 +189,16 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+.feed-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
 }
 
 .interesse-header-info {
@@ -290,10 +300,13 @@
     font-size: 0.9rem;
 }
 
-.nav-feed:hover {
+.nav-feed:hover,
+.nav-feed.active {
     border-color: #3B82F6;
     color: #3B82F6;
     transform: translateY(-2px);
+    background-color: #3B82F6;
+    color: white;
 }
 
 /* Interesses Rápidos no Header */
@@ -301,6 +314,12 @@
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #e1e5e9;
+}
+
+.interesses-rapidos span {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
 }
 
 .interesses-lista {
@@ -406,6 +425,8 @@
     border-radius: 10px;
     margin-bottom: 5px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
 }
 
 .interesse-nav-item:hover {
@@ -420,6 +441,7 @@
     font-size: 0.7rem;
     margin-left: auto;
 }
+
 /* Página de Interesses */
 .interesses-page-header {
     text-align: center;
@@ -675,8 +697,681 @@
     background: #e1e5e9;
 }
 
-/* Paginação */
+/* Paginação - Apenas numeração */
 .interesses-pagination {
-    margin-top: 30px;
+    margin-top: 2rem;
     text-align: center;
+}
+
+.interesses-pagination .pagination {
+    display: inline-flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.interesses-pagination .page-item {
+    margin: 0;
+}
+
+.interesses-pagination .page-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.interesses-pagination .page-link:hover {
+    background: #f3f4f6;
+    border-color: #3b82f6;
+    color: #3b82f6;
+    transform: translateY(-1px);
+}
+
+.interesses-pagination .page-item.active .page-link {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: white;
+}
+
+.interesses-pagination .page-item.disabled .page-link {
+    background: #f9fafb;
+    border-color: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+/* Esconder Previous/Next e setas */
+.interesses-pagination .page-item:first-child .page-link,
+.interesses-pagination .page-item:last-child .page-link {
+    display: none;
+}
+
+/* Esconder as setas "‹" e "›" */
+.interesses-pagination .pagination li:first-child,
+.interesses-pagination .pagination li:last-child {
+    display: none;
+}
+
+/* Botão primário para empty states */
+.btn-primary {
+    background: #3B82F6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+/* Estilos para a seção de interesses na sidebar */
+.nav-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.nav-section .section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 10px;
+    padding: 0 15px;
+    font-weight: 600;
+}
+
+.interesse-nav-item {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px !important;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
+    position: relative;
+}
+
+.interesse-nav-item:hover {
+    background-color: rgba(0,0,0,0.05);
+    transform: translateX(5px);
+}
+
+.interesse-nav-item.active {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.interesse-nav-item.active .material-symbols-outlined {
+    color: white !important;
+}
+
+.interesse-nav-item.active .interesse-badge {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.interesse-badge {
+    background: #ef4444;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    margin-left: auto;
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Ajustes para tema monocromático */
+.sidebar-monochrome .nav-section {
+    border-top-color: #555;
+}
+
+.sidebar-monochrome .section-title {
+    color: #999;
+}
+
+.sidebar-monochrome .interesse-nav-item {
+    color: #ccc;
+}
+
+.sidebar-monochrome .interesse-nav-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar-monochrome .interesse-nav-item.active {
+    background-color: #666;
+    color: white;
+}
+
+.sidebar-monochrome .interesse-badge {
+    background: #888;
+    color: white;
+}
+
+/* Feed Header com topo-seguindo inline */
+.feed-header {
+    background: var(--branco);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.feed-header.principal {
+    border-left: 4px solid #3B82F6;
+}
+
+.feed-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.feed-info-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.feed-info-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilo para o topo-seguindo quando está dentro do feed-header */
+.feed-header .seguindo-container {
+    margin: 0;
+    padding: 0;
+}
+
+.feed-header .feed-navigation {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.feed-header .nav-feed {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #64748b;
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.feed-header .nav-feed:hover,
+.feed-header .nav-feed.active {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    background: white;
+}
+
+.feed-header .nav-feed.active {
+    background-color: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* Navegação principal (fora do header) - se ainda tiver */
+.feed-navigation-main {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+}
+
+.feed-navigation-main .nav-feed {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #666;
+    border: 2px solid #e1e5e9;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.feed-navigation-main .nav-feed:hover,
+.feed-navigation-main .nav-feed.active {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    transform: translateY(-2px);
+}
+
+.feed-navigation-main .nav-feed.active {
+    background-color: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* ========== FORMULÁRIO DE CRIAÇÃO E PESQUISA ========== */
+
+/* Formulário de Criação */
+.criar-interesse-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.criar-interesse-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-input, .form-textarea, .form-file {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-help {
+    display: block;
+    margin-top: 0.25rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.error-message {
+    display: block;
+    margin-top: 0.25rem;
+    color: #ef4444;
+    font-size: 0.875rem;
+}
+
+/* Grid de Ícones */
+.icones-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.icone-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.icone-option:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+.icone-option input[type="radio"] {
+    display: none;
+}
+
+.icone-option input[type="radio"]:checked + .material-symbols-outlined {
+    color: #3b82f6;
+}
+
+.icone-option input[type="radio"]:checked {
+    border-color: #3b82f6;
+    background: #eff6ff;
+}
+
+.icone-option .material-symbols-outlined {
+    font-size: 2rem;
+    color: #6b7280;
+}
+
+/* Grid de Cores */
+.cores-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.cor-option {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.cor-option:hover {
+    transform: scale(1.1);
+}
+
+.cor-option input[type="radio"] {
+    display: none;
+}
+
+.cor-option input[type="radio"]:checked {
+    border-color: #1f2937;
+}
+
+.cor-option input[type="radio"]:checked + .checkmark {
+    opacity: 1;
+}
+
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Preview */
+.interesse-preview {
+    margin-top: 1rem;
+}
+
+.preview-card {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #f9fafb;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #3b82f620;
+}
+
+.preview-icon .material-symbols-outlined {
+    font-size: 2.5rem;
+    color: #3b82f6;
+}
+
+.preview-header h3 {
+    margin: 0;
+    color: #1f2937;
+}
+
+.preview-stats {
+    display: flex;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Ações do Formulário */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.btn-cancelar {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #374151;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-cancelar:hover {
+    background: #f9fafb;
+}
+
+.btn-criar {
+    padding: 0.75rem 1.5rem;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-criar:hover {
+    background: #059669;
+}
+
+/* Pesquisa */
+.interesses-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.pesquisa-interesses-form {
+    flex: 1;
+    max-width: 400px;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 25px;
+    font-size: 1rem;
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+}
+
+.btn-criar-interesse {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #8b5cf6;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background 0.3s;
+}
+
+.btn-criar-interesse:hover {
+    background: #7c3aed;
+}
+
+/* Resultados de Pesquisa */
+.no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.no-results .material-symbols-outlined {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .feed-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .feed-info-left {
+        font-size: 1.1rem;
+    }
+    
+    .feed-header .feed-navigation {
+        gap: 6px;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 5px;
+    }
+    
+    .feed-header .nav-feed {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .criar-interesse-container {
+        padding: 1rem;
+    }
+    
+    .criar-interesse-form {
+        padding: 1.5rem;
+    }
+    
+    .icones-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .cores-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .interesses-actions {
+        flex-direction: column;
+    }
+    
+    .pesquisa-interesses-form {
+        max-width: none;
+    }
+    
+    .interesses-pagination .page-link {
+        min-width: 36px;
+        height: 36px;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.8rem;
+    }
+    
+    .interesses-pagination .pagination {
+        gap: 0.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .feed-header {
+        padding: 15px;
+    }
+    
+    .feed-info-left {
+        font-size: 1rem;
+    }
+    
+    .feed-header .feed-navigation {
+        gap: 4px;
+    }
+    
+    .feed-header .nav-feed {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .feed-header .nav-feed .material-symbols-outlined {
+        font-size: 14px;
+    }
+
+    .criar-interesse-form {
+        padding: 1rem;
+    }
+    
+    .icones-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .cores-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancelar, .btn-criar {
+        width: 100%;
+        text-align: center;
+    }
 }

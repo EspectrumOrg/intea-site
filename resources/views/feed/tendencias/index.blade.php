@@ -107,6 +107,7 @@
                     @endif
                 </p>
                 @if(request('search'))
+                <br>
                     <a href="{{ route('tendencias.index') }}" class="btn-primary">
                         Ver todas as tendências
                     </a>

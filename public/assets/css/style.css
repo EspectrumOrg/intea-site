@@ -13,6 +13,7 @@
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
+    
 
 
     /* ===================================== site colorido (em ordem dos slides) =============================================*/
@@ -24,7 +25,7 @@
     --azul-apagado: #1c4a73;
     --amarelo: #F2B705;
     --amarelo-apagado: #E0B122;
-    --laranja: #F25C05;
+    --laranja: #FF6B35;
     --laranja-apagado: #c44c06;
     --roxo: #6D398B;
     --roxo-apagado: #452557;
@@ -82,4 +83,16 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+body::-webkit-scrollbar {
+    width: 6px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--branco-light);
+}
+
+body::-webkit-scrollbar-thumb {
+    background: var(--azul);
 }

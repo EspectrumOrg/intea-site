@@ -15,7 +15,7 @@ class Postagem extends Model
         'usuario_id',
         'texto_postagem',
         'bloqueada_auto',
-        'removida_manual', 
+        'removida_manual',
         'motivo_remocao',
         'removida_em',
         'removida_por',
@@ -62,14 +62,14 @@ class Postagem extends Model
     public function interesses()
     {
         return $this->belongsToMany(Interesse::class, 'interesse_postagem', 'postagem_id', 'interesse_id')
-                    ->withPivot('tipo', 'categorizado_por', 'observacao')
-                    ->withTimestamps();
+            ->withPivot('tipo', 'categorizado_por', 'observacao')
+            ->withTimestamps();
     }
 
     public function tendencias()
     {
         return $this->belongsToMany(Tendencia::class, 'tb_tendencia_postagem', 'postagem_id', 'tendencia_id')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function removidaPor()
@@ -82,9 +82,14 @@ class Postagem extends Model
         return $this->curtidas()->count();
     }
 
+    public function todosComentarios()
+    {
+        return $this->hasMany(Comentario::class, 'id_postagem');
+    }
+
     public function getComentariosCountAttribute()
     {
-        return $this->comentarios()->count();
+        return $this->todosComentarios()->count();
     }
 
     public function getCurtidasUsuarioAttribute()
@@ -181,7 +186,7 @@ class Postagem extends Model
 
         $interesse = Interesse::find($interesseId);
         $interesse->atualizarContadores();
-        
+
         if ($tipo === 'manual') {
             \App\Services\ServicoModeracao::notificarModeradoresNovaPostagem($this);
         }
@@ -190,10 +195,10 @@ class Postagem extends Model
     public function sugerirInteressesAutomaticos(): void
     {
         $interesses = Interesse::ativos()->get();
-        
+
         foreach ($interesses as $interesse) {
             $relevancia = $interesse->sugerirPostagem($this);
-            
+
             if ($relevancia) {
                 $this->interesses()->attach($interesse->id, [
                     'tipo' => 'sugerido',
@@ -214,21 +219,21 @@ class Postagem extends Model
     public function obterInteressesPrincipais($limite = 3)
     {
         return $this->interesses()
-                    ->limit($limite)
-                    ->get();
+            ->limit($limite)
+            ->get();
     }
 
     public function processarHashtags($texto)
     {
         preg_match_all('/#(\w+)/', $texto, $matches);
-        
+
         $hashtags = $matches[1] ?? [];
         $tendenciasIds = [];
 
         foreach ($hashtags as $tag) {
             $hashtagCompleta = '#' . $tag;
             $slug = Tendencia::criarSlug($hashtagCompleta);
-            
+
             $tendencia = Tendencia::firstOrCreate(
                 ['slug' => $slug],
                 [
@@ -240,7 +245,7 @@ class Postagem extends Model
 
             $tendencia->increment('contador_uso');
             $tendencia->update(['ultimo_uso' => now()]);
-            
+
             $tendenciasIds[] = $tendencia->id;
         }
 
@@ -258,9 +263,9 @@ class Postagem extends Model
         static::created(function ($postagem) {
             $postagem->processarHashtags($postagem->texto_postagem);
             $postagem->sugerirInteressesAutomaticos();
-            
+
             $violacoes = $postagem->verificarViolacoesPalavrasProibidas();
-            
+
             if (!empty($violacoes)) {
                 $palavras = [];
                 foreach ($violacoes as $interesseViolacoes) {
@@ -268,7 +273,7 @@ class Postagem extends Model
                         $palavras[] = $violacao->palavra;
                     }
                 }
-                
+
                 $postagem->bloquearAutomaticamente(
                     "Palavras proibidas detectadas: " . implode(', ', array_slice(array_unique($palavras), 0, 5))
                 );
@@ -287,10 +292,10 @@ class Postagem extends Model
             foreach ($postagem->interesses as $interesse) {
                 $interesse->atualizarContadores();
             }
-            
+
             $tendencias = $postagem->tendencias()->get();
             $postagem->tendencias()->detach();
-            
+
             foreach ($tendencias as $tendencia) {
                 if ($tendencia->postagens()->count() === 0) {
                     $tendencia->delete();
