@@ -26,6 +26,7 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
     <link rel="stylesheet" href="{{ url('assets/css/profile/style.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/layout/popular.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/config.css') }}">
 </head>
 
 <body>
@@ -95,18 +96,34 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
         </div>
     </div>
 <script>
+// Aguarda o carregamento completo do DOM antes de executar
 document.addEventListener('DOMContentLoaded', function() {
+
+    // Captura o toggle (checkbox) que ativa/desativa o modo monocromático
     const toggle = document.getElementById('monochrome-sidebar-toggle');
+
+    // Sidebar principal
     const sidebar = document.querySelector('.container-sidebar .content');
+
+    // Sidebar de tendências
     const sidebarTendencias = document.querySelector('.sidebar-tendencias');
     
-    // Função para aplicar/remover modo monocromático
+    /*
+    ===========================================================
+      FUNÇÃO RESPONSÁVEL POR APLICAR OU REMOVER MODO MONOCROMÁTICO
+      Aqui você adiciona novas áreas/componentes no futuro
+      Só precis repetir o padrão "if (elemento) { add/remove class }"
+    ===========================================================
+    */
     function toggleMonochrome(isMonochrome) {
+
         // Sidebar principal
         if (sidebar) {
             if (isMonochrome) {
+                // Adiciona a classe que deixa ela monocromática
                 sidebar.classList.add('sidebar-monochrome');
             } else {
+                // Remove e volta ao modo normal
                 sidebar.classList.remove('sidebar-monochrome');
             }
         }
@@ -119,16 +136,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 sidebarTendencias.classList.remove('sidebar-tendencias-monochrome');
             }
         }
+
+        /*
+        ===========================================================
+          COMO EXPANDIR PARA OUTROS ELEMENTOS DO SITE
+        ===========================================================
+        
+        Exemplo: você quer aplicar monocromático nas TABS:
+        
+        const tabs = document.querySelector('.tabs');
+        if (tabs) {
+            if (isMonochrome) tabs.classList.add('tabs-monochrome');
+            else tabs.classList.remove('tabs-monochrome');
+        }
+        
+        OU 
+        
+        aplicar em vários elementos de uma vez:
+        
+        document.querySelectorAll('.card, .titulo, .botao')
+        .forEach(el => {
+            if (isMonochrome) el.classList.add('mono');
+            else el.classList.remove('mono');
+        });
+
+        Ai no CSS, você vai adicionar as coisas, entende? Por exemplo no caso do
+        monocrómatico da SIDEBAR:
+        .sidebar-monochrome .nav-link span,
+        .sidebar-monochrome .nav-link h1,
+        .sidebar-monochrome .info h5,
+        .sidebar-monochrome .info h4 {
+            color: #000 !important;
+        }
+        Isso já vai estar no código, recomendo inclusive que deixe no Style.css tudo isso (que fica no public/assets/css)
+        por que todas as páginas usam isso. Só identifica com um comentário onde inicia. Mas é basicamente isso.
+        */
     }
     
+    
+    /*
+    ===========================================================
+      ESCUTA O TOGGLE DE MODO MONOCROMÁTICO
+      (CLIQUE DO USUÁRIO)
+    ===========================================================
+    */
     if (toggle) {
         toggle.addEventListener('change', function() {
+
             const isMonochrome = this.checked;
-            
-            // Atualizar visualmente imediatamente (sem esperar pelo servidor)
+
+            // Atualiza visualmente NA HORA, sem esperar o servidor
             toggleMonochrome(isMonochrome);
             
-            // Enviar para o servidor em segundo plano
+            /*
+            ===========================================================
+              AQUI É ENVIADO PARA O SERVIDOR
+            ===========================================================
+            */
             fetch('/update-theme-preference', {
                 method: 'POST',
                 headers: {
@@ -149,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     console.log('Preferência salva com sucesso!');
                     
-                    // Opcional: mostrar feedback visual sucesso
+                    // Feedback visual opcional
                     showFeedback('Preferência salva!', 'success');
                 } else {
                     throw new Error(data.message || 'Erro desconhecido');
@@ -158,34 +222,49 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => {
                 console.error('Erro:', error);
                 
-                // Reverter visualmente em caso de erro
+                // Reverte o estado caso o salvamento falhe
                 toggleMonochrome(!isMonochrome);
                 toggle.checked = !isMonochrome;
                 
-                // Mostrar feedback de erro
+                // Feedback de falha
                 showFeedback('Erro ao salvar preferência', 'error');
             });
         });
         
-        // Aplicar estado inicial baseado no toggle (caso a página seja carregada com a preferência já salva)
+        /*
+        ===========================================================
+          QUANDO A PÁGINA CARREGA
+          Se a sidebar já vier com a classe monocromática 
+          então marcamos o toggle como ativo
+        ===========================================================
+        */
         if (sidebarTendencias && sidebarTendencias.classList.contains('sidebar-tendencias-monochrome')) {
             toggle.checked = true;
         }
     }
 });
 
-// Função para mostrar feedback visual
+
+
+
+/*
+==========================================================
+  FUNÇÃO DE FEEDBACK VISUAL
+==========================================================
+*/
 function showFeedback(message, type) {
-    // Remove feedback anterior se existir
+
+    // Remove qualquer feedback anterior
     const existingFeedback = document.querySelector('.feedback-message');
     if (existingFeedback) {
         existingFeedback.remove();
     }
     
-    // Cria novo feedback
+    // Elemento de feedback
     const feedback = document.createElement('div');
     feedback.className = `feedback-message feedback-${type}`;
     feedback.textContent = message;
+
     feedback.style.cssText = `
         position: fixed;
         top: 20px;
@@ -208,73 +287,6 @@ function showFeedback(message, type) {
     }, 3000);
 }
 
-// Adicionar os keyframes de animação
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-    
-    /* Estilos para modo monocromático do sidebar de tendências */
-    .sidebar-tendencias-monochrome {
-        filter: grayscale(100%);
-        transition: filter 0.3s ease;
-    }
-    
-    .sidebar-tendencias-monochrome .sidebar-header {
-        color: #666 !important;
-    }
-    
-    .sidebar-tendencias-monochrome .sidebar-header span {
-        filter: grayscale(100%);
-    }
-    
-    .sidebar-tendencias-monochrome .tendencia-item {
-        color: #666 !important;
-        border-color: #ddd !important;
-    }
-    
-    .sidebar-tendencias-monochrome .tendencia-nome {
-        color: #666 !important;
-    }
-    
-    .sidebar-tendencias-monochrome .tendencia-contador {
-        color: #999 !important;
-    }
-    
-    .sidebar-tendencias-monochrome .ver-mais a {
-        color: #666 !important;
-        border-color: #ddd !important;
-        background-color: #f5f5f5 !important;
-    }
-    
-    .sidebar-tendencias-monochrome .no-tendencias p {
-        color: #999 !important;
-    }
-    
-    .sidebar-tendencias-monochrome .material-symbols-outlined {
-        filter: grayscale(100%);
-    }
-`;
-document.head.appendChild(style);
 </script>
 </body>
 </html>

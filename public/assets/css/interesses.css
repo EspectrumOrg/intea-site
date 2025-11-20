@@ -174,7 +174,7 @@
 
 /* Feed Header */
 .feed-header {
-    background: white;
+    background: #D0D6D9;
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
@@ -189,6 +189,16 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+.feed-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
 }
 
 .interesse-header-info {
@@ -290,10 +300,13 @@
     font-size: 0.9rem;
 }
 
-.nav-feed:hover {
+.nav-feed:hover,
+.nav-feed.active {
     border-color: #3B82F6;
     color: #3B82F6;
     transform: translateY(-2px);
+    background-color: #3B82F6;
+    color: white;
 }
 
 /* Interesses Rápidos no Header */
@@ -301,6 +314,12 @@
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #e1e5e9;
+}
+
+.interesses-rapidos span {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
 }
 
 .interesses-lista {
@@ -406,6 +425,8 @@
     border-radius: 10px;
     margin-bottom: 5px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
 }
 
 .interesse-nav-item:hover {
@@ -420,6 +441,7 @@
     font-size: 0.7rem;
     margin-left: auto;
 }
+
 /* Página de Interesses */
 .interesses-page-header {
     text-align: center;
@@ -679,4 +701,271 @@
 .interesses-pagination {
     margin-top: 30px;
     text-align: center;
+}
+
+/* Botão primário para empty states */
+.btn-primary {
+    background: #3B82F6;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background: #2563eb;
+}
+
+/* Estilos para a seção de interesses na sidebar */
+.nav-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e5e9;
+}
+
+.nav-section .section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 10px;
+    padding: 0 15px;
+    font-weight: 600;
+}
+
+.interesse-nav-item {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px !important;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: #333;
+    position: relative;
+}
+
+.interesse-nav-item:hover {
+    background-color: rgba(0,0,0,0.05);
+    transform: translateX(5px);
+}
+
+.interesse-nav-item.active {
+    background-color: #3B82F6;
+    color: white;
+}
+
+.interesse-nav-item.active .material-symbols-outlined {
+    color: white !important;
+}
+
+.interesse-nav-item.active .interesse-badge {
+    background: rgba(255,255,255,0.2);
+    color: white;
+}
+
+.interesse-badge {
+    background: #ef4444;
+    color: white;
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    margin-left: auto;
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Ajustes para tema monocromático */
+.sidebar-monochrome .nav-section {
+    border-top-color: #555;
+}
+
+.sidebar-monochrome .section-title {
+    color: #999;
+}
+
+.sidebar-monochrome .interesse-nav-item {
+    color: #ccc;
+}
+
+.sidebar-monochrome .interesse-nav-item:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar-monochrome .interesse-nav-item.active {
+    background-color: #666;
+    color: white;
+}
+
+.sidebar-monochrome .interesse-badge {
+    background: #888;
+    color: white;
+}
+
+/* Feed Header com topo-seguindo inline */
+.feed-header {
+    background: var(--branco);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.feed-header.principal {
+    border-left: 4px solid #3B82F6;
+}
+
+.feed-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.feed-info-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.feed-info-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilo para o topo-seguindo quando está dentro do feed-header */
+.feed-header .seguindo-container {
+    margin: 0;
+    padding: 0;
+}
+
+.feed-header .feed-navigation {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.feed-header .nav-feed {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #64748b;
+    border: 1px solid #e1e5e9;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.feed-header .nav-feed:hover,
+.feed-header .nav-feed.active {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    background: white;
+}
+
+.feed-header .nav-feed.active {
+    background-color: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* Navegação principal (fora do header) - se ainda tiver */
+.feed-navigation-main {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    padding: 0 5px;
+}
+
+.feed-navigation-main .nav-feed {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: white;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #666;
+    border: 2px solid #e1e5e9;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.feed-navigation-main .nav-feed:hover,
+.feed-navigation-main .nav-feed.active {
+    border-color: #3B82F6;
+    color: #3B82F6;
+    transform: translateY(-2px);
+}
+
+.feed-navigation-main .nav-feed.active {
+    background-color: #3B82F6;
+    color: white;
+    border-color: #3B82F6;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .feed-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .feed-info-left {
+        font-size: 1.1rem;
+    }
+    
+    .feed-header .feed-navigation {
+        gap: 6px;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 5px;
+    }
+    
+    .feed-header .nav-feed {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .feed-header {
+        padding: 15px;
+    }
+    
+    .feed-info-left {
+        font-size: 1rem;
+    }
+    
+    .feed-header .feed-navigation {
+        gap: 4px;
+    }
+    
+    .feed-header .nav-feed {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .feed-header .nav-feed .material-symbols-outlined {
+        font-size: 14px;
+    }
 }
