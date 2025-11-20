@@ -187,7 +187,7 @@ public function personalizado()
         $interessesUsuario = Auth::user()->interesses;
 
         return view('feed.post.interesse', compact('postagens', 'posts', 'tendenciasPopulares', 'interessesUsuario', 'interesse'));
-    } // ✅ FECHAMENTO DA FUNÇÃO porInteresse() AQUI!
+    } 
 
     /**
      * Show the form for creating a new resource.
@@ -219,37 +219,69 @@ public function personalizado()
      */
         }
     public function store(Request $request)
-    {
-        $user = Auth::user();
+{
+    $user = Auth::user();
 
-        $request->validate([
-            'texto_postagem' => 'required|string|max:1000',
-            'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
-        ], [
-            'texto_postagem.required' => 'O campo texto é obrigatório',
-            'texto_postagem.max' => 'O campo texto só comporta até 1000 caracteres',
+    $request->validate([
+        'texto_postagem' => 'required|string|max:1000',
+        'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
+        'interesse_id' => 'nullable|exists:interesses,id',
+        'interesse_slug' => 'nullable|string',
+    ]);
+
+    // Criar Postagem
+    $postagem = Postagem::create([
+        'usuario_id' => $user->id,
+        'texto_postagem' => $request->texto_postagem,
+    ]);
+
+    // Processar hashtags
+    $postagem->processarHashtags($request->texto_postagem);
+
+    // Vincular ao interesse específico
+    $interesseId = $this->obterInteresseId($request);
+    if ($interesseId) {
+        $postagem->interesses()->attach($interesseId, [
+            'tipo' => 'manual',
+            'categorizado_por' => $user->id,
+            'observacao' => 'Postagem direta no interesse'
         ]);
-
-        // Criar Postagem
-        $postagem = Postagem::create([
-            'usuario_id' => $user->id,
-            'texto_postagem' => $request->texto_postagem,
-        ]);
-
-        // Processar hashtags e vincular tendências
-        $postagem->processarHashtags($request->texto_postagem);
-
-        // Criar Imagens Ligadas à postagem
-        if ($request->hasFile('caminho_imagem')) {
-            $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
-
-            ImagemPostagem::create([
-                'caminho_imagem' => $imagem,
-                'id_postagem' => $postagem->id,
-            ]);
-        }
-        return redirect()->back()->with('success', 'Postado, confira já!');
+        
+        // Atualizar contador do interesse
+        $interesse = Interesse::find($interesseId);
+        $interesse->atualizarContadores();
     }
+
+    // Criar Imagens
+    if ($request->hasFile('caminho_imagem')) {
+        $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
+        ImagemPostagem::create([
+            'caminho_imagem' => $imagem,
+            'id_postagem' => $postagem->id,
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Postagem criada com sucesso!');
+}
+
+/**
+ * Obtém o ID do interesse baseado na requisição
+ */
+private function obterInteresseId(Request $request)
+{
+    // Prioridade 1: ID do interesse selecionado
+    if ($request->filled('interesse_id')) {
+        return $request->interesse_id;
+    }
+    
+    // Prioridade 2: Slug do interesse da URL
+    if ($request->filled('interesse_slug')) {
+        $interesse = Interesse::where('slug', $request->interesse_slug)->first();
+        return $interesse ? $interesse->id : null;
+    }
+    
+    return null;
+}
 
     /**
      * Display the specified resource.

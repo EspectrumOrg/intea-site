@@ -26,6 +26,26 @@
                             maxlength="280"
                             rows="3"
                             placeholder="Comece uma publicação" required></textarea>
+
+                        <div class="interesse-selection" id="interesseSelection" style="display: none; margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                            <label for="interesse_id" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                <span class="material-symbols-outlined" style="vertical-align: middle;">category</span>
+                                Postar no interesse:
+                            </label>
+                            <select name="interesse_id" id="interesse_id" style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="">Feed Geral (todos verão)</option>
+                                @foreach(Auth::user()->interesses as $interesse)
+                                    <option value="{{ $interesse->id }}">{{ $interesse->nome }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Botão para mostrar/ocultar seleção de interesses -->
+                        <button type="button" id="toggleInteresse" class="btn-interesse-toggle" style="background: #FF8C42; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; margin: 0.5rem 0;">
+                            <span class="material-symbols-outlined">category</span>
+                            Adicionar a Interesse
+                        </button>
+
                         <x-input-error class="mt-2" :messages="$errors->get('texto_postagem')" />
 
                         {{-- Preview da imagem --}}
