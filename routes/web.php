@@ -272,4 +272,57 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
 });
 
+// Moderação
+Route::middleware(['auth'])->group(function () {
+    // Rotas existentes
+    Route::get('/moderacao/{interesse}/painel', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
+    Route::post('/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');
+    Route::post('/moderacao/postagens/{postagem}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.restaurar-postagem');
+    Route::post('/moderacao/interesses/{interesse}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.adicionar-palavra-proibida');
+    Route::post('/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
+
+    // NOVAS ROTAS DE MODERAÇÃO
+    Route::middleware(['auth'])->group(function () {
+    // Rotas existentes
+    Route::get('/moderacao/{interesse}/painel', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
+    Route::post('/moderacao/postagens/{postagem}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.remover-postagem');
+    Route::post('/moderacao/postagens/{postagem}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.restaurar-postagem');
+    Route::post('/moderacao/interesses/{interesse}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.adicionar-palavra-proibida');
+    Route::post('/moderacao/interesses/{interesse}/expulsar-usuario', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.expulsar-usuario');
+
+    // NOVAS ROTAS DE MODERAÇÃO
+    Route::prefix('moderacao')->group(function () {
+        // Painéis
+        Route::get('/interesse/{slugInteresse}', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
+        Route::get('/global', [ModeracaoController::class, 'painelGlobal'])->name('moderacao.global');
+        
+        // Postagens
+        Route::post('/postagens/{postagemId}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.postagens.remover');
+        Route::post('/postagens/{postagemId}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.postagens.restaurar');
+        Route::post('/postagens/acao-em-massa', [ModeracaoController::class, 'acaoEmMassaPostagens'])->name('moderacao.postagens.acao-em-massa');
+        
+        // Palavras Proibidas
+        Route::post('/interesse/{interesseId}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.palavras-proibidas.adicionar');
+        Route::post('/palavras-proibidas-globais', [ModeracaoController::class, 'adicionarPalavraProibidaGlobal'])->name('moderacao.palavras-proibidas-globais.adicionar');
+        Route::delete('/palavras-proibidas/{palavraId}', [ModeracaoController::class, 'removerPalavraProibida'])->name('moderacao.palavras-proibidas.remover');
+        Route::delete('/palavras-proibidas-globais/{palavraId}', [ModeracaoController::class, 'removerPalavraProibidaGlobal'])->name('moderacao.palavras-proibidas-globais.remover');
+        
+        // Usuários
+        Route::post('/interesse/{interesseId}/expulsar', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.usuarios.expulsar');
+        Route::post('/usuarios/{usuarioId}/banir-sistema', [ModeracaoController::class, 'banirUsuarioSistema'])->name('moderacao.usuarios.banir-sistema');
+        
+        // Infrações
+        Route::get('/infracoes/pendentes', [ModeracaoController::class, 'listarInfracoesPendentes'])->name('moderacao.infracoes.pendentes');
+        Route::post('/infracoes/{infracaoId}/verificar', [ModeracaoController::class, 'verificarInfracao'])->name('moderacao.infracoes.verificar');
+        
+        // Estatísticas
+        Route::get('/estatisticas/interesse/{interesseId}', [ModeracaoController::class, 'obterEstatisticasInteresse'])->name('moderacao.estatisticas.interesse');
+        Route::get('/estatisticas/globais', [ModeracaoController::class, 'obterEstatisticasGlobais'])->name('moderacao.estatisticas.globais');
+        Route::post('/relatorios', [ModeracaoController::class, 'gerarRelatorioModeracao'])->name('moderacao.relatorios.gerar');
+        
+        // Debug (remover após testes)
+        Route::get('/debug/permissoes', [ModeracaoController::class, 'debugPermissoes'])->name('moderacao.debug.permissoes');
+    });
+});
+});
 require __DIR__ . '/auth.php';
