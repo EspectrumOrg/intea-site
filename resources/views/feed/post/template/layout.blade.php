@@ -72,4 +72,7 @@
 <script src="{{ url('assets/js/interesses/sidebar-interesses.js') }}"></script>
 <script src="{{ asset('assets/js/posts/selecao-interesse.js') }}"></script>
 
+<!-- Moderação -->
+ <script src="{{ asset('assets/js/moderacao/error-handler.js') }}"></script>
+
 </html>
