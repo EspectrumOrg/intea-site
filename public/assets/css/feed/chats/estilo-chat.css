@@ -473,28 +473,20 @@
 }
 
 @media (max-width: 600px) {
-    .chat-container {
-        height: 100vh;
-    }
-
     .chat-list {
         display: none;
     }
 
     .chat-window {
         width: 100%;
+        height: 100vh;
     }
-
-    .message p {
-        max-width: 85%;
-    }
-
     .chat-busca input {
         padding: 0.5rem 0.75rem;
     }
 
     .bottom input[type="text"] {
-        padding: 0.4rem 0.75rem;
+        padding: 0.4rem;
     }
 
     .bottom button {

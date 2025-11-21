@@ -535,6 +535,7 @@
     flex-direction: row;
     align-items: center;
     padding: 0.8rem 2.5rem;
+    font-size: clamp(0.6rem, 1vw + 0.6rem, 1.4rem);
     border-radius: 50px / 100%;
     color: var(--branco);
     text-decoration: none;
@@ -830,7 +831,7 @@
     color: var(--vermelho);
 }
 
-/*BASICAMENTE, A PARTIR DAQUI É TUDO ENVOLVENDO MONOCROMATICO E BOTÃO DA SIDE BAR, ATÉ O PRÓXIMO ASSIM QUE EU VOU MARCAR PARA SABER DE ONDE A ONDE*/
+/*BASICAMENTE, A PARTIR DAQUI É TUDO ENVOLVENDO MONOCROMATICO E BOTÃO DA SIDE BAR, ATÉ O PRÓXIMO ASSIM QUE EU VOU MARCAR PARA SABER DE ONDE A ONDE <- assassino do comunistinha*/
 .sidebar-monochrome {
     /* Remove o filter do container principal */
 }
@@ -995,4 +996,57 @@
     font-family: system-ui, -apple-system, sans-serif;
 }
 
-/*TERMINOU, MORTE AO CSS! POR FAVOR! CARLOS EU TE ODEIO!*/
+
+@media (max-width: 1024px) {
+    .dropdown-checar-perfil {
+
+    }
+    
+    .nav-link {
+
+    }
+
+    .post-button {
+
+    }
+}
+
+@media (max-width: 764px) {
+    .container-sidebar .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    
+    .dropdown-checar-perfil {
+
+    }
+    
+    .nav-link {
+
+    }
+
+    .post-button {
+
+    }
+}
+
+@media (max-width: 600px) {
+    .container-sidebar .content {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .dropdown-checar-perfil {
+
+    }
+    
+    .nav-link {
+
+    }
+
+    .post-button {
+
+    }
+}
