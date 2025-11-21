@@ -127,5 +127,11 @@
 @endif
 </div>
 
+<!-- conteúdo você pode gostar  -->
+    <div class="content-popular">
+        @include('feed.post.partials.buscar')
+        @include('feed.post.partials.sidebar-popular')
+    </div>
+
 </body>
 </html>
