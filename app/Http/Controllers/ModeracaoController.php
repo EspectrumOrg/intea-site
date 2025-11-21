@@ -551,6 +551,51 @@ class ModeracaoController extends Controller
         ]);
     }
 
+    public function adicionarPalavraGlobal(Request $request)
+{
+    try {
+        $request->validate([
+            'palavra' => 'required|string|max:255',
+            'tipo' => 'required|in:exata,parcial',
+            'motivo' => 'nullable|string'
+        ]);
+
+        PalavraProibidaGlobal::create([
+            'palavra' => $request->palavra,
+            'tipo' => $request->tipo,
+            'motivo' => $request->motivo,
+            'adicionado_por' => Auth::id(),
+            'ativo' => true
+        ]);
+
+        return response()->json(['sucesso' => true, 'mensagem' => 'Palavra adicionada com sucesso']);
+    } catch (\Exception $e) {
+        return response()->json(['sucesso' => false, 'mensagem' => 'Erro ao adicionar palavra: ' . $e->getMessage()]);
+    }
+}
+
+public function removerPalavraGlobal($id)
+{
+    try {
+        $palavra = PalavraProibidaGlobal::findOrFail($id);
+        $palavra->delete();
+
+        return response()->json(['sucesso' => true, 'mensagem' => 'Palavra removida com sucesso']);
+    } catch (\Exception $e) {
+        return response()->json(['sucesso' => false, 'mensagem' => 'Erro ao remover palavra']);
+    }
+}
+
+public function processarBanimentosAutomaticos()
+{
+    try {
+        $resultados = ServicoModeracao::processarBanimentosAutomaticos();
+        return response()->json(['sucesso' => true, 'processados' => $resultados]);
+    } catch (\Exception $e) {
+        return response()->json(['sucesso' => false, 'mensagem' => $e->getMessage()]);
+    }
+}
+
     /**
      * DEBUG - Remover após testes
      */
