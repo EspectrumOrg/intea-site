@@ -201,3 +201,410 @@ body {
     background-color: var(--verde);
     color: var(--branco);
 }
+
+/* ------------------------ Modal Usuario---------------------------------------------*/
+.modal {
+    overflow-y: scroll;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 2rem 0 .5rem 0;
+    width: 90%;
+    max-width: 600px;
+    color: var(--preto);
+    animation: fadeInModal 0.25s ease;
+}
+
+/* Cabeçalho principal */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid var(--cinza-font);
+    padding: 0.5em 2rem;
+}
+
+.modal-header .titulo {
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--preto);
+}
+
+.modal-header .sublinhado {
+    text-decoration: underline;
+    margin: 0 4px;
+}
+
+.modal-header .red {
+    color: var(--azul);
+}
+
+.modal-header .blue {
+    color: var(--azul);
+}
+
+
+/* Botão fechar */
+.modal-fechar {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--preto);
+    transition: color 0.3s ease;
+}
+
+.modal-fechar:hover span {
+    color: var(--vermelho);
+}
+
+.corpo-visualizar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.foto-denunciado {
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: none;
+    border: 1px solid var(--azul) !important;
+}
+
+
+/* TABS ---------------------------------------------------------------------*/
+.tabs {
+    display: flex;
+    border-bottom: 1px solid var(--branco-light);
+    margin-bottom: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding: .7rem;
+    text-align: center;
+    cursor: pointer;
+    background: var(--branco);
+    border: none;
+    border-bottom: 1px solid var(--branco);
+    font-weight: 600;
+    transition: .3s;
+}
+
+.tab:hover {
+    background: var(--cinza-font);
+}
+
+.tab.active {
+    color: var(--azul);
+    border-bottom: 1px solid var(--azul);
+}
+
+/* CONTEÚDO */
+.tab-content {
+    width: 100%;
+    padding: 0 0 0 2rem;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Botão de banir */
+.btn-banir {
+    margin-top: 1rem;
+    background: var(--branco);
+    border: none;
+    border: 1px solid var(--vermelho);
+    padding: .7rem 1rem;
+    border-radius: 25px / 100%;
+    font-weight: 600;
+    color: var(--vermelho);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-banir:hover {
+    background-color: var(--vermelho);
+    color: var(--branco)
+}
+
+/* Botão de desbanir */
+.bottom-desbanir {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    padding: .5rem 1rem;
+}
+
+.btn-desbanir-usuario {
+    margin-top: 1rem;
+    width: fit-content;
+    background: var(--branco);
+    border: none;
+    border: 1px solid var(--verde);
+    padding: .7rem 1rem;
+    border-radius: 25px / 100%;
+    font-weight: 600;
+    color: var(--verde);
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btn-desbanir-usuario:hover {
+    background-color: var(--verde);
+    color: var(--branco);
+}
+
+.ban-title {
+    display: flex;
+    flex-direction: row;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.ban-title .sublinhado {
+    margin: 0 4px;
+    text-decoration: underline;
+    color: var(--vermelho);
+}
+
+.ban-title .verde {
+    margin: 0 4px;
+    text-decoration: underline;
+    color: var(--verde);
+}
+
+/* Corpo */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 1rem;
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: scroll;
+}
+
+.modal-body img {
+    border: 1px solid var(--amarelo);
+    border-radius: 50%;
+    display: block;
+    object-fit: cover;
+    margin: 0 auto;
+}
+
+.modal-body .conteudo-modal {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.modal-body .conteudo-modal h1 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.modal-body .foto-conteudo-visualizar {
+    width: 70%;
+    border-radius: 8px;
+    border: 1px solid var(--branco-light);
+    margin: 0;
+    margin: .75rem 0;
+}
+
+.modal-body h5 {
+    text-align: center;
+    color: var(--preto);
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+.form-banimento {
+    background-color: var(--branco);
+    padding-right: 2rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.form-banimento h1 {
+    font-size: 16px;
+    margin: 1rem 0;
+}
+
+/* Campos e formulários */
+.form-label {
+    font-weight: 600;
+    color: var(--preto);
+    margin: .75rem 0 .5rem 0;
+    display: block;
+}
+
+.form-select,
+.form-control {
+    width: 95%;
+    border-radius: 8px;
+    border: 1px solid var(--branco-light);
+    padding: 0.6rem;
+    outline: none;
+    resize: none;
+    transition: border-color 0.3s ease;
+    background-color: var(--branco);
+    margin-left: 1rem;
+}
+
+
+.form-select:hover,
+.form-control:hover {
+    border-color: var(--vermelho-apagado);
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: var(--vermelho);
+}
+
+/* Botões */
+.text-end {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn.btn-secondary {
+    background-color: var(--branco);
+    color: var(--preto);
+    border: 1px solid var(--amarelo);
+}
+
+.btn.btn-secondary:hover {
+    background-color: var(--amarelo);
+}
+
+.btn.btn-danger {
+    background-color: var(--branco);
+    border: 1px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.btn.btn-danger:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: end;
+    padding: 1rem 2rem;
+    width: 100%;
+    border-top: 1px solid var(--cinza-font);
+}
+
+
+/* botão de marcar como resolvida*/
+.btn-resolver {
+    border-radius: 25px / 100%;
+    padding: 0.4rem 0.8rem;
+    background-color: var(--branco);
+    color: var(--verde);
+    border: 1px solid var(--verde);
+    transition: .5s;
+    font-size: 16px;
+}
+
+.btn-resolver:hover {
+    background-color: var(--verde);
+    color: var(--branco);
+}
+
+/* Detalhes */
+.corpo-visualizar .detalhes-container {
+    background: #fff;
+    padding: 1.3rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+}
+
+/* Título */
+.corpo-visualizar .detalhes-container h1 {
+    font-size: 20px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.corpo-visualizar .detalhes-container p {
+    display: flex;
+    gap: .5rem;
+    margin: .35rem 0;
+    font-size: 15px;
+}
+
+.corpo-visualizar .detalhes-container strong {
+    width: 120px;
+    font-weight: 600;
+    color: #444;
+}
+
+.corpo-visualizar .detalhes-container hr {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* ----- Outras Denúncias ----- */
+.corpo-visualizar .outras-denuncias h1 {
+    font-size: 18px;
+    margin-bottom: .7rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.corpo-visualizar .outras-denuncias ul {
+    margin-left: 1rem;
+}
+
+.corpo-visualizar .outras-denuncias li {
+    margin: .3rem 0;
+    font-size: 14.5px;
+    color: #444;
+}
+
+.corpo-visualizar .outras-denuncias p {
+    font-size: 14.5px;
+    color: #666;
+}
+
+
+/* Animação */
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -11,8 +11,9 @@
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}"> <!-- layout geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/admin/usuario-denuncia-geral.css') }}"> <!-- css geral -->
+    <link rel="stylesheet" href="{{ url('assets/css/layout/sidebar-admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/usuario-denuncia-geral.css') }}"> <!-- model de denuncia -->
+    <link rel="stylesheet" href="{{ asset('assets/css/admin/usuario-denuncia-geral.css') }}"> <!-- model de usuario -->
     <!-- icones-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
@@ -37,7 +38,6 @@
     @include("layouts.partials.avisos")
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
-
 </body>
 
 </html>

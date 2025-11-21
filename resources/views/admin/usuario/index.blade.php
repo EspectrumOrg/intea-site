@@ -57,7 +57,7 @@
                             <th>Tipo Usuário</th>
                             <th>Data de Login</th>
                             <th>Status</th>
-                            <th>Ações</th>
+                            <th>Visualizar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,32 +100,14 @@
                                 Desconhecido
                                 @endswitch
                             </td>
+                            <!-- Visualizar -->
                             <td>
-                                @if($item->status_conta == 1)
-                                <!-- Usuário ativo → Mostrar botão de banir -->
-                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $item->id }}')">
-                                    <span class="material-symbols-outlined">person_off</span>
-                                    Banir
+                                <button type="button" class="btn-visualizar" onclick="abrirModalVisualizarUsuario('{{$item->id}}')">
+                                    <span class="material-symbols-outlined">open_in_full</span>
                                 </button>
-
-                                <!-- Inclui o modal -->
-                                @include('layouts.partials.modal-banimento', ['usuario' => $item])
-
-                                @elseif($item->status_conta == 2)
-                                <!-- Usuário banido → Mostrar botão de desbanir -->
-                                <form action="{{ route('usuario.desbanir', $item->id) }}" method="post" class="form-desbanir">
-                                    @csrf
-                                    @method("patch")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja desbanir esse usuário?');" class="btn-desbanir">
-                                        <span class="material-symbols-outlined">person_add</span>
-                                        Desbanir
-                                    </button>
-                                </form>
-                                @else
-                                <h1>sem ações possíveis</h1>
-                                @endif
+                                <!-- Inclui o modal visualizar usuario -->
+                                @include('admin.usuario.partials.modal-visualizar-usuario', ['usuario' => $item])
                             </td>
-
                         </tr>
                         @empty
                         <tr>
