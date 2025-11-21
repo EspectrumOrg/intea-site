@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Banimento;
+use App\Models\BanimentoReconsideracao;
 use App\Models\ChatPrivado;
 use App\Models\seguirModel;
 use Illuminate\Support\Facades\Mail;
@@ -232,6 +233,15 @@ class UsuarioController extends Controller
         $usuario = Usuario::findOrFail($id);
         $usuario->status_conta = 1;
         $usuario->save();
+
+        // Registra a mensagem de reconsideracao -------------(Importante!)
+        $banimentoReconsideracao = BanimentoReconsideracao::create([
+            'id_usuario' => $usuario->id,
+            'id_admin' => auth()->id()
+        ]);
+
+        // Enviar email pro user
+        Mail::to($usuario->email)->send(new \App\Mail\BanimentoReconsideracaoMail($banimentoReconsideracao));
 
         session()->flash("success", "Usuário desbanido");
 
