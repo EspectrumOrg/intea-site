@@ -20,19 +20,15 @@
         </div>
 
         <div class="corpo-visualizar">
-
             <!-- Opções -->
             <div class="tabs">
                 <button class="tab active" onclick="changeTab('{{ $item->id }}', 'info')">Informações</button>
                 <button class="tab" onclick="changeTab('{{ $item->id }}', 'ban')">Banimento</button>
             </div>
-
             <!-- Conteúdo -->
             <div class="tab-content">
-
                 <!-- INFORMAÇÕES -->
                 <div id="tab-info-{{ $item->id }}" class="tab-pane active">
-
                     <div class="modal-body">
 
                         @if ($item->usuarioDenunciado)
@@ -41,8 +37,8 @@
                             <img
                                 src="{{ asset('storage/'.$item->usuarioDenunciado->foto ?? 'assets/images/logos/contas/user.png') }}"
                                 class="foto-denunciado">
-                            <h6>{{ $item->usuarioDenunciado->user }}</h6>
-                            <p class="text-muted"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
+                            <h6 style="font-size: 18px; color: black; font-weight: 600;">{{ $item->usuarioDenunciado->user }}</h6>
+                            <p class="text-muted" style="padding: 0 1rem;"> {{ $item->usuarioDenunciado->descricao ?? 'Sem descrição'}}</p>
                         </div>
 
                         @elseif ($item->postagem)
@@ -201,11 +197,11 @@
                         <!-- Campo motivo -->
                         <div class="mb-3">
                             <label for="motivo{{ $item->id }}" class="form-label">Motivo do banimento</label>
-                            <textarea 
-                                name="motivo" 
-                                id="motivo{{ $item->id }}" 
-                                class="form-control" 
-                                rows="3" 
+                            <textarea
+                                name="motivo"
+                                id="motivo{{ $item->id }}"
+                                class="form-control"
+                                rows="3"
                                 placeholder="Descreva o motivo do banimento..." required></textarea>
                         </div>
 

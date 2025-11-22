@@ -41,6 +41,10 @@
             <input id="user" class="user-input" name="user" type="text" maxlength="255" placeholder="@name" required />
             <div class="error" data-error-for="user"></div>
 
+            <label for="cpf">CPF *</label>
+            <input id="cpf" name="cpf" type="text" maxlength="14" placeholder="123.456.789-10" class="cpf-input" required />
+            <div class="error" data-error-for="cpf"></div>
+
             <div class="controls">
                 <div></div>
                 <button type="button" class="btn primary next" disabled>Próximo</button>
@@ -113,6 +117,7 @@
 
         <!-- foto -->
         <div class="step" data-step="4">
+            <br>
             <h2>Foto de Perfil</h2>
 
             <div class="photo-preview" id="photoPreviewAdmin">
@@ -120,17 +125,19 @@
             </div>
 
             <label for="foto">Selecione uma foto *</label>
+
             <div class="extras">
-                <label for="foto" class="upload-label">
+                <label for="fotoAdmin" class="upload-label">
                     <span class="material-symbols-outlined">image</span>
                 </label>
-                <input id="foto" name="foto" type="file" accept="image/png, image/jpeg, image/jpg, image/gif" class="input-file" required>
+                <input id="fotoAdmin" name="foto" type="file" accept="image/png, image/jpeg, image/jpg, image/gif" class="input-file" required>
                 <x-input-error class="mt-2" :messages="$errors->get('foto')" />
             </div>
 
             <div class="controls">
                 <button type="button" class="btn ghost prev">Anterior</button>
                 <button type="submit" class="btn primary submit" disabled>Criar Conta</button>
+                <br>
             </div>
         </div>
     </form>

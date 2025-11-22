@@ -62,3 +62,4 @@
 <script src="{{ url('assets/js/sidebar/modal-postagem.js') }}"></script>
 
 </html>
+<!-- este código não é mais utilizado -->

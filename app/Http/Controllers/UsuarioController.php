@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Banimento;
+use App\Models\BanimentoReconsideracao;
 use App\Models\ChatPrivado;
 use App\Models\seguirModel;
 use Illuminate\Support\Facades\Mail;
@@ -119,48 +120,50 @@ class UsuarioController extends Controller
         return redirect()->back()->with('success', 'Configurações de privacidade atualizadas com sucesso.');
     }
 
-public function buscarUsuarios(Request $request)
-{
-    $usuarioId = auth()->id() ?? 0;
-    $search = trim($request->input('q', ''));
+    public function buscarUsuarios(Request $request)
+    {
+        $usuarioId = auth()->id() ?? 0;
+        $search = trim($request->input('q', ''));
 
-    // Se o campo estiver vazio, retorna vazio
-    if ($search === '') {
-        return response()->json([]);
+        // Se o campo estiver vazio, retorna vazio
+        if ($search === '') {
+            return response()->json([]);
+        }
+
+        // Se começar com '#', busca tendência em vez de usuário
+        if (substr($search, 0, 1) === '#') {
+            $termo = strtolower(str_replace('#', '', $search));
+
+            $tendencias = \App\Models\Tendencia::where(DB::raw('LOWER(hashtag)'), 'like', "%{$termo}%")
+                ->orWhere(DB::raw('LOWER(slug)'), 'like', "%{$termo}%")
+                ->orderBy('contador_uso', 'desc')
+                ->get(['id', 'hashtag as nome', 'slug', 'contador_uso']);
+
+            return response()->json(
+                $tendencias->map(function ($t) {
+                    return [
+                        'id' => $t->slug, // usamos o slug na URL
+                        'user' =>  $t->nome, // pra aparecer com hashtag
+                        'apelido' => $t->contador_uso . ' usos',
+                        'foto' => null, // tendência não tem foto
+                        'tipo' => 'tendencia'
+                    ];
+                })
+            );
+        }
+
+        // Caso contrário, busca usuários normalmente
+        $usuarios = \App\Models\Usuario::where('id', '!=', $usuarioId)
+            ->where('status_conta', 1)
+            ->where(function ($q) use ($search) {
+                $q->where('user', 'like', "%{$search}%")
+                    ->orWhere('apelido', 'like', "%{$search}%");
+            })
+            ->orderBy('user', 'asc')
+            ->get(['id', 'user', 'apelido', 'foto']);
+
+        return response()->json($usuarios);
     }
-
-    // 🔹 Se começar com '#', busca tendência em vez de usuário
-    if (substr($search, 0, 1) === '#') {
-        $termo = strtolower(str_replace('#', '', $search));
-
-        $tendencias = \App\Models\Tendencia::where(DB::raw('LOWER(hashtag)'), 'like', "%{$termo}%")
-            ->orWhere(DB::raw('LOWER(slug)'), 'like', "%{$termo}%")
-            ->orderBy('contador_uso', 'desc')
-            ->get(['id', 'hashtag as nome', 'slug', 'contador_uso']);
-
-return response()->json(
-    $tendencias->map(function ($t) {
-        return [
-            'id' => $t->slug, // usamos o slug na URL
-            'user' =>  $t->nome, // pra aparecer com hashtag
-            'apelido' => $t->contador_uso . ' usos',
-            'foto' => null, // tendência não tem foto
-            'tipo' => 'tendencia'
-        ];
-    })
-);    }
-
-    // 🔹 Caso contrário, busca usuários normalmente
-    $usuarios = \App\Models\Usuario::where('id', '!=', $usuarioId)
-        ->where(function ($q) use ($search) {
-            $q->where('user', 'like', "%{$search}%")
-        ->orWhere('apelido', 'like', "%{$search}%");
-        })
-        ->orderBy('user', 'asc')
-        ->get(['id', 'user', 'apelido', 'foto']);
-
-    return response()->json($usuarios);
-}
 
 
     public function destroy(Request $request, $id)
@@ -230,6 +233,15 @@ return response()->json(
         $usuario = Usuario::findOrFail($id);
         $usuario->status_conta = 1;
         $usuario->save();
+
+        // Registra a mensagem de reconsideracao -------------(Importante!)
+        $banimentoReconsideracao = BanimentoReconsideracao::create([
+            'id_usuario' => $usuario->id,
+            'id_admin' => auth()->id()
+        ]);
+
+        // Enviar email pro user
+        Mail::to($usuario->email)->send(new \App\Mail\BanimentoReconsideracaoMail($banimentoReconsideracao));
 
         session()->flash("success", "Usuário desbanido");
 

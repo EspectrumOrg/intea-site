@@ -15,23 +15,23 @@ class AlertaModeracao extends Model
     ];
 
     protected $casts = [
-        'expiracao' => 'datetime',
-        'ativo' => 'boolean'
+        'ativo' => 'boolean',
+        'expiracao' => 'datetime'
     ];
 
     public function usuario(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
     public function interesse(): BelongsTo
     {
-        return $this->belongsTo(Interesse::class);
+        return $this->belongsTo(Interesse::class, 'interesse_id');
     }
 
     public function postagem(): BelongsTo
     {
-        return $this->belongsTo(Postagem::class);
+        return $this->belongsTo(Postagem::class, 'postagem_id');
     }
 
     public function moderador(): BelongsTo
@@ -39,13 +39,17 @@ class AlertaModeracao extends Model
         return $this->belongsTo(Usuario::class, 'moderador_id');
     }
 
-    public function estaExpirado(): bool
-    {
-        return $this->expiracao && $this->expiracao->isPast();
-    }
-
     public function expirar(): void
     {
         $this->update(['ativo' => false]);
+    }
+
+    public function scopeAtivos($query)
+    {
+        return $query->where('ativo', true)
+                    ->where(function($q) {
+                        $q->whereNull('expiracao')
+                          ->orWhere('expiracao', '>', now());
+                    });
     }
 }

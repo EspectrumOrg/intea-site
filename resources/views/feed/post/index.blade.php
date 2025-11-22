@@ -28,29 +28,57 @@ e($texto)
 }
 @endphp
 
-<!-- Conteúdo principal com scroll -->
 <div class="container-post">
-    <div class="opcoes-home-container">
-        @include("feed.post.partials.topo-seguindo")
+    <div class="feed-header principal" style="border-left: 4px solid #3B82F6;">
+        <div class="feed-info">
+            <span>Feed Principal - Todas as postagens</span>
+            @include("feed.post.partials.topo-seguindo")
+        </div>
     </div>
 
     <div class="create-post">
         @include("feed.post.create")
     </div>
 
+
     <div class="content-post">
         <!-- verifica se ta no feed ou no seguindo -->
         @if($postagens->isEmpty())
         @if(request()->routeIs('post.index'))
-        <p>Nenhuma postagem encontrada.</p> <!-- alguém coloca um css aqui =P -->
+        <div class="empty-feed">
+            <span class="material-symbols-outlined">feed</span>
+            <h3>Nenhuma postagem no feed</h3>
+            <p>Seja o primeiro a postar ou siga mais pessoas!</p>
+        </div>
         @elseif(request()->routeIs('post.seguindo'))
-        <p>Você ainda não está seguindo ninguém. Comece a seguir usuários para ver suas postagens aqui!</p> <!-- aqui tmb lol -->
+        <div class="empty-feed">
+            <span class="material-symbols-outlined">group</span>
+            <h3>Nenhuma postagem de pessoas que você segue</h3>
+            <p>Comece a seguir usuários para ver suas postagens aqui!</p>
+        </div>
         @endif
         @else
 
         <!-- Para cada postagem -->
         @foreach($postagens as $postagem)
         <div class="corpo-post">
+            <!-- Badge de Interesses da Postagem -->
+            @if($postagem->interesses->count() > 0)
+            <div class="post-interesses">
+                @foreach($postagem->interesses->take(2) as $interesse)
+                <a href="{{ route('post.interesse', $interesse->slug) }}" 
+                   class="interesse-badge-mini" 
+                   style="background-color: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
+                    <span class="material-symbols-outlined" style="font-size: 14px;">{{ $interesse->icone }}</span>
+                    {{ $interesse->nome }}
+                </a>
+                @endforeach
+                @if($postagem->interesses->count() > 2)
+                <span class="mais-interesses">+{{ $postagem->interesses->count() - 2 }}</span>
+                @endif
+            </div>
+            @endif
+
             <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
 
             <div class="foto-perfil">
@@ -74,7 +102,7 @@ e($texto)
                         <h2>{{ $postagem->usuario->user }} . {{ $postagem->created_at->shortAbsoluteDiffForHumans() }}</h2>
                     </div>
 
-                    <div class="dropdown"> <!-- opções postagem -->
+                    <div class="dropdown"> <!-- OPÇÕES POSTAGEM (COISO QUE FICA NOS PONTINHOS PRETOS LÁ) ========-->
                         <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
                             <span class="material-symbols-outlined">more_horiz</span>
                         </button>
@@ -114,6 +142,7 @@ e($texto)
                                 </a>
                                 @endif
                             </li>
+                            <!-- Parte de seguir (do nicolas) -->
                             <li>
                                 @php
                                 $authUser = Auth::user();
@@ -256,57 +285,19 @@ e($texto)
     </div>
 </div>
 
-<!-- APAGAR CASO NÃO NECESSÁRIO
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.form-editar').forEach(form => {
-            const id = form.querySelector('form').action.split('/').pop(); // pega o ID do post
-
-            // Seleciona elementos com base no ID único
-            const textarea = document.getElementById(`texto_postagem_edit_${id}`);
-            const previewHashtag = document.getElementById(`hashtag-preview-postagem-edit-${id}`);
-            const inputFile = document.getElementById(`caminho_imagem_postagem_edit_${id}`);
-            const previewContainer = document.getElementById(`image-preview_postagem_edit_${id}`);
-            const previewImage = document.getElementById(`preview-img_postagem_edit_${id}`);
-            const removeButton = document.getElementById(`remove-image_postagem_edit_${id}`);
-
-            // Hashtags coloridas
-            if (textarea && previewHashtag) {
-                textarea.addEventListener('input', () => {
-                    const text = textarea.value
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
-                    previewHashtag.innerHTML = text + '\n';
-                });
-            }
-
-            // Preview de imagem
-            if (inputFile && previewContainer && previewImage && removeButton) {
-                inputFile.addEventListener('change', () => {
-                    const file = inputFile.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = e => {
-                            previewImage.src = e.target.result;
-                            previewContainer.style.display = 'block';
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-
-                removeButton.addEventListener('click', () => {
-                    inputFile.value = '';
-                    previewImage.src = '';
-                    previewContainer.style.display = 'none';
-                });
-            }
-        });
+document.addEventListener('DOMContentLoaded', function() {
+    // Ativar navegação de feed
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-feed').forEach(link => {
+        if (link.href === window.location.href) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
     });
+});
 </script>
--->
-
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/modal.js') }}"></script>

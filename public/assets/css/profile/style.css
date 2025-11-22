@@ -5,6 +5,193 @@
     padding: 1rem;
 }
 
+/* ====== Caso not found, !isset ou banido ===== */
+.not-found {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Texto - perfil não encontrado */
+.not-found .text-not {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+.not-found .text-not span{
+    font-size: 34px;
+}
+
+.not-found .text-not h4{
+    font-size: 24px;
+}
+
+/* subtext - aviso */
+.not-found .subtext-not {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.not-found .subtext-not p{
+    font-size: 16px;
+    color: var(--preto);
+    text-indent: 4px;
+}
+
+/* Botão volta para o feed */
+.btn-voltar-feed {
+    padding: .75rem;
+    border-radius: 50px / 100%;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    border: 1px solid var(--azul);
+    transition: .3s;
+    background-color: var(--branco);
+    color: var(--azul);
+}
+
+.not-found .bottom-perfil-not {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+
+}
+
+.not-found .bottom-perfil-not .btn-voltar-feed:hover {
+    background-color: var(--azul);
+    color: var(--branco);
+}
+
+/* ====== Botões de Seguir, Mensagem e Denunciar/Banir (somente para o admin) ===== */
+/* Coisa base, no <a> e <button>*/
+.profile-action-buttons button,
+.profile-action-buttons .btn-mensagem,
+.profile-action-buttons .btn-denuncia {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: .5rem .75rem;
+    border-radius: 50px / 100%;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition:
+        background-color 0.3s ease,
+        transform 0.2s ease,
+        box-shadow 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Hover geral */
+.profile-action-buttons button:hover,
+.profile-action-buttons .btn-mensagem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
+}
+
+/* Active (clique) */
+.profile-action-buttons button:active,
+.profile-action-buttons .btn-mensagem:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
+}
+
+/* Botão de Seguir */
+.seguir-btn {
+    background-color: #e3f2fd;
+    color: var(--azul);
+}
+
+.seguir-btn:hover {
+    background-color: #cce6ff;
+}
+
+/* Ícone dentro do "botão seguir" */
+.seguir-btn span.material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Quando for disabled */
+.seguir-btn:disabled,
+.seguir-btn[disabled] {
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Esse é o botão de "deixar de seguir" */
+.deixar-btn {
+    background-color: #f8e0e3;
+    color: var(--vermelho);
+}
+
+.deixar-btn:hover {
+    background-color: #ffcdd2;
+}
+
+/* Aqui é o "botão de mensagem" */
+.btn-mensagem {
+    background-color: #e3f2fd;
+    color: var(--azul);
+}
+
+.btn-mensagem:hover {
+    background-color: #cce6ff;
+}
+
+.seguir-btn .material-symbols-outlined {
+    margin-top: 1px;
+    /* corrige baseline */
+    font-size: 23px !important;
+    /* mesmo tamanho do outro */
+    line-height: 1;
+}
+
+/* Esconder itens */
+.profile-action-buttons .hidden {
+    display: none;
+}
+
+/* Botão de banir */
+.banir-btn {
+    background-color: #f8e0e3;
+    color: var(--vermelho);
+}
+
+.banir-btn:hover {
+    background-color: #ffcdd2;
+}
+
+/* Ícone dentro do "botão banir" */
+.banir-btn span.material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Botão denunciar */
+.btn-denuncia {
+    background-color: #f8e0e3;
+    color: var(--vermelho);
+}
+
+.btn-denuncia:hover {
+    background-color: #ffcdd2;
+}
+
 /* ===== CABEÇALHO DO PERFIL ===== */
 .profile-header {
     display: flex;
@@ -146,13 +333,14 @@
 }
 
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(10px); 
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -207,8 +395,10 @@
 /* ===== Modal para inserir dependente ===== */
 .modal-overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
@@ -283,8 +473,10 @@
     cursor: pointer;
     margin-bottom: 20px;
 }
+
 .btn-remover {
-    background: #f44336; /* vermelho */
+    background: #f44336;
+    /* vermelho */
     color: white;
     border: none;
     padding: 8px 15px;
@@ -319,6 +511,30 @@
     margin-bottom: 1rem;
 }
 
+.post-header .dados-post{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.post-header .dados-post{
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 1rem;
+}
+
+.post-header .dados-post a{
+    text-decoration: none;
+    color: var(--preto);
+    font-size: 10px;
+}
+
+.post-header .dados-post a:hover{
+    text-decoration: underline;
+}
+
 .post-header small {
     color: var(--cinza);
     font-size: 0.8rem;
@@ -332,7 +548,7 @@
 
 .post-image {
     width: 100%;
-    max-height: 200px;
+    max-height: 50vh;
     object-fit: cover;
     border-radius: 8px;
     margin-top: 1rem;
@@ -341,10 +557,63 @@
 
 .post-stats {
     display: flex;
+    justify-content: space-between;
     gap: 1.5rem;
     margin-top: 1rem;
     font-size: 0.875rem;
     color: var(--cinza);
+}
+
+.post-stats .button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.post-stats .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.post-stats span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.post-stats h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
+    color: var(--azul);
+}
+
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--azul);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--vermelho);
+}
+
+.btn-curtir:hover span {
+    background-color: rgba(230, 78, 78, 0.5);
+    color: var(--vermelho);
+}
+
+.curtido span {
+    color: var(--cor-vermelho);
 }
 
 /* ===== ABA CURTIDAS (ABA 3) ===== */
@@ -605,10 +874,10 @@ textarea {
     .tab-scroll-btn {
         display: none !important;
     }
-    
+
     .profile-tabs-wrapper {
         -webkit-overflow-scrolling: touch;
     }
 
-    
+
 }

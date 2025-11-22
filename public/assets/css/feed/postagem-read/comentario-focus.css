@@ -63,10 +63,15 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    border: 1px solid var(--azul);
 }
 
 .container-comentario-focus .foto-perfil a {
     text-decoration: none;
+}
+
+.container-comentario-focus .foto-perfil a:hover {
+    text-decoration: underline;
 }
 
 .container-comentario-focus .foto-perfil h1 {
@@ -96,7 +101,7 @@
 }
 
 .container-comentario-focus .image img {
-    max-width: 100%;
+    width: 100%;
     border-radius: 12px;
     margin-top: .75rem;
     border: 1px solid var(--branco-light);
@@ -166,7 +171,7 @@
     width: 100%;
 }
 
-.form-create-resposta-comentario-focus .hashtag{
+.form-create-resposta-comentario-focus .hashtag {
     color: var(--preto);
 }
 
@@ -346,6 +351,10 @@
     font-weight: 700;
     color: var(--preto);
     font-size: 14px;
+}
+
+.comentario strong:hover {
+    text-decoration: underline;
 }
 
 .container-comentario-focus .topo-resposta {

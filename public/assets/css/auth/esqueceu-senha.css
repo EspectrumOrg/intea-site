@@ -239,7 +239,7 @@ form h2 {
 .btn-submit {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: end;
   width: 100%;
   gap: 1rem;
   margin-bottom: 1rem;
@@ -247,7 +247,7 @@ form h2 {
 
 .btn-submit button {
   padding: .5rem 1rem;
-  width: 100%;
+  width: 30%;
   transition: .3s;
   font-size: 16px;
   font-weight: 600;

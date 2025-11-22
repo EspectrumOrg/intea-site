@@ -97,7 +97,6 @@ class AdminController extends Controller
 
         // Criar Usuário Padrão
         $usuario = Usuario::create([
-            'nome' => $request->nome,
             'user' => $request->user,
             'apelido' => $request->apelido,
             'email' => $request->email,
@@ -122,8 +121,6 @@ class AdminController extends Controller
                 'numero_telefone' => $telefone_limpo,
             ]);
         }
-
-        Auth::login($usuario);
 
         //return response()->json($request->all());
         return redirect()->route('dashboard.index')->with('success', 'Usuário Tipo Admin cadastrado com sucesso!');

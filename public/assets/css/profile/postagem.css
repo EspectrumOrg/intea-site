@@ -1,0 +1,157 @@
+/* opcoes perfil */
+.post-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.menu-opcoes {
+    font-size: 1.5rem;
+    color: var(--cinza);
+    cursor: pointer;
+    padding: .3rem .3rem;
+    border-radius: 50%;
+    transition: background .2s;
+    display: flex;
+    align-items: center;
+    border: none;
+}
+
+.menu-opcoes:hover {
+    background-color: var(--branco-light);
+}
+
+/* container do dropdown */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown .menu-opcoes img {
+    width: 25px;
+}
+
+.dropdown .menu-opcoes img:hover {
+    background-color: var(--branco-light);
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--branco);
+    width: 275px;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    padding: 0;
+}
+
+.dropdown.ativo .dropdown-content {
+    display: block;
+}
+
+/* cada item do dropdown */
+.dropdown .dropdown-content li {
+    list-style: none;
+}
+
+.dropdown .dropdown-content img {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.dropdown .dropdown-content li a {
+    display: flex;
+    padding: 1rem;
+    font-weight: 600;
+    color: var(--preto);
+    text-decoration: none;
+    transition: .2s;
+}
+
+.dropdown .dropdown-content li a:hover {
+    background-color: var(--cinza-font);
+}
+
+/* estilo base para botões de ação --------------------------------------*/
+.btn-acao {
+    display: flex;
+    text-align: start;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    padding: 1rem;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--preto);
+    transition: background-color .3s, color .3s, transform .1s;
+}
+
+/* banir */
+.btn-excluir-usuario {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-excluir-usuario:hover {
+    background-color: var(--branco-light);
+    color: var(--vermelho);
+}
+
+/* seguir */
+.seguir-btn {
+    border-radius: 0 0 15px 15px;
+}
+
+.seguir-btn:hover {
+    background-color: var(--branco-light);
+    color: var(--azul);
+}
+
+/* dixar seguir */
+.deixar-btn {
+    border-radius: 0 0 15px 15px;
+}
+
+.deixar-btn:hover {
+    background-color: var(--branco-light);
+    color: var(--vermelho);
+}
+
+/* denunciar */
+.btn-acao.denunciar {
+    display: flex;
+}
+
+.btn-acao.denunciar {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-acao.denunciar:hover {
+    background-color: var(--branco);
+    color: var(--vermelho);
+}
+
+/* editar */
+.dropdown .editar {
+    border-radius: 15px 15px 0 0;
+}
+
+.btn-acao.editar:hover {
+    background-color: var(--branco-light);
+    color: var(--azul);
+}
+
+/* excluir */
+.btn-acao.excluir:hover {
+    background-color: var(--branco-light);
+    color: var(--vermelho);
+}
+
+.dropdown .excluir {
+    border-radius: 0 0 15px 15px;
+}

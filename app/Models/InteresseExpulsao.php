@@ -10,23 +10,23 @@ class InteresseExpulsao extends Model
     protected $table = 'interesse_expulsoes';
 
     protected $fillable = [
-        'usuario_id', 'interesse_id', 'motivo',
-        'moderador_id', 'expulso_ate', 'permanente'
+        'usuario_id', 'interesse_id', 'motivo', 'moderador_id',
+        'permanente', 'expulso_ate'
     ];
 
     protected $casts = [
-        'expulso_ate' => 'datetime',
-        'permanente' => 'boolean'
+        'permanente' => 'boolean',
+        'expulso_ate' => 'datetime'
     ];
 
     public function usuario(): BelongsTo
     {
-        return $this->belongsTo(Usuario::class);
+        return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
     public function interesse(): BelongsTo
     {
-        return $this->belongsTo(Interesse::class);
+        return $this->belongsTo(Interesse::class, 'interesse_id');
     }
 
     public function moderador(): BelongsTo
@@ -34,17 +34,16 @@ class InteresseExpulsao extends Model
         return $this->belongsTo(Usuario::class, 'moderador_id');
     }
 
-    public function estaAtivo(): bool
+    public function expirou(): bool
     {
-        if ($this->permanente) {
-            return true;
-        }
-
-        return $this->expulso_ate && $this->expulso_ate->isFuture();
+        return !$this->permanente && $this->expulso_ate && $this->expulso_ate->isPast();
     }
 
-    public function ehTemporario(): bool
+    public function scopeAtivas($query)
     {
-        return !$this->permanente && $this->expulso_ate;
+        return $query->where(function($q) {
+            $q->where('permanente', true)
+              ->orWhere('expulso_ate', '>', now());
+        });
     }
 }

@@ -1,4 +1,4 @@
-/*document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const inputFileCreateComentario = document.getElementById('caminho_imagem_create_comentario');
     const previewContainerCreateComentario = document.getElementById('image-preview-create-comentario');
     const previewImageCreateComentario = document.getElementById('preview-img-create-comentario');
@@ -26,4 +26,4 @@
         previewImageCreateComentario.src = '';
         previewContainerCreateComentario.style.display = 'none';
     });
-});*/
+});

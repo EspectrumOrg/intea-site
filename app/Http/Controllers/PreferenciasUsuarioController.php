@@ -10,15 +10,14 @@ class PreferenciasUsuarioController extends Controller
 {
     public function onboarding()
     {
-          // ✅ NOVO - usando route('feed.principal') que existe
-    if (Auth::user()->onboardingConcluido()) {
-        return redirect()->route('feed.principal');
-    }
+        // ✅ CORRIGIDO - usando route('post.index') que existe
+        if (Auth::user()->onboardingConcluido()) {
+            return redirect()->route('post.index');
+        }
 
-    $interesses = Interesse::ativos()->destaques()->get();
+        $interesses = Interesse::ativos()->destaques()->get();
     
-    
-    return view('auth.onboarding', compact('interesses'));
+        return view('auth.onboarding', compact('interesses'));
     }
 
     public function editar()
@@ -30,30 +29,29 @@ class PreferenciasUsuarioController extends Controller
     }
 
     public function salvarOnboarding(Request $request)
-{
-    $request->validate([
-        'interesses' => 'nullable|array',
-        'interesses.*' => 'exists:interesses,id'
-    ]);
+    {
+        $request->validate([
+            'interesses' => 'nullable|array',
+            'interesses.*' => 'exists:interesses,id'
+        ]);
 
-    $usuario = Auth::user();
-    
-    if ($request->has('interesses')) {
-        foreach ($request->interesses as $interesseId) {
-            $usuario->seguirInteresse($interesseId, true);
+        $usuario = Auth::user();
+        
+        if ($request->has('interesses')) {
+            foreach ($request->interesses as $interesseId) {
+                $usuario->seguirInteresse($interesseId, true);
+            }
         }
+
+        $usuario->completarOnboarding();
+
+        return response()->json([
+            'sucesso' => true,
+            'mensagem' => 'Interesses salvos com sucesso!',
+            // ✅ CORRIGIDO: usar post.index em vez de feed.principal
+            'redirecionar' => route('post.index')
+        ]);
     }
-
-    $usuario->completarOnboarding();
-
-    return response()->json([
-        'sucesso' => true,
-        'mensagem' => 'Interesses salvos com sucesso!',
-        // ✅ CORRIGIDO: usar feed.principal em vez de home
-        'redirecionar' => route('feed.principal')
-    ]);
-}
-
 
     public function atualizar(Request $request)
     {
@@ -83,13 +81,14 @@ class PreferenciasUsuarioController extends Controller
     }
 
     public function pularOnboarding()
-{
-    Auth::user()->completarOnboarding();
+    {
+        Auth::user()->completarOnboarding();
 
-    return response()->json([
-        'sucesso' => true,
-        'mensagem' => 'Onboarding pulado com sucesso!',
-        'redirecionar' => route('feed.principal')
-    ]);
-}
+        return response()->json([
+            'sucesso' => true,
+            'mensagem' => 'Onboarding pulado com sucesso!',
+            // ✅ CORRIGIDO: usar post.index em vez de feed.principal
+            'redirecionar' => route('post.index')
+        ]);
+    }
 }

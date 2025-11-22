@@ -10,9 +10,7 @@
 
 
 <div class="denuncia-gerenciamento">
-
     <div class="denuncia-inner">
-
         <div class="denuncia-title">
             <span class="material-symbols-outlined">flag_2</span>
             <h1>Denúncias</h1>
@@ -58,7 +56,7 @@
                             <th>Usuario denunciado</th>
                             <th>O que foi Denunciado</th>
                             <th>Motivo</th>
-                            <th>Data de denuncia</th>
+                            <th>Feita</th>
                             <th>Visualizar</th>
                         </tr>
                     </thead>
@@ -67,7 +65,7 @@
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->usuarioDenunciante->user }}</td>
-                            <td>{{ $item->postagem->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
+                            <td>{{ $item->usuarioDenunciado->user ?? $item->postagem->usuario->user ?? $item->comentario->usuario->user}}</td>
                             <td>
                                 @if ($item->usuarioDenunciado)
                                 Usuário
@@ -102,10 +100,9 @@
                                 @endif
                             </td>
 
-                            <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}</td>
+                            <td>{{ $item->created_at->diffForHumans() }}</td>
 
                             <td class="button-open-data acoes-denuncia">
-
                                 <!-- Visulalizar -->
                                 <button type="button" class="btn-visualizar" onclick="abrirModalVisualizarDenuncia('{{$item->id}}')">
                                     <span class="material-symbols-outlined">open_in_full</span>

@@ -27,7 +27,7 @@
             <select name="status_conta">
                 <option value="" {{ request('status_conta') == null ? 'selected' : '' }}>Todos status</option>
                 <option value="1" {{ request('status_conta') == '1' ? 'selected' : '' }}>Ativa</option>
-                <option value="0" {{ request('status_conta') == '0' ? 'selected' : '' }}>Banida</option>
+                <option value="2" {{ request('status_conta') == '0' ? 'selected' : '' }}>Banida</option>
             </select>
 
 
@@ -53,21 +53,21 @@
                             <th>Nome</th>
                             <th>User</th>
                             <th>Email</th>
-                            <th>Data Nascimento</th>
+                            <th>Idade</th>
                             <th>Tipo Usuário</th>
                             <th>Data de Login</th>
                             <th>Status</th>
-                            <th>Ações</th>
+                            <th>Visualizar</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($usuario as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->nome }}</td>
+                            <td>{{ $item->apelido }}</td>
                             <td>{{ $item->user }}</td>
                             <td>{{ $item->email }}</td>
-                            <td>{{ \Carbon\Carbon::parse($item->data_nascimento)->format('d/m/Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($item->data_nascimento)->age }} anos</td>
                             <td>
                                 @if($item->tipo_usuario === 1)
                                 Admin
@@ -100,32 +100,14 @@
                                 Desconhecido
                                 @endswitch
                             </td>
+                            <!-- Visualizar -->
                             <td>
-                                @if($item->status_conta == 1)
-                                <!-- Usuário ativo → Mostrar botão de banir -->
-                                <button type="button" class="btn-excluir-usuario" data-bs-toggle="modal" onclick="abrirModalBanimentoUsuarioEspecifico('{{ $item->id }}')">
-                                    <span class="material-symbols-outlined">person_off</span>
-                                    Banir
+                                <button type="button" class="btn-visualizar" onclick="abrirModalVisualizarUsuario('{{$item->id}}')">
+                                    <span class="material-symbols-outlined">open_in_full</span>
                                 </button>
-
-                                <!-- Inclui o modal -->
-                                @include('layouts.partials.modal-banimento', ['usuario' => $item])
-
-                                @elseif($item->status_conta == 2)
-                                <!-- Usuário banido → Mostrar botão de desbanir -->
-                                <form action="{{ route('usuario.desbanir', $item->id) }}" method="post" class="form-desbanir">
-                                    @csrf
-                                    @method("patch")
-                                    <button type="submit" onclick="return confirm('Você tem certeza que deseja desbanir esse usuário?');" class="btn-desbanir">
-                                        <span class="material-symbols-outlined">person_add</span>
-                                        Desbanir
-                                    </button>
-                                </form>
-                                @else
-                                <h1>sem ações possíveis</h1>
-                                @endif
+                                <!-- Inclui o modal visualizar usuario -->
+                                @include('admin.usuario.partials.modal-visualizar-usuario', ['usuario' => $item])
                             </td>
-
                         </tr>
                         @empty
                         <tr>

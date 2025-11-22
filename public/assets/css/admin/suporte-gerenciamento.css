@@ -320,7 +320,7 @@ body {
     border-radius: 25px;
     border: none;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.7s;
     font-weight: 600;
 }
 
@@ -338,7 +338,7 @@ body {
 .btn-enviar {
     background-color: var(--branco);
     border: 1px solid var(--amarelo);
-    color: var(--amarelo);
+    color: var(--preto);
 }
 
 .btn-enviar:hover {
@@ -347,7 +347,8 @@ body {
 }
 
 .nada-aqui td {
-    padding: 1rem 0 0 0;
-    font-size: 14px;
-    font-weight: 800;
+    padding: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    color: var(--cinza-borda) !important;
 }
