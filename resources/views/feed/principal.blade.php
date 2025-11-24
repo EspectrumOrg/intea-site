@@ -68,7 +68,7 @@
                 </div>
                 @endif
 
-                <!-- Seu código existente de postagem -->
+                <!-- Código de postagem -->
                 <a href="{{ route('post.read', ['postagem' => $postagem->id]) }}" class="post-overlay"></a>
                 
                 <div class="foto-perfil">
