@@ -36,6 +36,13 @@ class ProfileController extends Controller
         // Carregue dados específicos
         $dadosespecificos = null;
         $autista = null;
+        // 🔍 Calcular idade
+        $maiorDeIdade = false;
+
+        if ($user->data_nascimento) {
+            $idade = \Carbon\Carbon::parse($user->data_nascimento)->age;
+            $maiorDeIdade = $idade >= 18;
+        }
 
         // 🔥 Postagens populares (as mais curtidas)
         $postsPopulares = Postagem::withCount('curtidas')
@@ -71,7 +78,17 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('user', 'generos', 'telefones', 'dadosespecificos'));
+        return view('profile.edit', compact(
+    'user',
+    'generos',
+    'telefones',
+    'dadosespecificos',
+    'userPosts',
+    'likedPosts',
+    'postsPopulares',
+    'autista',
+    'maiorDeIdade'
+));
     }
 
     /**
