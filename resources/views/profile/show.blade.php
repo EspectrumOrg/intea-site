@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intea - perfil</title>
-    <!-- icones-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
@@ -22,6 +20,34 @@
 </head>
 
 <body>
+
+    @php
+    use App\Models\Tendencia;
+
+    if (!function_exists('formatarHashtags')) {
+    function formatarHashtags($texto) {
+    return preg_replace_callback(
+    '/#(\w+)/u',
+    function ($matches) {
+    $tag = e($matches[1]);
+
+    // Busca a hashtag no banco
+    $tendencia = Tendencia::where('hashtag', '#'.$tag)->first();
+
+    // Define a URL final (se existir a tendência no banco, vai pra rota certa)
+    $url = $tendencia
+    ? route('tendencias.show', $tendencia->slug)
+    : url('/hashtags/' . $tag);
+
+    // Retorna o link formatado
+    return "<a href=\"{$url}\" class=\"hashtag\">#{$tag}</a>";
+    },
+    e($texto)
+    );
+    }
+    }
+    @endphp
+
     <div class="layout">
         <div class="container-content">
             <!-- conteúdo sidebar -->
@@ -111,7 +137,7 @@
                                 <form action="{{ route('seguir.destroy', $user->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="deixar-btn">
+                                    <button type="submit" class="deixar-profile-btn">
                                         <span class="material-symbols-outlined">person_remove</span> Deixar de seguir
                                     </button>
                                 </form>
@@ -372,7 +398,7 @@
                         </section>
                     </div>
 
-                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) -->
+                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) ------------------------------------------->
                     @if($userPosts->count() > 0)
                     <div class="tab-content" id="posts-tab">
                         <h3>Minhas Postagens</h3>
@@ -397,7 +423,7 @@
                                             <li>
                                                 <button type="button"
                                                     class="btn-acao editar"
-                                                    onclick="abrirModalEditar('{{ $post->id }}')">
+                                                    onclick="abrirModalEditar('{{$post->id}}')">
                                                     <span class="material-symbols-outlined">edit</span>Editar
                                                 </button>
                                             </li>
@@ -487,7 +513,17 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <p class="post-content">{{ $post->texto_postagem }}</p>
+                                <p class="texto-curto" id="texto-{{ $post->id }}">
+                                    {!! formatarHashtags(Str::limit($post->texto_postagem, 150, '')) !!}
+                                    @if (strlen($post->texto_postagem) > 150)
+                                    <span class="mostrar-mais" onclick="toggleTexto('{{ $post->id }}', this)">...mais</span>
+                                    @endif
+                                </p>
+
+                                <p class="texto-completo" id="texto-completo-{{ $post->id }}" style="display: none;">
+                                    {!! formatarHashtags($post->texto_postagem) !!}
+                                    <span class="mostrar-mais" onclick="toggleTexto('{{ $post->id }}', this)">...menos</span>
+                                </p>
                                 @if($post->imagens && $post->imagens->count() > 0)
                                 @foreach($post->imagens as $imagem)
                                 <img src="{{ asset('storage/'.$imagem->caminho_imagem) }}" alt="Imagem do post" class="post-image">
@@ -514,38 +550,38 @@
                                     </form>
                                 </div>
                             </div>
+
+                            <!-- Modal Edição dessa postagem -->
+                            @include('feed.post.edit', ['postagem' => $post])
+
+                            <!-- Modal Criação de comentário ($post->id) -->
+                            @include('feed.post.create-comentario-modal', ['postagem' => $post])
+
+                            <!-- Modal Criação de comentário ($post->id) -->
+                            @include('feed.post.create-comentario-modal', ['postagem' => $post])
+
+                            <!-- Modal de denúncia (um para cada postagem) -->
+                            <div id="modal-denuncia-postagem-{{ $post->id }}" class="modal-denuncia hidden">
+                                <div class="modal-content">
+                                    <h3 class="texto-next-close-button">Coletando informações</h3>
+                                    <span class="close"
+                                        onclick="fecharModalDenuncia('{{$post->id}}')">
+                                        <span class="material-symbols-outlined">close</span>
+                                    </span>
+
+                                    <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
+                                        @csrf
+                                        <input type="hidden" name="tipo" value="postagem">
+                                        <input type="hidden" name="id_alvo" value="{{ $post->id }}">
+
+                                        @include('layouts.partials.modal-denuncia')
+                                    </form>
+                                </div>
+                            </div>
                             @endforeach
                         </div>
                     </div>
                     @endif
-
-                    <!-- Modal Edição dessa postagem -->
-                    @include('feed.post.edit', ['postagem' => $post])
-
-                    <!-- Modal Criação de comentário ($postagem->id) -->
-                    @include('feed.post.create-comentario-modal', ['postagem' => $post])
-
-                    <!-- Modal Criação de comentário ($post->id) -->
-                    @include('feed.post.create-comentario-modal', ['postagem' => $post])
-
-                    <!-- Modal de denúncia (um para cada postagem) -->
-                    <div id="modal-denuncia-postagem-{{ $post->id }}" class="modal-denuncia hidden">
-                        <div class="modal-content">
-                            <h3 class="texto-next-close-button">Coletando informações</h3>
-                            <span class="close"
-                                onclick="fecharModalDenuncia('{{$post->id}}')">
-                                <span class="material-symbols-outlined">close</span>
-                            </span>
-
-                            <form method="POST" style="width: 100%;" action="{{ route('denuncia.store') }}">
-                                @csrf
-                                <input type="hidden" name="tipo" value="postagem">
-                                <input type="hidden" name="id_alvo" value="{{ $post->id }}">
-
-                                @include('layouts.partials.modal-denuncia')
-                            </form>
-                        </div>
-                    </div>
 
                     <!-- Aba 3: Curtidas (só mostra se tiver conteúdo) -->
                     @if($likedPosts->count() > 0)
@@ -601,6 +637,10 @@
         </div>
         <!-- modal de avisos -->
         @include("layouts.partials.avisos")
+
+
+        <!-- Modal Criação de postagem -->
+        @include('feed.post.create-modal')
     </div>
 
     <script>

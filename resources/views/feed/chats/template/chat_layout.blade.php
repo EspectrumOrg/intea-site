@@ -8,11 +8,14 @@
     <title>@yield('title', 'Chat')</title>
     <!-- css geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-    <!-- layout geral -->
     <link rel="stylesheet" href="{{ url('assets/css/layout/layout.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/modal-template.css') }}">
+    <!-- layout geral -->
     <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/estilo-chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/style.css') }}">
+    <!-- Postagem -->
+    <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
 
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -31,6 +34,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Criação de postagem -->
+    @include('feed.post.create-modal')
+    
     @yield('scripts')
 </body>
 

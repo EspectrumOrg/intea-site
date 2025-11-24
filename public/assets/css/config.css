@@ -10,16 +10,21 @@
 }
 
 .config-section h3 {
-    color: var(--roxo); /* Azul do seu tema */
+    color: var(--roxo);
+    /* Azul do seu tema */
     font-size: 1.25rem;
     font-weight: 600;
     margin: 0;
     padding: 20px 24px;
     background-color: var(--branco);
-    border-bottom: 2px solid var(--roxo); /* Linha azul abaixo do título */
-    text-align: center; /* Centralizado */
-    text-transform: uppercase; /* Opcional - para ficar mais destacado */
-    letter-spacing: 0.5px; /* Opcional - para melhor legibilidade */
+    border-bottom: 2px solid var(--roxo);
+    /* Linha azul abaixo do título */
+    text-align: center;
+    /* Centralizado */
+    text-transform: uppercase;
+    /* Opcional - para ficar mais destacado */
+    letter-spacing: 0.5px;
+    /* Opcional - para melhor legibilidade */
 }
 
 /* Item de configuração - fundo branco */
@@ -45,7 +50,8 @@
 
 .setting-info h4 {
     margin: 0 0 8px 0;
-    color: #1a1a1a; /* Preto suave para melhor contraste */
+    color: #1a1a1a;
+    /* Preto suave para melhor contraste */
     font-size: 1rem;
     font-weight: 500;
     line-height: 1.4;
@@ -53,7 +59,8 @@
 
 .setting-info p {
     margin: 0;
-    color: #666; /* Cinza para a descrição */
+    color: #666;
+    /* Cinza para a descrição */
     font-size: 0.875rem;
     line-height: 1.5;
 }
@@ -100,16 +107,17 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-input:checked + .slider {
-    background-color: var(--cor-tema); /* Azul quando ativo */
+input:checked+.slider {
+    background-color: var(--cor-tema);
+    /* Azul quando ativo */
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(30px);
 }
 
 /* Efeito de foco para acessibilidade */
-.switch input:focus + .slider {
+.switch input:focus+.slider {
     box-shadow: 0 0 0 3px rgba(4, 138, 191, 0.3);
 }
 
@@ -117,12 +125,35 @@ input:checked + .slider:before {
     color: var(--roxo);
 }
 
-.btn-primary {
-color: white;
-border: none;
+.btn-config-save,
+.btn-config-exclude {
+    border: none;
+    background-color: var(--branco);
+    border-radius: 50px / 100%;
+    padding: .75rem;
+    font-weight: 500;
+    transition: .3s;
+    width: 125px;
 }
 
-#botao-excluir {
-    color: white;
-    border: none;
+/* Salvar */
+.btn-config-save {
+    border: 1px solid var(--azul);
+    color: var(--azul);
+}
+
+.btn-config-save:hover {
+    background-color: var(--azul);
+    color: var(--branco);
+}
+
+/* Deletar */
+.btn-config-exclude {
+    border: 1px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.btn-config-exclude:hover {
+    background-color: var(--vermelho);
+    color: var(--branco);
 }

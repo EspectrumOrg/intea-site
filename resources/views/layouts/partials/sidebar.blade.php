@@ -36,10 +36,10 @@
             </li>
         </ul>
     </div>
-    @php  
-        $totalNotificacoes = \App\Models\Notificacao::where('alvo_id', auth()->id())
-        ->whereIn('tipo', ['seguindo_voce', 'seguir', 'solicitacao_aceita', 'seguir'])
-        ->count();
+    @php
+    $totalNotificacoes = \App\Models\Notificacao::where('alvo_id', auth()->id())
+    ->whereIn('tipo', ['seguindo_voce', 'seguir', 'solicitacao_aceita', 'seguir'])
+    ->count();
     @endphp
 
     <!-- Links sidebar-->
@@ -81,9 +81,9 @@
             <h1 style="display: flex; align-items: center; gap: 6px;">
                 Notificações
                 @if($totalNotificacoes > 0)
-                    <span style="background: #14b814; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
-                        {{ $totalNotificacoes }}
-                    </span>
+                <span style="background: #14b814; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
+                    {{ $totalNotificacoes }}
+                </span>
                 @endif
             </h1>
         </a>
@@ -96,21 +96,21 @@
         </a>
 
         @can("visualizar-admin")
-            <!-- ADMINISTRAÇÃO (7) -->
-            <a href="{{ route('dashboard.index') }}"
-                class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="admin">
-                <span class="material-symbols-outlined">manage_accounts</span>
-                <h1>Administração</h1>
-            </a>
+        <!-- ADMINISTRAÇÃO (7) -->
+        <a href="{{ route('dashboard.index') }}"
+            class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" id="admin">
+            <span class="material-symbols-outlined">manage_accounts</span>
+            <h1>Administração</h1>
+        </a>
         @endcan
-        
+
         @can("visualizar-responsavel")
-            <!-- RESPONSÁVEIS (8) -->
-            <a href="{{ route('responsavel.painel') }}"
-                class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}" id="responsavel">
-                <span class="material-symbols-outlined">supervisor_account</span>
-                <h1>Responsáveis</h1>
-            </a>
+        <!-- RESPONSÁVEIS (8) -->
+        <a href="{{ route('responsavel.painel') }}"
+            class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}" id="responsavel">
+            <span class="material-symbols-outlined">supervisor_account</span>
+            <h1>Responsáveis</h1>
+        </a>
         @endcan
 
         <div class="post-button">
@@ -119,5 +119,8 @@
     </div>
 </div>
 
-<!-- JS -->
+<!-- JS (option user) -->
 <script src="{{ url('assets/js/avisos/sidebar-user.js') }}"></script>
+
+<!-- JS (modal create) -->
+<script src="{{ url('assets/js/posts/create/modal.js') }}"></script>

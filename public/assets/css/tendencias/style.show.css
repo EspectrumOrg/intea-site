@@ -1,7 +1,7 @@
 /* VARIÁVEIS CSS  */
 :root {
-    --azul: #2563eb;
-    --azul-hover: #1d4ed8;
+    /*--azul: #2563eb;*/
+    /* --azul-apagado: #1d4ed8; */
     --azul-light: #dbeafe;
     --branco: #F2F2F2;
     --preto: #1e293b;
@@ -14,7 +14,6 @@
 }
 
 /* CONTAINER PRINCIPAL */
-
 .tendencia-container {
     max-width: 800px;
     margin: 0 auto;
@@ -22,7 +21,6 @@
 }
 
 /* CABEÇALHO DA TENDÊNCIA */
-
 .tendencia-header {
     background: var(--branco);
     border-radius: var(--borda-radius);
@@ -30,8 +28,8 @@
     margin: 1rem 0 1.5rem;
     box-shadow: var(--sombra);
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     gap: 1rem;
     position: relative;
     overflow: hidden;
@@ -71,14 +69,13 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.625rem 1.25rem;
-    background: #f8fafc;
+    background: var(--branco);
     color: var(--preto);
     border-radius: 6px;
     font-weight: 600;
     font-size: 0.875rem;
     text-decoration: none;
     transition: var(--transicao);
-    border: 1px solid var(--cinza-light);
 }
 
 .btn-voltar:hover {
@@ -162,6 +159,16 @@
     flex: 1;
 }
 
+.user-details a {
+    text-decoration: none;
+    transition: .3s;
+}
+
+.user-details a:hover {
+    text-decoration: underline;
+    color: var(--preto);
+}
+
 .user-details strong {
     color: var(--preto);
     font-size: 0.95rem;
@@ -197,16 +204,9 @@
 }
 
 /* Hashtags */
-.hashtag {
-    color: var(--azul);
-    font-weight: 600;
-    transition: var(--transicao);
-    padding: 0 1px;
-    border-radius: 3px;
-}
 
 .hashtag:hover {
-    color: var(--azul-hover);
+    color: var(--azul-apagado);
     background-color: var(--azul-light);
     text-decoration: none;
 }
@@ -236,6 +236,7 @@
 
 .post-stats {
     display: flex;
+    justify-content: space-between;
     gap: 1.25rem;
     margin: 0.5rem 0 0.75rem 0;
     font-size: 0.85rem;
@@ -246,23 +247,63 @@
     border-bottom: 1px solid var(--cinza-light);
 }
 
-.curtidas, .comentarios {
+.post-stats .button {
+    background: none;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    transition: var(--transicao);
 }
 
-.curtidas:hover, .comentarios:hover {
+.post-stats .button a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.post-stats span {
+    font-size: 20px;
+    padding: .5rem;
+    color: var(--cinza);
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.post-stats h1 {
+    font-size: 14px;
+    color: var(--cinza);
+    transition: .3s;
+}
+
+/* comentar */
+.btn-comentar:hover h1 {
     color: var(--azul);
-    transform: translateY(-1px);
 }
 
+.btn-comentar:hover span {
+    background-color: rgba(208, 219, 231, 0.95);
+    color: var(--azul);
+}
+
+/* curtir */
+.btn-curtir:hover h1 {
+    color: var(--vermelho);
+}
+
+.btn-curtir:hover span {
+    background-color: rgba(230, 78, 78, 0.5);
+    color: var(--vermelho);
+}
+
+.curtido span {
+    color: var(--cor-vermelho);
+}
 
 /* BOTÃO AÇÃO */
-
 .post-actions {
     margin-top: 0.5rem;
+    display: flex;
+    justify-content: end;
 }
 
 .btn-action {
@@ -270,18 +311,19 @@
     align-items: center;
     gap: 0.4rem;
     padding: 0.6rem 1.25rem;
-    background: var(--azul);
-    color: var(--branco);
-    border-radius: 6px;
+    background: var(--branco);
+    color: var(--azul);
+    border: 1px solid var(--azul);
+    border-radius: 50px / 100%;
     font-weight: 600;
     font-size: 0.85rem;
     text-decoration: none;
-    transition: var(--transicao);
+    transition: .3s;
     box-shadow: 0 1px 2px rgba(37, 99, 235, 0.15);
 }
 
 .btn-action:hover {
-    background: var(--azul-hover);
+    background: var(--azul);
     color: var(--branco);
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(37, 99, 235, 0.2);
@@ -338,7 +380,7 @@
 }
 
 .btn-primary:hover {
-    background: var(--azul-hover);
+    background: var(--azul-apagado);
     transform: translateY(-1px);
     box-shadow: 0 3px 6px rgba(37, 99, 235, 0.2);
 }
@@ -400,6 +442,7 @@
         opacity: 0;
         transform: translateY(8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -411,8 +454,22 @@
 }
 
 /* Delay para animação em cascata */
-.post-card:nth-child(1) { animation-delay: 0.05s; }
-.post-card:nth-child(2) { animation-delay: 0.1s; }
-.post-card:nth-child(3) { animation-delay: 0.15s; }
-.post-card:nth-child(4) { animation-delay: 0.2s; }
-.post-card:nth-child(5) { animation-delay: 0.25s; }
+.post-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.post-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.post-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.post-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.post-card:nth-child(5) {
+    animation-delay: 0.25s;
+}

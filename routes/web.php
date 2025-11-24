@@ -131,10 +131,10 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     // Feed e postagens
     Route::resource("feed", PostagemController::class)
         ->names("post")
-        ->parameters(["feed" => "post"]); 
+        ->parameters(["feed" => "post"]);
     Route::post('/feed/curtida', [CurtidaController::class, 'toggleCurtida'])->name('curtida.toggle');
     Route::get('/feed/{postagem}', [PostagemController::class, 'show'])->name('post.read');
-    
+
     // Comentários
     Route::resource("comentario", ComentarioController::class)->names('comentario');
     Route::post('/feed/{tipo}/{id}', [ComentarioController::class, 'store'])->name('post.comentario');
@@ -174,11 +174,14 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     // Conta e denúncias de usuário
     Route::get('/conta/{usuario_id}', [ContaController::class, 'index'])->name('conta.index');
     Route::post('/conta/{id_usuario_denunciado}/denuncia/{id_usuario_denunciante}', [DenunciaController::class, 'post'])->name('usuario.denuncia');
+    Route::delete('/usuario/excluir', [UsuarioController::class, 'excluirConta'])
+        ->name('usuario.excluir');
 
     // Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/usuario/{id}/seguindo/count', [SeguirController::class, 'countSeguindo']);
     Route::get('/usuario/{id}/seguidores/count', [SeguirController::class, 'countSeguidores']);
     Route::get('/usuario/{id}/seguindo', [SeguirController::class, 'listarSeguindo'])->name('usuario.listar.seguindo');
@@ -231,7 +234,7 @@ Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->na
 Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
 
 // API pública para interesses
-Route::get('/api/interesses/slug/{slug}', function($slug) {
+Route::get('/api/interesses/slug/{slug}', function ($slug) {
     $interesse = \App\Models\Interesse::where('slug', $slug)->first();
     if (!$interesse) {
         return response()->json(['error' => 'Interesse não encontrado'], 404);
@@ -269,34 +272,34 @@ Route::middleware(['auth'])->group(function () {
         // Painéis
         Route::get('/interesse/{slugInteresse}', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
         Route::get('/global', [ModeracaoController::class, 'painelGlobal'])->name('moderacao.global');
-        
+
         // Postagens
         Route::post('/postagens/{postagemId}/remover', [ModeracaoController::class, 'removerPostagem'])->name('moderacao.postagens.remover');
         Route::post('/postagens/{postagemId}/restaurar', [ModeracaoController::class, 'restaurarPostagem'])->name('moderacao.postagens.restaurar');
         Route::post('/postagens/acao-em-massa', [ModeracaoController::class, 'acaoEmMassaPostagens'])->name('moderacao.postagens.acao-em-massa');
-        
+
         // Palavras Proibidas
         Route::post('/interesse/{interesseId}/palavras-proibidas', [ModeracaoController::class, 'adicionarPalavraProibida'])->name('moderacao.palavras-proibidas.adicionar');
         Route::post('/palavras-proibidas-globais', [ModeracaoController::class, 'adicionarPalavraProibidaGlobal'])->name('moderacao.palavras-proibidas-globais.adicionar');
         Route::delete('/palavras-proibidas/{palavraId}', [ModeracaoController::class, 'removerPalavraProibida'])->name('moderacao.palavras-proibidas.remover');
         Route::delete('/palavras-proibidas-globais/{palavraId}', [ModeracaoController::class, 'removerPalavraProibidaGlobal'])->name('moderacao.palavras-proibidas-globais.remover');
-        
+
         // Usuários
         Route::post('/interesse/{interesseId}/expulsar', [ModeracaoController::class, 'expulsarUsuario'])->name('moderacao.usuarios.expulsar');
         Route::post('/usuarios/{usuarioId}/banir-sistema', [ModeracaoController::class, 'banirUsuarioSistema'])->name('moderacao.usuarios.banir-sistema');
-        
+
         // Infrações
         Route::get('/infracoes/pendentes', [ModeracaoController::class, 'listarInfracoesPendentes'])->name('moderacao.infracoes.pendentes');
         Route::post('/infracoes/{infracaoId}/verificar', [ModeracaoController::class, 'verificarInfracao'])->name('moderacao.infracoes.verificar');
-        
+
         // Estatísticas
         Route::get('/estatisticas/interesse/{interesseId}', [ModeracaoController::class, 'obterEstatisticasInteresse'])->name('moderacao.estatisticas.interesse');
         Route::get('/estatisticas/globais', [ModeracaoController::class, 'obterEstatisticasGlobais'])->name('moderacao.estatisticas.globais');
         Route::post('/relatorios', [ModeracaoController::class, 'gerarRelatorioModeracao'])->name('moderacao.relatorios.gerar');
-        
+
         // Processamento Automático
         Route::post('/processar-banimentos-automaticos', [ModeracaoController::class, 'processarBanimentosAutomaticos'])->name('moderacao.banimentos.automaticos');
-        
+
         // Debug (remover após testes)
         Route::get('/debug/permissoes', [ModeracaoController::class, 'debugPermissoes'])->name('moderacao.debug.permissoes');
     });

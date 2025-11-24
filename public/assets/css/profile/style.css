@@ -135,12 +135,12 @@
 }
 
 /* Esse é o botão de "deixar de seguir" */
-.deixar-btn {
+.deixar-profile-btn {
     background-color: #f8e0e3;
     color: var(--vermelho);
 }
 
-.deixar-btn:hover {
+.deixar-profile-btn:hover {
     background-color: #ffcdd2;
 }
 

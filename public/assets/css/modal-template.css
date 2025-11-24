@@ -22,7 +22,7 @@
     background: var(--branco);
     padding: 4rem 1rem 1rem 1rem;
     border-radius: 15px;
-    width: 600px;
+    width: 600px !important;
     position: relative;
     display: flex;
     align-items: flex-start;
