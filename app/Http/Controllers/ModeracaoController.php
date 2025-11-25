@@ -64,7 +64,7 @@ class ModeracaoController extends Controller
         }
 
         $infracoesPendentes = InfracaoSistema::where('verificada', false)
-                                            ->with(['usuario', 'postagem', 'interesse'])
+                                            ->with(['usuario', 'postagem', 'interesse', 'reportadoPor'])
                                             ->orderBy('created_at', 'desc')
                                             ->paginate(20);
 
@@ -122,16 +122,10 @@ class ModeracaoController extends Controller
                 }
             }
 
-            return response()->json([
-                'sucesso' => true,
-                'mensagem' => 'Postagem removida com sucesso' . ($request->aplicar_penalidade ? ' e penalidade aplicada' : '')
-            ]);
+            return redirect()->back()->with('success', 'Postagem removida com sucesso' . ($request->aplicar_penalidade ? ' e penalidade aplicada' : ''));
         }
 
-        return response()->json([
-            'sucesso' => false,
-            'mensagem' => 'Erro ao remover postagem ou permissão negada'
-        ], 400);
+        return redirect()->back()->with('error', 'Erro ao remover postagem ou permissão negada');
     }
 
     public function restaurarPostagem($postagemId)
@@ -145,18 +139,12 @@ class ModeracaoController extends Controller
         }
 
         if (in_array(false, $permissoes)) {
-            return response()->json([
-                'sucesso' => false,
-                'mensagem' => 'Permissão negada para restaurar esta postagem'
-            ], 403);
+            return redirect()->back()->with('error', 'Permissão negada para restaurar esta postagem');
         }
 
         $postagem->restaurar();
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Postagem restaurada com sucesso'
-        ]);
+        return redirect()->back()->with('success', 'Postagem restaurada com sucesso');
     }
 
     /**
@@ -184,10 +172,7 @@ class ModeracaoController extends Controller
             $request->motivo
         );
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Palavra proibida adicionada com sucesso'
-        ]);
+        return redirect()->back()->with('success', 'Palavra proibida adicionada com sucesso');
     }
 
     public function adicionarPalavraProibidaGlobal(Request $request)
@@ -212,10 +197,7 @@ class ModeracaoController extends Controller
             'ativo' => true
         ]);
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Palavra proibida global adicionada com sucesso'
-        ]);
+        return redirect()->route('moderacao.global')->with('success', 'Palavra proibida global adicionada com sucesso');
     }
 
     public function removerPalavraProibida($palavraId)
@@ -229,10 +211,7 @@ class ModeracaoController extends Controller
 
         $palavra->update(['ativo' => false]);
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Palavra proibida removida com sucesso'
-        ]);
+        return redirect()->back()->with('success', 'Palavra proibida removida com sucesso');
     }
 
     public function removerPalavraProibidaGlobal($palavraId)
@@ -246,10 +225,7 @@ class ModeracaoController extends Controller
 
         $palavra->update(['ativo' => false]);
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Palavra proibida global removida com sucesso'
-        ]);
+        return redirect()->route('moderacao.global')->with('success', 'Palavra proibida global removida com sucesso');
     }
 
     /**
@@ -296,10 +272,7 @@ class ModeracaoController extends Controller
             );
         }
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Usuário expulso do interesse com sucesso'
-        ]);
+        return redirect()->back()->with('success', 'Usuário expulso do interesse com sucesso');
     }
 
     public function banirUsuarioSistema(Request $request, $usuarioId)
@@ -331,10 +304,7 @@ class ModeracaoController extends Controller
             $request->permanente ? null : ($request->dias_banimento ?? 30)
         );
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Usuário banido do sistema com sucesso'
-        ]);
+        return redirect()->back()->with('success', 'Usuário banido do sistema com sucesso');
     }
 
     /**
@@ -395,10 +365,7 @@ class ModeracaoController extends Controller
             $mensagem = 'Infração verificada e ignorada';
         }
 
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => $mensagem
-        ]);
+        return redirect()->route('moderacao.global')->with('success', $mensagem);
     }
 
     /**
@@ -545,56 +512,57 @@ class ModeracaoController extends Controller
             }
         }
 
-        return response()->json([
-            'sucesso' => $resultados['erros'] === 0,
-            'resultados' => $resultados
-        ]);
+        if ($resultados['erros'] === 0) {
+            return redirect()->back()->with('success', "{$resultados['sucessos']} postagens processadas com sucesso");
+        } else {
+            return redirect()->back()->with('error', "{$resultados['sucessos']} sucessos, {$resultados['erros']} erros");
+        }
     }
 
     public function adicionarPalavraGlobal(Request $request)
-{
-    try {
-        $request->validate([
-            'palavra' => 'required|string|max:255',
-            'tipo' => 'required|in:exata,parcial',
-            'motivo' => 'nullable|string'
-        ]);
+    {
+        try {
+            $request->validate([
+                'palavra' => 'required|string|max:255',
+                'tipo' => 'required|in:exata,parcial',
+                'motivo' => 'nullable|string'
+            ]);
 
-        PalavraProibidaGlobal::create([
-            'palavra' => $request->palavra,
-            'tipo' => $request->tipo,
-            'motivo' => $request->motivo,
-            'adicionado_por' => Auth::id(),
-            'ativo' => true
-        ]);
+            PalavraProibidaGlobal::create([
+                'palavra' => $request->palavra,
+                'tipo' => $request->tipo,
+                'motivo' => $request->motivo,
+                'adicionado_por' => Auth::id(),
+                'ativo' => true
+            ]);
 
-        return response()->json(['sucesso' => true, 'mensagem' => 'Palavra adicionada com sucesso']);
-    } catch (\Exception $e) {
-        return response()->json(['sucesso' => false, 'mensagem' => 'Erro ao adicionar palavra: ' . $e->getMessage()]);
+            return redirect()->route('moderacao.global')->with('success', 'Palavra adicionada com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->route('moderacao.global')->with('error', 'Erro ao adicionar palavra: ' . $e->getMessage());
+        }
     }
-}
 
-public function removerPalavraGlobal($id)
-{
-    try {
-        $palavra = PalavraProibidaGlobal::findOrFail($id);
-        $palavra->delete();
+    public function removerPalavraGlobal($id)
+    {
+        try {
+            $palavra = PalavraProibidaGlobal::findOrFail($id);
+            $palavra->delete();
 
-        return response()->json(['sucesso' => true, 'mensagem' => 'Palavra removida com sucesso']);
-    } catch (\Exception $e) {
-        return response()->json(['sucesso' => false, 'mensagem' => 'Erro ao remover palavra']);
+            return redirect()->route('moderacao.global')->with('success', 'Palavra removida com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->route('moderacao.global')->with('error', 'Erro ao remover palavra');
+        }
     }
-}
 
-public function processarBanimentosAutomaticos()
-{
-    try {
-        $resultados = ServicoModeracao::processarBanimentosAutomaticos();
-        return response()->json(['sucesso' => true, 'processados' => $resultados]);
-    } catch (\Exception $e) {
-        return response()->json(['sucesso' => false, 'mensagem' => $e->getMessage()]);
+    public function processarBanimentosAutomaticos()
+    {
+        try {
+            $resultados = ServicoModeracao::processarBanimentosAutomaticos();
+            return redirect()->route('moderacao.global')->with('success', 'Banimentos automáticos processados: ' . ($resultados['sistema'] ?? 0) . ' sistema, ' . ($resultados['interesse'] ?? 0) . ' interesse');
+        } catch (\Exception $e) {
+            return redirect()->route('moderacao.global')->with('error', 'Erro ao processar banimentos: ' . $e->getMessage());
+        }
     }
-}
 
     /**
      * DEBUG - Remover após testes
