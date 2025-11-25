@@ -28,65 +28,37 @@ public function addDependente(Request $request)
 {
     Log::info('Início do método addDependente', $request->all());
 
-    $validator = Validator::make($request->all(), [
+    $request->validate([
         'cpf' => 'nullable|string|max:20',
         'ciptea' => 'nullable|string|max:100',
     ]);
 
-    if ($validator->fails()) {
-        return redirect()->route('profile.show');
-    }
-
     try {
         $cpf = $request->filled('cpf') ? preg_replace('/[^0-9]/', '', $request->cpf) : null;
 
-        // 🔍 Busca autista
         $autista = Autista::query()
-            ->when($cpf, function ($query) use ($cpf) {
-                $query->whereHas('usuario', function ($q) use ($cpf) {
-                    $q->where('cpf', $cpf);
-                });
-            })
-            ->when($request->filled('ciptea'), function ($query) use ($request) {
-                $query->where('cipteia_autista', $request->ciptea);
-            })
+            ->when($cpf, fn($query) => $query->whereHas('usuario', fn($q) => $q->where('cpf', $cpf)))
+            ->when($request->filled('ciptea'), fn($query) => $query->where('cipteia_autista', $request->ciptea))
             ->first();
 
-        if (!$autista) {
-            return redirect()->route('profile.show');
-        }
+        if (!$autista) return redirect()->route('profile.show');
 
-        $responsavelId = auth()->id();
+        $responsavel = auth()->user()->responsavel ?? auth()->user()->responsavel()->create([]);
 
         // 🔎 Verifica se já existe o vínculo
-        $jaExiste = Responsavel::where('usuario_id', $responsavelId)
-            ->where('cipteia_autista', $autista->cipteia_autista)
-            ->exists();
-
-        if ($jaExiste) {
+        if ($responsavel->autistas()->where('autista_id', $autista->id)->exists()) {
             return redirect()->route('profile.show');
         }
 
-        // 🧩 Cria o vínculo na tabela de responsáveis
-        $novoVinculo = Responsavel::create([
-            'usuario_id' => $responsavelId,
-            'cipteia_autista' => $autista->cipteia_autista,
-        ]);
+        // 🔄 Adiciona vínculo
+        $responsavel->autistas()->attach($autista->id);
 
-        // Atualiza o autista com o ID do registro de responsável
-        if (is_null($autista->responsavel_id)) {
-            $autista->responsavel_id = $novoVinculo->id;
-            $autista->save();
+        // 🔄 Atualiza tipo de usuário
+        if (auth()->user()->tipo_usuario === 3) {
+            auth()->user()->update(['tipo_usuario' => 5]);
         }
 
-        // 🔄 Atualiza o tipo de usuário (Comunidade → Responsável)
-        $usuario = Usuario::find($responsavelId);
-        if ($usuario && $usuario->tipo_usuario == 3) {
-            $usuario->tipo_usuario = 5;
-            $usuario->save();
-        }
-
-        Log::info("Usuário {$responsavelId} agora é responsável pelo autista {$autista->id}");
+        Log::info("Usuário {$responsavel->usuario_id} agora é responsável pelo autista {$autista->id}");
 
         return redirect()->route('profile.show');
 
@@ -101,55 +73,24 @@ public function removeDependente(Request $request)
 {
     Log::info('Início do método removeDependente', $request->all());
 
-    $validator = Validator::make($request->all(), [
+    $request->validate([
         'dependente_id' => 'required|integer|exists:tb_autista,id',
     ]);
 
-    if ($validator->fails()) {
-        return redirect()->route('profile.show');
-    }
-
     try {
-        $autista = Autista::find($request->dependente_id);
+        $autista = Autista::findOrFail($request->dependente_id);
+        $responsavel = auth()->user()->responsavel;
 
-        if (!$autista) {
-            return redirect()->route('profile.show');
-        }
+        if (!$responsavel) return redirect()->route('profile.show');
 
-        $responsavelId = auth()->id();
+        // 🔄 Remove vínculo
+        $responsavel->autistas()->detach($autista->id);
 
-        // Verifica se o usuário é realmente responsável por esse autista
-        $vinculo = Responsavel::where('usuario_id', $responsavelId)
-            ->where('cipteia_autista', $autista->cipteia_autista)
-            ->first();
+        Log::info("Usuário {$responsavel->usuario_id} desvinculou o dependente {$autista->id}");
 
-        if (!$vinculo) {
-            return redirect()->route('profile.show');
-        }
-
-        // 🔄 Desvincula o autista do responsável
-        if ($autista->responsavel_id == $vinculo->id) {
-            $autista->responsavel_id = null;
-            $autista->save();
-        }
-
-        // 🗑️ Remove o registro do responsável (vínculo)
-        $vinculo->delete();
-
-        Log::info("Usuário {$responsavelId} desvinculou e removeu o vínculo do dependente {$autista->id}");
-
-        // Verifica se o usuário ainda possui outros dependentes
-        $aindaTemDependentes = Responsavel::where('usuario_id', $responsavelId)
-            ->whereHas('autistas')
-            ->exists();
-
-        // 🔄 Se não tiver mais dependentes, volta o tipo de usuário para 3 (Comunidade)
-        if (!$aindaTemDependentes) {
-            $usuario = Usuario::find($responsavelId);
-            if ($usuario && $usuario->tipo_usuario == 5) {
-                $usuario->tipo_usuario = 3;
-                $usuario->save();
-            }
+        // 🔄 Se não tiver mais dependentes, volta tipo para 3
+        if ($responsavel->autistas()->count() === 0) {
+            auth()->user()->update(['tipo_usuario' => 3]);
         }
 
         return redirect()->route('profile.show');
@@ -159,6 +100,7 @@ public function removeDependente(Request $request)
         return redirect()->route('profile.show');
     }
 }
+
 
 
 

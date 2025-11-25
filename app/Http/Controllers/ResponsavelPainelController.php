@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Postagem;
-use App\Models\User;
+use App\Models\Usuario;
+use App\Models\Autista;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class ResponsavelPainelController extends Controller
@@ -23,140 +25,125 @@ class ResponsavelPainelController extends Controller
         $this->genero = $genero;
         $this->telefone = $telefone;
     }
-    //
-    public function edit(Request $request): View
-{
-    $user = Auth::user();
-    $generos = $this->genero->all();
-    $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-
-    $dadosespecificos = null;
-    $autista = null;
-
-    // 🔥 Postagens populares
-    $postsPopulares = Postagem::withCount('curtidas')
-        ->orderByDesc('curtidas_count')
-        ->take(5)
-        ->get();
-
-    // 🔍 Dados específicos por tipo de usuário
-    switch ($user->tipo_usuario) {
-        case 1:
-            $dadosespecificos = $user->admin;
-            break;
-        case 2:
-            $dadosespecificos = $user->autista;
-            break;
-        case 3:
-            $dadosespecificos = $user->comunidade;
-            break;
-        case 4:
-            $dadosespecificos = $user->profissional_saude;
-            break;
-        case 5:
-            $autista = $user->responsavel->autistas()->first() ?? null;
-            $dadosespecificos = $autista; // <-- aqui é o que a view vai usar
-            break;
-    }
-
-    // 📜 Postagens do autista
-    $userPosts = $autista ? Postagem::where('usuario_id', $autista->usuario->id)->get() : collect();
-
-    // ❤️ Postagens curtidas pelo autista
-    $likedPosts = $autista ? Postagem::whereHas('curtidas', function ($q) use ($autista) {
-        $q->where('usuario_id', $autista->usuario->id);
-    })->get() : collect();
-
-    return view('responsavel.painel', compact(
-        'user',
-        'generos',
-        'telefones',
-        'dadosespecificos',
-        'userPosts',
-        'likedPosts',
-        'postsPopulares',
-        'autista'
-    ));
-}
-
-    public function update(Request $request): RedirectResponse
-{
-    $user = Auth::user();
-
-    // Validação
-    $validated = $request->validate([
-        'user' => 'required|string|max:255|unique:tb_usuario,user,' . $user->id,
-        'email' => 'required|email|unique:tb_usuario,email,' . $user->id,
-        'apelido' => 'nullable|string|max:255',
-        'descricao' => 'nullable|string',
-        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'data_nascimento' => 'nullable|date',
-        'genero' => 'nullable|exists:tb_genero,id',
-    ]);
-
-    // Verificar se o usuário quer remover a foto
-    if ($request->has('remove_photo') && $request->remove_photo == '1') {
-        if ($user->foto && Storage::exists('public/' . $user->foto)) {
-            Storage::delete('public/' . $user->foto);
-        }
-        // Use o caminho da imagem padrão em vez de null
-        $validated['foto'] = 'assets/images/logos/contas/user.png';
-    }
-    // Upload da nova foto
-    else if ($request->hasFile('foto')) {
-        // Delete old photo if exists
-        if ($user->foto && Storage::exists('public/' . $user->foto)) {
-            Storage::delete('public/' . $user->foto);
-        }
-        
-        $path = $request->file('foto')->store('profiles', 'public');
-        $validated['foto'] = $path;
-    } else {
-        // Mantém a foto atual se não houve alteração
-        unset($validated['foto']);
-    }
-
-    // Atualizar usuário
-    $user->update($validated);
-
-    // Atualizar dados específicos
-    $this->updateDadosEspecificos($user, $request);
-
-    return Redirect::route('responsavel.painel')->with('status', 'profile-updated');
-}
 
     /**
-     * Atualiza dados específicos para cada tipo de usuário
+     * Exibe o painel do responsável
      */
-    private function updateDadosEspecificos($user, Request $request)
+    public function edit(Request $request): View
     {
-        switch($user->tipo_usuario) {
-            case 2: // Autista
-                if ($user->autista) {
-                    $autistaData = $request->validate([
-                        'cipteia_autista' => 'nullable|string|max:255',
-                        'status_cipteia_autista' => 'nullable|string|max:255',
-                        'rg_autista' => 'nullable|string|max:255',
-                    ]);
-                    $user->autista->update($autistaData);
-                }
-                break;
-                
-            case 4: // Profissional de Saúde
-                if ($user->profissionalsaude) {
-                    $profissionalData = $request->validate([
-                        'tipo_registro' => 'nullable|string|max:255',
-                        'registro_profissional' => 'nullable|string|max:255',
-                        'cipteia_autista' => 'nullable|string|max:255',
-                    ]);
-                    $user->profissionalsaude->update($profissionalData);
-                }
-                break;
+        $user = Auth::user();
+        $generos = $this->genero->all();
+        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+
+        $autista = null;
+        $dadosespecificos = null;
+
+        if ($user->tipo_usuario == 5 && $user->responsavel) {
+            // Pega o primeiro autista vinculado
+            $autista = $user->responsavel->autistas()->with('usuario')->first();
+            $dadosespecificos = $autista; // A view vai usar
         }
+
+        // 🔥 Postagens populares
+        $postsPopulares = Postagem::withCount('curtidas')
+            ->orderByDesc('curtidas_count')
+            ->take(5)
+            ->get();
+
+        // 📜 Postagens do autista
+        $userPosts = $autista && $autista->usuario
+            ? Postagem::where('usuario_id', $autista->usuario->id)->get()
+            : collect();
+
+        // ❤️ Postagens curtidas pelo autista
+        $likedPosts = $autista && $autista->usuario
+            ? Postagem::whereHas('curtidas', function ($q) use ($autista) {
+                $q->where('usuario_id', $autista->usuario->id);
+            })->get()
+            : collect();
+
+        return view('responsavel.painel', compact(
+            'user',
+            'generos',
+            'telefones',
+            'dadosespecificos',
+            'userPosts',
+            'likedPosts',
+            'postsPopulares',
+            'autista'
+        ));
     }
 
     /**
-     * Delete the user's account.
+     * Atualiza dados do responsável e do autista vinculado
+     */
+    public function update(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Validação dos dados do usuário responsável
+        $validated = $request->validate([
+            'user' => 'required|string|max:255|unique:tb_usuario,user,' . $user->id,
+            'email' => 'required|email|unique:tb_usuario,email,' . $user->id,
+            'apelido' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'data_nascimento' => 'nullable|date',
+            'genero' => 'nullable|exists:tb_genero,id',
+        ]);
+
+        // Remover foto antiga se solicitado
+        if ($request->has('remove_photo') && $request->remove_photo == '1') {
+            if ($user->foto && Storage::exists('public/' . $user->foto)) {
+                Storage::delete('public/' . $user->foto);
+            }
+            $validated['foto'] = 'assets/images/logos/contas/user.png';
+        }
+        // Upload de nova foto
+        else if ($request->hasFile('foto')) {
+            if ($user->foto && Storage::exists('public/' . $user->foto)) {
+                Storage::delete('public/' . $user->foto);
+            }
+            $path = $request->file('foto')->store('profiles', 'public');
+            $validated['foto'] = $path;
+        } else {
+            unset($validated['foto']);
+        }
+
+        $user->update($validated);
+
+        // Atualiza dados do autista vinculado, se houver
+        $this->updateDadosEspecificos($user, $request);
+
+        return Redirect::route('responsavel.painel')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Atualiza dados específicos para o autista vinculado
+     */
+    private function updateDadosEspecificos(Usuario $user, Request $request)
+    {
+        if ($user->tipo_usuario !== 5 || !$user->responsavel) {
+            return;
+        }
+
+        $autista = $user->responsavel->autistas()->with('usuario')->first();
+        if (!$autista) {
+            return;
+        }
+
+        // Validação dos campos do autista
+        $autistaData = $request->validate([
+            'cipteia_autista' => 'nullable|string|max:255',
+            'status_cipteia_autista' => 'nullable|string|max:255',
+            'rg_autista' => 'nullable|string|max:255',
+        ]);
+
+        $autista->update($autistaData);
+    }
+
+    /**
+     * Desativa a conta do responsável
      */
     public function destroy(Request $request): RedirectResponse
     {
