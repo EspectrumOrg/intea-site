@@ -147,10 +147,6 @@
                             </header>
 
                             <div class="profile-info-grid">
-                                <div class="info-item">
-                                    <strong>Nome:</strong>
-                                    <span>{{ $autista->usuario->nome }}</span>
-                                </div>
 
                                 <div class="info-item">
                                     <strong>Email:</strong>
