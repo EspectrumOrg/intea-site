@@ -29,7 +29,7 @@ e($texto)
 @endphp
 
 <div class="container-post">
-    <div class="feed-header principal" style="border-left: 2px solid #3B82F6; border-radius: 0;">
+    <div class="feed-header principal" style="border-left: 4px solid #3B82F6;">
         <div class="feed-info">
             <span>Feed Principal - Todas as postagens</span>
             @include("feed.post.partials.topo-seguindo")
