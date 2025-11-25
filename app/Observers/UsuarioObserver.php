@@ -16,9 +16,9 @@ class UsuarioObserver
                 ->pluck('id')
                 ->toArray();
             
-            foreach ($interessesPadrao as $interesseId) {
-                $usuario->seguirInteresse($interesseId, true);
-            }
+            //foreach ($interessesPadrao as $interesseId) {
+               // $usuario->seguirInteresse($interesseId, true);
+            //}
         }
     }
 

@@ -73,7 +73,7 @@ class ContaController extends Controller
             ->take(5)
             ->get();
 
-        $likedComments = Curtida::with([
+       /* $likedComments = Curtida::with([
         'comentario.usuario', 
         'comentario.postagem',
         'comentario.postagem.usuario'
@@ -81,7 +81,7 @@ class ContaController extends Controller
         ->where('id_usuario', $user->id)
         ->whereNotNull('id_comentario') // Apenas curtidas em comentários
         ->orderByDesc('created_at')
-        ->get();
+        ->get();*/
 
         $tendenciasPopulares = Tendencia::populares(7)->get();
         
@@ -102,7 +102,7 @@ class ContaController extends Controller
             'dadosespecificos',
             'userPosts',
             'likedPosts',
-            'likedComments',
+            //'likedComments', 
             'postsPopulares',
             'tendenciasPopulares',
             'autista',
@@ -146,6 +146,19 @@ class ContaController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
+            /*
+            $likedComments = Curtida::with([
+                'comentario.usuario', 
+                'comentario.postagem',
+                'comentario.postagem.usuario'
+                ])
+                ->where('id_usuario', $user->id)
+                ->whereNotNull('id_comentario') // Apenas curtidas em comentários
+                ->orderByDesc('created_at')
+                ->get();
+
+            */
+
         $postsPopulares = Postagem::withCount('curtidas')
             ->with(['imagens', 'usuario'])
             ->orderByDesc('curtidas_count')
@@ -170,6 +183,7 @@ class ContaController extends Controller
             'dadosespecificos',
             'userPosts',
             'likedPosts',
+         /*   'likedComments', */
             'postsPopulares',
             'tendenciasPopulares',
             'autista',

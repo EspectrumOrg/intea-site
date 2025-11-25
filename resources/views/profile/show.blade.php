@@ -247,10 +247,10 @@
                                 @endif
 
                                 <!-- Aba Curtidas (só mostra se tiver curtidas) -->
-                                @if($likedPosts->count() > 0 || $likedComments->count() > 0)
+                                @if($likedPosts->count() > 0)
                                 <button class="tab-button" data-tab="likes">
                                     <span class="material-symbols-outlined">favorite</span>
-                                    <span class="tab-text">Curtidas ({{ $likedPosts->count() + $likedComments->count() }})</span>
+                                    <span class="tab-text">Curtidas ({{ $likedPosts->count() }})</span>
                                 </button>
                                 @endif
 
@@ -620,108 +620,55 @@
                     @endif
 
 
-                    <!-- Aba 3: Curtidas (só mostra se tiver conteúdo) -->
-                    @if($likedPosts->count() > 0 || $likedComments->count() > 0)
-                    <div class="tab-content" id="likes-tab">
-                        <h3>Conteúdo Curtido</h3>
+<!-- Aba 3: Curtidas (sempre aparece — OPÇÃO B) -->
+<div class="tab-content" id="likes-tab">
+    <h3>Conteúdo Curtido</h3>
 
-                        <!-- Abas internas para Postagens e Comentários -->
-                        <div class="likes-tabs">
-                            <button class="likes-tab-button active" data-likes-tab="posts">
-                                Postagens ({{ $likedPosts->count() }})
-                            </button>
-                            <button class="likes-tab-button" data-likes-tab="comments">
-                                Comentários ({{ $likedComments->count() }})
-                            </button>
-                        </div>
+    <!-- Abas internas para Postagens e Comentários -->
+    <div class="likes-tabs">
+        <button class="likes-tab-button active" data-likes-tab="posts">
+            Postagens ({{ $likedPosts->count() }})
+        </button>
+    </div>
 
-                        <!-- Conteúdo de Postagens Curtidas -->
-                        <div class="likes-tab-content active" id="posts-likes-content">
-                            @if($likedPosts->count() > 0)
-                            <div class="likes-list">
-                                @foreach($likedPosts as $like)
-                                @if($like->postagem)
-                                <div class="like-item">
-                                    <div class="like-avatar">
-                                        @if($like->postagem->usuario->foto)
-                                        <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->apelido }}">
-                                        @else
-                                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                        @endif
-                                    </div>
-                                    <div class="like-content">
-                                        <strong>{{ $like->postagem->usuario->apelido }}</strong>
-                                        <p>{{ Str::limit($like->postagem->texto_postagem, 100) }}</p>
-                                        <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
-                                        <a href="{{ route('post.read', ['postagem' => $like->postagem->id]) }}" class="ver-post-link">
-                                            Ver postagem completa
-                                        </a>
-                                    </div>
-                                </div>
-                                @endif
-                                @endforeach
-                            </div>
-                            @else
-                            <div class="no-content-message">
-                                <p>Nenhuma postagem curtida ainda.</p>
-                            </div>
-                            @endif
-                        </div>
-
-                        <!-- Aba 3 -->
-                        <div class="likes-tab-content" id="comments-likes-content">
-                            @if($likedComments->count() > 0)
-                            <div class="comments-likes-list">
-                                @foreach($likedComments as $like)
-                                @php $comment = $like->comentario; @endphp
-                                @if($comment)
-                                <div class="comment-like-item">
-                                    <div class="comment-like-header">
-                                        <div class="comment-like-avatar">
-                                            @if($comment->usuario->foto)
-                                            <img src="{{ asset('storage/'.$comment->usuario->foto) }}" alt="{{ $comment->usuario->apelido }}">
-                                            @else
-                                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                            @endif
-                                        </div>
-                                        <div class="comment-like-info">
-                                            <strong>{{ $comment->usuario->apelido }}</strong>
-                                            <small>Comentou em {{ $comment->created_at->format('d/m/Y H:i') }}</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="comment-like-content">
-                                        <p>{!! formatarHashtags($comment->comentario) !!}</p>
-
-                                        <div class="comment-like-context">
-                                            <small>
-                                                Em resposta à postagem:
-                                                <strong>{{ Str::limit($comment->postagem->texto_postagem ?? 'Postagem removida', 50) }}</strong>
-                                            </small>
-                                        </div>
-
-                                        <div class="comment-like-actions">
-                                            <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
-                                            @if($comment->postagem)
-                                            <a href="{{ route('post.read', ['postagem' => $comment->postagem->id]) }}#comment-{{ $comment->id }}"
-                                                class="ver-comment-link">
-                                                Ver comentário no contexto
-                                            </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                                @endforeach
-                            </div>
-                            @else
-                            <div class="no-content-message">
-                                <p>Nenhum comentário curtido ainda.</p>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+    <!-- Conteúdo de Postagens Curtidas -->
+    <div class="likes-tab-content active" id="posts-likes-content">
+        @if($likedPosts->count() > 0)
+        <div class="likes-list">
+            @foreach($likedPosts as $like)
+            @if($like->postagem)
+            <div class="like-item">
+                <div class="like-avatar">
+                    @if($like->postagem->usuario->foto)
+                    <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->apelido }}">
+                    @else
+                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
                     @endif
+                </div>
+
+                <div class="like-content">
+                    <strong>{{ $like->postagem->usuario->apelido }}</strong>
+                    <p>{{ Str::limit($like->postagem->texto_postagem, 100) }}</p>
+                    <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
+
+                    <a href="{{ route('post.read', ['postagem' => $like->postagem->id]) }}" class="ver-post-link">
+                        Ver postagem completa
+                    </a>
+                </div>
+            </div>
+            @endif
+            @endforeach
+        </div>
+        @else
+        <div class="no-content-message">
+            <p>Nenhuma postagem curtida ainda.</p>
+        </div>
+        @endif
+    </div>
+</div>
+
+
+                      
 
                     <!-- Aba 4: Configurações (apenas para o próprio usuário) -->
                     @if(auth()->id() == $user->id)
