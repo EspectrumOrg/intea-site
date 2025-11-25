@@ -21,9 +21,8 @@
 }
 
 .input-barra-pesquisa:focus {
-    border-color: var(--verde);
-    outline: var(--verde);
-    color: var(--preto);
+    border-color: var(--azul);
+    outline: var(--azul);
 }
 
 .buscar-container span {
@@ -74,7 +73,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid var(--vermelho);
+    border: 1px solid var(--azul);
     object-fit: cover;
 }
 
@@ -88,7 +87,7 @@
 .info-barra-pesquisa h1 {
     font-weight: 600;
     font-size: 16px;
-    color: var(--vermelho);
+    color: var(--azul);
 }
 
 .info-barra-pesquisa p {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notificacao;
+use App\Models\Tendencia;
 
 class NotificacaoController extends Controller
 {
@@ -17,7 +18,9 @@ public function index()
         ->orderBy('created_at', 'desc')
         ->get();
 
-    return view('notificacao.notificacao', compact('notificacoes'));
+    $tendenciasPopulares = Tendencia::populares(7)->get();
+
+    return view('notificacao.notificacao', compact('notificacoes', 'tendenciasPopulares'));
 }
 
 

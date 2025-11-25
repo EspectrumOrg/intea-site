@@ -135,10 +135,7 @@
             <label for="status_cipteia_autista" class="form-label"><strong>Status Cipteia Autista</strong></label>
             <input id="status_cipteia_autista" name="status_cipteia_autista" type="text" class="form-control" value="{{ $dadosespecificos->status_cipteia_autista ?? old('status_cipteia_autista')}}" required autocomplete="status_cipteia_autista" />
         </div>
-        <div class="mb-3">
-            <label for="rg_autista" class="form-label"><strong>RG Autista</strong></label>
-            <input id="rg_autista" name="rg_autista" type="text" class="form-control" value="{{ $dadosespecificos->rg_autista ?? old('rg_autista')}}" required autocomplete="rg_autista" />
-        </div>
+       
         @if (isset($dadosespecificos->responsavel_id))
         <div class="mb-3">
             <label for="responsavel" class="form-label"><strong>Responsável</strong></label>

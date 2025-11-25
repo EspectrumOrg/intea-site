@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comentario;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Postagem;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Models\Usuario;
+
 
 class ProfileController extends Controller
 {
@@ -29,29 +32,46 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        /** @var \App\Models\Usuario $user */
+
         $user = Auth::user();
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
-        
-        // Carregue dados específicos
+
+         $seguindo = $user->seguindo()->get();
+
+        $seguidores = $user->seguidores()->get();
+        // Carregar dados específicos
         $dadosespecificos = null;
         $autista = null;
+        // Calcular idade
+        $maiorDeIdade = false;
 
-        // 🔥 Postagens populares (as mais curtidas)
+        if ($user->data_nascimento) {
+            $idade = \Carbon\Carbon::parse($user->data_nascimento)->age;
+            $maiorDeIdade = $idade >= 18;
+        }
+
+        // Postagens (as mais curtidas)
         $postsPopulares = Postagem::withCount('curtidas')
             ->orderByDesc('curtidas_count')
             ->take(5)
             ->get();
 
-        // 📜 Postagens do usuário logado
+        // Postagens
         $userPosts = Postagem::where('usuario_id', $user->id)->get();
 
-        // ❤️ Postagens curtidas pelo usuário
+        // Postagens curtidas
         $likedPosts = Postagem::whereHas('curtidas', function ($q) use ($user) {
             $q->where('usuario_id', $user->id);
         })->get();
 
-        // 🔍 Dados específicos por tipo de usuário
+        // Comentários curtidos
+        $likedComments = Comentario::whereHas('curtidas', function ($q) use ($user) {
+            $q->where('usuario_id', $user->id);
+        })->get();
+
+        // Dados específicos por tipo de usuário
         switch ($user->tipo_usuario) {
             case 1:
                 $dadosespecificos = $user->admin;
@@ -71,67 +91,80 @@ class ProfileController extends Controller
                 break;
         }
 
-        return view('profile.edit', compact('user', 'generos', 'telefones', 'dadosespecificos'));
+        return view('profile.edit', compact(
+            'user',
+            'generos',
+            'telefones',
+            'dadosespecificos',
+            'userPosts',
+            'likedPosts',
+            'likedComments',
+            'postsPopulares',
+            'autista',
+            'maiorDeIdade',
+             'seguindo',
+            'seguidores'
+        ));
     }
 
     /**
      * Update the user's profile information.
      */
-   /**
- * Update the user's profile information.
- */
-public function update(Request $request): RedirectResponse
-{
-    $user = Auth::user();
+    /**
+     * Update the user's profile information.
+     */
+    public function update(Request $request): RedirectResponse
+    {
+        $user = Auth::user();
 
-    // Validação
-    $validated = $request->validate([
-        'user' => 'required|string|max:255|unique:tb_usuario,user,' . $user->id,
-        'email' => 'required|email|unique:tb_usuario,email,' . $user->id,
-        'apelido' => 'nullable|string|max:255',
-        'descricao' => 'nullable|string',
-        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'data_nascimento' => 'nullable|date',
-        'genero' => 'nullable|exists:tb_genero,id',
-    ]);
+        // Validação
+        $validated = $request->validate([
+            'user' => 'required|string|max:255|unique:tb_usuario,user,' . $user->id,
+            'email' => 'required|email|unique:tb_usuario,email,' . $user->id,
+            'apelido' => 'nullable|string|max:255',
+            'descricao' => 'nullable|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'data_nascimento' => 'nullable|date',
+            'genero' => 'nullable|exists:tb_genero,id',
+        ]);
 
-    // Verificar se o usuário quer remover a foto
-    if ($request->has('remove_photo') && $request->remove_photo == '1') {
-        if ($user->foto && Storage::exists('public/' . $user->foto)) {
-            Storage::delete('public/' . $user->foto);
+        // Verificar se o usuário quer remover a foto
+        if ($request->has('remove_photo') && $request->remove_photo == '1') {
+            if ($user->foto && Storage::exists('public/' . $user->foto)) {
+                Storage::delete('public/' . $user->foto);
+            }
+            // Use o caminho da imagem padrão em vez de null
+            $validated['foto'] = 'assets/images/logos/contas/user.png';
         }
-        // Use o caminho da imagem padrão em vez de null
-        $validated['foto'] = 'assets/images/logos/contas/user.png';
-    }
-    // Upload da nova foto
-    else if ($request->hasFile('foto')) {
-        // Delete old photo if exists
-        if ($user->foto && Storage::exists('public/' . $user->foto)) {
-            Storage::delete('public/' . $user->foto);
+        // Upload da nova foto
+        else if ($request->hasFile('foto')) {
+            // Delete old photo if exists
+            if ($user->foto && Storage::exists('public/' . $user->foto)) {
+                Storage::delete('public/' . $user->foto);
+            }
+
+            $path = $request->file('foto')->store('profiles', 'public');
+            $validated['foto'] = $path;
+        } else {
+            // Mantém a foto atual se não houve alteração
+            unset($validated['foto']);
         }
-        
-        $path = $request->file('foto')->store('profiles', 'public');
-        $validated['foto'] = $path;
-    } else {
-        // Mantém a foto atual se não houve alteração
-        unset($validated['foto']);
+
+        // Atualizar usuário
+        $user->update($validated);
+
+        // Atualizar dados específicos
+        $this->updateDadosEspecificos($user, $request);
+
+        return Redirect::route('profile.show')->with('status', 'profile-updated');
     }
-
-    // Atualizar usuário
-    $user->update($validated);
-
-    // Atualizar dados específicos
-    $this->updateDadosEspecificos($user, $request);
-
-    return Redirect::route('profile.show')->with('status', 'profile-updated');
-}
 
     /**
      * Atualiza dados específicos para cada tipo de usuário
      */
     private function updateDadosEspecificos($user, Request $request)
     {
-        switch($user->tipo_usuario) {
+        switch ($user->tipo_usuario) {
             case 2: // Autista
                 if ($user->autista) {
                     $autistaData = $request->validate([
@@ -142,7 +175,7 @@ public function update(Request $request): RedirectResponse
                     $user->autista->update($autistaData);
                 }
                 break;
-                
+
             case 4: // Profissional de Saúde
                 if ($user->profissionalsaude) {
                     $profissionalData = $request->validate([

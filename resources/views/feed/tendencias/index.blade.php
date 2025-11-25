@@ -14,15 +14,15 @@
 
     <!-- Barra de Pesquisa -->
     <div class="search-container">
-        <form method="GET" action="{{ route('tendencias.index') }}" class="search-form" id="searchForm">
-            <div class="search-input-group">
+        <form method="GET" action="{{ route('tendencias.index') }}" class="search-index-form" id="searchForm">
+            <div class="search-input-index-group">
                 <input 
                     type="text" 
                     name="search" 
                     id="searchInput"
                     placeholder="Pesquisar tendências..."
                     value="{{ request('search') }}"
-                    class="search-input"
+                    class="search-input-index"
                     autocomplete="off"
                 >
                 @if(request('search'))

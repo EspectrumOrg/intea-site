@@ -32,8 +32,8 @@
             @endif
         </div>
 
-        <div class="flex">
-            <button type="submit" class="btn-primary">{{ __('Salvar') }}</button>
+        <div style="display: flex; justify-content: end;">
+            <button type="submit" class="btn-config-save">{{ __('Salvar') }}</button>
             @if (session('status') === 'password-updated')
                 <p class="text-success">{{ __('Senha atualizada com sucesso.') }}</p>
             @endif

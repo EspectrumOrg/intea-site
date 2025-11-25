@@ -256,7 +256,7 @@ public function personalizado()
         ]);
     }
 
-    return redirect()->back()->with('success', 'Postagem criada com sucesso!');
+    return redirect()->back()->with('sucesso', 'Postagem criada com sucesso!');
 }
 
 /**
@@ -412,7 +412,7 @@ private function obterInteresseId(Request $request)
             }
         }
 
-        return redirect()->back()->with('success', 'Postagem atualizada com êxito!');
+        return redirect()->back()->with('sucesso', 'Postagem atualizada com êxito!');
     }
 
     /**
@@ -438,6 +438,6 @@ private function obterInteresseId(Request $request)
             }
         }
 
-        return redirect()->route('post.index')->with('success', 'Postagem excluída com êxito!');
+        return redirect()->back()->with('sucesso', 'Postagem excluída com êxito!');
     }
 }

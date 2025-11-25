@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Banimento;
+use App\Models\BanimentoReconsideracao;
 use App\Models\ChatPrivado;
 use App\Models\seguirModel;
 use Illuminate\Support\Facades\Mail;
@@ -233,8 +234,73 @@ class UsuarioController extends Controller
         $usuario->status_conta = 1;
         $usuario->save();
 
+        // Registra a mensagem de reconsideracao -------------(Importante!)
+        $banimentoReconsideracao = BanimentoReconsideracao::create([
+            'id_usuario' => $usuario->id,
+            'id_admin' => auth()->id()
+        ]);
+
+        // Enviar email pro user
+        Mail::to($usuario->email)->send(new \App\Mail\BanimentoReconsideracaoMail($banimentoReconsideracao));
+
         session()->flash("success", "Usuário desbanido");
 
         return redirect()->back();
+    }
+
+    public function excluirConta(Request $request)
+    {
+        $usuario = Usuario::findOrFail(auth()->id());
+
+        if ($usuario->id != 1) {
+
+            $request->validate([
+                'password' => ['required', 'current_password'],
+            ],
+            [
+                'password.current_password' => 'senha inválida',
+            ]);
+
+            $usuario->comentarios()->delete();
+
+            $postagens = $usuario->postagens()->with('tendencias', 'curtidas')->get();
+
+            foreach ($postagens as $postagem) {
+
+                foreach ($postagem->tendencias as $tendencia) {
+                    $tendencia->contador_uso = max($tendencia->contador_uso - 1, 0);
+                    $tendencia->save();
+                }
+
+                $postagem->curtidas()->delete();
+
+                $postagem->tendencias()->detach();
+
+                $postagem->delete();
+            }
+
+            $tendencias = \App\Models\Tendencia::whereIn(
+                'id',
+                $postagens->pluck('tendencias.*.id')->flatten()
+            )->get();
+
+            foreach ($tendencias as $tendencia) {
+                if ($tendencia->postagens()->count() === 0) {
+                    $tendencia->delete();
+                }
+            }
+
+            $usuario->status_conta = 0;
+            $usuario->save();
+
+            // 7. Fazer logout e invalidar sessão
+            auth()->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/')->with('success', 'Sua conta foi excluída com sucesso.');
+        } else {
+            return back()->with('error', 'A conta principal não pode ser exclúida');
+        }
     }
 }

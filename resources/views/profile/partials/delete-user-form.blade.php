@@ -4,7 +4,7 @@
         <p>{{ __('Ao excluir sua conta, todos os seus dados serão removidos permanentemente.') }}</p>
     </header>
 
-    <form method="post" action="{{ route('profile.destroy') }}">
+    <form method="POST" action="{{ route('usuario.excluir') }}">
         @csrf
         @method('delete')
 
@@ -15,8 +15,8 @@
             @endif
         </div>
 
-        <div class="flex">
-            <button type="submit" id="botao-excluir" class="btn-primary">
+        <div style="display: flex; justify-content: end;">
+            <button type="submit" id="botao-excluir" class="btn-config-exclude">
                 {{ __('Excluir Conta') }}
             </button>
         </div>

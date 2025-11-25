@@ -3,661 +3,501 @@
 @section('styles')
     @parent
     <style>
-        .moderacao-global {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .card-mod {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 2rem;
-        }
-        
-        .card-header-mod {
-            background: #1f2937;
+        .moderacao-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 1.5rem;
-            border-radius: 12px 12px 0 0;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .moderacao-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .moderacao-card h4 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .moderacao-card small {
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        
+        .btn-mod {
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .btn-mod:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .btn-info {
+            background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         }
         
         .infracao-item {
             border-left: 4px solid #e5e7eb;
-            padding: 1rem;
+            padding: 1.5rem;
             margin-bottom: 1rem;
             background: #f8fafc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+        
+        .infracao-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         
         .infracao-item.critica {
             border-left-color: #ef4444;
-            background: #fef2f2;
+            background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
         }
         
         .infracao-item.media {
             border-left-color: #f59e0b;
-            background: #fffbeb;
+            background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
         }
         
         .infracao-item.leve {
             border-left-color: #10b981;
-            background: #f0fdf4;
-        }
-
-        /* Modal customizado para garantir funcionamento */
-        .modal-custom {
-            display: none;
-            position: fixed;
-            z-index: 1050;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
+            background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
         }
         
-        .modal-custom.show {
-            display: block;
+        .badge-mod {
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.75rem;
+        }
+        
+        /* MODAL ESTILIZADO */
+        #meuModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .modal-content-custom {
-            background-color: white;
-            margin: 5% auto;
+            background: white;
+            margin: 100px auto;
             padding: 0;
-            border-radius: 8px;
+            border-radius: 20px;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            border: none;
+            overflow: hidden;
+            animation: slideIn 0.3s ease-out;
         }
         
-        .loading {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #3498db;
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .modal-header-custom {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            padding: 1.5rem;
+            border-bottom: none;
+        }
+        
+        .modal-header-custom h4 {
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .modal-body-custom {
+            padding: 1.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-left: 8px;
+            object-fit: cover;
+            border: 3px solid #e5e7eb;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .alert-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            min-width: 300px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
     </style>
 @endsection
 
 @section('main')
-<div class="moderacao-global">
-    <!-- Cabeçalho -->
-    <div class="card-mod">
-        <div class="card-header-mod">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="h3 mb-0">
-                        <i class="material-symbols-outlined">admin_panel_settings</i>
-                        Painel Global de Moderação
-                    </h1>
-                    <p class="mb-0 opacity-75">Gestão centralizada do sistema</p>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-warning" id="btnProcessarAuto">
-                        <i class="material-symbols-outlined">autorenew</i>
-                        Processar Auto
-                    </button>
-                    <a href="{{ route('dashboard.index') }}" class="btn btn-outline-light">
-                        <i class="material-symbols-outlined">dashboard</i>
-                        Dashboard
-                    </a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Estatísticas Globais -->
-        <div class="card-body">
-            @include('moderacao.componentes.estatisticas', [
-                'estatisticas' => $estatisticas,
-                'titulo' => 'Estatísticas Globais do Sistema',
-                'tipo' => 'compact'
-            ])
-        </div>
-    </div>
-
+<div class="container-fluid py-4">
     <div class="row">
-        <!-- Infrações Pendentes -->
-        <div class="col-md-8">
-            <div class="card-mod">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <i class="material-symbols-outlined">warning</i>
-                        Infrações Pendentes
-                        <span class="badge bg-danger">{{ $infracoesPendentes->total() }}</span>
-                    </h5>
+        <div class="col-12">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-dark text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h3 class="mb-1">
+                                <i class="material-symbols-outlined me-2">admin_panel_settings</i>
+                                Painel Global de Moderação
+                            </h3>
+                            <p class="mb-0 opacity-75">
+                                <i class="material-symbols-outlined me-1">shield</i>
+                                Sistema completo de gestão e moderação
+                            </p>
+                        </div>
+                        <button class="btn btn-primary btn-mod" onclick="abrirModal()">
+                            <i class="material-symbols-outlined me-2">add</i>
+                            Adicionar Palavra Global
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
-                    @if($infracoesPendentes->count() > 0)
-                        @foreach($infracoesPendentes as $infracao)
-                            <div class="infracao-item {{ $infracao->tipo === 'discurso_odio' ? 'critica' : ($infracao->tipo === 'spam' ? 'media' : 'leve') }}">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <div class="flex-grow-1">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <img src="{{ $infracao->usuario->foto ?? asset('assets/images/avatar-default.png') }}" 
-                                                 class="rounded-circle me-2" width="32" height="32" alt="Avatar de {{ $infracao->usuario->nome }}">
-                                            <strong>{{ $infracao->usuario->nome }}</strong>
-                                            <span class="badge bg-secondary ms-2">{{ $infracao->tipo }}</span>
-                                            <small class="text-muted ms-2">{{ $infracao->created_at->diffForHumans() }}</small>
+
+                    <!-- Modal -->
+                    <div id="meuModal">
+                        <div class="modal-content-custom">
+                            <div class="modal-header-custom">
+                                <h4>
+                                    <i class="material-symbols-outlined me-2">add</i>
+                                    Adicionar Palavra Proibida
+                                </h4>
+                                <button type="button" class="btn-close btn-close-white" onclick="fecharModal()"></button>
+                            </div>
+                            <div class="modal-body-custom">
+                                <form method="POST" action="/moderacao/palavras-proibidas-globais">
+                                    @csrf
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Palavra/Frase</label>
+                                        <input type="text" name="palavra" class="form-control" required placeholder="Digite a palavra ou frase proibida">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Tipo</label>
+                                        <select name="tipo" class="form-select" required>
+                                            <option value="">Selecione o tipo</option>
+                                            <option value="exata">Exata (palavra completa)</option>
+                                            <option value="parcial">Parcial (contém a palavra)</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label fw-semibold">Motivo</label>
+                                        <textarea name="motivo" class="form-control" rows="4" required placeholder="Explique o motivo para bloquear esta palavra"></textarea>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button type="button" class="btn btn-secondary btn-mod" onclick="fecharModal()">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary btn-mod">Adicionar Palavra</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Estatísticas -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="moderacao-card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4>{{ $infracoesPendentes->total() }}</h4>
+                                            <small>Infrações Pendentes</small>
                                         </div>
-                                        <p class="mb-1"><strong>Descrição:</strong> {{ $infracao->descricao }}</p>
-                                        @if($infracao->conteudo_original)
-                                            <p class="mb-1"><strong>Conteúdo:</strong> {{ Str::limit($infracao->conteudo_original, 150) }}</p>
-                                        @endif
-                                        @if($infracao->interesse)
-                                            <p class="mb-1"><strong>Interesse:</strong> {{ $infracao->interesse->nome }}</p>
-                                        @endif
-                                        @if($infracao->reportadoPor)
-                                            <p class="mb-0"><strong>Reportado por:</strong> {{ $infracao->reportadoPor->nome }}</p>
-                                        @endif
+                                        <i class="material-symbols-outlined" style="font-size: 2.5rem; opacity: 0.8;">warning</i>
                                     </div>
                                 </div>
-                                
-                                <div class="acoes-mod mt-2">
-                                    <button class="btn btn-sm btn-success btn-verificar-infracao" data-infracao-id="{{ $infracao->id }}" data-acao="aplicar_penalidade">
-                                        <i class="material-symbols-outlined">check</i>
-                                        Aplicar Penalidade
-                                    </button>
-                                    <button class="btn btn-sm btn-secondary btn-verificar-infracao" data-infracao-id="{{ $infracao->id }}" data-acao="ignorar">
-                                        <i class="material-symbols-outlined">close</i>
-                                        Ignorar
-                                    </button>
-                                    @if($infracao->postagem)
-                                        <a href="{{ route('post.read', $infracao->postagem->id) }}" class="btn btn-sm btn-info" target="_blank">
-                                            <i class="material-symbols-outlined">visibility</i>
-                                            Ver Postagem
-                                        </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="moderacao-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4>{{ $palavrasProibidasGlobais->count() }}</h4>
+                                            <small>Palavras Globais</small>
+                                        </div>
+                                        <i class="material-symbols-outlined" style="font-size: 2.5rem; opacity: 0.8;">block</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="moderacao-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4>{{ $penalidadesRecentes->count() }}</h4>
+                                            <small>Penalidades Recentes</small>
+                                        </div>
+                                        <i class="material-symbols-outlined" style="font-size: 2.5rem; opacity: 0.8;">history</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="moderacao-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h4>{{ $estatisticas['infracoes_pendentes'] ?? 0 }}</h4>
+                                            <small>Total do Sistema</small>
+                                        </div>
+                                        <i class="material-symbols-outlined" style="font-size: 2.5rem; opacity: 0.8;">analytics</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações Rápidas -->
+                    <div class="mb-4 p-4 border rounded bg-light">
+                        <h5 class="mb-3">
+                            <i class="material-symbols-outlined me-2">bolt</i>
+                            Ações Rápidas
+                        </h5>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <form method="POST" action="/moderacao/processar-banimentos-automaticos" class="d-inline">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-mod">
+                                    <i class="material-symbols-outlined me-2">autorenew</i>
+                                    Processar Banimentos
+                                </button>
+                            </form>
+                            
+                            <form method="POST" action="/moderacao/relatorios" class="d-inline">
+                                @csrf
+                                <input type="hidden" name="periodo_inicio" value="{{ now()->format('Y-m-d') }}">
+                                <input type="hidden" name="periodo_fim" value="{{ now()->format('Y-m-d') }}">
+                                <button type="submit" class="btn btn-info btn-mod">
+                                    <i class="material-symbols-outlined me-2">description</i>
+                                    Gerar Relatório
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Infrações -->
+                            <div class="card border-0 shadow-sm mb-4">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="material-symbols-outlined me-2">warning</i>
+                                        Infrações Pendentes
+                                        <span class="badge bg-danger badge-mod">{{ $infracoesPendentes->total() }}</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    @if($infracoesPendentes->count() > 0)
+                                        @foreach($infracoesPendentes as $infracao)
+                                            <div class="infracao-item {{ $infracao->tipo === 'discurso_odio' ? 'critica' : ($infracao->tipo === 'spam' ? 'media' : 'leve') }}">
+                                                <div class="d-flex justify-content-between align-items-start">
+                                                    <div class="flex-grow-1">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <img src="{{ $infracao->usuario->foto ?? asset('assets/images/avatar-default.png') }}" 
+                                                                 class="user-avatar me-3" alt="Avatar">
+                                                            <div>
+                                                                <strong>{{ $infracao->usuario->nome }}</strong>
+                                                                <div class="d-flex align-items-center mt-1">
+                                                                    <span class="badge bg-secondary badge-mod me-2">{{ $infracao->tipo }}</span>
+                                                                    <small class="text-muted">{{ $infracao->created_at->diffForHumans() }}</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p class="mb-2"><strong>Descrição:</strong> {{ $infracao->descricao }}</p>
+                                                        @if($infracao->conteudo_original)
+                                                            <p class="mb-2"><strong>Conteúdo:</strong> {{ Str::limit($infracao->conteudo_original, 200) }}</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="acoes-mod mt-3 d-flex gap-2 flex-wrap">
+                                                    <form method="POST" action="/moderacao/infracoes/{{ $infracao->id }}/verificar" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="acao" value="aplicar_penalidade">
+                                                        <input type="hidden" name="motivo_penalidade" value="Infração verificada">
+                                                        <input type="hidden" name="peso_penalidade" value="1">
+                                                        <button type="submit" class="btn btn-success btn-sm btn-mod">
+                                                            Aplicar Penalidade
+                                                        </button>
+                                                    </form>
+                                                    
+                                                    <form method="POST" action="/moderacao/infracoes/{{ $infracao->id }}/verificar" class="d-inline">
+                                                        @csrf
+                                                        <input type="hidden" name="acao" value="ignorar">
+                                                        <button type="submit" class="btn btn-secondary btn-sm btn-mod">
+                                                            Ignorar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="text-center py-4">
+                                            <i class="material-symbols-outlined text-success" style="font-size: 4rem;">check_circle</i>
+                                            <h5 class="text-muted mt-3">Nenhuma infração pendente</h5>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                         
-                        <div class="mt-3">
-                            {{ $infracoesPendentes->links() }}
+                        <div class="col-md-4">
+                            <!-- Palavras Proibidas -->
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-dark text-white">
+                                    <h5 class="card-title mb-0">
+                                        <i class="material-symbols-outlined me-2">block</i>
+                                        Palavras Proibidas Globais
+                                        <span class="badge bg-secondary badge-mod">{{ $palavrasProibidasGlobais->count() }}</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    @if($palavrasProibidasGlobais->count() > 0)
+                                        @foreach($palavrasProibidasGlobais as $palavra)
+                                            <div class="d-flex justify-content-between align-items-center mb-3 p-3 border rounded bg-white">
+                                                <div class="d-flex align-items-center">
+                                                    <strong class="text-dark">{{ $palavra->palavra }}</strong>
+                                                    <span class="badge {{ $palavra->tipo === 'exata' ? 'bg-danger' : 'bg-warning text-dark' }} badge-mod ms-3">
+                                                        {{ $palavra->tipo }}
+                                                    </span>
+                                                </div>
+                                                <form method="POST" action="/moderacao/palavras-proibidas-globais/{{ $palavra->id }}" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-mod" onclick="return confirm('Tem certeza que deseja remover esta palavra?')">
+                                                        <i class="material-symbols-outlined">delete</i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endforeach
+                                    @else
+                                        <div class="text-center py-3">
+                                            <i class="material-symbols-outlined text-muted" style="font-size: 3rem;">block</i>
+                                            <p class="text-muted mt-2 mb-0">Nenhuma palavra global definida</p>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                    @else
-                        <div class="text-center py-4">
-                            <i class="material-symbols-outlined" style="font-size: 4rem; color: #10b981;">check_circle</i>
-                            <h5 class="mt-2">Nenhuma infração pendente</h5>
-                            <p class="text-muted">Todas as infrações foram verificadas.</p>
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
-        
-        <!-- Sidebar -->
-        <div class="col-md-4">
-            <!-- Ações Rápidas -->
-            <div class="card-mod">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="material-symbols-outlined">bolt</i>
-                        Ações Rápidas
-                    </h6>
-                </div>
-                <div class="card-body">
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" id="btnAbrirModal">
-                            <i class="material-symbols-outlined">add</i>
-                            Adicionar Palavra Global
-                        </button>
-                        <button class="btn btn-warning" id="btnGerarRelatorio">
-                            <i class="material-symbols-outlined">description</i>
-                            Gerar Relatório
-                        </button>
-                        <a href="{{ route('moderacao.estatisticas.globais') }}" class="btn btn-info">
-                            <i class="material-symbols-outlined">analytics</i>
-                            Estatísticas Detalhadas
-                        </a>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Penalidades Recentes -->
-            <div class="card-mod mt-3">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="material-symbols-outlined">history</i>
-                        Penalidades Recentes
-                    </h6>
-                </div>
-                <div class="card-body">
-                    @if($penalidadesRecentes->count() > 0)
-                        @foreach($penalidadesRecentes as $penalidade)
-                            <div class="border-bottom pb-2 mb-2">
-                                <div class="d-flex justify-content-between">
-                                    <strong>{{ $penalidade->usuario->nome }}</strong>
-                                    <span class="badge bg-{{ $penalidade->tipo === 'sistema' ? 'danger' : 'warning' }}">
-                                        {{ $penalidade->tipo }}
-                                    </span>
-                                </div>
-                                <small class="text-muted">{{ Str::limit($penalidade->motivo, 50) }}</small>
-                                <div class="text-end">
-                                    <small>{{ $penalidade->created_at->diffForHumans() }}</small>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <p class="text-muted text-center">Nenhuma penalidade recente</p>
-                    @endif
-                </div>
-            </div>
-            
-            <!-- Palavras Proibidas Globais -->
-            <div class="card-mod mt-3">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">
-                        <i class="material-symbols-outlined">block</i>
-                        Palavras Globais
-                    </h6>
-                </div>
-                <div class="card-body">
-                    @if($palavrasProibidasGlobais->count() > 0)
-                        @foreach($palavrasProibidasGlobais->take(5) as $palavra)
-                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                <span>
-                                    {{ $palavra->palavra }}
-                                    <span class="badge bg-secondary">{{ $palavra->tipo }}</span>
-                                </span>
-                                <button class="btn btn-sm btn-outline-danger btn-remover-palavra" data-palavra-id="{{ $palavra->id }}">
-                                    <i class="material-symbols-outlined">delete</i>
-                                </button>
-                            </div>
-                        @endforeach
-                        @if($palavrasProibidasGlobais->count() > 5)
-                            <div class="text-center">
-                                <small class="text-muted">+{{ $palavrasProibidasGlobais->count() - 5 }} mais</small>
-                            </div>
-                        @endif
-                    @else
-                        <p class="text-muted text-center">Nenhuma palavra global</p>
-                    @endif
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal Customizado - Funciona 100% -->
-<div class="modal-custom" id="modalPalavraGlobal">
-    <div class="modal-content-custom">
-        <div class="modal-header">
-            <h5 class="modal-title">Adicionar Palavra Proibida Global</h5>
-            <button type="button" class="btn-close" id="btnFecharModal"></button>
-        </div>
-        <div class="modal-body">
-            <form id="formAdicionarPalavra">
-                @csrf
-                <div class="mb-3">
-                    <label class="form-label">Palavra/Frase</label>
-                    <input type="text" class="form-control" name="palavra" required placeholder="Digite a palavra ou frase proibida">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tipo</label>
-                    <select class="form-select" name="tipo" required>
-                        <option value="">Selecione o tipo</option>
-                        <option value="exata">Exata (palavra completa)</option>
-                        <option value="parcial">Parcial (contém a palavra)</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Motivo</label>
-                    <textarea class="form-control" name="motivo" rows="3" required placeholder="Explique o motivo para bloquear esta palavra"></textarea>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
-            <button type="button" class="btn btn-primary" id="btnAdicionar">
-                <span class="btn-text">Adicionar</span>
-                <div class="loading" style="display: none;"></div>
-            </button>
-        </div>
-    </div>
+<!-- Mensagens -->
+@if(session('success'))
+<div class="alert alert-success alert-fixed alert-dismissible fade show">
+    {{ session('success') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 </div>
-@endsection
+@endif
 
-@section('scripts')
-@parent
+@if(session('error'))
+<div class="alert alert-danger alert-fixed alert-dismissible fade show">
+    {{ session('error') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+@endif
+
 <script>
-// SISTEMA SIMPLES E FUNCIONAL - SEM DEPENDÊNCIAS EXTERNAS
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Sistema de moderação carregado');
-    
-    // =============================================
-    // 1. SISTEMA DE MODAL CUSTOMIZADO - GARANTIDO
-    // =============================================
-    
-    const modal = document.getElementById('modalPalavraGlobal');
-    const btnAbrir = document.getElementById('btnAbrirModal');
-    const btnFechar = document.getElementById('btnFecharModal');
-    const btnCancelar = document.getElementById('btnCancelar');
-    const btnAdicionar = document.getElementById('btnAdicionar');
-    
-    // Funções para controlar o modal
-    function abrirModal() {
-        console.log('📝 Abrindo modal...');
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
+// FUNÇÕES DO MODAL
+function abrirModal() {
+    document.getElementById('meuModal').style.display = 'block';
+}
+
+function fecharModal() {
+    document.getElementById('meuModal').style.display = 'none';
+}
+
+// Fechar modal clicando fora
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'meuModal') {
+        fecharModal();
     }
-    
-    function fecharModal() {
-        console.log('❌ Fechando modal...');
-        modal.classList.remove('show');
-        document.body.style.overflow = 'auto';
-        
-        // Limpar formulário
-        const form = document.getElementById('formAdicionarPalavra');
-        if (form) form.reset();
-    }
-    
-    // Event listeners do modal
-    if (btnAbrir) {
-        btnAbrir.addEventListener('click', abrirModal);
-        console.log('✅ Botão abrir modal configurado');
-    }
-    
-    if (btnFechar) {
-        btnFechar.addEventListener('click', fecharModal);
-        console.log('✅ Botão fechar modal configurado');
-    }
-    
-    if (btnCancelar) {
-        btnCancelar.addEventListener('click', fecharModal);
-        console.log('✅ Botão cancelar configurado');
-    }
-    
-    // Fechar modal clicando fora
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            fecharModal();
-        }
-    });
-    
-    // =============================================
-    // 2. ADICIONAR PALAVRA PROIBIDA
-    // =============================================
-    
-    if (btnAdicionar) {
-        btnAdicionar.addEventListener('click', function() {
-            console.log('🔄 Clicou em adicionar palavra');
-            adicionarPalavraProibida();
-        });
-    }
-    
-    function adicionarPalavraProibida() {
-        const form = document.getElementById('formAdicionarPalavra');
-        const btnText = btnAdicionar.querySelector('.btn-text');
-        const loading = btnAdicionar.querySelector('.loading');
-        
-        if (!form) {
-            alert('❌ Erro: Formulário não encontrado');
-            return;
-        }
-        
-        // Validar campos
-        const palavra = form.querySelector('[name="palavra"]').value.trim();
-        const tipo = form.querySelector('[name="tipo"]').value;
-        const motivo = form.querySelector('[name="motivo"]').value.trim();
-        
-        if (!palavra) {
-            alert('❌ Por favor, digite uma palavra ou frase');
-            form.querySelector('[name="palavra"]').focus();
-            return;
-        }
-        
-        if (!tipo) {
-            alert('❌ Por favor, selecione o tipo');
-            form.querySelector('[name="tipo"]').focus();
-            return;
-        }
-        
-        if (!motivo) {
-            alert('❌ Por favor, digite o motivo');
-            form.querySelector('[name="motivo"]').focus();
-            return;
-        }
-        
-        console.log('📨 Enviando dados:', { palavra, tipo, motivo });
-        
-        // Mostrar loading
-        btnText.style.display = 'none';
-        loading.style.display = 'inline-block';
-        btnAdicionar.disabled = true;
-        
-        // Preparar dados
-        const formData = new FormData(form);
-        
-        // Fazer requisição
-        fetch('/moderacao/palavras-proibidas-globais', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData
-        })
-        .then(response => {
-            console.log('📞 Resposta do servidor:', response.status);
-            if (!response.ok) {
-                throw new Error('Erro HTTP: ' + response.status);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('✅ Resposta JSON:', data);
-            
-            if (data.sucesso) {
-                // Sucesso!
-                alert('🎉 Palavra adicionada com sucesso!');
-                fecharModal();
-                
-                // Recarregar a página após 1 segundo
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
-                
-            } else {
-                // Erro do servidor
-                throw new Error(data.mensagem || 'Erro desconhecido do servidor');
-            }
-        })
-        .catch(error => {
-            console.error('❌ Erro completo:', error);
-            alert('❌ Erro ao adicionar palavra: ' + error.message);
-        })
-        .finally(() => {
-            // Restaurar botão
-            btnText.style.display = 'inline-block';
-            loading.style.display = 'none';
-            btnAdicionar.disabled = false;
-        });
-    }
-    
-    // =============================================
-    // 3. OUTRAS FUNÇÕES DO PAINEL
-    // =============================================
-    
-    // Processar banimentos automáticos
-    const btnProcessarAuto = document.getElementById('btnProcessarAuto');
-    if (btnProcessarAuto) {
-        btnProcessarAuto.addEventListener('click', function() {
-            if (confirm('🔍 Deseja processar banimentos automáticos?\nIsso verificará usuários com 3 ou mais penalidades.')) {
-                fetch('/moderacao/processar-banimentos-automaticos', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        const sistema = data.processados?.sistema || 0;
-                        const interesse = data.processados?.interesse || 0;
-                        alert(`✅ Banimentos processados!\nSistema: ${sistema}\nInteresse: ${interesse}`);
-                        location.reload();
-                    } else {
-                        alert('❌ Erro: ' + data.mensagem);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    alert('❌ Erro ao processar banimentos');
-                });
-            }
-        });
-    }
-    
-    // Gerar relatório
-    const btnGerarRelatorio = document.getElementById('btnGerarRelatorio');
-    if (btnGerarRelatorio) {
-        btnGerarRelatorio.addEventListener('click', function() {
-            const inicio = prompt('📅 Data início (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
-            if (!inicio) return;
-            
-            const fim = prompt('📅 Data fim (YYYY-MM-DD):', new Date().toISOString().split('T')[0]);
-            if (!fim) return;
-            
-            fetch('/moderacao/relatorios', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    periodo_inicio: inicio,
-                    periodo_fim: fim
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sucesso) {
-                    alert('📊 Relatório gerado com sucesso!');
-                    if (data.url_download) {
-                        window.open(data.url_download, '_blank');
-                    }
-                } else {
-                    alert('❌ Erro: ' + data.mensagem);
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                alert('❌ Erro ao gerar relatório');
-            });
-        });
-    }
-    
-    // Verificar infrações
-    document.querySelectorAll('.btn-verificar-infracao').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const infracaoId = this.getAttribute('data-infracao-id');
-            const acao = this.getAttribute('data-acao');
-            
-            if (acao === 'aplicar_penalidade') {
-                const motivo = prompt('📝 Digite o motivo da penalidade:');
-                if (!motivo) return;
-                
-                const peso = prompt('⚖️ Peso da penalidade (1-3):', '1');
-                if (!peso) return;
-                
-                const dias = prompt('📅 Dias de expiração (enter para permanente):', '30');
-                
-                fetch(`/moderacao/infracoes/${infracaoId}/verificar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        acao: 'aplicar_penalidade',
-                        motivo_penalidade: motivo,
-                        peso_penalidade: parseInt(peso),
-                        dias_expiracao: dias ? parseInt(dias) : null
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        alert('✅ Infração verificada e penalidade aplicada!');
-                        location.reload();
-                    } else {
-                        alert('❌ Erro: ' + data.mensagem);
-                    }
-                })
-                .catch(error => {
-                    alert('❌ Erro ao processar infração');
-                });
-                
-            } else {
-                fetch(`/moderacao/infracoes/${infracaoId}/verificar`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ acao: 'ignorar' })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.sucesso) {
-                        alert('✅ Infração ignorada!');
-                        location.reload();
-                    } else {
-                        alert('❌ Erro: ' + data.mensagem);
-                    }
-                })
-                .catch(error => {
-                    alert('❌ Erro ao processar infração');
-                });
-            }
-        });
-    });
-    
-    // Remover palavras
-    document.querySelectorAll('.btn-remover-palavra').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const palavraId = this.getAttribute('data-palavra-id');
-            
-            if (!confirm('🗑️ Tem certeza que deseja remover esta palavra proibida global?')) {
-                return;
-            }
-            
-            fetch(`/moderacao/palavras-proibidas-globais/${palavraId}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.sucesso) {
-                    alert('✅ Palavra removida com sucesso!');
-                    location.reload();
-                } else {
-                    alert('❌ Erro: ' + data.mensagem);
-                }
-            })
-            .catch(error => {
-                alert('❌ Erro ao remover palavra');
-            });
-        });
-    });
-    
-    console.log('🎉 Todas as funcionalidades configuradas!');
 });
 
-// Prevenir erros de outros scripts
-window.IS_MODERATION_PAGE = true;
+// Loading nos formulários
+document.addEventListener('DOMContentLoaded', function() {
+    const forms = document.querySelectorAll('form');
+    forms.forEach(form => {
+        form.addEventListener('submit', function() {
+            const btn = this.querySelector('button[type="submit"]');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Enviando...';
+            }
+        });
+    });
+});
+
+// Auto-remover alerts
+setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => alert.remove());
+}, 5000);
 </script>
 @endsection

@@ -1,3 +1,69 @@
+/* Edit/Denuncia/banir*/
+.textfield {
+    position: relative;
+}
+
+.textfield textarea {
+    position: relative;
+    background: transparent;
+    width: 100%;
+    border: none;
+    padding: 1rem;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--preto);
+    caret-color: var(--preto);
+    resize: none;
+    overflow-y: hidden;
+}
+
+.hashtag {
+    position: relative;
+    z-index: 1;
+}
+
+.image-preview img {
+    max-height: 375px;
+}
+.image-preview img {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--branco-light);
+}
+
+.image-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.image-preview .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: var(--branco);
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.image-preview .remove-image:hover {
+    background-color: var(--azul-apagado);
+}
+
+.image-preview .remove-image span {
+    color: var(--branco);
+}
+
 /* opcoes perfil */
 .post-header {
     display: flex;
