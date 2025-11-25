@@ -34,7 +34,7 @@ class ContaController extends Controller
     try {
         // Tenta encontrar o usuário (passado na URL ou o logado)
         $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
-        
+
         if (!$user) {
             return redirect('/feed')->with('error', 'Usuário não encontrado.');
         }
@@ -55,9 +55,7 @@ class ContaController extends Controller
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = $this->getDadosEspecificos($user);
-        $seguindo = $user->seguindo()->get();
-        $seguidores = $user->seguidores()->get();
-
+   
 
         $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
             ->with(['imagens', 'usuario'])
@@ -75,6 +73,11 @@ class ContaController extends Controller
             ->orderByDesc('curtidas_count')
             ->take(5)
             ->get();
+
+
+
+
+            
 
        /* $likedComments = Curtida::with([
         'comentario.usuario', 
@@ -123,7 +126,7 @@ class ContaController extends Controller
     public function index($usuario_id)
 {
     try {
-        $user = Usuario::findOrFail($usuario_id);
+        $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
         $currentUser = auth()->user();
 
         // Proteção de CPF
@@ -170,6 +173,9 @@ class ContaController extends Controller
             ->take(5)
             ->get();
 
+            $seguindo = $user->seguindo()->get();      
+            $seguidores = $user->seguidores()->get();  
+
         $tendenciasPopulares = Tendencia::populares(7)->get();
 
         $responsavel = null;
@@ -192,7 +198,9 @@ class ContaController extends Controller
             'postsPopulares',
             'tendenciasPopulares',
             'autista',
-            'responsavel'
+            'responsavel',
+             'seguindo',
+            'seguidores'
         ));
 
     } catch (\Exception $e) {
