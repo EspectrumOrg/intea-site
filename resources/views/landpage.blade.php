@@ -50,7 +50,7 @@
         </p>
         <div class="hero-buttons">
           <a href="{{ route('login') }}"><button class="btn-primary">Entrar</button></a>
-          <a href="https://www.youtube.com/watch?v=RH5_SvY_jx0" style="text-decoration: none;" class="btn-secondary">
+          <a href="https://www.youtube.com/watch?v=3_4_H8PPoD8" style="text-decoration: none;" class="btn-secondary">
             <i class="fas fa-play"></i>
             <span>Assista à demo</span>
           </a>
