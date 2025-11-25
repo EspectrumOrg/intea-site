@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Models\Usuario;
 use App\Models\Autista;
 use App\Models\Genero;
@@ -96,7 +97,7 @@ public function update_responsavel(Request $request, $id)
 {
     Log::info('Início do método store', $request->all());
 
-    // Validação
+    // Validação inicial
     $validator = Validator::make($request->all(), [
         'user' => 'nullable|string|max:255',
         'apelido' => 'nullable|string|max:255',
@@ -110,8 +111,7 @@ public function update_responsavel(Request $request, $id)
         'status_conta' => 'required|in:1',
         'numero_telefone' => 'required|array|min:1',
         'numero_telefone.*' => 'required|string|max:20',
-        'foto' => 'image|mimes:png,jpg,gif|max:4096',
-        'CipteiaAutista' => 'required|string|max:255',
+        'foto' => 'image|mimes:png,jpg,gif|max:4096', //foto perfil
     ]);
 
     if ($validator->fails()) {
@@ -126,23 +126,31 @@ public function update_responsavel(Request $request, $id)
     $hoje = new \DateTime();
     $idade = $hoje->diff($data_nascimento)->y;
 
+    // Valida CPF do responsável se menor de idade
     if ($idade < 18 && empty($request->cpf_responsavel)) {
-        return response()->json([
-            'message' => 'CPF do responsável é obrigatório para menores de 18 anos.'
-        ], 422);
+        return redirect()->back()
+            ->withErrors(['cpf_responsavel' => 'CPF do responsável é obrigatório para menores de 18 anos.'])
+            ->withInput();
     }
 
-    $limparCPF = fn($cpf) => preg_replace('/[^0-9]/', '', $cpf);
-    $cpfRequest = $limparCPF($request->cpf);
+    // Limpa CPF
+    $cpfRequest = preg_replace('/[^0-9]/', '', $request->cpf);
 
+    // Verifica duplicidade
     if (Usuario::where('cpf', $cpfRequest)->exists()) {
-        return response()->json(['message' => 'CPF já cadastrado.'], 409);
+        return redirect()->back()
+            ->withErrors(['cpf' => 'CPF já cadastrado.'])
+            ->withInput();
     }
 
+    // Valida CPF
     if (!self::validaCPF($cpfRequest)) {
-        return response()->json(['message' => 'CPF inválido.'], 422);
+        return redirect()->back()
+            ->withErrors(['cpf' => 'CPF inválido.'])
+            ->withInput();
     }
 
+    // Salva foto se existir
     $path = null;
     if ($request->hasFile('foto')) {
         $path = $request->file('foto')->store('arquivos/perfil/fotos', 'public');
@@ -151,7 +159,7 @@ public function update_responsavel(Request $request, $id)
     $user_usuario = $request->user ?? $request->apelido ?? '';
 
     try {
-        // Cria o usuário
+        // Cria usuário
         $usuario = Usuario::create([
             'email' => $request->email,
             'user' => $user_usuario,
@@ -180,53 +188,76 @@ public function update_responsavel(Request $request, $id)
 
         $idCuidador = null;
 
-        // Se menor de idade, encontra ou cria responsável
+        // Se menor de idade, associa responsável
         if ($idade < 18) {
-            $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
+    $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
 
-            $cuidadorUsuario = Usuario::where('cpf', $cpfRespLimpo)->first();
+    // Log do CPF limpo para conferência
+    Log::info('CPF responsável limpo para busca:', [$cpfRespLimpo]);
 
-            if (!$cuidadorUsuario) {
-                return response()->json([
-                    'message' => 'CPF do responsável não encontrado no sistema.'
-                ], 422);
-            }
+    // Busca usando Model Usuario
+    $cuidadorUsuario = Usuario::where('cpf', $cpfRespLimpo)->first();
 
-            $registroResponsavel = Responsavel::firstOrCreate(
-                ['usuario_id' => $cuidadorUsuario->id]
-            );
+    // Se não encontrou, tenta buscar direto no banco (debug)
+    if (!$cuidadorUsuario) {
+        Log::warning('Responsável não encontrado via Model Usuario, tentando busca direta no DB.');
 
-            if ($cuidadorUsuario->tipo_usuario != 5) {
-                $cuidadorUsuario->tipo_usuario = 5;
-                $cuidadorUsuario->save();
-            }
+        $cuidadorUsuario = DB::table('tb_usuario')->where('cpf', $cpfRespLimpo)->first();
 
-            $idCuidador = $registroResponsavel->id;
+        if ($cuidadorUsuario) {
+            Log::info('Responsável encontrado via busca direta no DB.', ['usuario' => $cuidadorUsuario]);
+        } else {
+            Log::error('Responsável não encontrado no banco de dados, mesmo com busca direta.');
+            return redirect()->back()
+                ->withErrors(['cpf_responsavel' => 'CPF do responsável não encontrado no sistema.'])
+                ->withInput();
         }
+    }
 
-        // Cria o autista
-        $autista = Autista::create([
-            'cipteia_autista' => $request->CipteiaAutista,
-            'status_cipteia_autista' => 'Ativo',
-            'usuario_id' => $usuario->id,
-        ]);
-
-        // Vincula responsável via pivot, se houver
-        if ($idCuidador) {
-            $autista->responsaveis()->attach($idCuidador);
+    // Se usuário encontrado via Model (objeto Eloquent)
+    if ($cuidadorUsuario instanceof Usuario) {
+        if ($cuidadorUsuario->tipo_usuario != 5) {
+            $cuidadorUsuario->tipo_usuario = 5;
+            $cuidadorUsuario->save();
         }
+    }
+
+    // Se usuário encontrado via Query Builder (objeto stdClass), você pode querer ajustar isso:
+    if (is_object($cuidadorUsuario) && !($cuidadorUsuario instanceof Usuario)) {
+        // Aqui não dá pra chamar save() diretamente. Se quiser atualizar tipo_usuario,
+        // teria que fazer um update manual:
+        if ($cuidadorUsuario->tipo_usuario != 5) {
+            DB::table('tb_usuario')
+                ->where('id', $cuidadorUsuario->id)
+                ->update(['tipo_usuario' => 5]);
+            Log::info('Atualizado tipo_usuario do responsável via query builder.');
+        }
+    }
+
+    $registroResponsavel = Responsavel::firstOrCreate(
+        ['usuario_id' => $cuidadorUsuario->id],
+        ['cipteia_autista' => $request->CipteiaAutista]
+    );
+
+    $idCuidador = $registroResponsavel->id;
+}
+Autista::create([
+    'usuario_id' => $usuario->id,
+    'cipteia_autista' => $request->CipteiaAutista ?? null,
+    'rg_autista' => $request->RgAutista ?? null,
+    'status_cipteia_autista' => $request->StatusCipteiaAutista ?? null,
+    'responsavel_id' => $idCuidador, // null caso não seja menor de idade
+]);
+
 
         Log::info('Autista criado para usuário ID: ' . $usuario->id);
 
         return redirect()->route('login')->with('success', 'Usuário Autista cadastrado com sucesso!');
     } catch (\Exception $e) {
         Log::error('Erro ao criar usuário/autista: ' . $e->getMessage());
-        return response()->json([
-            'message' => 'Erro interno ao salvar dados.',
-            'error' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine()
-        ], 500);
+        return redirect()->back()
+            ->withErrors(['error' => 'Erro interno ao salvar dados: ' . $e->getMessage()])
+            ->withInput();
     }
 }
 
