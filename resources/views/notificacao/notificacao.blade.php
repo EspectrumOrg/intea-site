@@ -84,11 +84,15 @@
                         @php
                         $linkConta = route('conta.index', $notificacao->solicitante_id);
                         $nomeUsuario = $notificacao->solicitante->user ?? 'Usuário desconhecido';
-                        @endphp
+$fotoUsuario = $notificacao->solicitante->foto ? asset('storage/'.$notificacao->solicitante->foto)    : url('assets/images/logos/contas/user.png');          
+    
+    
+    @endphp
 
                         {{-- TIPOS DE NOTIFICAÇÃO --}}
                         @if($notificacao->tipo === 'seguir')
                         <div>
+                           <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}" width="50px" height="100%">
                             <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
                                 {{ $nomeUsuario }}
                             </a>
@@ -110,10 +114,15 @@
 
                         @elseif($notificacao->tipo === 'seguindo_voce')
                         <div>
+
+
+                    <div>
+                            <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}" width="50px" height="100%">
                             <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
                                 {{ $nomeUsuario }}
                             </a>
                             começou a seguir você.
+                            </div>
                         </div>
 
                         <div class="d-flex align-items-center gap-2">

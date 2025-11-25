@@ -8,6 +8,7 @@ use App\Models\Tendencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class InteresseController extends Controller
@@ -183,16 +184,21 @@ class InteresseController extends Controller
             'nome' => 'required|string|max:50|unique:interesses,nome',
             'descricao' => 'required|string|max:200',
             'sobre' => 'nullable|string|max:1000',
-            'icone' => 'required|string|max:50',
+            'icone_type' => 'required|in:default,custom',
+            'icone' => 'required_if:icone_type,default|string|max:50',
+            'icone_custom' => 'required_if:icone_type,custom|image|mimes:jpeg,png,jpg,svg|max:1024',
             'cor' => 'required|string|size:7', // #FFFFFF
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ], [
             'nome.required' => 'O nome do interesse é obrigatório',
             'nome.max' => 'O nome não pode ter mais de 50 caracteres',
             'nome.unique' => 'Já existe um interesse com este nome',
             'descricao.required' => 'A descrição é obrigatória',
             'descricao.max' => 'A descrição não pode ter mais de 200 caracteres',
-            'icone.required' => 'Selecione um ícone',
+            'icone.required_if' => 'Selecione um ícone padrão',
+            'icone_custom.required_if' => 'Faça upload de um ícone customizado',
+            'icone_custom.image' => 'O arquivo deve ser uma imagem',
+            'icone_custom.mimes' => 'Formatos permitidos: JPEG, PNG, JPG, SVG',
+            'icone_custom.max' => 'O ícone não pode ter mais de 1MB',
             'cor.required' => 'Selecione uma cor',
         ]);
 
@@ -207,10 +213,18 @@ class InteresseController extends Controller
                 $counter++;
             }
 
-            // Processar banner se enviado
-            $bannerPath = null;
-            if ($request->hasFile('banner')) {
-                $bannerPath = $request->file('banner')->store('arquivos/interesses/banners', 'public');
+            // Processar ícone
+            $icone = null;
+            $iconeCustomPath = null;
+            
+            if ($request->icone_type === 'default') {
+                $icone = $request->icone;
+            } else {
+                // Salvar ícone customizado
+                if ($request->hasFile('icone_custom')) {
+                    $iconeCustomPath = $request->file('icone_custom')->store('arquivos/interesses/icones', 'public');
+                    $icone = 'custom'; // Marcador para ícone customizado
+                }
             }
 
             // Criar interesse
@@ -219,9 +233,9 @@ class InteresseController extends Controller
                 'slug' => $slug,
                 'descricao' => $request->descricao,
                 'sobre' => $request->sobre,
-                'icone' => $request->icone,
+                'icone' => $icone,
+                'icone_custom' => $iconeCustomPath, // Novo campo para ícone customizado
                 'cor' => $request->cor,
-                'banner' => $bannerPath,
                 'contador_membros' => 1, // O criador é o primeiro membro
                 'contador_postagens' => 0,
                 'destaque' => false,

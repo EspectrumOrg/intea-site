@@ -93,7 +93,7 @@
                         </div>
 
                         <div class="profile-info">
-                            <h1>{{ $user->nome }}</h1>
+                            <h1>{{ $user->apelido }}</h1>
                             <p class="username"> {{ $user->user }}</p>
                             <p class="bio">{{ $user->descricao ?? 'Sem descrição' }}</p>
                             <p class="tipo-usuario">
@@ -252,6 +252,20 @@
                                 <button class="tab-button" data-tab="likes">
                                     <span class="material-symbols-outlined">favorite</span>
                                     <span class="tab-text">Curtidas ({{ $likedPosts->count() }})</span>
+                                </button>
+                                @endif
+                                @if($seguidores->count() > 0)
+                                <button class="tab-button" data-tab="followers">
+                                    <span class="material-symbols-outlined">group</span>
+                                    <span class="tab-text">Seguidores ({{ $seguidores->count() }})</span>
+                                </button>
+                                @endif
+
+                                <!-- Aba Seguindo -->
+                                @if($seguindo->count() > 0)
+                                <button class="tab-button" data-tab="following">
+                                    <span class="material-symbols-outlined">person_add</span>
+                                    <span class="tab-text">Seguindo ({{ $seguindo->count() }})</span>
                                 </button>
                                 @endif
 
@@ -626,40 +640,128 @@
                     @endif
 
 
-                    <!-- Aba 3: Curtidas (só mostra se tiver conteúdo) -->
-                    @if($likedPosts->count() > 0)
-                    <div class="tab-content" id="likes-tab">
-                        <h3>Postagens Curtidas</h3>
-                        <div class="likes-list">
-                            @foreach($likedPosts as $like)
-                            <div class="like-item">
-                                <div class="like-avatar">
-                                    @if($like->usuario->foto)
-                                    <img src="{{ asset('storage/'.$like->usuario->foto) }}"
-                                        alt="{{ $like->usuario->nome }}">
-                                    @else
-                                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                    @endif
-                                </div>
-                                <div class="like-content">
-                                    <strong>{{ $like->usuario->nome }}</strong>
-                                    <p>{{ $like->texto_postagem }}</p>
-                                    <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
+<!-- Aba 3: Curtidas (sempre aparece — OPÇÃO B) -->
+<div class="tab-content" id="likes-tab">
+    <h3>Conteúdo Curtido</h3>
+
+    <!-- Abas internas para Postagens e Comentários -->
+    <div class="likes-tabs">
+        <button class="likes-tab-button active" data-likes-tab="posts">
+            Postagens ({{ $likedPosts->count() }})
+        </button>
+    </div>
+
+    <!-- Conteúdo de Postagens Curtidas -->
+    <div class="likes-tab-content active" id="posts-likes-content">
+        @if($likedPosts->count() > 0)
+        <div class="likes-list">
+            @foreach($likedPosts as $like)
+            @if($like->postagem)
+            <div class="like-item">
+                <div class="like-avatar">
+                    @if($like->postagem->usuario->foto)
+                    <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->apelido }}">
+                    @else
+                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
                     @endif
+                </div>
+
+                <div class="like-content">
+                    <strong>{{ $like->postagem->usuario->apelido }}</strong>
+                    <p>{{ Str::limit($like->postagem->texto_postagem, 100) }}</p>
+                    <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
+
+                    <a href="{{ route('post.read', ['postagem' => $like->postagem->id]) }}" class="ver-post-link">
+                        Ver postagem completa
+                    </a>
+                </div>
+            </div>
+            @endif
+            @endforeach
+        </div>
+        @else
+        <div class="no-content-message">
+            <p>Nenhuma postagem curtida ainda.</p>
+        </div>
+        @endif
+    </div>
+</div>
+
+<!-- Aba: Seguindo -->
+<div class="tab-content" id="following-tab">
+    <h3>Seguindo</h3>
+
+    @if($seguindo->count() > 0)
+        <div class="likes-list">
+            @foreach($seguindo as $usuario)
+            <div class="like-item">
+
+                <div class="like-avatar">
+                    @if($usuario->foto)
+                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                    @else
+                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                    @endif
+                </div>
+
+                <div class="like-content">
+                <p>{{ $usuario->user }}</p>
+
+                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                        Ver perfil
+                    </a>
+                </div>
+
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <p>Você não está seguindo ninguém ainda.</p>
+        </div>
+    @endif
+</div>
+<div class="tab-content" id="followers-tab">
+    <h3>Seguidores</h3>
+
+    @if($seguidores->count() > 0)
+        <div class="likes-list">
+            @foreach($seguidores as $usuario)
+            <div class="like-item">
+
+                <div class="like-avatar">
+                    @if($usuario->foto)
+                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                    @else
+                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                    @endif
+                </div>
+
+                <div class="like-content">
+                      <p>{{ $usuario->user }}</p>
+
+                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                        Ver perfil
+                    </a>
+                </div>
+
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <p>Você ainda não tem seguidores.</p>
+        </div>
+    @endif
+</div>
+                      
 
                     <!-- Aba 4: Configurações (apenas para o próprio usuário) -->
                     @if(auth()->id() == $user->id)
                     <div class="tab-content" id="settings-tab">
                         <!-- Inclui os formulários de configurações -->
                         @include('profile.partials.update-profile-information-form')
-                        @include('profile.partials.update-password-form')
                         @include('profile.partials.update-privacy-form')
-                        @include('profile.partials.delete-user-form')
                     </div>
                     @endif
 
@@ -689,7 +791,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Controle das abas
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -698,7 +800,7 @@
             const nextBtn = document.querySelector('.tab-scroll-next');
 
             tabButtons.forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
                     // Remove classe active de todos os botões e conteúdos
                     tabButtons.forEach(btn => btn.classList.remove('active'));
@@ -768,12 +870,33 @@
                 }
             }
 
+            document.addEventListener('DOMContentLoaded', function() {
+                const likesTabButtons = document.querySelectorAll('.likes-tab-button');
+                const likesTabContents = document.querySelectorAll('.likes-tab-content');
+
+                likesTabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tabId = this.getAttribute('data-likes-tab');
+
+                        // Remove classe active de todos os botões e conteúdos
+                        likesTabButtons.forEach(btn => btn.classList.remove('active'));
+                        likesTabContents.forEach(content => content.classList.remove('active'));
+
+                        // Adiciona classe active ao botão clicado e conteúdo correspondente
+                        this.classList.add('active');
+                        const targetContent = document.getElementById(`${tabId}-likes-content`);
+                        if (targetContent) {
+                            targetContent.classList.add('active');
+                        }
+                    });
+                });
+            });
+
             // Recalcula scroll quando mudar de aba
             tabButtons.forEach(button => {
                 button.addEventListener('click', scrollToActiveTab);
             });
         });
-
     </script>
 
     <!-- JS -->

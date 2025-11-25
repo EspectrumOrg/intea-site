@@ -123,20 +123,38 @@
                             </button>
                         </div>
 
-                        <!-- Conteúdo das abas -->
-                        <div class="tab-content active" id="profile-tab">
-                            <section class="perfil-section">
-                                <header class="header"><h2>Informações do Perfil</h2></header>
-                                <div class="profile-info-grid">
-                                    <div class="info-item"><strong>Nome:</strong> <span>{{ $autista->usuario->nome }}</span></div>
-                                    <div class="info-item"><strong>Email:</strong> <span>{{ $autista->usuario->email }}</span></div>
-                                    <div class="info-item"><strong>Apelido:</strong> <span>{{ $autista->usuario->apelido ?? 'Não informado' }}</span></div>
-                                    <div class="info-item"><strong>CPF:</strong>
-                                        <span>{{ $autista->usuario->cpf }}</span>
-                                    </div>
-                                    <div class="info-item"><strong>Data Nascimento:</strong>
-                                        <span>{{ \Carbon\Carbon::parse($autista->usuario->data_nascimento)->format('d/m/Y') }}</span>
-                                    </div>
+                    <!-- Conteúdo das abas -->
+                    <!-- Aba 1: Perfil (Informações) - SEMPRE existe -->
+                    <div class="tab-content active" id="profile-tab">
+                        <section class="perfil-section">
+                            <header class="header">
+                                <h2>Informações do Perfil</h2>
+                            </header>
+
+                            <div class="profile-info-grid">
+
+                                <div class="info-item">
+                                    <strong>Email:</strong>
+                                    <span>{{ $autista->usuario->email }}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <strong>Apelido:</strong>
+                                    <span>{{ $autista->usuario->apelido ?? 'Não informado' }}</span>
+                                </div>
+
+                                <div class="info-item">
+                                    <strong>CPF:</strong>
+                                    <span
+                                        class="{{ $autista->usuario->cpf === '•••••••••••' ? 'cpf-privado' : 'cpf-publico' }}">
+                                        {{ $autista->usuario->cpf }}
+                                    </span>
+                                </div>
+
+                                <div class="info-item">
+                                    <strong>Data Nascimento:</strong>
+                                    <span>{{ \Carbon\Carbon::parse($autista->usuario->data_nascimento)->format('d/m/Y') }}</span>
+                                </div>
 
                                     @if($dadosespecificos)
                                         <div class="info-item"><strong>CIPTEA Autista:</strong> <span>{{ $dadosespecificos->cipteia_autista ?? 'Não informado' }}</span></div>
