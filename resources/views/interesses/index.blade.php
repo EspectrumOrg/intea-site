@@ -227,10 +227,13 @@
         align-items: center;
         gap: 1rem;
         padding: 1.5rem;
-        background: white;
+        background: var(--branco);
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         transition: all 0.3s ease;
+        width: 96%; /* 100% - 2% left - 2% right */
+        margin-left: 2%;
+        margin-right: 2%;   
     }
 
     .interesse-item:hover {
@@ -328,7 +331,7 @@
         align-items: center;
         gap: 0.5rem;
         transition: all 0.3s ease;
-        font-size: 0.8rem;
+        font-size: 1.0rem;
         white-space: nowrap;
     }
 
@@ -353,7 +356,7 @@
         text-decoration: none;
         text-align: center;
         font-weight: 500;
-        font-size: 0.8rem;
+        font-size: 1.0rem;
         transition: background 0.3s ease;
         white-space: nowrap;
     }
