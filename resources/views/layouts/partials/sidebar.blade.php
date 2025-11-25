@@ -30,8 +30,7 @@
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">
                     @csrf
-                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair
-                        {{ Auth::user()->user}}</a>
+                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair</a>
                 </form>
             </li>
         </ul>
