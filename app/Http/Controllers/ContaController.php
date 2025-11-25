@@ -73,6 +73,16 @@ class ContaController extends Controller
             ->take(5)
             ->get();
 
+        $likedComments = Curtida::with([
+        'comentario.usuario', 
+        'comentario.postagem',
+        'comentario.postagem.usuario'
+        ])
+        ->where('id_usuario', $user->id)
+        ->whereNotNull('id_comentario') // Apenas curtidas em comentários
+        ->orderByDesc('created_at')
+        ->get();
+
         $tendenciasPopulares = Tendencia::populares(7)->get();
         
 
@@ -92,11 +102,11 @@ class ContaController extends Controller
             'dadosespecificos',
             'userPosts',
             'likedPosts',
+            'likedComments',
             'postsPopulares',
             'tendenciasPopulares',
             'autista',
             'responsavel'
-           
         ));
 
     } catch (\Exception $e) {
