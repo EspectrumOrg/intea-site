@@ -872,13 +872,14 @@
 .feed-header {
     background: var(--branco);
     padding: 20px;
-    border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-left: 2px solid #3B82F6 !important;
+    border-radius: 0;
 }
 
 .feed-header.principal {
-    border-left: 4px solid #3B82F6;
+    border-left: 2px solid #3B82F6;
 }
 
 .feed-info {
@@ -1271,6 +1272,7 @@
     margin-bottom: 1rem;
     color: #d1d5db;
 }
+
 
 /* Responsividade */
 @media (max-width: 768px) {

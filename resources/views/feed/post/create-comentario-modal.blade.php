@@ -74,59 +74,59 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // Para cada comentário, adiciona listeners únicos
-    document.querySelectorAll('[id^="modal-comentar-"]').forEach(modal => {
-        const idCreateComentarioModal = modal.id.split('-').pop(); // pega o ID do post
+    document.addEventListener('DOMContentLoaded', () => {
+        // Para cada comentário, adiciona listeners únicos
+        document.querySelectorAll('[id^="modal-comentar-"]').forEach(modal => {
+            const idCreateComentarioModal = modal.id.split('-').pop(); // pega o ID do post
 
-        // Campos dinâmicos
-        const textareaCreateComentarioModal = document.getElementById(`texto_comentario_create_modal_${idCreateComentarioModal}`);
-        const previewHashtagCreateComentarioModal = document.getElementById(`hashtag-preview-create-comentario-modal-${idCreateComentarioModal}`);
-        const inputFileCreateComentarioModal = document.getElementById(`caminho_imagem_comentario_modal_${idCreateComentarioModal}`);
-        const previewContainerCreateComentarioModal = document.getElementById(`image-preview_create_comentario_modal_${idCreateComentarioModal}`);
-        const previewImageCreateComentarioModal = document.getElementById(`preview-img_create_comentario_modal_${idCreateComentarioModal}`);
-        const removeButtonCreateComentarioModal = document.getElementById(`remove-image_create_comentario_modal_${idCreateComentarioModal}`);
-        const contadorCreateComentarioModal = modal.querySelector('.char-count');
+            // Campos dinâmicos
+            const textareaCreateComentarioModal = document.getElementById(`texto_comentario_create_modal_${idCreateComentarioModal}`);
+            const previewHashtagCreateComentarioModal = document.getElementById(`hashtag-preview-create-comentario-modal-${idCreateComentarioModal}`);
+            const inputFileCreateComentarioModal = document.getElementById(`caminho_imagem_comentario_modal_${idCreateComentarioModal}`);
+            const previewContainerCreateComentarioModal = document.getElementById(`image-preview_create_comentario_modal_${idCreateComentarioModal}`);
+            const previewImageCreateComentarioModal = document.getElementById(`preview-img_create_comentario_modal_${idCreateComentarioModal}`);
+            const removeButtonCreateComentarioModal = document.getElementById(`remove-image_create_comentario_modal_${idCreateComentarioModal}`);
+            const contadorCreateComentarioModal = modal.querySelector('.char-count');
 
-        // 1. Preview de hashtags e contador
-        if (textareaCreateComentarioModal && previewHashtagCreateComentarioModal) {
-            textareaCreateComentarioModal.addEventListener('input', () => {
-                const textCreateComentarioModal = textareaCreateComentarioModal.value
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
+            // 1. Preview de hashtags e contador
+            if (textareaCreateComentarioModal && previewHashtagCreateComentarioModal) {
+                textareaCreateComentarioModal.addEventListener('input', () => {
+                    const textCreateComentarioModal = textareaCreateComentarioModal.value
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>');
 
-                previewHashtagCreateComentarioModal.innerHTML = textCreateComentarioModal + '\n';
+                    previewHashtagCreateComentarioModal.innerHTML = textCreateComentarioModal + '\n';
 
-                // contador de caracteres
-                if (contadorCreateComentarioModal)
-                    contadorCreateComentarioModal.textContent = textareaCreateComentarioModal.value.length;
-            });
-        }
+                    // contador de caracteres
+                    if (contadorCreateComentarioModal)
+                        contadorCreateComentarioModal.textContent = textareaCreateComentarioModal.value.length;
+                });
+            }
 
-        // 2. Preview de imagem
-        if (inputFileCreateComentarioModal && previewContainerCreateComentarioModal && previewImageCreateComentarioModal && removeButtonCreateComentarioModal) {
-            inputFileCreateComentarioModal.addEventListener('change', () => {
-                const file = inputFileCreateComentarioModal.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                        previewImageCreateComentarioModal.src = e.target.result;
-                        previewContainerCreateComentarioModal.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+            // 2. Preview de imagem
+            if (inputFileCreateComentarioModal && previewContainerCreateComentarioModal && previewImageCreateComentarioModal && removeButtonCreateComentarioModal) {
+                inputFileCreateComentarioModal.addEventListener('change', () => {
+                    const file = inputFileCreateComentarioModal.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            previewImageCreateComentarioModal.src = e.target.result;
+                            previewContainerCreateComentarioModal.style.display = 'block';
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
 
-            removeButtonCreateComentarioModal.addEventListener('click', () => {
-                inputFileCreateComentarioModal.value = '';
-                previewImageCreateComentarioModal.src = '';
-                previewContainerCreateComentarioModal.style.display = 'none';
-            });
-        }
+                removeButtonCreateComentarioModal.addEventListener('click', () => {
+                    inputFileCreateComentarioModal.value = '';
+                    previewImageCreateComentarioModal.src = '';
+                    previewContainerCreateComentarioModal.style.display = 'none';
+                });
+            }
+        });
     });
-});
 </script>
 
 <!-- comentario -->
