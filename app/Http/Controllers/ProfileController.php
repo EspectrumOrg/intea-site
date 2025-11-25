@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use App\Models\Usuario;
+
 
 class ProfileController extends Controller
 {
@@ -30,10 +32,15 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        /** @var \App\Models\Usuario $user */
+
         $user = Auth::user();
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
 
+         $seguindo = $user->seguindo()->get();
+
+        $seguidores = $user->seguidores()->get();
         // Carregar dados específicos
         $dadosespecificos = null;
         $autista = null;
@@ -94,7 +101,9 @@ class ProfileController extends Controller
             'likedComments',
             'postsPopulares',
             'autista',
-            'maiorDeIdade'
+            'maiorDeIdade',
+             'seguindo',
+            'seguidores'
         ));
     }
 

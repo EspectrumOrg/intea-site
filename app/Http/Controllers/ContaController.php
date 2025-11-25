@@ -55,6 +55,9 @@ class ContaController extends Controller
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = $this->getDadosEspecificos($user);
+        $seguindo = $user->seguindo()->get();
+        $seguidores = $user->seguidores()->get();
+
 
         $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
             ->with(['imagens', 'usuario'])
@@ -106,7 +109,9 @@ class ContaController extends Controller
             'postsPopulares',
             'tendenciasPopulares',
             'autista',
-            'responsavel'
+            'responsavel',
+            'seguindo',
+            'seguidores'
         ));
 
     } catch (\Exception $e) {
