@@ -72,6 +72,7 @@ INTEA/
 composer install
 npm install
 npm run dev build
+composer require laravel/breeze --dev
 ```
 
 4. **Baixe o arquivo `.env`** e adicione-o na pasta raiz
