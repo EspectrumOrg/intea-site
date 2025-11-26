@@ -80,12 +80,12 @@
                     <span>Escolher Foto</span>
                 </button>
 
-                @if($user->foto)
-                <button type="button" class="btn-remove-photo" onclick="removePhoto()">
+                <!-- Botão sempre visível, controle de exibição via JavaScript -->
+                <button type="button" class="btn-remove-photo" id="removePhotoButton" 
+                        style="{{ (!$user->foto) ? 'display: none;' : '' }}" onclick="removePhoto()">
                     <i class="fas fa-trash"></i>
                     <span>Remover Foto</span>
                 </button>
-                @endif
             </div>
 
             <div class="form-text">
@@ -135,10 +135,7 @@
             <label for="status_cipteia_autista" class="form-label"><strong>Status Cipteia Autista</strong></label>
             <input id="status_cipteia_autista" name="status_cipteia_autista" type="text" class="form-control" value="{{ $dadosespecificos->status_cipteia_autista ?? old('status_cipteia_autista')}}" required autocomplete="status_cipteia_autista" />
         </div>
-        <div class="mb-3">
-            <label for="rg_autista" class="form-label"><strong>RG Autista</strong></label>
-            <input id="rg_autista" name="rg_autista" type="text" class="form-control" value="{{ $dadosespecificos->rg_autista ?? old('rg_autista')}}" required autocomplete="rg_autista" />
-        </div>
+       
         @if (isset($dadosespecificos->responsavel_id))
         <div class="mb-3">
             <label for="responsavel" class="form-label"><strong>Responsável</strong></label>
@@ -466,9 +463,14 @@
     </style>
 
     <script>
+        // Variável para controlar se há uma foto selecionada
+        let hasSelectedPhoto = false;
+        const userHasOriginalPhoto = {{ !empty($user->foto) ? 'true' : 'false' }};
+
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
             const file = input.files[0];
+            const removeButton = document.getElementById('removePhotoButton');
 
             if (file) {
                 const reader = new FileReader();
@@ -476,6 +478,16 @@
                 reader.onload = function(e) {
                     preview.src = e.target.result;
                     preview.classList.add('image-loaded');
+                    
+                    // Mostra o botão de remover quando uma nova foto é selecionada
+                    hasSelectedPhoto = true;
+                    removeButton.style.display = 'inline-flex';
+
+                    // Remove o campo remove_photo se existir (caso o usuário tenha clicado em remover antes)
+                    let existingRemoveField = document.getElementById('remove_photo');
+                    if (existingRemoveField) {
+                        existingRemoveField.remove();
+                    }
 
                     setTimeout(() => {
                         preview.classList.remove('image-loaded');
@@ -487,9 +499,18 @@
         }
 
         function removePhoto() {
-            document.getElementById('imagePreview').src = "{{ url('assets/images/logos/contas/user.png') }}";
-            document.getElementById('foto').value = '';
+            const preview = document.getElementById('imagePreview');
+            const fileInput = document.getElementById('foto');
+            const removeButton = document.getElementById('removePhotoButton');
+            
+            // Reseta para a imagem padrão
+            preview.src = "{{ url('assets/images/logos/contas/user.png') }}";
+            fileInput.value = '';
 
+            // Marca que a foto foi removida
+            hasSelectedPhoto = false;
+
+            // Adiciona campo hidden para remover a foto no backend
             let existingRemoveField = document.getElementById('remove_photo');
             if (!existingRemoveField) {
                 let removeField = document.createElement('input');
@@ -500,11 +521,20 @@
                 document.getElementById('profileForm').appendChild(removeField);
             }
 
-            // Remove o botão de remover foto após clicar
-            let removeButton = document.querySelector('.btn-remove-photo');
-            if (removeButton) {
+            // NÃO escondemos o botão aqui - ele só deve ser escondido se não havia foto original
+            // O botão permanece visível para permitir que o usuário continue interagindo
+            if (!userHasOriginalPhoto) {
                 removeButton.style.display = 'none';
             }
         }
+
+        // Inicializa o estado do botão quando a página carrega
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeButton = document.getElementById('removePhotoButton');
+            // Se não há foto original, esconde o botão inicialmente
+            if (!userHasOriginalPhoto) {
+                removeButton.style.display = 'none';
+            }
+        });
     </script>
 </section>

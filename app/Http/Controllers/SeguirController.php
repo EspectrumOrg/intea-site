@@ -105,7 +105,21 @@ public function listarSeguidores($id)
      * Display the specified resource.
      */
     public function show(string $id)
-    {
+    { 
+        $user = Usuario::findOrFail($id);
+
+    $seguindo = $user->seguindo()->get();     
+    $seguidores = $user->seguidores()->get(); 
+
+    $likedPosts = $user->curtidas()->count();
+
+    return view('profile.show', [
+        'user' => $user,
+        'seguindo' => $seguindo,
+        'seguidores' => $seguidores,
+        'likedPosts' => $likedPosts,
+    ]);
+
         //
     }
 
@@ -133,7 +147,6 @@ public function listarSeguidores($id)
     /** @var \App\Models\Usuario $user */
     $user = auth()->user();
 
-    // Verifica se o usuário está realmente seguindo o outro
     $isFollowing = $user->seguindo()->where('tb_usuario.id', $id)->exists();
 
     if (!$isFollowing) {

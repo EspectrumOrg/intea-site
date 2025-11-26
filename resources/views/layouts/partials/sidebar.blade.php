@@ -30,8 +30,7 @@
                 <!-- Authentication -->
                 <form method="post" action="{{ route('logout') }}">
                     @csrf
-                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair
-                        {{ Auth::user()->user}}</a>
+                    <a onclick="event.preventDefault(); this.closest('form').submit();" href="#">Sair</a>
                 </form>
             </li>
         </ul>
@@ -75,15 +74,15 @@
         </a>
 
         <!-- NOTIFICAÇÕES (5) -->
-        <a href="{{ route('notificacao.index') }}"
-            class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}" id="notificacoes">
+        <a href="{{ route('notificacao.index') }}" class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}" 
+            id="notificacoes">
             <span class="material-symbols-outlined">notifications</span>
-            <h1 style="display: flex; align-items: center; gap: 6px;">
+            <h1>
                 Notificações
                 @if($totalNotificacoes > 0)
-                <span style="background: #14b814; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;">
-                    {{ $totalNotificacoes }}
-                </span>
+                    <span>
+                        {{ $totalNotificacoes }}
+                    </span>
                 @endif
             </h1>
         </a>

@@ -253,6 +253,20 @@
                                     <span class="tab-text">Curtidas ({{ $likedPosts->count() }})</span>
                                 </button>
                                 @endif
+                                @if($seguidores->count() > 0)
+                                <button class="tab-button" data-tab="followers">
+                                    <span class="material-symbols-outlined">group</span>
+                                    <span class="tab-text">Seguidores ({{ $seguidores->count() }})</span>
+                                </button>
+                                @endif
+
+                                <!-- Aba Seguindo -->
+                                @if($seguindo->count() > 0)
+                                <button class="tab-button" data-tab="following">
+                                    <span class="material-symbols-outlined">person_add</span>
+                                    <span class="tab-text">Seguindo ({{ $seguindo->count() }})</span>
+                                </button>
+                                @endif
 
                                 <!-- Aba Configurações (apenas para o próprio usuário) -->
                                 @if(auth()->id() == $user->id)
@@ -667,7 +681,73 @@
     </div>
 </div>
 
+<!-- Aba: Seguindo -->
+<div class="tab-content" id="following-tab">
+    <h3>Seguindo</h3>
 
+    @if($seguindo->count() > 0)
+        <div class="likes-list">
+            @foreach($seguindo as $usuario)
+            <div class="like-item">
+
+                <div class="like-avatar">
+                    @if($usuario->foto)
+                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                    @else
+                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                    @endif
+                </div>
+
+                <div class="like-content">
+                <p>{{ $usuario->user }}</p>
+
+                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                        Ver perfil
+                    </a>
+                </div>
+
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <p>Você não está seguindo ninguém ainda.</p>
+        </div>
+    @endif
+</div>
+<div class="tab-content" id="followers-tab">
+    <h3>Seguidores</h3>
+
+    @if($seguidores->count() > 0)
+        <div class="likes-list">
+            @foreach($seguidores as $usuario)
+            <div class="like-item">
+
+                <div class="like-avatar">
+                    @if($usuario->foto)
+                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                    @else
+                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                    @endif
+                </div>
+
+                <div class="like-content">
+                      <p>{{ $usuario->user }}</p>
+
+                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                        Ver perfil
+                    </a>
+                </div>
+
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="no-content-message">
+            <p>Você ainda não tem seguidores.</p>
+        </div>
+    @endif
+</div>
                       
 
                     <!-- Aba 4: Configurações (apenas para o próprio usuário) -->

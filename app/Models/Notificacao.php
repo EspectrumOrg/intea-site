@@ -25,4 +25,5 @@ class Notificacao extends Model
     {
         return $this->belongsTo(Usuario::class, 'alvo_id');
     }
+
 }
