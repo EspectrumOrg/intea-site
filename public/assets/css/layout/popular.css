@@ -55,7 +55,10 @@
 .tendencia-nome {
     color: var(--preto);
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
+    white-space: nowrap; /*impede a quebra de linha*/
+    overflow: hidden; /* oculta o q sobrar*/
+    text-overflow: ellipsis; /* reticências*/
 }
 
 .tendencia-contador {
@@ -139,3 +142,22 @@
     border-bottom-right-radius: 15px !important;
 }
 
+
+
+@media (max-width: 1024px) {
+    
+}
+
+@media (max-width: 764px) {
+
+}
+
+@media (max-width: 600px) {
+    .sidebar-tendencias {
+        display: none;
+    }
+
+    .sidebar-tendencias-monochrome {
+        display: none;
+    }
+}
