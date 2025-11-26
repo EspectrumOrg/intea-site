@@ -1001,6 +1001,16 @@
 
 /* responsività della sidebar (anche "footer") in generale */
 @media (max-width: 1024px) {
+    /* Base dos links ADM*/
+    .admin .links .nav-link {
+
+    }
+
+
+
+
+    /* fim ADM*/
+
     .container-sidebar {
         border-right: 1px solid var(--branco-light);
         box-sizing: border-box;
@@ -1055,6 +1065,16 @@
 
 
 @media (max-width: 764px) {
+    /* Base dos links ADM*/
+    .admin .links .nav-link {
+
+    }
+
+
+
+
+    /* fim ADM*/
+    
     .container-sidebar {
         display: flex;
         flex-direction: row;
