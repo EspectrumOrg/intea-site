@@ -41,7 +41,10 @@ class Postagem extends Model
 
     public function comentarios()
     {
-        return $this->hasMany(Comentario::class, 'id_postagem');
+        return $this->hasMany(Comentario::class, 'id_postagem')
+            ->whereHas('usuario', function ($q) {
+                $q->where('status_conta', 1);
+            });
     }
 
     public function imagens()
@@ -89,7 +92,9 @@ class Postagem extends Model
 
     public function getComentariosCountAttribute()
     {
-        return $this->todosComentarios()->count();
+        return $this->todosComentarios()
+            ->apenasDeUsuariosAtivos()
+            ->count();
     }
 
     public function getCurtidasUsuarioAttribute()

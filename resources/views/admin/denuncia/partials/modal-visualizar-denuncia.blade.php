@@ -62,7 +62,7 @@
                         @elseif ($item->comentario)
                         <!-- Comentário -->
                         <div class="conteudo-modal">
-                            <h1>Conteúdo comentário denunciada:</h1>
+                            <h1>Conteúdo comentário denunciado:</h1>
                             <p>{{ $item->comentario->comentario}}</p>
 
                             @if ($item->comentario->image)
@@ -76,30 +76,45 @@
                         </div>
                         @endif
 
-                        <hr>
 
                         <!-- Detalhes Denúncias -->
                         <div class="detalhes-container">
                             <h1>Detalhes da denúncia</h1>
-                            <p><strong>Denunciante:</strong> {{ $item->usuarioDenunciante->user}} / {{ $item->usuarioDenunciante->apelido }}</p>
-                            <p><strong>Data:</strong> {{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</p>
-                            @php
-                            $motivos = [
-                            'odio' => ['Ódio ou Discriminação'],
-                            'abuso_e_assedio' => ['Abuso ou Assédio'],
-                            'discurso_de_odio' => ['Ameaças ou Incitação à Violência'],
-                            'seguranca_infantil' => ['Segurança Infantil'],
-                            'privacidade' => ['Privacidade'],
-                            'comportamentos_ilegais_e_regulamentados' => ['Atividades Ilegais'],
-                            'spam' => ['Spam ou Engajamento Artificial'],
-                            'suicidio_ou_automutilacao' => ['Risco à Integridade Pessoal'],
-                            'personificacao' => ['Falsa Identidade'],
-                            'entidades_violentas_e_odiosas' => ['Grupos Extremistas'],
-                            ];
-                            @endphp
-                            <p><strong>Motivo:</strong>{{ $motivos[$item->motivo_denuncia][0] ?? 'Motivo desconhecido' }}</p>
 
                             <hr>
+
+                            <div class="dados-denuncia">
+
+                                <div>
+                                    <p class="titulo-info">Denunciante</p>
+                                    <p>{{ $item->usuarioDenunciante->user}} / {{ $item->usuarioDenunciante->apelido }}</p>
+                                </div>
+
+                                <div>
+                                    <p class="titulo-info">Data:</p>
+                                    <p>{{ \Carbon\Carbon::parse($item->created_at)->format('d/m/Y H:i') }}</p>
+                                </div>
+
+                                @php
+                                $motivos = [
+                                'odio' => ['Ódio ou Discriminação'],
+                                'abuso_e_assedio' => ['Abuso ou Assédio'],
+                                'discurso_de_odio' => ['Ameaças ou Incitação à Violência'],
+                                'seguranca_infantil' => ['Segurança Infantil'],
+                                'privacidade' => ['Privacidade'],
+                                'comportamentos_ilegais_e_regulamentados' => ['Atividades Ilegais'],
+                                'spam' => ['Spam ou Engajamento Artificial'],
+                                'suicidio_ou_automutilacao' => ['Risco à Integridade Pessoal'],
+                                'personificacao' => ['Falsa Identidade'],
+                                'entidades_violentas_e_odiosas' => ['Grupos Extremistas'],
+                                ];
+                                @endphp
+
+                                <div>
+                                    <p class="titulo-info">Motivo:</p>
+                                    <p>{{ $motivos[$item->motivo_denuncia][0] ?? 'Motivo desconhecido' }}</p>
+                                </div>
+                            </div>
 
                             <!-- Outras Denúncias -->
                             @php
@@ -133,6 +148,8 @@
 
                             <div class="outras-denuncias">
                                 <h1>Denúncias relacionadas:</h1>
+
+                                <hr>
 
                                 @php
                                 // Filtra somente motivos que têm contagem maior que 0
@@ -171,12 +188,9 @@
                         @csrf
                         @method('DELETE')
 
-                        <h2 class="ban-title">Banir <p class="sublinhado">{{ $usuarioAlvo->user }}</p>
-                        </h2>
+                        <h2 class="ban-title">Banir <span class="sublinhado">{{ $usuarioAlvo->user }}</span></h2>
 
-                        <div class="dados-usuario-banimento">
-
-                        </div>
+                        <input type="hidden" name="denunciante" value="{{ $item->usuarioDenunciante->id}}">
 
                         <label class="form-label">Infração</label>
                         <select name="infracao" class="form-select" required>

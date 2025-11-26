@@ -1,147 +1,3 @@
-/* container da sidebar */
-.container-sidebar {
-    border-right: 1px solid var(--branco-light);
-    box-sizing: border-box;
-}
-
-.container-sidebar .content {
-    position: sticky;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    padding-left: 1rem;
-    width: 290px;
-    height: 100vh;
-    background-color: var(--branco);
-}
-
-/* logo */
-.container-sidebar .logo {
-    width: 100%;
-    display: flex;
-    align-items: flex-start;
-}
-
-.container-sidebar .logo a {
-    transition: .7s;
-}
-
-.container-sidebar .logo a img {
-    width: 75px;
-    border-radius: 50%;
-    padding: .25rem;
-    transition: .7s;
-    cursor: pointer;
-}
-
-.container-sidebar .logo a:hover img {
-    background-color: var(--cinza-texto);
-}
-
-/* container de info do usuário ---------------------------------------------------------------*/
-.container-sidebar .info {
-    display: flex;
-    flex-direction: row;
-    padding: .5rem 1rem;
-    margin-right: 1rem;
-    border-radius: 50px / 100%;
-    width: 100%;
-    position: relative;
-    /* necessário pro dropdown */
-    cursor: pointer;
-    transition: .7s;
-}
-
-.container-sidebar .info:hover {
-    background-color: var(--cinza-texto);
-}
-
-/* imagem usuário */
-.container-sidebar .info img {
-    width: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--azul);
-}
-
-/* textos */
-.container-sidebar .info .text {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 0 0 0 .5rem;
-}
-
-.container-sidebar .info .text h5 {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--cor-preto);
-}
-
-.container-sidebar .info .text h4 {
-    font-size: 14px;
-    color: var(--cor-fundo);
-}
-
-.dropdown-checar-perfil {
-    position: absolute;
-    top: -120%;
-    /* aparece pra cima */
-    left: 0;
-    background: var(--branco);
-    border: .1px solid var(--cinza-font);
-    border-radius: 15px;
-    list-style: none;
-    width: 275px;
-    box-shadow: 0 .8rem 1rem 0 rgba(0, 0, 0, 0.7);
-}
-
-.dropdown-checar-perfil.hidden {
-    display: none;
-}
-
-.dropdown-checar-perfil li {
-    display: flex;
-    transition: .3s;
-}
-
-.dropdown-checar-perfil #li-checar-perfil-siedebar-01 {
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
-}
-
-.dropdown-checar-perfil #li-checar-perfil-siedebar-01:hover {
-    background-color: var(--cinza-font);
-}
-
-.dropdown-checar-perfil #li-checar-perfil-siedebar-02 {
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
-}
-
-.dropdown-checar-perfil #li-checar-perfil-siedebar-02:hover {
-    background-color: var(--cinza-font);
-}
-
-.dropdown-checar-perfil li a {
-    text-decoration: none;
-    font-size: 18px;
-    color: black;
-    width: 100%;
-    padding: 1rem;
-}
-
-.dropdown-checar-perfil li form {
-    display: flex;
-    width: 100%;
-}
-
-.dropdown-checar-perfil li form a {
-    width: 100%;
-}
-
 /* links -----------------------------------------------------------------------------------*/
 .links {
     display: flex;
@@ -149,6 +5,7 @@
     align-items: flex-start;
     gap: 1rem;
     width: 100%;
+    padding: 0 1rem;
 }
 
 /* estilo individual dos links */
@@ -165,7 +22,6 @@
 }
 
 /* Colorido para modo normal*/
-
 /* HOME (1º link) */
 .links a:nth-of-type(1) {
     color: var(--cor-tema);
@@ -441,35 +297,8 @@
 }
 
 .links .nav-link span {
-    font-size: 2rem;
+    font-size: 35px;
 }
-
-/* Post Button --------------------------------------------------------- */
-.post-button {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding: 0px;
-}
-
-.post-button button {
-    color: var(--azul);
-    font-size: 17px;
-    font-weight: 600;
-    min-width: 90%;
-    padding: .75rem 1rem;
-    border: 1px solid var(--azul);
-    outline: none;
-    border-radius: 50px / 100%;
-    cursor: pointer;
-    transition: .3s;
-}
-
-.post-button button:hover {
-    color: var(--branco);
-    background-color: var(--azul);
-}
-
 /* Parte Admin -----------------------------------------------------------------------+*/
 .admin .content {
     position: sticky;
@@ -480,8 +309,9 @@
     justify-content: flex-start;
     width: 290px;
     height: 100vh;
-    padding: 2rem 0rem 1rem 0;
-    background-color: var(--cor-fundo);
+    padding: 0rem 0rem 1rem 0;
+    border: 1px solid var(--branco-light);
+    background-color: var(--branco);
 }
 
 /* Topo Admin --*/
@@ -491,42 +321,19 @@
     align-items: center;
     text-align: center;
     gap: 0.75rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     width: 100%;
 }
 
-.admin-topo .foto-administrador {
-    height: 85px;
-    width: 85px;
-    border-radius: 50%;
+.admin-topo img {
+    height: 175px;
+    width: 175px;
     object-fit: cover;
-    border: 2px solid var(--azul);
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
 }
 
-.admin-topo .foto-administrador:hover {
+.admin-topo img:hover {
     transform: scale(1.05);
-}
-
-.admin-topo .text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .2rem;
-}
-
-.admin-topo h2 {
-    font-size: 18px;
-    color: var(--azul);
-    font-weight: 600;
-}
-
-.admin-topo h1 {
-    font-size: 15px;
-    color: var(--branco);
-    font-weight: 400;
-    opacity: 0.9;
 }
 
 /* Base dos links */
@@ -536,13 +343,13 @@
     align-items: center;
     padding: 0.8rem 2.5rem;
     border-radius: 50px / 100%;
-    color: var(--branco);
+    color: var(--preto);
     text-decoration: none;
     transition: background-color 0.25s ease, color 0.25s ease, transform 0.4s ease;
 }
 
 .admin .links a:nth-of-type(1) {
-    color: var(--branco);
+    color: var(--preto);
     transition: all 0.3s ease-in-out;
 
     .material-symbols-outlined {
@@ -582,7 +389,7 @@
 }
 
 .admin .links a:nth-of-type(2) {
-    color: var(--branco);
+    color: var(--preto);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -622,7 +429,7 @@
 }
 
 .admin .links a:nth-of-type(3) {
-    color: var(--branco);
+    color: var(--preto);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -663,7 +470,7 @@
 }
 
 .admin .links a:nth-of-type(4) {
-    color: var(--branco);
+    color: var(--preto);
     transition: all 0.4s ease-in-out;
 
     .material-symbols-outlined {
@@ -737,7 +544,7 @@
 }
 
 .admin .links .nav-link h1 {
-    font-size: 16px;
+    font-size: 20px;
     margin-left: 8px;
 }
 
@@ -762,7 +569,7 @@
 }
 
 .nav-link.azul.active {
-    color: var(--branco);
+    color: var(--preto);
 }
 
 .nav-link.azul.active h1,
@@ -777,7 +584,7 @@
 }
 
 .nav-link.verde.active {
-    color: var(--branco);
+    color: var(--preto);
 }
 
 .nav-link.verde.active h1,
@@ -792,7 +599,7 @@
 }
 
 .nav-link.amarelo.active {
-    color: var(--branco);
+    color: var(--preto);
 }
 
 .nav-link.amarelo.active h1,
@@ -807,7 +614,7 @@
 }
 
 .nav-link.rosa.active {
-    color: var(--branco);
+    color: var(--preto);
 }
 
 .nav-link.rosa.active h1,
@@ -822,7 +629,7 @@
 }
 
 .nav-link.vermelho.active {
-    color: var(--branco);
+    color: var(--preto);
 }
 
 .nav-link.vermelho.active h1,

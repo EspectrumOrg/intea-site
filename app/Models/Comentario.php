@@ -54,14 +54,25 @@ class Comentario extends Model
         return $this->hasMany(Denuncia::class, 'id_comentario');
     }
 
+    public function scopeApenasDeUsuariosAtivos($query)
+    {
+        return $query->whereHas('usuario', function ($q) {
+            $q->where('status_conta', 1);
+        });
+    }
+
     public function getCurtidasCountAttribute()
     {
-        return $this->curtidas_comentario()->count();
+        return $this->curtidas_comentario()
+            ->apenasDeUsuariosAtivos()
+            ->count();
     }
 
     public function getComentariosCountAttribute()
     {
-        return $this->respostas()->count();
+        return $this->respostas()
+            ->apenasDeUsuariosAtivos()
+            ->count();
     }
 
     public function getCurtidasUsuarioAttribute()
