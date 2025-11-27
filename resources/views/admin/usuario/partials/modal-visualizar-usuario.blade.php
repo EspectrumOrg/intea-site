@@ -35,44 +35,85 @@
                                 src="{{ asset('storage/'.$item->foto ?? 'assets/images/logos/contas/user.png') }}"
                                 class="foto-denunciado">
 
-                            <h6 style="font-size: 18px; color:black; font-weight:600;">
-                                {{ $item->user }}
-                            </h6>
+                            <div class="ao-lado-foto">
+                                <h6>
+                                    {{ $item->user }}
+                                </h6>
+                                <p>
+                                    {{ $item->descricao ?? 'Sem descrição' }}
+                                </p>
 
-                            <p class="text-muted" style="padding: 0 1rem;">
-                                {{ $item->descricao ?? 'Sem descrição' }}
-                            </p>
+                                <div class="status-user">
+                                    @switch($item->status_conta)
+                                    @case(0)
+                                    <p class="vermelho">
+                                        <span class="material-symbols-outlined">
+                                            no_accounts
+                                        </span>Conta excluída
+                                    </p>
+                                    @break
+
+                                    @case(1)
+                                    <p class="verde">
+                                        <span class="material-symbols-outlined">
+                                            account_circle
+                                        </span>Ativo
+                                    </p>
+                                    @break
+
+                                    @case(2)
+                                    <p class="vermelho">
+                                        <span class="material-symbols-outlined">
+                                            no_accounts
+                                        </span>Banido
+                                        @break
+
+                                        @default Desconhecido
+                                        @endswitch
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-
-                        <hr>
 
                         <!-- Detalhes simples -->
                         <div class="detalhes-container">
                             <h1>Dados do usuário</h1>
 
-                            <p><strong>Nome:</strong> {{ $item->apelido }}</p>
-                            <p><strong>Email:</strong> {{ $item->email }}</p>
-                            <p><strong>Idade:</strong> {{ \Carbon\Carbon::parse($item->data_nascimento)->age }} anos</p>
-                            <p><strong>Tipo:</strong>
-                                @if($item->tipo_usuario === 1) Admin
-                                @elseif($item->tipo_usuario === 2) Autista
-                                @elseif($item->tipo_usuario === 3) Comunidade
-                                @elseif($item->tipo_usuario === 4) Profissional de Saúde
-                                @else Responsável
-                                @endif
-                            </p>
+                            <hr>
 
-                            <p><strong>Status:</strong>
-                                @switch($item->status_conta)
-                                @case(0) Conta excluída @break
-                                @case(1) Ativo @break
-                                @case(2) Banido @break
-                                @default Desconhecido
-                                @endswitch
-                            </p>
+                            <div class="dados-usuario">
+                                <div>
+                                    <p class="titulo-info">Nome Completo:</p>
+                                    <p>{{ $item->apelido }}</p>
+                                </div>
+
+
+                                <div>
+                                    <p class="titulo-info">Email:</p>
+                                    <p>{{ $item->email }}</p>
+                                </div>
+
+                                <div>
+
+                                    <p class="titulo-info">Idade:</p>
+                                    <p>{{ \Carbon\Carbon::parse($item->data_nascimento)->age }} anos</p>
+
+                                </div>
+
+                                <div>
+                                    <p class="titulo-info">Tipo de Usuário:</p>
+                                    <p>
+                                        @if($item->tipo_usuario === 1) Admin
+                                        @elseif($item->tipo_usuario === 2) Autista
+                                        @elseif($item->tipo_usuario === 3) Comunidade
+                                        @elseif($item->tipo_usuario === 4) Profissional de Saúde
+                                        @else Responsável
+                                        @endif
+                                    </p>
+                                </div>
+
+                            </div>
                         </div>
-
-                        <hr>
 
                         <!-- CONTATOS DE SUPORTE (NOVO) -->
                         @php
@@ -86,6 +127,8 @@
                         <div class="detalhes-container">
                             <h1>Contatos de Suporte</h1>
 
+                            <hr>
+
                             @if($contatos->count() > 0)
                             @foreach($contatos as $c)
                             <div class="contato-item">
@@ -97,7 +140,9 @@
                             </div>
                             @endforeach
                             @else
-                            <p>Nenhum contato de suporte pendente.</p>
+                            <div class="sem-contatos">
+                                <p>Não há contatos de suporte para exibir.</p>
+                            </div>
                             @endif
                         </div>
 
@@ -113,7 +158,7 @@
                         @csrf
                         @method('DELETE')
 
-                        <h2 class="ban-title">Banir <p class="sublinhado">{{ $item->user }}</p>
+                        <h2 class="ban-title">Confirmar Banimento de Usuário</p>
                         </h2>
 
                         <label class="form-label">Infração</label>
@@ -137,23 +182,34 @@
                         </div>
 
                         <div style="display:flex; justify-content:flex-end;">
-                            <button type="submit" class="btn-banir">Confirmar banimento</button>
+                            <button type="submit" class="btn-banir">Confirmar Banimento</button>
                         </div>
                     </form>
 
                     {{-- Se o usuário está banido → mostrar DESBANIR --}}
                     @elseif($item->status_conta == 2)
 
+                    <div class="content-desbanir">
+                        <span class="material-symbols-outlined">
+                            lock_open
+                        </span>
+                        <h3>Desbanir Usuário?</h3>
+                        <p>
+                            Você tem certeza que deseja desbanir o usuário
+                            <span class="email-user">{{ $item->email }}</span>?
+                            Isso vai restaurar o acesso para a aplicação imediatamente.
+                        </p>
+
+                    </div>
+
                     <form action="{{ route('usuario.desbanir', $item->id) }}" method="POST" class="form-desbanir">
                         @csrf
                         @method('PATCH')
-
-                        <h2 class="ban-title">Desbanir <p class="verde">{{ $item->user }}</p>
                         </h2>
 
                         <div class="bottom-desbanir">
                             <button type="submit" onclick="return confirm('Tem certeza que deseja desbanir?')" class="btn-desbanir-usuario">
-                                Desbanir usuário
+                                Confirmar Desbanimento
                             </button>
                         </div>
                     </form>

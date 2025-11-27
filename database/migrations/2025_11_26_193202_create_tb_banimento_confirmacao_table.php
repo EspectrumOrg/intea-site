@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_banimento', function (Blueprint $table) {
+        Schema::create('tb_banimento_confirmacao', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('tb_usuario')->onDelete('cascade');
+            $table->foreignId('id_usuario_banido')->constrained('tb_usuario')->onDelete('cascade');
             $table->foreignId('id_admin')->constrained('tb_usuario')->onDelete('cascade');
             $table->text('infracao');
-            $table->text('motivo')->nullable();
-            $table->foreignId('id_postagem')->nullable()->constrained('tb_postagem')->onDelete('set null');
-            $table->foreignId('id_comentario')->nullable()->constrained('tb_comentario')->onDelete('set null');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_banimento');
+        Schema::dropIfExists('tb_banimento_confirmacao');
     }
 };

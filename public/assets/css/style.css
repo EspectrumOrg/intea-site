@@ -96,3 +96,9 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
     background: var(--azul);
 }
+
+@media (max-width: 600px) {
+    body {
+        padding-bottom: calc(10vh + 16px); /* esse +16 é a distância do conteúdo pro footer quando ele tiver o mais pra baixo possível, pode mudar*/
+    }
+}

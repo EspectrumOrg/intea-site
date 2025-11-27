@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Postagem;
 use App\Models\Comentario;
+use \App\Models\Tendencia;
 use App\Models\ImagemComentario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -73,16 +74,36 @@ class ComentarioController extends Controller
             'usuario',
             'image',
             'postagem.usuario',
+            'respostas' => function ($q) {
+                $q->whereHas('usuario', function ($q2) {
+                    $q2->where('status_conta', 1);
+                });
+            },
             'respostas.usuario',
-            'respostas.image'
-        ])->findOrFail($id);
+            'respostas.image',
+        ])
+            ->whereHas('usuario', function ($q) {
+                $q->where('status_conta', 1);
+            })
+            ->findOrFail($id);
 
         $posts = Postagem::withCount('curtidas')
+            ->whereHas('usuario', function ($q) {
+                $q->where('status_conta', 1);
+            })
+            ->where('bloqueada_auto', false)
+            ->where('removida_manual', false)
             ->orderByDesc('curtidas_count') // mais curtidas primeiro
             ->take(5) // pega só os 5 mais curtidos
             ->get();
 
-        $tendenciasPopulares = \App\Models\Tendencia::populares(5)->get();
+        $tendenciasPopulares = Tendencia::populares(5)
+            ->whereHas('postagens', function ($q) {
+                $q->whereHas('usuario', function ($q2) {
+                    $q2->where('status_conta', 1);
+                });
+            })
+            ->get();
 
         return view('feed.post.focus-comentario', compact('comentario', 'posts', 'tendenciasPopulares'));
     }

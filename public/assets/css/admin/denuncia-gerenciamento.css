@@ -12,7 +12,7 @@ body {
 }
 
 .denuncia-inner {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -185,8 +185,8 @@ body {
 
 .modal-header .titulo {
     display: flex;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--preto);
 }
 
@@ -241,13 +241,14 @@ body {
 
 .tab {
     flex: 1;
-    padding: .7rem;
+    padding: 1rem;
     text-align: center;
     cursor: pointer;
     background: var(--branco);
     border: none;
     border-bottom: 1px solid var(--branco);
     font-weight: 600;
+    font-size: 18px;
     transition: .3s;
 }
 
@@ -280,7 +281,7 @@ body {
     background: var(--vermelho);
     border: none;
     padding: .7rem 1rem;
-    border-radius: 25px / 100%;
+    border-radius: 37px / 100%;
     font-weight: 600;
     color: var(--branco);
     cursor: pointer;
@@ -294,8 +295,8 @@ body {
 .ban-title {
     display: flex;
     flex-direction: row;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     margin-bottom: 1rem;
 }
 
@@ -364,9 +365,10 @@ body {
 
 /* Campos e formulários */
 .form-label {
-    font-weight: 600;
-    color: var(--preto);
+    font-weight: 500;
+    color: #666;
     margin: .75rem 0 .5rem 0;
+    font-size: 18px;
     display: block;
 }
 
@@ -380,7 +382,6 @@ body {
     resize: none;
     transition: border-color 0.3s ease;
     background-color: var(--branco);
-    margin-left: 1rem;
 }
 
 
@@ -441,36 +442,34 @@ body {
 
 /* botão de marcar como resolvida*/
 .btn-resolver {
-    border-radius: 25px / 100%;
-    padding: 0.4rem 0.8rem;
-    background-color: var(--branco);
-    color: var(--verde);
+    border-radius: 37px / 100%;
+    padding: .7rem 1rem;
+    background-color: var(--verde);
+    color: var(--branco);
     border: 1px solid var(--verde);
     transition: .5s;
     font-size: 16px;
 }
 
 .btn-resolver:hover {
-    background-color: var(--verde);
-    color: var(--branco);
+    background-color: var(--verde-apagado);
 }
 
 /* Detalhes */
 .corpo-visualizar .detalhes-container {
-    background: #fff;
+    background: var(--branco);
     padding: 1.3rem 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
     margin-bottom: 1.5rem;
-    border: 1px solid #eee;
 }
 
 /* Título */
 .corpo-visualizar .detalhes-container h1 {
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--preto);
 }
 
 .corpo-visualizar .detalhes-container p {
@@ -487,17 +486,33 @@ body {
 }
 
 .corpo-visualizar .detalhes-container hr {
-    margin: 1rem 0;
-    border: none;
-    border-top: 1px solid #ddd;
+    margin: 1rem 1rem 1rem 0;
+    border: 1px solid var(--branco-light);
+}
+
+.corpo-visualizar .detalhes-container .dados-denuncia {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin-bottom: 1.5rem;
+}
+
+.corpo-visualizar .detalhes-container p {
+    color: var(--preto);
+    font-size: 20px;
+}
+
+.corpo-visualizar .detalhes-container .titulo-info {
+    color: #333;
+    font-size: 18px;
 }
 
 /* ----- Outras Denúncias ----- */
 .corpo-visualizar .outras-denuncias h1 {
-    font-size: 18px;
-    margin-bottom: .7rem;
+    font-size: 24px;
+    margin-bottom: 1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--preto);
 }
 
 .corpo-visualizar .outras-denuncias ul {

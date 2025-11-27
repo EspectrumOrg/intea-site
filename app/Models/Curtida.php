@@ -31,4 +31,11 @@ class Curtida extends Model
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
+
+    public function scopeApenasDeUsuariosAtivos($query)
+    {
+        return $query->whereHas('usuario', function ($q) {
+            $q->where('status_conta', 1);
+        });
+    }
 }

@@ -12,7 +12,7 @@ body {
 }
 
 .usuario-inner {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
@@ -211,11 +211,12 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    padding: 2rem 0 .5rem 0;
-    width: 90%;
-    max-width: 600px;
+    padding: 0.5rem 0 .5rem 0;
+    max-width: 700px !important;
     color: var(--preto);
     animation: fadeInModal 0.25s ease;
+    max-height: 80vh;
+    width: 90% !important;
 }
 
 /* Cabeçalho principal */
@@ -230,8 +231,8 @@ body {
 
 .modal-header .titulo {
     display: flex;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--preto);
 }
 
@@ -262,6 +263,13 @@ body {
     color: var(--vermelho);
 }
 
+.text-center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+}
+
 .corpo-visualizar {
     display: flex;
     flex-direction: column;
@@ -276,6 +284,40 @@ body {
     border: 1px solid var(--azul) !important;
 }
 
+.ao-lado-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+}
+
+.ao-lado-foto h6 {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--preto);
+}
+
+.ao-lado-foto p {
+    font-size: 20px;
+    font-weight: 500;
+    color: #666;
+}
+
+/* status user*/
+.status-user p {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 18px;
+}
+
+.status-user .vermelho {
+    color: var(--vermelho);
+}
+
+.status-user .verde {
+    color: var(--verde);
+}
 
 /* TABS ---------------------------------------------------------------------*/
 .tabs {
@@ -286,13 +328,14 @@ body {
 
 .tab {
     flex: 1;
-    padding: .7rem;
+    padding: 1rem;
     text-align: center;
     cursor: pointer;
     background: var(--branco);
     border: none;
     border-bottom: 1px solid var(--branco);
     font-weight: 600;
+    font-size: 18px;
     transition: .3s;
 }
 
@@ -322,19 +365,19 @@ body {
 /* Botão de banir */
 .btn-banir {
     margin-top: 1rem;
-    background: var(--branco);
+    background: var(--vermelho);
     border: none;
     border: 1px solid var(--vermelho);
     padding: .7rem 1rem;
-    border-radius: 25px / 100%;
+    border-radius: 50px / 100%;
     font-weight: 600;
-    color: var(--vermelho);
+    color: var(--branco);
     cursor: pointer;
     transition: .3s;
 }
 
 .btn-banir:hover {
-    background-color: var(--vermelho);
+    background-color: var(--vermelho-apagado);
     color: var(--branco)
 }
 
@@ -343,40 +386,34 @@ body {
     display: flex;
     width: 100%;
     justify-content: flex-end;
-    padding: .5rem 1rem;
+    padding: .5rem 5rem;
 }
 
 .btn-desbanir-usuario {
     margin-top: 1rem;
     width: fit-content;
-    background: var(--branco);
+    background: var(--verde);
     border: none;
     border: 1px solid var(--verde);
     padding: .7rem 1rem;
-    border-radius: 25px / 100%;
+    border-radius: 50px / 100%;
     font-weight: 600;
-    color: var(--verde);
+    color: var(--branco);
     cursor: pointer;
     transition: .3s;
 }
 
 .btn-desbanir-usuario:hover {
-    background-color: var(--verde);
+    background-color: var(--verde-apagado);
     color: var(--branco);
 }
 
 .ban-title {
     display: flex;
     flex-direction: row;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     margin-bottom: 1rem;
-}
-
-.ban-title .sublinhado {
-    margin: 0 4px;
-    text-decoration: underline;
-    color: var(--vermelho);
 }
 
 .ban-title .verde {
@@ -401,7 +438,6 @@ body {
     border-radius: 50%;
     display: block;
     object-fit: cover;
-    margin: 0 auto;
 }
 
 .modal-body .conteudo-modal {
@@ -444,9 +480,10 @@ body {
 
 /* Campos e formulários */
 .form-label {
-    font-weight: 600;
-    color: var(--preto);
+    font-weight: 500;
+    color: #666;
     margin: .75rem 0 .5rem 0;
+    font-size: 18px;
     display: block;
 }
 
@@ -460,7 +497,6 @@ body {
     resize: none;
     transition: border-color 0.3s ease;
     background-color: var(--branco);
-    margin-left: 1rem;
 }
 
 
@@ -519,38 +555,20 @@ body {
 }
 
 
-/* botão de marcar como resolvida*/
-.btn-resolver {
-    border-radius: 25px / 100%;
-    padding: 0.4rem 0.8rem;
-    background-color: var(--branco);
-    color: var(--verde);
-    border: 1px solid var(--verde);
-    transition: .5s;
-    font-size: 16px;
-}
-
-.btn-resolver:hover {
-    background-color: var(--verde);
-    color: var(--branco);
-}
-
 /* Detalhes */
 .corpo-visualizar .detalhes-container {
-    background: #fff;
-    padding: 1.3rem 1.5rem;
+    background: var(--branco);
     border-radius: 10px;
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
-    margin-bottom: 1.5rem;
-    border: 1px solid #eee;
+    margin: .5rem 0;
+    border: none;
 }
 
 /* Título */
 .corpo-visualizar .detalhes-container h1 {
-    font-size: 20px;
+    font-size: 24px;
     margin-bottom: 1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--preto);
 }
 
 .corpo-visualizar .detalhes-container p {
@@ -560,39 +578,72 @@ body {
     font-size: 15px;
 }
 
-.corpo-visualizar .detalhes-container strong {
-    width: 120px;
-    font-weight: 600;
-    color: #444;
+.corpo-visualizar .detalhes-container .dados-usuario {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+}
+
+.corpo-visualizar .detalhes-container p {
+    color: var(--preto);
+    font-size: 20px;
+}
+
+.corpo-visualizar .detalhes-container .titulo-info {
+    color: #333;
+    font-size: 18px;
 }
 
 .corpo-visualizar .detalhes-container hr {
-    margin: 1rem 0;
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--branco-light);
+    margin-right: 2rem;
 }
 
-/* ----- Outras Denúncias ----- */
-.corpo-visualizar .outras-denuncias h1 {
-    font-size: 18px;
-    margin-bottom: .7rem;
+.sem-contatos {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+.sem-contatos p {
+    color: #666 !important;
+    font-size: 20px !important;
+}
+
+/* parte desbanir */
+.content-desbanir {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 3rem;
+}
+
+.content-desbanir span {
+    font-size: 150px;
+    color: var(--verde);
+}
+
+.content-desbanir h3 {
+    font-size: 24px;
+    color: var(--preto);
     font-weight: 600;
-    color: #333;
 }
 
-.corpo-visualizar .outras-denuncias ul {
-    margin-left: 1rem;
+.content-desbanir p {
+    font-size: 20px;
+    color: var(--preto);
+    text-align: center;
 }
 
-.corpo-visualizar .outras-denuncias li {
-    margin: .3rem 0;
-    font-size: 14.5px;
-    color: #444;
-}
-
-.corpo-visualizar .outras-denuncias p {
-    font-size: 14.5px;
-    color: #666;
+.content-desbanir .email-user {
+    color: var(--azul);
+    font-size: 20px;
 }
 
 
