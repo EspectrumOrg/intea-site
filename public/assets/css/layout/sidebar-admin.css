@@ -829,3 +829,127 @@
 .nav-link.vermelho.active span {
     color: var(--vermelho);
 }
+
+@media (max-width: 1024px) {
+    links .nav-link:hover,
+    .admin .links .nav-link:hover {
+        transform: translate(7.5px, -4px);
+    }
+
+    .links .nav-link:hover .material-symbols-outlined::after,
+    .admin .links .nav-link:hover .material-symbols-outlined::after {
+        transform: translateY(-4px);
+    }
+}
+
+@media (max-width: 764px) {
+     /* Parte tablet */
+    .admin .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        min-width: 100vw;
+        max-height: 10vh;
+        height: 10vh;
+        z-index: 1000;
+        background-color: brown;
+    }
+
+    .admin-topo .foto-administrador {
+        display: none;
+    }
+
+    /* Base dos links ADM*/
+    .admin .links .nav-link {
+        min-block-size: 2rem;
+        max-block-size: 2.6rem;
+        border-radius: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        object-fit: contain;
+    }
+
+    .admin .links .nav-link span,
+    .links .nav-link span {
+        font-size: 2.8rem;
+    }
+
+    .admin .links .nav-link:hover,
+    .links .nav-link:hover {
+        transform: translate(5px, -3px);
+    }
+
+    .admin .links .nav-link:hover .material-symbols-outlined::after,
+    .links .nav-link:hover .material-symbols-outlined::after {
+        transform: translateY(-3px);
+    }
+
+}
+
+@media (max-width: 600px) {
+    /* Parte mobile*/
+    .admin .content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: fixed;
+        top: 90vh;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        min-width: 100vw;
+        max-height: 10vh;
+        height: 10vh;
+        z-index: 1000;
+        background-color: brown;
+    }
+
+    .admin-topo {
+        display: none;
+    }
+
+    .admin .links {
+        max-width: 90%;
+        min-width: 78vw;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        margin: auto;
+        padding: 0;
+        gap: 0.3rem;
+    }
+
+    .admin .links h1 {
+        display: none;
+    }
+
+    .admin .links .nav-link {
+        min-block-size: 2rem;
+        max-block-size: 2.6rem;
+        border-radius: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        object-fit: contain;
+    }
+
+    .admin .links .nav-link span,
+    .links .nav-link span {
+        font-size: 2.2rem;
+    }
+
+    .links .nav-link:hover,
+    .admin .links .nav-link:hover {
+        transform: translate(7.5px, -4px);
+    }
+
+    .links .nav-link:hover .material-symbols-outlined::after,
+    .admin .links .nav-link:hover .material-symbols-outlined::after {
+        transform: translateY(-4px);
+    }
+}

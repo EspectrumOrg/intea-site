@@ -1065,16 +1065,6 @@
 
 
 @media (max-width: 764px) {
-    /* Base dos links ADM*/
-    .admin .links .nav-link {
-
-    }
-
-
-
-
-    /* fim ADM*/
-    
     .container-sidebar {
         display: flex;
         flex-direction: row;
@@ -1162,18 +1152,23 @@
         height: 10vh;
         padding: 0.2rem 0.7rem;
         margin: 0;
-        background-color: rgb(58, 5, 58);
+        background-color: var(--branco);
     }
 
     .content .logo {
+        max-width: fit-content;
+        max-height: fit-content;
         margin: 0;
-        background-color: var(--branco);
         padding: 0;
-        width: fit-content;
     }
 
     .content .logo img {
-        size: 1rem;
+        max-width: 15vw;
+        width: 15vw;
+        max-height: 4rem;
+        height: 3rem;
+        object-fit: contain;
+        image-rendering: optimizeQuality;
         margin: 0;
         padding: 0;
     }
@@ -1190,6 +1185,7 @@
         justify-content: space-between;
         padding: 0;
         margin: 0;
+        gap: 0.3rem;
     }
 
     /*.content .links:nth-of-type:hover {
