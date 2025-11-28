@@ -37,8 +37,7 @@
         </a>
 
         <a href="{{ route('post.index') }}" 
-        class="nav-link vermelho {{ request()->routeIs('post.index') ? 'active' : '' }}" 
-        id="feed">
+        class="nav-link vermelho {{ request()->routeIs('post.index') ? 'active' : '' }}"  id="feed">
             <span class="material-symbols-outlined">arrow_back</span>
             <h1>Voltar</h1>
         </a>

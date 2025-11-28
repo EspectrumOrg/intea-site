@@ -40,7 +40,12 @@
 
         <!-- Lado direito: chat -->
         <div class="chat-window">
-            <div class="top">
+            <div class="top"> 
+                    <div id="btn-fechar-chat" >
+            <a href="{{ route('chat.dashboard') }}" class="botao-voltar-chat">
+                <span class="material-symbols-outlined">arrow_back</span>
+            </a>
+        </div>
                 <img id="avatar-destinatario" src="">
                 <div class="sem-usuario">
                     <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
@@ -110,6 +115,8 @@ function appendMensagem(data) {
 // Função para abrir chat via AJAX
 function abrirChat(usuarioId) {
     usuarioSelecionado = usuarioId;
+    $("#btn-fechar-chat").show();
+
 
     $.ajax({
         url: "{{ route('chat.carregar') }}",
@@ -123,7 +130,7 @@ function abrirChat(usuarioId) {
             }
 
             $("#nome-destinatario").text(res.usuario.user);
-            $("#status-destinatario").text('Online');
+           
 
             $("#messages").html('');
             res.mensagens.forEach(msg => appendMensagem(msg));
@@ -211,6 +218,8 @@ function getQueryParam(param) {
 
 $(document).ready(function() {
     const usuario2 = getQueryParam('usuario2');
+    $("#btn-fechar-chat").hide();
+
     if(usuario2) {
         abrirChat(usuario2);
     }
