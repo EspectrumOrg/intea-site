@@ -441,6 +441,7 @@
 .bottom #chatForm button:active {
     transform: scale(0.975);
 }
+ 
 
 /* ===== Estado inicial ===== */
 #nome-destinatario {
