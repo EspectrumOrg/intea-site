@@ -14,7 +14,7 @@
     padding: .75rem 2.5rem;
     font-size: clamp(0.6rem, 1vw + 0.6rem, 1.05rem);
     background-color: var(--branco);
-    color: var(--branco-light);
+    color: var(--preto);
     border-radius: 50px / 100%;
     border: 2px solid var(--branco-light);
     transition: .3s;

@@ -184,7 +184,7 @@
                     ?? $item->comentario->usuario;
                     @endphp
 
-                    <form action="{{ route('usuario.destroy', $usuarioAlvo->id) }}" method="POST" class="form-banimento">
+                    <form action="{{ route('usuario.destroyDenuncia', $usuarioAlvo->id) }}" method="POST" class="form-banimento">
                         @csrf
                         @method('DELETE')
 

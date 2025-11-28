@@ -186,6 +186,51 @@ class UsuarioController extends Controller
             // Enviar email pro user
             Mail::to($usuario->email)->send(new \App\Mail\BanimentoMail($banimento));
 
+            // Marca usuário como banido
+            $usuario->status_conta = 2;
+
+            // 1 - Denúncias onde o DENUNCIADO é o usuário (denúncia direta)
+            Denuncia::where('id_usuario_denunciado', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 2 - Denúncias feitas POR esse usuário
+            Denuncia::where('id_usuario_denunciante', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 3 - Denúncias feitas contra POSTAGENS do usuário
+            Denuncia::whereIn('id_postagem', $usuario->postagens()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 4 - Denúncias feitas contra COMENTÁRIOS do usuário
+            Denuncia::whereIn('id_comentario', $usuario->comentarios()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
+
+            $usuario->save();
+
+            return redirect()->back()->with("warning", "Usuário banido, conteúdo removido do site.");
+        } else { //Caso Administrador Chef;
+            return redirect()->back()->with("warning", "Usuário principal não pode ser banido.");
+        }
+    }
+
+    public function destroyDenuncia(Request $request, $id)
+    {
+        if ($id != 1) {
+            $usuario = Usuario::findOrFail($id);
+
+            // Registra a mensagem de banimento -------------(Importante!)
+            $banimento = Banimento::create([
+                'id_usuario' => $usuario->id,
+                'id_admin' => auth()->id(),
+                'infracao' => $request->infracao,
+                'motivo' => $request->motivo,
+                'id_postagem' => $request->id_postagem,
+                'id_comentario' => $request->id_comentario,
+            ]);
+
+            // Enviar email pro user
+            Mail::to($usuario->email)->send(new \App\Mail\BanimentoMail($banimento));
+
             $usuarioDenunciante = Usuario::findOrFail($request->denunciante);
 
             $banimentoConfirmacao = BanimentoConfirmacao::create([
@@ -219,11 +264,9 @@ class UsuarioController extends Controller
 
             $usuario->save();
 
-            session()->flash("warning", "Usuário banido, conteúdo removido do site.");
-            return redirect()->back();
-        } else { //Caso Administrador Chefe
-            session()->flash("error", "O usuário principal não pode ser banido!");
-            return redirect()->back();
+            return redirect()->back()->with("warning", "Usuário banido, conteúdo removido do site.");
+        } else { //Caso Administrador Chef;
+            return redirect()->back()->with("warning", "Usuário principal não pode ser banido.");
         }
     }
 
