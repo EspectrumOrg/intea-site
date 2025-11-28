@@ -13,7 +13,7 @@
     </div>
 
     <div class="criar-interesse-container">
-        <form action="{{ route('interesses.store') }}" method="POST" enctype="multipart/form-data" class="criar-interesse-form">
+        <form action="{{ route('interesses.store') }}" method="POST" enctype="multipart/form-data" class="criar-interesse-form" id="interesseForm">
             @csrf
 
             <!-- Nome do Interesse -->
@@ -55,11 +55,11 @@
                 
                 <div class="icone-option-type">
                     <label>
-                        <input type="radio" name="icone_type" value="default" checked>
+                        <input type="radio" name="icone_type" value="default" checked id="icone_type_default">
                         Usar ícone padrão
                     </label>
                     <label>
-                        <input type="radio" name="icone_type" value="custom">
+                        <input type="radio" name="icone_type" value="custom" id="icone_type_custom">
                         Upload de ícone customizado
                     </label>
                 </div>
@@ -117,11 +117,11 @@
                 
                 <div class="cor-option-type">
                     <label>
-                        <input type="radio" name="cor_type" value="predefinida" checked>
+                        <input type="radio" name="cor_type" value="predefinida" checked id="cor_type_predefinida">
                         Cores predefinidas
                     </label>
                     <label>
-                        <input type="radio" name="cor_type" value="personalizada">
+                        <input type="radio" name="cor_type" value="personalizada" id="cor_type_personalizada">
                         Cor personalizada
                     </label>
                 </div>
@@ -236,12 +236,21 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentIconType === 'default') {
                 iconesPadraoContainer.style.display = 'block';
                 iconeCustomContainer.style.display = 'none';
+                // Garante que um ícone padrão esteja selecionado
                 if (!document.querySelector('input[name="icone"]:checked')) {
                     document.querySelector('input[name="icone"]').checked = true;
                 }
+                // Limpa o arquivo customizado
+                iconeCustomInput.value = '';
+                customIconUrl = null;
+                iconePreview.innerHTML = '';
             } else {
                 iconesPadraoContainer.style.display = 'none';
                 iconeCustomContainer.style.display = 'block';
+                // Limpa qualquer seleção de ícone padrão
+                document.querySelectorAll('input[name="icone"]').forEach(input => {
+                    input.checked = false;
+                });
             }
             
             atualizarPreview();
@@ -268,10 +277,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Preview do ícone customizado
+    // Preview do ícone customizado - FUNCIONANDO
     iconeCustomInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
+            // Validações
             if (file.size > 1024 * 1024) {
                 alert('O arquivo é muito grande. Máximo 1MB permitido.');
                 this.value = '';
@@ -288,10 +298,18 @@ document.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 customIconUrl = e.target.result;
-                iconePreview.innerHTML = `<img src="${customIconUrl}" alt="Ícone customizado">`;
+                
+                // Preview na área de upload
+                iconePreview.innerHTML = `<img src="${customIconUrl}" alt="Preview do ícone" style="width: 60px; height: 60px; object-fit: contain; border-radius: 12px; border: 2px solid #e5e7eb;">`;
+                
+                // Atualiza o preview principal
                 atualizarPreview();
             };
             reader.readAsDataURL(file);
+        } else {
+            customIconUrl = null;
+            iconePreview.innerHTML = '';
+            atualizarPreview();
         }
     });
 
@@ -300,41 +318,74 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function atualizarPreview() {
         // Nome
-        document.getElementById('previewNome').textContent = 
-            nomeInput.value || 'Nome do Interesse';
+        const previewNome = document.getElementById('previewNome');
+        if (previewNome) {
+            previewNome.textContent = nomeInput.value || 'Nome do Interesse';
+        }
         
         // Descrição
-        document.getElementById('previewDescricao').textContent = 
-            descricaoInput.value || 'Descrição do interesse aparecerá aqui';
+        const previewDescricao = document.getElementById('previewDescricao');
+        if (previewDescricao) {
+            previewDescricao.textContent = descricaoInput.value || 'Descrição do interesse aparecerá aqui';
+        }
         
-        // Ícone
+        // Ícone - FUNCIONANDO
         const previewIcon = document.getElementById('previewIcon');
-        
-        if (currentIconType === 'default') {
-            const iconeSelecionado = document.querySelector('input[name="icone"]:checked');
-            if (iconeSelecionado) {
-                previewIcon.innerHTML = 
-                    `<span class="material-symbols-outlined">${iconeSelecionado.value}</span>`;
-            }
-        } else {
-            if (customIconUrl) {
-                previewIcon.innerHTML = `<img src="${customIconUrl}" alt="Ícone customizado">`;
+        if (previewIcon) {
+            // Limpa o conteúdo anterior
+            previewIcon.innerHTML = '';
+            
+            if (currentIconType === 'default') {
+                // Ícone padrão
+                const iconeSelecionado = document.querySelector('input[name="icone"]:checked');
+                const iconValue = iconeSelecionado ? iconeSelecionado.value : 'smartphone';
+                
+                const iconElement = document.createElement('span');
+                iconElement.className = 'material-symbols-outlined';
+                iconElement.textContent = iconValue;
+                iconElement.style.fontSize = '2rem';
+                previewIcon.appendChild(iconElement);
+                
             } else {
-                previewIcon.innerHTML = '<span class="material-symbols-outlined">image</span>';
+                // Ícone customizado
+                if (customIconUrl) {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = customIconUrl;
+                    imgElement.alt = 'Ícone customizado';
+                    imgElement.style.width = '40px';
+                    imgElement.style.height = '40px';
+                    imgElement.style.objectFit = 'contain';
+                    imgElement.style.borderRadius = '8px';
+                    previewIcon.appendChild(imgElement);
+                } else {
+                    // Placeholder quando não há imagem
+                    const iconElement = document.createElement('span');
+                    iconElement.className = 'material-symbols-outlined';
+                    iconElement.textContent = 'image';
+                    iconElement.style.fontSize = '2rem';
+                    previewIcon.appendChild(iconElement);
+                }
             }
         }
         
         // Cor
-        let corSelecionada;
-        if (currentCorType === 'predefinida') {
-            corSelecionada = document.querySelector('input[name="cor"]:checked');
-        } else {
-            corSelecionada = { value: corPersonalizadaInput.value };
-        }
-        
-        if (corSelecionada) {
-            previewIcon.style.color = corSelecionada.value;
-            document.getElementById('previewHeader').style.backgroundColor = corSelecionada.value + '20';
+        const previewHeader = document.getElementById('previewHeader');
+        if (previewHeader && previewIcon) {
+            let corSelecionada;
+            if (currentCorType === 'predefinida') {
+                corSelecionada = document.querySelector('input[name="cor"]:checked');
+            } else {
+                corSelecionada = { value: corPersonalizadaInput.value };
+            }
+            
+            if (corSelecionada && corSelecionada.value) {
+                // Aplica cor apenas aos ícones de material (não às imagens)
+                const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
+                if (materialIcon) {
+                    materialIcon.style.color = corSelecionada.value;
+                }
+                previewHeader.style.backgroundColor = corSelecionada.value + '20';
+            }
         }
     }
 
@@ -410,13 +461,13 @@ document.addEventListener('DOMContentLoaded', function() {
     display: none;
 }
 
+.icone-option input[type="radio"]:checked + .material-symbols-outlined {
+    color: #3b82f6;
+}
+
 .icone-option input[type="radio"]:checked {
     border-color: #3b82f6;
     background: #eff6ff;
-}
-
-.icone-option input[type="radio"]:checked + .material-symbols-outlined {
-    color: #3b82f6;
 }
 
 .icone-option .material-symbols-outlined {
@@ -451,17 +502,35 @@ document.addEventListener('DOMContentLoaded', function() {
     width: 100%;
 }
 
+.icone-preview {
+    margin-top: 15px;
+}
+
 .icone-preview img {
     width: 60px;
     height: 60px;
     object-fit: contain;
     border-radius: 12px;
+    border: 2px solid #e5e7eb;
+}
+
+.preview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
 }
 
 .preview-icon img {
     width: 40px;
     height: 40px;
     object-fit: contain;
+    border-radius: 8px;
+}
+
+.preview-icon .material-symbols-outlined {
+    font-size: 2rem;
 }
 
 /* Cores */
@@ -528,6 +597,38 @@ document.addEventListener('DOMContentLoaded', function() {
 .color-picker::-moz-color-swatch {
     border: none;
     border-radius: 6px;
+}
+
+/* Preview do interesse */
+.preview-card {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #f9fafb;
+    max-width: 300px;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #3b82f620;
+}
+
+.preview-header h3 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 1.2rem;
+}
+
+.preview-stats {
+    display: flex;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
 }
 
 @media (max-width: 1024px) {
