@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/feed/postagem-read/create-comentario-read.css') }}">
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <div class="layout">
         <div class="container-content">
             <!-- conteúdo sidebar  -->
