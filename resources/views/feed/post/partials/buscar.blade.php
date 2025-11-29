@@ -6,7 +6,7 @@
         class="input-barra-pesquisa"
         type="text" 
         id="buscar" 
-        placeholder="Buscar">
+        placeholder="Buscar usuários">
         <span class="material-symbols-outlined">search</span>
     <div id="listaUsuarios" class="user-list"></div>
 </div>

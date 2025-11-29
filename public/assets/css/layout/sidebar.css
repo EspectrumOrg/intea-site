@@ -31,15 +31,14 @@
 }
 
 .container-sidebar .logo a img {
-    width: 75px;
+    width: 100px;
     border-radius: 50%;
-    padding: .25rem;
-    transition: .7s;
     cursor: pointer;
+    transition: .3s ease-in-out;
 }
 
 .container-sidebar .logo a:hover img {
-    background-color: var(--cinza-texto);
+    transform: translateY(2.5px);
 }
 
 /* container de info do usuário ---------------------------------------------------------------*/
@@ -431,6 +430,7 @@
 .links a:nth-of-type(8).active .material-symbols-outlined::after {
     width: 100%;
 }
+
 .links .nav-link h1 {
     font-size: 16px;
 }
@@ -642,7 +642,7 @@
             transition: width 0.4s ease-in-out;
         }
     }
-    
+
     &:hover {
         transform: translateX(7.5px);
         color: var(--amarelo);
@@ -956,22 +956,22 @@
     .config-section {
         margin: 16px 0;
     }
-    
+
     .config-section h3 {
         padding: 16px 20px;
         font-size: 1.1rem;
     }
-    
+
     .setting-item {
         padding: 20px;
         flex-direction: column;
         gap: 16px;
     }
-    
+
     .setting-info {
         padding-right: 0;
     }
-    
+
     .switch {
         align-self: flex-start;
         margin-top: 0;
@@ -999,56 +999,215 @@
 }
 
 
+/* responsività della sidebar (anche "footer") in generale */
 @media (max-width: 1024px) {
-    .dropdown-checar-perfil {
-
-    }
-    
-    .nav-link {
-
+    .container-sidebar {
+        border-right: 1px solid var(--branco-light);
+        box-sizing: border-box;
+        max-width: 280px;
     }
 
-    .post-button {
-
+    .container-sidebar .content {
+        max-width: 280px;
     }
+
+    .container-sidebar .info {
+        padding: .5rem 1rem;
+        margin-right: 1rem;
+        border-radius: 50px / 100%;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    /* textos */
+    .container-sidebar .info .text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 0 0 0 .5rem;
+    }
+
+    .container-sidebar .info .text h5 {
+        font-size: 18px;
+        font-weight: bold;
+        color: var(--cor-preto);
+    }
+
+    .container-sidebar .info .text h4 {
+        font-size: 14px;
+        color: var(--cor-fundo);
+    }
+
+    .dropdown-checar-perfil {}
+
+    .nav-link {}
+
+    .post-button {}
 }
+
+
+
+
 
 @media (max-width: 764px) {
-    .container-sidebar .content {
+    .container-sidebar {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
     }
-    
-    .dropdown-checar-perfil {
 
+    /* textos */
+    .container-sidebar .info .text {
+        padding: 0 0 0 .25rem;
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
+        color: var(--cor-fundo);
     }
-    
-    .nav-link {
 
+    .container-sidebar .info .text h5 {
+        font-size: 1.1rem;
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
+        font-weight: bold;
+        color: var(--cor-preto);
+    }
+
+    .container-sidebar .info .text h4 {
+        font-size: 0.8rem;
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
+        color: var(--cor-fundo);
+    }
+
+    .dropdown-checar-perfil {
+        max-width: 130px;
+        padding: 0.2rem;
+        margin: 0;
+        text-align: left;
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
+    }
+
+    .dropdown-checar-perfil a {
+        margin: 0;
+    }
+
+    .nav-link {
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
     }
 
     .post-button {
-
+        max-width: 110px;
+        font-size: 0.6rem;
     }
 }
 
+
+
+
+
 @media (max-width: 600px) {
-    .container-sidebar .content {
+    .container-sidebar {
         display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        padding: 0;
+        min-width: 100vw;
+        max-height: 10vh;
+        height: 10vh;
+        z-index: 1000;
+        background-color: brown;
+    }
+
+    .container-sidebar .content {
+        display: inline-flex;
         flex-direction: row;
-        justify-content: flex-end;
+        justify-content: space-around;
+        box-sizing: content-box;
+        min-width: 98vw;
+        width: 100vw;
+        height: 10vh;
+        padding: 0.2rem 0.7rem;
+        margin: 0;
+        background-color: rgb(58, 5, 58);
     }
 
-    .dropdown-checar-perfil {
-
+    .content .logo {
+        margin: 0;
+        background-color: var(--branco);
+        padding: 0;
+        width: fit-content;
     }
-    
-    .nav-link {
 
+    .content .logo img {
+        size: 1rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container-sidebar .info {
+        display: none;
+    }
+
+    .content .links {
+        max-width: 90%;
+        min-width: 78vw;
+        display: inline-flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0;
+        margin: 0;
+    }
+
+    /*.content .links:nth-of-type:hover {
+        transform: none;
+        transition: none;
+    }
+    .content .links:active {
+        transform: none;
+        transition: none;
+    }*/
+
+
+    .content .links a {
+        min-block-size: 2rem;
+        max-block-size: 2.6rem;
+        border-radius: 0;
+        padding: 0;
+        border: none;
+        outline: none;
+        object-fit: contain;
+    }
+
+    .nav-link h1 {
+        display: none;
     }
 
     .post-button {
-
+        display: none;
     }
 }

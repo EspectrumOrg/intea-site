@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('slug')->unique();
             $table->string('icone')->nullable();
+            $table->string('icone_custom')->nullable(); // NOVA COLUNA
             $table->string('cor')->default('#3B82F6');
             $table->text('descricao')->nullable();
             $table->text('sobre')->nullable();
@@ -56,7 +57,6 @@ return new class extends Migration
 
     public function down()
     {
-        // Remover na ordem inversa para evitar problemas de foreign key
         Schema::dropIfExists('interesse_moderadores');
         Schema::dropIfExists('interesse_usuario');
         Schema::dropIfExists('interesses');

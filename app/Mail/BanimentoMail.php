@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
@@ -20,7 +21,7 @@ class BanimentoMail extends Mailable
     public function build()
     {
         return $this->subject('Sua conta foi banida')
-                    ->view('components.mail.banimento')
-                    ->with(['banimento' => $this->banimento]);
+            ->view('components.mail.banimento')
+            ->with(['banimento' => $this->banimento]);
     }
 }

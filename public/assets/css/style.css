@@ -1,3 +1,5 @@
+@use 'variables';
+
 /* Reset básico e variáveis */
 * {
     margin: 0;
@@ -95,4 +97,21 @@ body::-webkit-scrollbar-track {
 
 body::-webkit-scrollbar-thumb {
     background: var(--azul);
+}
+
+@media (max-width: 600px) {
+    body {
+        padding-bottom: calc(10vh + 16px); /* esse +16 é a distância do conteúdo pro footer quando ele tiver o mais pra baixo possível, pode mudar*/
+    }
+}
+
+/* Modo Monochromatico */
+
+.monochrome  {
+    filter: grayscale(100%);
+}
+
+
+monochrome-img {
+    filter: grayscale(0%);
 }

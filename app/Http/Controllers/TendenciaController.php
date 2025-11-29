@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tendencia;
 use App\Models\Postagem;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -28,33 +29,36 @@ class TendenciaController extends Controller
      * Lista todas as tendências com pesquisa
      */
     public function index(Request $request)
-{
-    try {
-        Log::info('Acessando página de tendências', ['search' => $request->search]);
+    {
+        try {
+            Log::info('Acessando página de tendências', ['search' => $request->search]);
 
-        $query = Tendencia::query();
+            $query = Tendencia::whereHas('postagens', function ($q) {
+                $q->whereHas('usuario', function ($q2) {
+                    $q2->where('status_conta', 1);
+                });
+            });
 
-        // Aplica pesquisa
-        $this->aplicarPesquisa($query, $request->search);
+            // Aplica pesquisa
+            $this->aplicarPesquisa($query, $request->search);
 
-        $tendenciasPopulares = Tendencia::populares(7)->get();
+            $tendenciasPopulares = Tendencia::populares(7)->get();
 
-        $tendencias = $query->orderBy('contador_uso', 'desc')
-            ->orderBy('ultimo_uso', 'desc')
-            ->paginate(20)
-            ->appends($request->query());
+            $tendencias = $query->orderBy('contador_uso', 'desc')
+                ->orderBy('ultimo_uso', 'desc')
+                ->paginate(20)
+                ->appends($request->query());
 
-        Log::info('Tendências carregadas', ['count' => $tendencias->count()]);
+            Log::info('Tendências carregadas', ['count' => $tendencias->count()]);
 
-        return view('feed.tendencias.index', compact('tendencias', 'tendenciasPopulares'));
-        
-    } catch (\Exception $e) {
-        Log::error('Erro no controller de tendências: ' . $e->getMessage());
-        
-        $tendenciasPopulares = collect();
-        return view('feed.tendencias.index', compact('tendenciasPopulares'))->with('tendencias', []);
+            return view('feed.tendencias.index', compact('tendencias', 'tendenciasPopulares'));
+        } catch (\Exception $e) {
+            Log::error('Erro no controller de tendências: ' . $e->getMessage());
+
+            $tendenciasPopulares = collect();
+            return view('feed.tendencias.index', compact('tendenciasPopulares'))->with('tendencias', []);
+        }
     }
-}
     /**
      * API para buscar tendências
      */
@@ -122,6 +126,9 @@ class TendenciaController extends Controller
             $tendencia = Tendencia::where('slug', $slug)->firstOrFail();
 
             $postagens = Postagem::with(['usuario', 'imagens', 'tendencias'])
+                ->whereHas('usuario', function ($query1) {
+                    $query1->where('status_conta', 1);
+                })
                 ->whereHas('tendencias', function ($query) use ($tendencia) {
                     $query->where('tendencia_id', $tendencia->id);
                 })

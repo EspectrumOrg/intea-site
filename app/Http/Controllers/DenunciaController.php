@@ -57,7 +57,7 @@ class DenunciaController extends Controller
             'status_denuncia' => 'pendente',
         ];
 
-        // 🔹 Define o alvo conforme o tipo
+        // Define o alvo conforme o tipo
         switch ($request->tipo) {
             case 'usuario':
                 $dados['id_usuario_denunciado'] = $request->id_alvo;
@@ -95,21 +95,5 @@ class DenunciaController extends Controller
           ->update(['status_denuncia' => 'resolvida']);
 
         return back()->with('success', 'Denúncia resolvida com sucesso!');
-    }
-
-    /**
-     * Bane um usuário denunciado
-     */
-    public function banirUsuario($id)
-    {
-        if ($id == 1) {
-            return back()->with('warning', 'O usuário administrador não pode ser banido!');
-        }
-
-        $usuario = Usuario::findOrFail($id);
-        $usuario->status_conta = 2; // 2 = banido
-        $usuario->save();
-
-        return back()->with('warning', 'Usuário banido com sucesso!');
     }
 }

@@ -7,8 +7,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Usuario;
 use App\Models\Banimento;
+use App\Models\BanimentoConfirmacao;
 use App\Models\BanimentoReconsideracao;
 use App\Models\ChatPrivado;
+use App\Models\Denuncia;
 use App\Models\seguirModel;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
@@ -184,47 +186,87 @@ class UsuarioController extends Controller
             // Enviar email pro user
             Mail::to($usuario->email)->send(new \App\Mail\BanimentoMail($banimento));
 
-            // Exclui comentários do usuário
-            $usuario->comentarios()->delete();
+            // Marca usuário como banido
+            $usuario->status_conta = 2;
 
-            // Busca todas as postagens do usuário
-            $postagens = $usuario->postagens()->with('tendencias', 'curtidas')->get();
+            // 1 - Denúncias onde o DENUNCIADO é o usuário (denúncia direta)
+            Denuncia::where('id_usuario_denunciado', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
 
-            // Processa tendências: decrementa o contador de uso
-            foreach ($postagens as $postagem) {
-                foreach ($postagem->tendencias as $tendencia) {
-                    // Decrementa contador sem ir abaixo de 0
-                    $tendencia->contador_uso = max($tendencia->contador_uso - 1, 0);
-                    $tendencia->save();
-                }
+            // 2 - Denúncias feitas POR esse usuário
+            Denuncia::where('id_usuario_denunciante', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
 
-                // Exclui curtidas da postagem
-                $postagem->curtidas()->delete();
+            // 3 - Denúncias feitas contra POSTAGENS do usuário
+            Denuncia::whereIn('id_postagem', $usuario->postagens()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
 
-                // Desvincula tendências da postagem (pivot)
-                $postagem->tendencias()->detach();
+            // 4 - Denúncias feitas contra COMENTÁRIOS do usuário
+            Denuncia::whereIn('id_comentario', $usuario->comentarios()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
 
-                // Exclui a postagem
-                $postagem->delete();
-            }
+            $usuario->save();
 
-            // Limpa tendências sem postagens restantes
-            $tendencias = \App\Models\Tendencia::whereIn('id', $postagens->pluck('tendencias.*.id')->flatten())->get();
-            foreach ($tendencias as $tendencia) {
-                if ($tendencia->postagens()->count() === 0) {
-                    $tendencia->delete();
-                }
-            }
+            return redirect()->back()->with("warning", "Usuário banido, conteúdo removido do site.");
+        } else { //Caso Administrador Chef;
+            return redirect()->back()->with("warning", "Usuário principal não pode ser banido.");
+        }
+    }
+
+    public function destroyDenuncia(Request $request, $id)
+    {
+        if ($id != 1) {
+            $usuario = Usuario::findOrFail($id);
+
+            // Registra a mensagem de banimento -------------(Importante!)
+            $banimento = Banimento::create([
+                'id_usuario' => $usuario->id,
+                'id_admin' => auth()->id(),
+                'infracao' => $request->infracao,
+                'motivo' => $request->motivo,
+                'id_postagem' => $request->id_postagem,
+                'id_comentario' => $request->id_comentario,
+            ]);
+
+            // Enviar email pro user
+            Mail::to($usuario->email)->send(new \App\Mail\BanimentoMail($banimento));
+
+            $usuarioDenunciante = Usuario::findOrFail($request->denunciante);
+
+            $banimentoConfirmacao = BanimentoConfirmacao::create([
+                'id_usuario' => $usuarioDenunciante->id,
+                'id_usuario_banido' => $usuario->id,
+                'id_admin' => auth()->id(),
+                'infracao' => $request->infracao,
+            ]);
+
+            // Enviar email pro user que fez a denuncia
+            Mail::to($usuarioDenunciante->email)->send(new \App\Mail\BanimentoConfirmacaoMail($banimentoConfirmacao));
 
             // Marca usuário como banido
             $usuario->status_conta = 2;
+
+            // 1 - Denúncias onde o DENUNCIADO é o usuário (denúncia direta)
+            Denuncia::where('id_usuario_denunciado', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 2 - Denúncias feitas POR esse usuário
+            Denuncia::where('id_usuario_denunciante', $usuario->id)
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 3 - Denúncias feitas contra POSTAGENS do usuário
+            Denuncia::whereIn('id_postagem', $usuario->postagens()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
+
+            // 4 - Denúncias feitas contra COMENTÁRIOS do usuário
+            Denuncia::whereIn('id_comentario', $usuario->comentarios()->pluck('id'))
+                ->update(['status_denuncia' => 'resolvida']);
+
             $usuario->save();
 
-            session()->flash("warning", "Usuário banido, conteúdo removido do site.");
-            return redirect()->back();
-        } else { //Caso Administrador Chefe
-            session()->flash("error", "O usuário principal não pode ser banido!");
-            return redirect()->back();
+            return redirect()->back()->with("warning", "Usuário banido, conteúdo removido do site.");
+        } else { //Caso Administrador Chef;
+            return redirect()->back()->with("warning", "Usuário principal não pode ser banido.");
         }
     }
 
@@ -254,12 +296,14 @@ class UsuarioController extends Controller
 
         if ($usuario->id != 1) {
 
-            $request->validate([
-                'password' => ['required', 'current_password'],
-            ],
-            [
-                'password.current_password' => 'senha inválida',
-            ]);
+            $request->validate(
+                [
+                    'password' => ['required', 'current_password'],
+                ],
+                [
+                    'password.current_password' => 'senha inválida',
+                ]
+            );
 
             $usuario->comentarios()->delete();
 
@@ -293,7 +337,7 @@ class UsuarioController extends Controller
             $usuario->status_conta = 0;
             $usuario->save();
 
-            // 7. Fazer logout e invalidar sessão
+            // Fazer logout e invalidar sessão
             auth()->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();

@@ -1,7 +1,8 @@
 .buscar-container {
     background: var(--branco);
     margin: 0 0 0 2rem; /* antes era 2rem */
-    width: 350px;
+    max-width: 350px;
+    width: 90%;
     position: sticky;
     z-index: 999;
     top: 1rem;
@@ -11,8 +12,9 @@
 .input-barra-pesquisa {
     width: 100%;
     padding: .75rem 2.5rem;
-    font-size: 16px;
+    font-size: clamp(0.6rem, 1vw + 0.6rem, 1.05rem);
     background-color: var(--branco);
+    color: var(--preto);
     border-radius: 50px / 100%;
     border: 2px solid var(--branco-light);
     transition: .3s;
@@ -27,7 +29,7 @@
     color: var(--cinza-font);
     position: absolute;
     left: .5rem;
-    top: .555rem;
+    top: .75rem;
 }
 
 /* itens pesquisados */
@@ -105,4 +107,34 @@
 .cpf-publico {
     color: green;
     font-weight: bold;
+}
+
+@media (max-width: 1024px) {
+    .buscar-container {
+        width: 75%;
+        max-width: 240px;
+        margin: auto;
+    }
+
+    .input-barra-pesquisa {
+        width: 100%;
+    }
+}
+
+@media (max-width: 764px) {
+    .buscar-container {
+        width: 75%;
+        max-width: 240px;
+        margin: auto;
+    }
+
+    .input-barra-pesquisa {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .buscar-container {
+        display: none;
+    }
 }

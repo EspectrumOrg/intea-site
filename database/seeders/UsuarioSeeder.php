@@ -7,7 +7,6 @@ use App\Models\FoneUsuario;
 use App\Models\Admin;
 use App\Models\Autista;
 use App\Models\Comunidade;
-use App\Models\ProfissionalSaude;
 use App\Models\Responsavel;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -53,15 +52,17 @@ class UsuarioSeeder extends Seeder
             'descricao' => 'Membro ativo da comunidade, interessado em apoio mútuo e inclusão social.'
         ]);
 
-        // criar profissional saúde padrão
-        $profissionalsaude = Usuario::factory()->create([
-            'user' => '@ryanFerreiraOF',
-            'apelido' => 'Ryan Ferreira Barbosa',
-            'email' => 'profissionalsaude@site.com',
+        // criar conta padrão para banimento (EMAIL E CPF VÁLIDO)
+        $userPadrao = Usuario::factory()->create([
+            'user' => '@nohan',
+            'apelido' => 'Nohanamei',
+            'email' => 'nohanameii@gmail.com',
             'senha' => bcrypt('123456'),
-            'tipo_usuario' => 4,
+            'tipo_usuario' => 3,
+            'cpf' => '61847883885',
             'foto' => 'arquivos/perfil/fotos/profissional-pick.jpg',
-            'descricao' => 'Psicólogo especializado em TEA, disponível para orientações e compartilhamento de conhecimento.'
+            'descricao' => 'Psicólogo especializado em TEA, disponível para orientações e compartilhamento de conhecimento.',
+            'data_nascimento' => '1980-01-01',
         ]);
 
         // criar responsável padrão
@@ -99,15 +100,12 @@ class UsuarioSeeder extends Seeder
             'usuario_id' => $comunidade->id,
         ]);
 
-        ProfissionalSaude::factory()->create([
-            'usuario_id' => $profissionalsaude->id,
-            'tipo_registro' => 'CRP',
-            'registro_profissional' => '06-12345',
-            'tipo_profissional' => 'Psicólogo',
+        Comunidade::factory()->create([
+            'usuario_id' => $userPadrao->id,
         ]);
 
         FoneUsuario::factory(5)->create([
-            'usuario_id' => $profissionalsaude->id,
+            'usuario_id' => $userPadrao->id,
         ]);
 
         Responsavel::factory()->create([

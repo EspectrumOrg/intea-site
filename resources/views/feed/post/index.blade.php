@@ -285,6 +285,8 @@ e($texto)
     </div>
 </div>
 
+@include("monochrome")
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Ativar navegação de feed
