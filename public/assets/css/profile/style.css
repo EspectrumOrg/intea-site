@@ -1034,84 +1034,134 @@ textarea {
 
 
 
-/* ===== RESPONSIVIDADE ===== */
+/* ----------- AJUSTES GERAIS PARA TELAS PEQUENAS ----------- */
 @media (max-width: 768px) {
-    .profile-header {
-        flex-direction: column;
-        text-align: center;
-        gap: 1.5rem;
-        padding: 1.5rem;
+
+    /* Layout geral */
+    .layout {
+        grid-template-columns: 1fr !important;
     }
 
-    .profile-header .foto-perfil img {
-        width: 100px;
-        height: 100px;
+    /* Sidebar fica recolhida em telas menores */
+    .container-sidebar {
+        display: none;
+    }
+
+    /* Conteúdo principal ocupa 100% */
+    .container-main {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    /* ----------- HEADER DO PERFIL ----------- */
+    .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .foto-perfil img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .profile-info {
+        text-align: center;
+    }
+
+    .profile-action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .profile-action-buttons button,
+    .profile-action-buttons a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* ----------- TABS HORIZONTAIS ----------- */
+    .profile-tabs-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 6px;
+    }
+
+    .profile-tabs {
+        display: inline-flex;
+        gap: 10px;
+    }
+
+    .tab-scroll-btn {
+        display: none !important; /* tira os botões de seta */
+    }
+
+    .tab-button {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+
+    /* ----------- GRID DE POSTAGENS ----------- */
+    .posts-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .post-card {
+        width: 100%;
+    }
+
+    /* ----------- TEXTO DOS POSTS ----------- */
+    .texto-completo,
+    .texto-curto {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    /* ----------- IMAGENS DAS POSTAGENS ----------- */
+    .post-image {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+
+    /* ----------- MODAIS ----------- */
+    .modal-box {
+        width: 92% !important;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* ----------- RESPONSIVIDADE EXTREMA (celulares muito pequenos) ----------- */
+@media (max-width: 480px) {
+
+    h1, h2, h3 {
+        font-size: 18px !important;
     }
 
     .profile-info h1 {
-        font-size: 1.5rem;
+        font-size: 20px;
     }
 
-    .profile-tabs-container {
-        padding: 0 0.25rem;
-    }
-
-    .tab-button {
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
-    }
-
-    .tab-scroll-btn {
-        display: flex;
+    .profile-info .username {
+        font-size: 14px;
     }
 
     .profile-info-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+        grid-template-columns: 1fr !important;
     }
 
-    .posts-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .perfil-section {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .profile-container {
-        padding: 0.5rem;
-    }
-
-    .tab-button {
-        padding: 0.75rem 0.5rem;
-    }
-
-    .tab-text {
-        font-size: 0.8rem;
-    }
-
-    .like-item {
+    .profile-counts {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
+        gap: 5px;
     }
 
-    .like-avatar img {
-        width: 35px;
-        height: 35px;
-    }
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .tab-scroll-btn {
-        display: none !important;
+    .tab-button .tab-text {
+        display: none; /* mostra só ícones para economizar espaço */
     }
 
-    .profile-tabs-wrapper {
-        -webkit-overflow-scrolling: touch;
+    .modal-box {
+        width: 95% !important;
     }
-
-
 }
