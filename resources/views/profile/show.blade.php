@@ -358,6 +358,10 @@
                                 <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
                             </button>
                             @elseif($user->tipo_usuario === 5)
+                            <!-- Botão Adicionar Dependente -->
+                            <button id="btnAbrirModalPerfil" class="abrir-modal-btn">
+                                <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
+                            </button>
                             <!-- Botão Remover Dependente -->
                             <button id="abrirModalRemover" class="abrir-modal-btn">
                                 <span class="material-symbols-outlined">remove_circle</span> Retirar Dependente
@@ -369,7 +373,7 @@
                                 <div class="modal-box">
                                     <h2>Adicionar Dependente</h2>
                                     <form id="addDependente" method="POST"
-                                        action="{{ route('responsavel.adicionar_dependente') }}">
+                                        action="{{ route('responsavel.adicionar_dependente', $user->id) }}">
                                         @csrf
 
                                         <div class="form-group">

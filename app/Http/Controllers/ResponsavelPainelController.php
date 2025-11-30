@@ -30,49 +30,67 @@ class ResponsavelPainelController extends Controller
      * Exibe o painel do responsável
      */
     public function edit(Request $request): View
-    {
-        $user = Auth::user();
-        $generos = $this->genero->all();
-        $telefones = $this->telefone->where('usuario_id', $user->id)->get();
+{
+    $user = Auth::user();
+    $generos = $this->genero->all();
+    $telefones = $this->telefone->where('usuario_id', $user->id)->get();
 
-        $autista = null;
-        $dadosespecificos = null;
+    // 🔥 Lista de autistas e autista selecionado
+    $autistas = collect();
+    $selectedAutista = null;
+    $dadosespecificos = null;
 
-        if ($user->tipo_usuario == 5 && $user->responsavel) {
-            // Pega o primeiro autista vinculado
-            $autista = $user->responsavel->autistas()->with('usuario')->first();
-            $dadosespecificos = $autista; // A view vai usar
-        }
+    if ($user->tipo_usuario == 5 && $user->responsavel) {
 
-        // 🔥 Postagens populares
-        $postsPopulares = Postagem::withCount('curtidas')
-            ->orderByDesc('curtidas_count')
-            ->take(5)
-            ->get();
+        // Recupera todos os autistas do responsável
+        $autistas = $user->responsavel->autistas()->with('usuario')->get();
 
-        // 📜 Postagens do autista
-        $userPosts = $autista && $autista->usuario
-            ? Postagem::where('usuario_id', $autista->usuario->id)->get()
-            : collect();
+        // ID do autista selecionado via parâmetro GET (?autista=XX)
+        $selectedId = $request->get('autista');
 
-        // ❤️ Postagens curtidas pelo autista
-        $likedPosts = $autista && $autista->usuario
-            ? Postagem::whereHas('curtidas', function ($q) use ($autista) {
-                $q->where('usuario_id', $autista->usuario->id);
-            })->get()
-            : collect();
+        // Seleciona pelo ID, ou pega o primeiro da lista
+        $selectedAutista = $autistas->firstWhere('id', $selectedId) 
+            ?? $autistas->first();
 
-        return view('responsavel.painel', compact(
-            'user',
-            'generos',
-            'telefones',
-            'dadosespecificos',
-            'userPosts',
-            'likedPosts',
-            'postsPopulares',
-            'autista'
-        ));
+        // dados específicos do autista selecionado
+        $dadosespecificos = $selectedAutista;
     }
+
+    // 🔥 Postagens populares
+    $postsPopulares = Postagem::withCount('curtidas')
+        ->orderByDesc('curtidas_count')
+        ->take(5)
+        ->get();
+
+    // 📜 Postagens do autista selecionado
+    $userPosts = $selectedAutista && $selectedAutista->usuario
+    ? Postagem::with(['usuario', 'imagens'])
+        ->withCount(['curtidas', 'comentarios'])
+        ->where('usuario_id', $selectedAutista->usuario->id)
+        ->orderByDesc('created_at')
+        ->get()
+    : collect();
+
+    // ❤️ Postagens curtidas pelo autista selecionado
+    $likedPosts = $selectedAutista && $selectedAutista->usuario
+        ? Postagem::whereHas('curtidas', function ($q) use ($selectedAutista) {
+            $q->where('usuario_id', $selectedAutista->usuario->id);
+        })->get()
+        : collect();
+
+    return view('responsavel.painel', compact(
+        'user',
+        'generos',
+        'telefones',
+        'dadosespecificos',
+        'userPosts',
+        'likedPosts',
+        'postsPopulares',
+        'autistas',
+        'selectedAutista'
+    ));
+}
+
 
     /**
      * Atualiza dados do responsável e do autista vinculado
