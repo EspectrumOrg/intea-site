@@ -6,7 +6,6 @@ use App\Models\Comentario;
 use App\Models\Genero;
 use App\Models\FoneUsuario;
 use App\Models\Postagem;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,10 +26,7 @@ class ProfileController extends Controller
         $this->telefone = $telefone;
     }
 
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
         /** @var \App\Models\Usuario $user */
 
@@ -73,21 +69,13 @@ class ProfileController extends Controller
 
         // Dados específicos por tipo de usuário
         switch ($user->tipo_usuario) {
-            case 1:
-                $dadosespecificos = $user->admin;
-                break;
-            case 2:
-                $dadosespecificos = $user->autista;
-                break;
-            case 3:
-                $dadosespecificos = $user->comunidade;
-                break;
-            case 4:
-                $dadosespecificos = $user->profissional_saude;
-                break;
+            case 1: $dadosespecificos = $user->admin; break;
+            case 2: $dadosespecificos = $user->autista; break;
+            case 3: $dadosespecificos = $user->comunidade; break;
+            case 4: $dadosespecificos = $user->profissionalsaude; break;
             case 5:
                 $dadosespecificos = $user->responsavel;
-                $autista = $user->responsavel->autistas()->first() ?? null;
+                $autistas = $user->responsavel ? $user->responsavel->autistas : collect();
                 break;
         }
 
@@ -159,39 +147,31 @@ class ProfileController extends Controller
         return Redirect::route('profile.show')->with('status', 'profile-updated');
     }
 
-    /**
-     * Atualiza dados específicos para cada tipo de usuário
-     */
     private function updateDadosEspecificos($user, Request $request)
     {
         switch ($user->tipo_usuario) {
             case 2: // Autista
                 if ($user->autista) {
-                    $autistaData = $request->validate([
-                        'cipteia_autista' => 'nullable|string|max:255',
-                        'status_cipteia_autista' => 'nullable|string|max:255',
-                        'rg_autista' => 'nullable|string|max:255',
-                    ]);
-                    $user->autista->update($autistaData);
+                    $user->autista->update($request->only(['cipteia_autista','status_cipteia_autista','rg_autista']));
+                }
+                break;
+
+            case 5: // Responsável
+                if ($user->responsavel) {
+                    foreach ($user->responsavel->autistas as $autista) {
+                        $autista->update($request->only(['cipteia_autista','status_cipteia_autista','rg_autista']));
+                    }
                 }
                 break;
 
             case 4: // Profissional de Saúde
                 if ($user->profissionalsaude) {
-                    $profissionalData = $request->validate([
-                        'tipo_registro' => 'nullable|string|max:255',
-                        'registro_profissional' => 'nullable|string|max:255',
-                        'cipteia_autista' => 'nullable|string|max:255',
-                    ]);
-                    $user->profissionalsaude->update($profissionalData);
+                    $user->profissionalsaude->update($request->only(['tipo_registro','registro_profissional','cipteia_autista']));
                 }
                 break;
         }
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -199,7 +179,6 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-
         Auth::logout();
 
         $user->status_conta = 0;

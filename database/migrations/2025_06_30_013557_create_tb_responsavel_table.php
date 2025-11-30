@@ -19,7 +19,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('usuario_id');
             $table->foreign('usuario_id')->references('id')->on('tb_usuario');
-            $table->string('cipteia_autista');
             $table->timestamps();
 
         });

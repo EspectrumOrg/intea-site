@@ -24,15 +24,17 @@
 <body>
     <div class="layout">
         <div class="container-content">
-            <!-- conteúdo sidebar -->
+
+            <!-- Sidebar -->
             <div class="container-sidebar">
                 @include("layouts.partials.sidebar")
             </div>
 
-            <!-- conteúdo principal -->
+            <!-- Conteúdo principal -->
             <div class="container-main">
                 <div class="profile-container">
-                    <!-- VERIFICAÇÃO DE SEGURANÇA -->
+
+                    <!-- Verificação de segurança -->
                     @if(!isset($user) || is_null($user))
                     <div class="alert alert-danger text-center">
                         <h4>❌ Erro: Perfil não encontrado</h4>
@@ -40,62 +42,64 @@
                         <a href="/feed" class="btn btn-primary">Voltar para o Feed</a>
                     </div>
                     @else
+
+                    {{-- Se houver múltiplos autistas, mostrar seleção --}}
+                    @if(isset($autistas) && $autistas->count() > 1)
+                    <div class="autistas-list" style="margin-bottom: 20px; display:flex; gap:10px;">
+                        @foreach($autistas as $autista)
+                        <a href="?autista={{ $autista->id }}"
+                            class="btn btn-sm {{ isset($selectedAutista) && $selectedAutista && $selectedAutista->id == $autista->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                            {{ $autista->usuario->apelido}}
+                        </a>
+                        @endforeach
+                    </div>
+                    @endif
+
+                    @if(isset($selectedAutista) && $selectedAutista)
                     <!-- Cabeçalho do perfil -->
                     <div class="profile-header">
                         <div class="foto-perfil">
-                            @if (!empty($autista->usuario->foto))
-                            <img src="{{ asset('storage/'.$autista->usuario->foto) }}" alt="Foto do autista">
-                            @else
-                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Foto do autista">
-                            @endif
+                            <img src="{{ !empty($selectedAutista->usuario->foto) ? asset('storage/'.$selectedAutista->usuario->foto) : url('assets/images/logos/contas/user.png') }}"
+                                alt="Foto do autista">
                         </div>
 
                         <div class="profile-info">
-                            <h1>{{ $autista->usuario->nome }}</h1>
-                            <p class="username">{{ $autista->usuario->user }}</p>
-                            <p class="bio">{{ $autista->usuario->descricao ?? 'Sem descrição' }}</p>
+                            <h1>{{ $selectedAutista->usuario->nome }}</h1>
+                            <p class="username">{{ $selectedAutista->usuario->user }}</p>
+                            <p class="bio">{{ $selectedAutista->usuario->descricao ?? 'Sem descrição' }}</p>
 
                             <div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
-                                <div class="profile-counts" style="display: flex; gap: 20px; margin-bottom: 10px;">
-                                    <div id="btnSeguindo" style="cursor:pointer"
-                                        data-url="{{ route('usuario.listar.seguindo', ['id' => $user->id]) }}">
-                                        <strong>{{ $autista->usuario->seguindo()->count() }}</strong> Seguindo
-                                    </div>
-
-                                    <div id="btnSeguidores" style="cursor:pointer"
-                                        data-url="{{ route('usuario.listar.seguidores', ['id' => $user->id]) }}">
-                                        <strong>{{ $autista->usuario->seguidores()->count() }}</strong> Seguidores
-                                    </div>
+                                <div id="btnSeguindo" style="cursor:pointer"
+                                    data-url="{{ route('usuario.listar.seguindo', ['id' => $selectedAutista->usuario->id]) }}">
+                                    <strong>{{ $selectedAutista->usuario->seguindo()->count() }}</strong> Seguindo
                                 </div>
-
-                                <!-- Modal simples -->
-                                <div id="modalUsuarios"
-                                    style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
-                                             background:white; padding:20px; border:1px solid #ccc; max-height:400px; overflow-y:auto;">
-                                    <button id="fecharModal">Fechar</button>
-                                    <ul id="listaUsuarios"></ul>
+                                <div id="btnSeguidores" style="cursor:pointer"
+                                    data-url="{{ route('usuario.listar.seguidores', ['id' => $selectedAutista->usuario->id]) }}">
+                                    <strong>{{ $selectedAutista->usuario->seguidores()->count() }}</strong> Seguidores
                                 </div>
                             </div>
 
-                            @if(auth()->id() != $user->id)
+                            @if(auth()->id() != $selectedAutista->usuario->id)
                             <div class="profile-action-buttons" style="margin-top: 10px; display: flex; gap: 10px;">
                                 <form action="{{ route('seguir.store') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                                    <input type="hidden" name="user_id" value="{{ $selectedAutista->usuario->id }}">
                                     <button type="submit" class="seguir-btn">
                                         <span class="material-symbols-outlined">person_add</span> Seguir
                                     </button>
                                 </form>
 
-                                <a href="{{ route('chat.dashboard') }}?usuario2={{ $user->id }}" class="btn-mensagem">
+                                <a href="{{ route('chat.dashboard') }}?usuario2={{ $selectedAutista->usuario->id }}"
+                                    class="btn-mensagem">
                                     <span class="material-symbols-outlined">message</span> Mensagem
                                 </a>
                             </div>
                             @endif
                         </div>
                     </div>
+                    @endif
 
-                    <!-- Navegação por abas DINÂMICA -->
+                    <!-- Navegação por abas -->
                     <div class="profile-tabs-container">
                         <button class="tab-scroll-btn tab-scroll-prev" aria-label="Abas anteriores">
                             <span class="material-symbols-outlined">chevron_left</span>
@@ -103,13 +107,11 @@
 
                         <div class="profile-tabs-wrapper">
                             <div class="profile-tabs">
-                                <!-- Aba Perfil (SEMPRE existe) -->
                                 <button class="tab-button active" data-tab="profile">
                                     <span class="material-symbols-outlined">person</span>
                                     <span class="tab-text">Perfil</span>
                                 </button>
 
-                                <!-- Aba Postagens (só mostra se tiver postagens) -->
                                 @if($userPosts->count() > 0)
                                 <button class="tab-button" data-tab="posts">
                                     <span class="material-symbols-outlined">article</span>
@@ -117,7 +119,6 @@
                                 </button>
                                 @endif
 
-                                <!-- Aba Curtidas (só mostra se tiver curtidas) -->
                                 @if($likedPosts->count() > 0)
                                 <button class="tab-button" data-tab="likes">
                                     <span class="material-symbols-outlined">favorite</span>
@@ -125,7 +126,6 @@
                                 </button>
                                 @endif
 
-                                <!-- Aba Configurações do autista -->
                                 <button class="tab-button" data-tab="autista">
                                     <span class="material-symbols-outlined">settings</span>
                                     <span class="tab-text">Dados do autista</span>
@@ -139,7 +139,7 @@
                     </div>
 
                     <!-- Conteúdo das abas -->
-                    <!-- Aba 1: Perfil (Informações) - SEMPRE existe -->
+                    @if(isset($selectedAutista) && $selectedAutista)
                     <div class="tab-content active" id="profile-tab">
                         <section class="perfil-section">
                             <header class="header">
@@ -147,45 +147,32 @@
                             </header>
 
                             <div class="profile-info-grid">
-
-                                <div class="info-item">
-                                    <strong>Email:</strong>
-                                    <span>{{ $autista->usuario->email }}</span>
+                                <div class="info-item"><strong>Email:</strong>
+                                    <span>{{ $selectedAutista->usuario->email }}</span>
                                 </div>
-
-                                <div class="info-item">
-                                    <strong>Apelido:</strong>
-                                    <span>{{ $autista->usuario->apelido ?? 'Não informado' }}</span>
+                                <div class="info-item"><strong>Apelido:</strong>
+                                    <span>{{ $selectedAutista->usuario->apelido ?? 'Não informado' }}</span>
                                 </div>
-
-                                <div class="info-item">
-                                    <strong>CPF:</strong>
-                                    <span
-                                        class="{{ $autista->usuario->cpf === '•••••••••••' ? 'cpf-privado' : 'cpf-publico' }}">
-                                        {{ $autista->usuario->cpf }}
-                                    </span>
+                                <div class="info-item"><strong>CPF:</strong>
+                                    <span>{{ $selectedAutista->usuario->cpf }}</span>
                                 </div>
-
-                                <div class="info-item">
-                                    <strong>Data Nascimento:</strong>
-                                    <span>{{ \Carbon\Carbon::parse($autista->usuario->data_nascimento)->format('d/m/Y') }}</span>
+                                <div class="info-item"><strong>Data Nascimento:</strong>
+                                    <span>{{ \Carbon\Carbon::parse($selectedAutista->usuario->data_nascimento)->format('d/m/Y') }}</span>
                                 </div>
 
                                 @if($dadosespecificos)
-                                <div class="info-item">
-                                    <strong>CIPTEA Autista:</strong>
+                                <div class="info-item"><strong>CIPTEA Autista:</strong>
                                     <span>{{ $dadosespecificos->cipteia_autista ?? 'Não informado' }}</span>
                                 </div>
-                                <div class="info-item">
-                                    <strong>Status CIPTEA:</strong>
+                                <div class="info-item"><strong>Status CIPTEA:</strong>
                                     <span>{{ $dadosespecificos->status_cipteia_autista ?? 'Não informado' }}</span>
                                 </div>
                                 @endif
                             </div>
                         </section>
                     </div>
+                    @endif
 
-                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) -->
                     @if($userPosts->count() > 0)
                     <div class="tab-content" id="posts-tab">
                         <h3>Postagens</h3>
@@ -199,119 +186,154 @@
                                         </a>
                                         <small>{{ $post->created_at->format('d/m/Y H:i') }}</small>
                                     </div>
-
-                                    <div class="dropdown">
-                                        <!-- OPÇÕES POSTAGEM (COISO QUE FICA NOS PONTINHOS PRETOS LÁ) ========-->
-                                        <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
-                                            <span class="material-symbols-outlined">more_horiz</span>
-                                        </button>
-                                        <ul class="dropdown-content">
-                                            <!-- Postagem do usuário --------------------->
-                                            @if(Auth::id() === $post->usuario_id)
-                                            <li>
-                                                <button type="button" class="btn-acao editar"
-                                                    onclick="abrirModalEditar('{{ $post->id }}')">
-                                                    <span class="material-symbols-outlined">edit</span>Editar
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <form action="{{ route('post.destroy', $post->id) }}" method="POST"
-                                                    style="display:inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-acao excluir">
-                                                        <span class="material-symbols-outlined">delete</span>Excluir
-                                                    </button>
-                                                </form>
-                                            </li>
-                                            @else
-                                            <!-- Postagem de terceiro --------------------->
-                                            <li>
-                                                @if( Auth::user()->tipo_usuario === 1 )
-                                                <!-- Banir Usuário (caso tipo admin)-->
-                                                <div class="form-excluir">
-                                                    <button type="button" class="btn-acao btn-excluir-usuario"
-                                                        data-bs-toggle="modal"
-                                                        onclick="abrirModalBanimentoUsuarioEspecifico('{{ $post->usuario->id }}')">
-                                                        <span class="material-symbols-outlined">person_off</span>Banir
-                                                    </button>
-                                                </div>
-                                                @else
-                                                <!-- Denunciar Usuário -->
-                                                <a class="btn-acao denunciar" href="javascript:void(0)"
-                                                    onclick="abrirModalDenuncia('{{ $post->id }}')">
-                                                    <span class="material-symbols-outlined">flag_2</span>Denunciar
-                                                </a>
-                                                @endif
-                                            </li>
-                                            <!-- Parte de seguir (do nicolas) -->
-                                            <li>
-                                                @php
-                                                $authUser = Auth::user();
-                                                $isFollowing = $authUser->seguindo->contains($post->usuario_id);
-                                                $pedidoFeito = \App\Models\Notificacao::where('solicitante_id',
-                                                $authUser->id)
-                                                ->where('alvo_id', $post->usuario_id)
-                                                ->where('tipo', 'seguir')
-                                                ->exists();
-                                                @endphp
-
-                                                @if ($authUser->id !== $post->usuario_id)
-
-                                                {{-- Se já segue → sempre mostrar Deixar de seguir --}}
-                                                @if ($isFollowing)
-                                                <form action="{{ route('seguir.destroy', $post->usuario_id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-acao deixar-btn">
-                                                        <span class="material-symbols-outlined">person_remove</span>
-                                                        Deixar de seguir
-                                                    </button>
-                                                </form>
-
-                                                {{-- Usuário privado (não está seguindo) --}}
-                                                @elseif ($post->usuario->visibilidade == 0)
-                                                @if ($pedidoFeito)
-                                                <form action="{{ route('seguir.cancelar', $post->usuario_id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn-acao seguir-btn">
-                                                        <span class="material-symbols-outlined">hourglass_empty</span>
-                                                        Pedido enviado
-                                                    </button>
-                                                </form>
-                                                @else
-                                                <form action="{{ route('seguir.store') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
-                                                    <button type="submit" class="btn-acao seguir-btn">
-                                                        <span class="material-symbols-outlined">person_add</span> Pedir
-                                                        para seguir
-                                                    </button>
-                                                </form>
-                                                @endif
-
-                                                {{-- Usuário público (não está seguindo) --}}
-                                                @else
-                                                <form action="{{ route('seguir.store') }}" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
-                                                    <button type="submit" class="btn-acao seguir-btn">
-                                                        <span class="material-symbols-outlined">person_add</span> Seguir
-                                                        {{ $post->usuario->user }}
-                                                    </button>
-                                                </form>
-                                                @endif
-
-                                                @endif
-                                            </li>
-                                            @endif
-                                        </ul>
-                                    </div>
                                 </div>
                                 <p class="post-content">{{ $post->texto_postagem }}</p>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) ------------------------------------------->
+                    @if($userPosts->count() > 0)
+                    <div class="tab-content" id="posts-tab">
+                        <h3>Minhas Postagens</h3>
+                        <div class="posts-grid">
+                            @foreach($userPosts as $post)
+                            <div class="post-card">
+                                <div class="post-header">
+                                    <div class="dados-post">
+                                        <a href="{{ route('post.read', ['postagem' => $post->id]) }}">
+                                            <h1>{{ Str::limit($post->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
+                                        </a>
+                                        <small>{{ $post->created_at->format('d/m/Y H:i') }}</small>
+                                    </div>
+
+                                    <div class="dropdown">
+    <!-- Botão dos pontinhos -->
+    <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+        <span class="material-symbols-outlined">more_horiz</span>
+    </button>
+
+    <ul class="dropdown-content">
+        @php
+            $authUser = Auth::user();
+
+            // Verifica se o usuário é dono do post
+            $isOwner = intval($authUser->id) === intval($post->usuario_id);
+
+            // Responsável (tipo_usuario = 5) pode gerenciar posts de seus autistas
+            if (!$isOwner && $authUser->tipo_usuario == 5 && isset($autistas)) {
+                $isOwner = $autistas->contains(function($autista) use ($post) {
+                    return intval($autista->usuario->id) === intval($post->usuario_id);
+                });
+            }
+
+            // Checa se já segue o usuário
+            $isFollowing = $authUser->seguindo->pluck('id')->map('intval')->contains(intval($post->usuario_id));
+
+            // Checa se já enviou pedido de seguir
+            $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
+                ->where('alvo_id', $post->usuario_id)
+                ->where('tipo', 'seguir')
+                ->exists();
+        @endphp
+
+        {{-- Editar / Excluir para dono/responsável --}}
+        @if($isOwner)
+            <li>
+                <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $post->id }}')">
+                    <span class="material-symbols-outlined">edit</span>Editar
+                </button>
+            </li>
+            <li>
+                <form action="{{ route('post.destroy', $post->id) }}" method="POST" style="display:inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-acao excluir">
+                        <span class="material-symbols-outlined">delete</span>Excluir
+                    </button>
+                </form>
+            </li>
+
+        {{-- Posts de terceiros --}}
+        @else
+            {{-- Banir usuário (Admin) --}}
+            @if($authUser->tipo_usuario === 1)
+                <li>
+                    <button type="button" class="btn-acao btn-excluir-usuario"
+                        onclick="abrirModalBanimentoUsuarioEspecifico('{{ $post->usuario->id }}')">
+                        <span class="material-symbols-outlined">person_off</span>Banir
+                    </button>
+                </li>
+            {{-- Denunciar usuário --}}
+            @else
+                <li>
+                    <a class="btn-acao denunciar" href="javascript:void(0)"
+                        onclick="abrirModalDenuncia('{{ $post->id }}')">
+                        <span class="material-symbols-outlined">flag_2</span>Denunciar
+                    </a>
+                </li>
+            @endif
+
+            {{-- Seguir / Deixar de seguir / Pedido enviado --}}
+            @if ($authUser->id !== $post->usuario_id)
+                <li>
+                    @if ($isFollowing)
+                        <form action="{{ route('seguir.destroy', $post->usuario_id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-acao deixar-btn">
+                                <span class="material-symbols-outlined">person_remove</span>Deixar de seguir
+                            </button>
+                        </form>
+                    @elseif ($post->usuario->visibilidade == 0)
+                        @if ($pedidoFeito)
+                            <form action="{{ route('seguir.cancelar', $post->usuario_id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-acao seguir-btn">
+                                    <span class="material-symbols-outlined">hourglass_empty</span>Pedido enviado
+                                </button>
+                            </form>
+                        @else
+                            <form action="{{ route('seguir.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
+                                <button type="submit" class="btn-acao seguir-btn">
+                                    <span class="material-symbols-outlined">person_add</span>Pedir para seguir
+                                </button>
+                            </form>
+                        @endif
+                    @else
+                        <form action="{{ route('seguir.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
+                            <button type="submit" class="btn-acao seguir-btn">
+                                <span class="material-symbols-outlined">person_add</span>Seguir {{ $post->usuario->user }}
+                            </button>
+                        </form>
+                    @endif
+                </li>
+            @endif
+        @endif
+    </ul>
+</div>
+
+                                </div>
+                                <p class="texto-curto" id="texto-{{ $post->id }}">
+                                    {{ Str::limit($post->texto_postagem, 150, '') }}
+                                    @if (strlen($post->texto_postagem) > 150)
+                                    <span class="mostrar-mais"
+                                        onclick="toggleTexto('{{ $post->id }}', this)">...mais</span>
+                                    @endif
+                                </p>
+
+                                <p class="texto-completo" id="texto-completo-{{ $post->id }}" style="display: none;">
+                                    {{ $post->texto_postagem }}
+                                    <span class="mostrar-mais"
+                                        onclick="toggleTexto('{{ $post->id }}', this)">...menos</span>
+                                </p>
                                 @if($post->imagens && $post->imagens->count() > 0)
                                 @foreach($post->imagens as $imagem)
                                 <img src="{{ asset('storage/'.$imagem->caminho_imagem) }}" alt="Imagem do post"
@@ -345,10 +367,16 @@
 
                             <!-- Modal Edição dessa postagem -->
                             @include('feed.post.edit', ['postagem' => $post])
+                            <!-- Modal Edição dessa postagem -->
+                            @include('feed.post.edit', ['postagem' => $post])
 
                             <!-- Modal Criação de comentário ($postagem->id) -->
                             @include('feed.post.create-comentario-modal', ['postagem' => $post])
+                            <!-- Modal Criação de comentário ($post->id) -->
+                            @include('feed.post.create-comentario-modal', ['postagem' => $post])
 
+                            <!-- Modal Criação de comentário ($post->id) -->
+                            @include('feed.post.create-comentario-modal', ['postagem' => $post])
                             <!-- Modal Criação de comentário ($post->id) -->
                             @include('feed.post.create-comentario-modal', ['postagem' => $post])
 
@@ -375,65 +403,143 @@
                     </div>
                     @endif
 
-                    <!-- Aba 3: Curtidas (só mostra se tiver conteúdo) -->
-                    @if($likedPosts->count() > 0)
-                    <div class="tab-content" id="likes-tab">
-                        <h3>Postagens Curtidas</h3>
-                        <div class="likes-list">
-                            @foreach($likedPosts as $like)
-                            <div class="like-item">
-                                <div class="like-avatar">
-                                    @if($like->usuario->foto)
-                                    <img src="{{ asset('storage/'.$like->usuario->foto) }}"
-                                        alt="{{ $like->usuario->nome }}">
-                                    @else
-                                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                    @endif
-                                </div>
-
-                                <div class="like-content">
-                                    <strong>{{ $like->usuario->nome }}</strong>
-                                    <p>{{ $like->texto_postagem }}</p>
-                                    <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
-                                </div>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-
-                    <!-- Configurações do autista para responsavel -->
                     <div class="tab-content" id="autista-tab">
-                        <!-- Inclui os formulários de configurações -->
-                        @include('responsavel.dados-autista-responsavel', ['autista' => $autista])
+                        @if(isset($selectedAutista) && $selectedAutista)
+                        @include('responsavel.dados-autista-responsavel', ['autista' => $selectedAutista])
+                        @endif
                     </div>
 
-                    <!-- Mensagem quando não há conteúdo nas abas opcionais -->
-                    @if($userPosts->count() == 0 && $likedPosts->count() == 0 && auth()->id() != $user->id)
-                    <div class="no-content-message">
-                        <p>Este usuário ainda não tem atividades para mostrar.</p>
+                    <!-- Conteúdo popular -->
+                    <div class="content-popular">
+                        @include('profile.partials.buscar')
+                        @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])
                     </div>
                     @endif
-                    @endif
-                    <!-- Fim da verificação de segurança -->
+
                 </div>
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Controle das abas
+                    const tabButtons = document.querySelectorAll('.tab-button');
+                    const tabContents = document.querySelectorAll('.tab-content');
+                    const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
+                    const prevBtn = document.querySelector('.tab-scroll-prev');
+                    const nextBtn = document.querySelector('.tab-scroll-next');
 
-            <!-- conteúdo popular -->
-            <div class="content-popular">
-                @include('profile.partials.buscar')
-                @include('feed.post.partials.sidebar-popular', ['posts' => $postsPopulares])
-            </div>
-        </div>
-    </div>
-    <!-- JS -->
-    <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
-    <!-- modal de denúncia usuário -->
-    <script src="{{ url('assets/js/perfil/modal-denuncia-usuario.js') }}"></script>
-    <!-- modal de denúncia usuário -->
-    <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
-    <!-- dropdown-->
-    <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
+                    tabButtons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            const tabId = this.getAttribute('data-tab');
+                            // Remove classe active de todos os botões e conteúdos
+                            tabButtons.forEach(btn => btn.classList.remove('active'));
+                            tabContents.forEach(content => content.classList.remove('active'));
+                            // Adiciona classe active ao botão clicado e conteúdo correspondente
+                            this.classList.add('active');
+                            const targetContent = document.getElementById(`${tabId}-tab`);
+                            if (targetContent) {
+                                targetContent.classList.add('active');
+                            }
+                        });
+                    });
+
+                    // Controle do scroll horizontal
+                    function updateScrollButtons() {
+                        if (!tabsWrapper || !prevBtn || !nextBtn) return;
+                        const scrollLeft = tabsWrapper.scrollLeft;
+                        const scrollWidth = tabsWrapper.scrollWidth;
+                        const clientWidth = tabsWrapper.clientWidth;
+
+                        // Mostra/oculta botões baseado no scroll
+                        prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
+                        nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' : 'none';
+
+                        // Ativa/desativa botões
+                        prevBtn.disabled = scrollLeft <= 0;
+                        nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
+                    }
+
+                    // Eventos dos botões de scroll
+                    if (prevBtn && nextBtn && tabsWrapper) {
+                        prevBtn.addEventListener('click', () => {
+                            tabsWrapper.scrollBy({
+                                left: -200,
+                                behavior: 'smooth'
+                            });
+                        });
+                        nextBtn.addEventListener('click', () => {
+                            tabsWrapper.scrollBy({
+                                left: 200,
+                                behavior: 'smooth'
+                            });
+                        });
+
+                        // Atualiza botões quando scrollar
+                        tabsWrapper.addEventListener('scroll', updateScrollButtons);
+
+                        // Atualiza botões no carregamento e redimensionamento
+                        window.addEventListener('resize', updateScrollButtons);
+                        updateScrollButtons();
+                    }
+
+                    // Scroll suave para a aba ativa se estiver fora da view
+                    function scrollToActiveTab() {
+                        const activeTab = document.querySelector('.tab-button.active');
+                        if (activeTab && tabsWrapper) {
+                            const tabRect = activeTab.getBoundingClientRect();
+                            const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+                            if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
+                                activeTab.scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'nearest',
+                                    inline: 'center'
+                                });
+                            }
+                        }
+                    }
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const likesTabButtons = document.querySelectorAll('.likes-tab-button');
+                        const likesTabContents = document.querySelectorAll('.likes-tab-content');
+
+                        likesTabButtons.forEach(button => {
+                            button.addEventListener('click', function () {
+                                const tabId = this.getAttribute('data-likes-tab');
+
+                                // Remove classe active de todos os botões e conteúdos
+                                likesTabButtons.forEach(btn => btn.classList.remove(
+                                    'active'));
+                                likesTabContents.forEach(content => content.classList
+                                    .remove('active'));
+
+                                // Adiciona classe active ao botão clicado e conteúdo correspondente
+                                this.classList.add('active');
+                                const targetContent = document.getElementById(
+                                    `${tabId}-likes-content`);
+                                if (targetContent) {
+                                    targetContent.classList.add('active');
+                                }
+                            });
+                        });
+                    });
+
+                    // Recalcula scroll quando mudar de aba
+                    tabButtons.forEach(button => {
+                        button.addEventListener('click', scrollToActiveTab);
+                    });
+                });
+                
+
+            </script>
+
+            <!-- JS -->
+            <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
+            <!-- modal de denúncia usuário -->
+            <script src="{{ url('assets/js/perfil/modal-denuncia-usuario.js') }}"></script>
+            <!-- modal de denúncia usuário -->
+            <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
+            <!-- dropdown-->
+            <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
 </body>
 
 </html>

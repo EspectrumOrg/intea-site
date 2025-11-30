@@ -108,7 +108,7 @@
         <a href="{{ route('responsavel.painel') }}"
             class="nav-link {{ request()->routeIs('responsavel.painel') ? 'active' : '' }}" id="responsavel">
             <span class="material-symbols-outlined">supervisor_account</span>
-            <h1>Responsáveis</h1>
+            <h1>Dependentes</h1>
         </a>
         @endcan
 

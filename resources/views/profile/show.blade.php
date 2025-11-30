@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
 
     @php
     use App\Models\Tendencia;
@@ -50,6 +50,7 @@
     }
     }
     @endphp
+
 
     <div class="layout">
         <div class="container-content">
@@ -350,38 +351,42 @@
                                 @endif
                             </div>
                             <br>
-                            <!-- Botão que abre o modal -->
-                            @if($user->tipo_usuario === 3 || $user->tipo_usuario === 2)
+                            <!-- BOTÕES PARA ADICIONAR OU REMOVER DEPENDENTE -->
+                            @if($user->tipo_usuario === 3 || ($user->tipo_usuario === 2 && $maiorDeIdade))
+                            <!-- Botão Adicionar Dependente -->
                             <button id="btnAbrirModalPerfil" class="abrir-modal-btn">
                                 <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
                             </button>
                             @elseif($user->tipo_usuario === 5)
+                            <!-- Botão Adicionar Dependente -->
+                            <button id="btnAbrirModalPerfil" class="abrir-modal-btn">
+                                <span class="material-symbols-outlined">add_circle</span> Adicionar Dependente
+                            </button>
+                            <!-- Botão Remover Dependente -->
                             <button id="abrirModalRemover" class="abrir-modal-btn">
                                 <span class="material-symbols-outlined">remove_circle</span> Retirar Dependente
                             </button>
                             @endif
 
-                            <!-- Modal (inicialmente oculto) -->
+                            <!-- MODAL ADICIONAR DEPENDENTE (inicialmente oculto) -->
                             <div id="modalPerfil" class="modal-overlay" style="display: none;">
                                 <div class="modal-box">
-                                    <h2>Editar Informações do Perfil</h2>
+                                    <h2>Adicionar Dependente</h2>
                                     <form id="addDependente" method="POST"
-                                        action="{{ route('responsavel.adicionar_dependente', ['id' => $user->id]) }}">
+                                        action="{{ route('responsavel.adicionar_dependente', $user->id) }}">
                                         @csrf
-                                        <div class="form-group">
-                                            <label for="nome">Nome:</label>
-                                            <input type="text" name="nome" id="nome"
-                                                placeholder="Digite o nome do dependente" required>
-                                        </div>
+
                                         <div class="form-group">
                                             <label for="cpf">CPF:</label>
-                                            <input type="text" name="cpf" id="cpf" placeholder="Digite o CPF" required>
+                                            <input type="text" name="cpf" id="cpf" placeholder="Digite o CPF">
                                         </div>
+
                                         <div class="form-group">
                                             <label for="ciptea">CIPTEA:</label>
                                             <input type="text" name="ciptea" id="ciptea"
                                                 placeholder="Digite o número CIPTEA">
                                         </div>
+
                                         <div class="modal-actions">
                                             <button type="button" id="fecharModalPerfil"
                                                 class="btn-cancelar">Cancelar</button>
@@ -391,7 +396,7 @@
                                 </div>
                             </div>
 
-                            <!-- Modal para REMOVER Dependente (inicialmente oculto) -->
+                            <!-- MODAL REMOVER DEPENDENTE (inicialmente oculto) -->
                             <div id="modalRemoverDependente" class="modal-overlay" style="display: none;">
                                 <div class="modal-box">
                                     <h2>Remover Dependente</h2>
@@ -400,16 +405,19 @@
                                         @csrf
                                         @method('DELETE')
 
-                                        <select name="dependente_id" id="dependente_id" required>
-                                            <option value="">-- Escolha um dependente --</option>
-                                            @if($autista && $autista->count())
-                                            @foreach($autista as $autistas)
-                                            <option value="{{ $autista->id }}">
-                                                {{ $autista->usuario->apelido ?? 'Sem nome' }}
-                                            </option>
-                                            @endforeach
-                                            @endif
-                                        </select>
+                                        <div class="form-group">
+                                            <label for="dependente_id">Escolha um dependente:</label>
+                                            <select name="dependente_id" id="dependente_id" required>
+                                                <option value="">-- Escolha um dependente --</option>
+                                                @if(isset($autistas) && $autistas->count())
+                                                @foreach($autistas as $autista)
+                                                <option value="{{ $autista->id }}">
+                                                    {{ $autista->usuario->apelido ?? 'Sem nome' }}
+                                                </option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                        </div>
 
                                         <p class="alerta">
                                             ⚠️ Tem certeza que deseja remover este dependente? Essa ação não poderá ser
@@ -556,13 +564,15 @@
                                 <p class="texto-curto" id="texto-{{ $post->id }}">
                                     {!! formatarHashtags(Str::limit($post->texto_postagem, 150, '')) !!}
                                     @if (strlen($post->texto_postagem) > 150)
-                                    <span class="mostrar-mais" onclick="toggleTexto('{{ $post->id }}', this)">...mais</span>
+                                    <span class="mostrar-mais"
+                                        onclick="toggleTexto('{{ $post->id }}', this)">...mais</span>
                                     @endif
                                 </p>
 
                                 <p class="texto-completo" id="texto-completo-{{ $post->id }}" style="display: none;">
                                     {!! formatarHashtags($post->texto_postagem) !!}
-                                    <span class="mostrar-mais" onclick="toggleTexto('{{ $post->id }}', this)">...menos</span>
+                                    <span class="mostrar-mais"
+                                        onclick="toggleTexto('{{ $post->id }}', this)">...menos</span>
                                 </p>
                                 @if($post->imagens && $post->imagens->count() > 0)
                                 @foreach($post->imagens as $imagem)

@@ -5,7 +5,7 @@
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 3000;
+    z-index: 9999;
     animation: fadeInModal 0.2s ease;
 }
 
@@ -27,6 +27,7 @@
     max-width: 450px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     animation: slideUpModal 0.25s ease;
+    z-index: 10000;
 }
 
 @keyframes slideUpModal {

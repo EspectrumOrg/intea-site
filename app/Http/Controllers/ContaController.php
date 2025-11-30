@@ -32,72 +32,63 @@ class ContaController extends Controller
     public function show($usuario_id = null)
 {
     try {
-        // Tenta encontrar o usuário (passado na URL ou o logado)
         $user = $usuario_id ? Usuario::findOrFail($usuario_id) : auth()->user();
-        
+
         if (!$user) {
             return redirect('/feed')->with('error', 'Usuário não encontrado.');
         }
 
         $currentUser = auth()->user();
-        
-      
-        if ($currentUser && $currentUser->id != $user->id && $currentUser->tipo_usuario != 1) {
-            // Se NÃO é o próprio usuário E NÃO é admin, OCULTA o CPF
-            $user->cpf = '•••••••••••';
-        }
-        
-        // Se não está logado, também oculta o CPF
-        if (!$currentUser) {
+
+        // Proteção de CPF
+        if (!$currentUser || ($currentUser->id != $user->id && $currentUser->tipo_usuario != 1)) {
             $user->cpf = '•••••••••••';
         }
 
         $generos = $this->genero->all();
         $telefones = $this->telefone->where('usuario_id', $user->id)->get();
         $dadosespecificos = $this->getDadosEspecificos($user);
+
         $seguindo = $user->seguindo()->get();
         $seguidores = $user->seguidores()->get();
 
 
+        // 📌 Postagens do usuário
         $userPosts = Postagem::withCount(['curtidas', 'comentarios'])
             ->with(['imagens', 'usuario'])
             ->where('usuario_id', $user->id)
             ->orderByDesc('created_at')
             ->get();
 
+        // 📌 Postagens curtidas pelo usuário
         $likedPosts = Curtida::with(['postagem.usuario', 'postagem.imagens'])
             ->where('id_usuario', $user->id)
             ->orderByDesc('created_at')
             ->get();
 
+        // 📌 Postagens mais populares
         $postsPopulares = Postagem::withCount('curtidas')
             ->with(['imagens', 'usuario'])
             ->orderByDesc('curtidas_count')
             ->take(5)
             ->get();
 
-       /* $likedComments = Curtida::with([
-        'comentario.usuario', 
-        'comentario.postagem',
-        'comentario.postagem.usuario'
-        ])
-        ->where('id_usuario', $user->id)
-        ->whereNotNull('id_comentario') // Apenas curtidas em comentários
-        ->orderByDesc('created_at')
-        ->get();*/
-
         $tendenciasPopulares = Tendencia::populares(7)->get();
-        
 
+
+        // 🔥 Relação RESPONSÁVEL → AUTISTA usando tabela pivot
         $responsavel = null;
-        $autista = null;
+        $autistas = null;
+
         if ($user->tipo_usuario == 5) {
             $responsavel = Responsavel::where('usuario_id', $user->id)->first();
+
             if ($responsavel) {
-                $autista = Autista::where('responsavel_id', $responsavel->id)->first();
+                // Agora está CORRETO: usa a relação pivot!
+                $autistas = $responsavel->autistas()->get();
             }
         }
-        
+
 
         return view('profile.show', compact(
             'user',
@@ -106,10 +97,9 @@ class ContaController extends Controller
             'dadosespecificos',
             'userPosts',
             'likedPosts',
-            //'likedComments', 
             'postsPopulares',
             'tendenciasPopulares',
-            'autista',
+            'autistas',
             'responsavel',
             'seguindo',
             'seguidores'
@@ -120,6 +110,7 @@ class ContaController extends Controller
         return redirect('/feed')->with('error', 'Erro ao carregar o perfil.');
     }
 }
+
 
     public function index($usuario_id)
 {
@@ -176,11 +167,11 @@ class ContaController extends Controller
         $tendenciasPopulares = Tendencia::populares(7)->get();
 
         $responsavel = null;
-        $autista = null;
+        $autistas = null;
         if ($user->tipo_usuario == 5) {
             $responsavel = Responsavel::where('usuario_id', $user->id)->first();
             if ($responsavel) {
-                $autista = Autista::where('responsavel_id', $responsavel->id)->first();
+                $autistas = $responsavel->autistas()->get();
             }
         }
 
@@ -194,7 +185,7 @@ class ContaController extends Controller
          /*   'likedComments', */
             'postsPopulares',
             'tendenciasPopulares',
-            'autista',
+            'autistas',
             'responsavel',
             'seguindo',
             'seguidores'
@@ -210,17 +201,11 @@ class ContaController extends Controller
     {
         if (!$user) return null;
 
-        switch ($user->tipo_usuario) {
-            case 2: // Autista
-                return $user->autista;
-            case 4: // Profissional de Saúde
-                return $user->profissionalsaude;
-            case 5: // Responsável
-                return $user->responsavel;
-            default:
-                return null;
-        }
+        return match($user->tipo_usuario) {
+            2 => $user->autista,
+            4 => $user->profissionalsaude,
+            5 => $user->responsavel,
+            default => null,
+        };
     }
-
-    public function Conta() {}
 }

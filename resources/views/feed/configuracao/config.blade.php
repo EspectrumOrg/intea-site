@@ -15,6 +15,8 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
 <html lang="pt-br">
 
 <head>
+
+
     <meta charset="UTF-8">
     <link rel="shortcut icon" type="imagex/png" href="{{ url('assets/images/logos/intea/39.png') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +34,7 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
     <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <div class="layout">
         <div class="container-content">
             <!-- conteúdo sidebar -->
@@ -109,6 +111,9 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
         // Aguarda o carregamento completo do DOM antes de executar
         document.addEventListener('DOMContentLoaded', function() {
 
+            // Body
+            const body = document.body;
+
             // Captura o toggle (checkbox) que ativa/desativa o modo monocromático
             const toggle = document.getElementById('monochrome-sidebar-toggle');
 
@@ -126,6 +131,16 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
             ===========================================================
             */
             function toggleMonochrome(isMonochrome) {
+
+                if (body) {
+                    if (isMonochrome) {
+                        // Adiciona a classe que deixa ela monocromática
+                        body.classList.add('monochrome');
+                    } else {
+                        // Remove e volta ao modo normal
+                        body.classList.remove('monochrome');
+                    }
+                }
 
                 // Sidebar principal
                 if (sidebar) {
@@ -183,13 +198,13 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
                 */
             }
 
-
             /*
-            ===========================================================
-              ESCUTA O TOGGLE DE MODO MONOCROMÁTICO
-              (CLIQUE DO USUÁRIO)
-            ===========================================================
-            */
+                ===========================================================
+                  ESCUTA O TOGGLE DE MODO MONOCROMÁTICO
+                  (CLIQUE DO USUÁRIO)
+                ===========================================================
+                */
+
             if (toggle) {
                 toggle.addEventListener('change', function() {
 
@@ -297,6 +312,7 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
             }, 3000);
         }
     </script>
+
 </body>
 
 </html>

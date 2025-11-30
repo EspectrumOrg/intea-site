@@ -21,7 +21,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <div class="layout">
         <div class="container-content">
             <!-- conteúdo sidebar  -->

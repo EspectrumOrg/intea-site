@@ -16,7 +16,6 @@ class Autista extends Model
         'cipteia_autista',
         'rg_autista',
         'status_cipteia_autista',
-        'responsavel_id',
         'created_at',
         'updated_at'
     ];
@@ -26,9 +25,13 @@ class Autista extends Model
         return $this->belongsTo(Usuario::class, 'usuario_id');
     }
 
-    public function responsavel()
+    public function responsaveis()
     {
-        return $this->belongsTo(Responsavel::class, 'responsavel_id');
+        return $this->belongsToMany(
+            Responsavel::class,
+            'tb_autista_responsavel',
+            'autista_id',
+            'responsavel_id'
+        );
     }
-
 }

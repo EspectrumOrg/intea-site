@@ -19,7 +19,6 @@ class AutistaFactory extends Factory
         return [
             'cipteia_autista' => fake()->numerify('##.###.###-#'),
             'status_cipteia_autista' => 'Ativo',
-            'responsavel_id' => null,
             'usuario_id' => 2,
         ];
     }

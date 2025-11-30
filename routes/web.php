@@ -218,6 +218,7 @@ Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::resource("usuario", UsuarioController::class)->names("usuario")->parameters(["usuario" => "usuarios"]);
     Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+    Route::delete('/usuarioDenuncia/{usuario}', [UsuarioController::class, 'destroyDenuncia'])->name('usuario.destroyDenuncia');
     Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
     Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
     Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/interesses.css') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </head>
-<body class="onboarding-body">
+<body class="onboarding-body {{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <div class="onboarding-container">
         <div class="onboarding-header">
             <div class="logo-section">

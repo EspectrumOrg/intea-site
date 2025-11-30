@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Storage;
 
 class Interesse extends Model
 {
     protected $table = 'interesses';
 
     protected $fillable = [
-        'nome', 'slug', 'icone', 'cor', 'descricao', 'sobre', 
+        'nome', 'slug', 'icone', 'icone_custom', 'cor', 'descricao', 'sobre', 
         'banner', 'contador_membros', 'contador_postagens',
         'destaque', 'ativo', 'moderacao_ativa', 'limite_alertas_ban', 'dias_expiracao_alerta'
     ];
@@ -248,18 +249,216 @@ class Interesse extends Model
         ]);
     }
 
+    /**
+     * Acessor para obter o ícone (padrão ou customizado)
+     */
+    public function getIconeAttribute($value)
+    {
+        // Se tem ícone customizado, retorna o caminho completo
+        if ($this->icone_custom) {
+            return Storage::url($this->icone_custom);
+        }
+        
+        // Senão, retorna o ícone padrão
+        return $value;
+    }
+
+    /**
+     * Acessor para verificar se é ícone customizado
+     */
+    public function getIsCustomIconeAttribute()
+    {
+        return !empty($this->icone_custom);
+    }
+
+    /**
+     * Acessor para obter o tipo de ícone
+     */
+    public function getTipoIconeAttribute()
+    {
+        return $this->icone_custom ? 'custom' : 'default';
+    }
+
+    /**
+     * Acessor para obter o nome do arquivo do ícone customizado
+     */
+    public function getNomeIconeCustomAttribute()
+    {
+        if ($this->icone_custom) {
+            return basename($this->icone_custom);
+        }
+        return null;
+    }
+
+    /**
+     * Mutator para garantir que o slug seja sempre único
+     */
+    public function setSlugAttribute($value)
+    {
+        $slug = \Illuminate\Support\Str::slug($value);
+        $counter = 1;
+        $originalSlug = $slug;
+        
+        while (static::where('slug', $slug)->where('id', '!=', $this->id)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        $this->attributes['slug'] = $slug;
+    }
+
+    /**
+     * Escopo para interesses ativos
+     */
     public function scopeAtivos($query)
     {
         return $query->where('ativo', true);
     }
 
+    /**
+     * Escopo para interesses em destaque
+     */
     public function scopeDestaques($query)
     {
         return $query->where('destaque', true);
     }
 
+    /**
+     * Escopo para interesses populares
+     */
     public function scopePopulares($query, $limite = 10)
     {
         return $query->orderBy('contador_membros', 'desc')->limit($limite);
+    }
+
+    /**
+     * Escopo para buscar interesses por termo
+     */
+    public function scopeBuscar($query, $termo)
+    {
+        return $query->where(function($q) use ($termo) {
+            $q->where('nome', 'LIKE', "%{$termo}%")
+              ->orWhere('descricao', 'LIKE', "%{$termo}%")
+              ->orWhere('sobre', 'LIKE', "%{$termo}%");
+        });
+    }
+
+    /**
+     * Método para deletar o ícone customizado quando o interesse for deletado
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($interesse) {
+            // Deleta o arquivo do ícone customizado se existir
+            if ($interesse->icone_custom) {
+                Storage::disk('public')->delete($interesse->icone_custom);
+            }
+        });
+
+        static::updating(function ($interesse) {
+            // Se está atualizando e mudou o ícone customizado, deleta o antigo
+            if ($interesse->isDirty('icone_custom') && $interesse->getOriginal('icone_custom')) {
+                Storage::disk('public')->delete($interesse->getOriginal('icone_custom'));
+            }
+        });
+    }
+
+    /**
+     * Método para criar um novo interesse
+     */
+    public static function criar($dados)
+    {
+        return static::create([
+            'nome' => $dados['nome'],
+            'slug' => \Illuminate\Support\Str::slug($dados['nome']),
+            'descricao' => $dados['descricao'],
+            'sobre' => $dados['sobre'] ?? null,
+            'icone' => $dados['icone'] ?? 'smartphone',
+            'icone_custom' => $dados['icone_custom'] ?? null,
+            'cor' => $dados['cor'] ?? '#3B82F6',
+            'contador_membros' => 1,
+            'contador_postagens' => 0,
+            'destaque' => false,
+            'ativo' => true,
+            'moderacao_ativa' => true,
+            'limite_alertas_ban' => 3,
+            'dias_expiracao_alerta' => 30,
+        ]);
+    }
+
+    /**
+     * Método para adicionar um seguidor
+     */
+    public function adicionarSeguidor($usuarioId, $notificacoes = true)
+    {
+        $this->seguidores()->attach($usuarioId, [
+            'notificacoes' => $notificacoes,
+            'seguindo_desde' => now()
+        ]);
+
+        $this->increment('contador_membros');
+    }
+
+    /**
+     * Método para remover um seguidor
+     */
+    public function removerSeguidor($usuarioId)
+    {
+        $this->seguidores()->detach($usuarioId);
+        $this->decrement('contador_membros');
+    }
+
+    /**
+     * Método para adicionar uma postagem
+     */
+    public function adicionarPostagem($postagemId, $tipo = 'manual', $categorizadoPor = null, $observacao = null)
+    {
+        $this->postagens()->attach($postagemId, [
+            'tipo' => $tipo,
+            'categorizado_por' => $categorizadoPor,
+            'observacao' => $observacao,
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        $this->increment('contador_postagens');
+    }
+
+    /**
+     * Método para remover uma postagem
+     */
+    public function removerPostagem($postagemId)
+    {
+        $this->postagens()->detach($postagemId);
+        $this->decrement('contador_postagens');
+    }
+
+    /**
+     * Método para verificar se uma palavra é proibida
+     */
+    public function palavraEhProibida($palavra, $tipo = 'exata')
+    {
+        return $this->palavrasProibidas()
+                    ->where('tipo', $tipo)
+                    ->where('palavra', $tipo === 'exata' ? $palavra : 'LIKE', "%{$palavra}%")
+                    ->exists();
+    }
+
+    /**
+     * Método para obter estatísticas do interesse
+     */
+    public function obterEstatisticas()
+    {
+        return [
+            'membros' => $this->contador_membros,
+            'postagens' => $this->contador_postagens,
+            'moderadores' => $this->moderadores()->count(),
+            'palavras_proibidas' => $this->palavrasProibidas()->count(),
+            'criado_em' => $this->created_at->format('d/m/Y'),
+            'ativo' => $this->ativo ? 'Sim' : 'Não',
+            'moderacao_ativa' => $this->moderacao_ativa ? 'Sim' : 'Não',
+        ];
     }
 }

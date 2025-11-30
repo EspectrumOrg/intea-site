@@ -248,7 +248,9 @@ class Postagem extends Model
                 ]
             );
 
-            $tendencia->increment('contador_uso');
+            if (! $this->tendencias()->where('tendencia_id', $tendencia->id)->exists()) {
+                $tendencia->increment('contador_uso');
+            }
             $tendencia->update(['ultimo_uso' => now()]);
 
             $tendenciasIds[] = $tendencia->id;

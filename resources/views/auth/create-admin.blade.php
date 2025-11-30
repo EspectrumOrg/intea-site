@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"   />
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <!-- Voltar -->
     <div class="voltar">
         <a href="{{ route('usuario.index') }}">

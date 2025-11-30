@@ -31,15 +31,14 @@
 }
 
 .container-sidebar .logo a img {
-    width: 75px;
+    width: 100px;
     border-radius: 50%;
-    padding: .25rem;
-    transition: .7s;
     cursor: pointer;
+    transition: .3s ease-in-out;
 }
 
 .container-sidebar .logo a:hover img {
-    background-color: var(--cinza-texto);
+    transform: translateY(2.5px);
 }
 
 /* container de info do usuário ---------------------------------------------------------------*/
@@ -436,6 +435,7 @@
 .links a:nth-of-type(8).active .material-symbols-outlined::after {
     width: 100%;
 }
+
 .links .nav-link h1 {
     font-size: 16px;
 }
@@ -647,7 +647,7 @@
             transition: width 0.4s ease-in-out;
         }
     }
-    
+
     &:hover {
         transform: translateX(7.5px);
         color: var(--amarelo);
@@ -840,7 +840,7 @@
 
 /*BASICAMENTE, A PARTIR DAQUI É TUDO ENVOLVENDO MONOCROMATICO E BOTÃO DA SIDE BAR, ATÉ O PRÓXIMO ASSIM QUE EU VOU MARCAR PARA SABER DE ONDE A ONDE <- assassino do comunistinha*/
 .sidebar-monochrome {
-    /* Remove o filter do container principal */
+    /* texto do gpt inútil pq essa classe tá vazia kkkkkkk */
 }
 
 .sidebar-monochrome .logo img,
@@ -961,22 +961,22 @@
     .config-section {
         margin: 16px 0;
     }
-    
+
     .config-section h3 {
         padding: 16px 20px;
         font-size: 1.1rem;
     }
-    
+
     .setting-item {
         padding: 20px;
         flex-direction: column;
         gap: 16px;
     }
-    
+
     .setting-info {
         padding-right: 0;
     }
-    
+
     .switch {
         align-self: flex-start;
         margin-top: 0;
@@ -1026,6 +1026,7 @@
         max-height: 8.5vh;
         padding: 0;
     }
+
     .container-sidebar .info {
         padding: .5rem 1rem;
         margin-right: 1rem;
@@ -1115,46 +1116,59 @@
         flex-direction: row;
         justify-content: flex-end;
     }
-    
+
     /* textos */
     .container-sidebar .info .text {
         padding: 0 0 0 .25rem;
-        white-space: nowrap; /*impede a quebra de linha*/
-        overflow: hidden; /* oculta o q sobrar*/
-        text-overflow: ellipsis; /* reticências*/
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
         color: var(--cor-fundo);
     }
 
     .container-sidebar .info .text h5 {
         font-size: 1.1rem;
-        white-space: nowrap; /*impede a quebra de linha*/
-        overflow: hidden; /* oculta o q sobrar*/
-        text-overflow: ellipsis; /* reticências*/
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
         font-weight: bold;
         color: var(--cor-preto);
     }
 
     .container-sidebar .info .text h4 {
         font-size: 0.8rem;
-        white-space: nowrap; /*impede a quebra de linha*/
-        overflow: hidden; /* oculta o q sobrar*/
-        text-overflow: ellipsis; /* reticências*/
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
         color: var(--cor-fundo);
     }
+
     .dropdown-checar-perfil {
         max-width: 130px;
         padding: 0.2rem;
         margin: 0;
         text-align: left;
-        white-space: nowrap; /*impede a quebra de linha*/
-        overflow: hidden; /* oculta o q sobrar*/
-        text-overflow: ellipsis; /* reticências*/
+        white-space: nowrap;
+        /*impede a quebra de linha*/
+        overflow: hidden;
+        /* oculta o q sobrar*/
+        text-overflow: ellipsis;
+        /* reticências*/
     }
 
     .dropdown-checar-perfil a {
         margin: 0;
     }
-    
+
     .nav-link {
         white-space: nowrap; /*impede a quebra de linha*/
         overflow: hidden; /* oculta o q sobrar*/
@@ -1221,7 +1235,7 @@
     .container-sidebar .info {
         display: none;
     }
-    
+
     .content .links {
         max-width: 90%;
         min-width: 78vw;
@@ -1262,7 +1276,8 @@
         outline: none;
         object-fit: contain;
     }
-    .nav-link h1{
+
+    .nav-link h1 {
         display: none;
     }
 

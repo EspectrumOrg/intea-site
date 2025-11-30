@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
-
 class InteresseController extends Controller
 {
     public function show($slug)
@@ -84,20 +83,20 @@ class InteresseController extends Controller
     }
 
     public function index()
-{
-    $interesses = Interesse::ativos()
-        ->withCount('seguidores')
-        ->orderBy('seguidores_count', 'desc')
-        ->paginate(12)
-        ->onEachSide(1) // Mostra apenas 1 página antes e depois da atual
-        ->withQueryString();
+    {
+        $interesses = Interesse::ativos()
+            ->withCount('seguidores')
+            ->orderBy('seguidores_count', 'desc')
+            ->paginate(12)
+            ->onEachSide(1)
+            ->withQueryString();
 
-    $usuario = Auth::user();
-    $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
-    $tendenciasPopulares = Tendencia::populares(7)->get();
+        $usuario = Auth::user();
+        $interessesUsuario = $usuario ? $usuario->interesses->pluck('id')->toArray() : [];
+        $tendenciasPopulares = Tendencia::populares(7)->get();
 
-    return view('interesses.index', compact('interesses', 'interessesUsuario', 'tendenciasPopulares'));
-}
+        return view('interesses.index', compact('interesses', 'interessesUsuario', 'tendenciasPopulares'));
+    }
 
     public function postagens($slug, Request $request)
     {
@@ -187,7 +186,7 @@ class InteresseController extends Controller
             'icone_type' => 'required|in:default,custom',
             'icone' => 'required_if:icone_type,default|string|max:50',
             'icone_custom' => 'required_if:icone_type,custom|image|mimes:jpeg,png,jpg,svg|max:1024',
-            'cor' => 'required|string|size:7', // #FFFFFF
+            'cor' => 'required|string|size:7',
         ], [
             'nome.required' => 'O nome do interesse é obrigatório',
             'nome.max' => 'O nome não pode ter mais de 50 caracteres',
@@ -223,7 +222,7 @@ class InteresseController extends Controller
                 // Salvar ícone customizado
                 if ($request->hasFile('icone_custom')) {
                     $iconeCustomPath = $request->file('icone_custom')->store('arquivos/interesses/icones', 'public');
-                    $icone = 'custom'; // Marcador para ícone customizado
+                    $icone = 'custom';
                 }
             }
 
@@ -234,9 +233,9 @@ class InteresseController extends Controller
                 'descricao' => $request->descricao,
                 'sobre' => $request->sobre,
                 'icone' => $icone,
-                'icone_custom' => $iconeCustomPath, // Novo campo para ícone customizado
+                'icone_custom' => $iconeCustomPath,
                 'cor' => $request->cor,
-                'contador_membros' => 1, // O criador é o primeiro membro
+                'contador_membros' => 1,
                 'contador_postagens' => 0,
                 'destaque' => false,
                 'ativo' => true,
@@ -297,6 +296,4 @@ class InteresseController extends Controller
             'query'
         ));
     }
-
-
 }

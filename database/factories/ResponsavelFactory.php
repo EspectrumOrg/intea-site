@@ -17,7 +17,6 @@ class ResponsavelFactory extends Factory
     public function definition(): array
     {
         return [
-            'cipteia_autista' => 'cipteia_falsa',
             'usuario_id' => 5,
         ];
     }
