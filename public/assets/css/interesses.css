@@ -1379,4 +1379,130 @@
         width: 100%;
         text-align: center;
     }
+
+    .interesse-header-info {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.interesse-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.interesse-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.interesse-titulo {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+}
+
+.interesse-descricao {
+    color: #666;
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.4;
+}
+
+.interesse-stats-header {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.interesse-stats-header .stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.interesse-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.btn-seguir {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-seguir:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+.btn-seguir.seguindo {
+    background: #10B981;
+}
+
+.btn-seguir.seguindo:hover {
+    background: #059669;
+}
+
+.btn-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #f1f5f9;
+    color: #64748b;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-info:hover {
+    background: #e1e5e9;
+    color: #374151;
+}
+
+@media (max-width: 768px) {
+    .interesse-header-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .interesse-avatar {
+        align-self: center;
+    }
+    
+    .interesse-actions {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .interesse-stats-header {
+        justify-content: center;
+    }
+
+    
+}
 }

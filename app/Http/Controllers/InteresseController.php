@@ -12,27 +12,53 @@ use Illuminate\Support\Facades\Storage;
 
 class InteresseController extends Controller
 {
-    public function show($slug)
-    {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
-        
-        $postagens = $interesse->postagensRecentes(20);
-        $usuariosPopulares = $interesse->usuariosPopulares(6);
-        $postagensDestacadas = $interesse->postagensDestacadas(5);
-        $usuarioSegue = $usuario ? $interesse->usuarioSegue($usuario->id) : false;
+  public function show($slug)
+{
+    $interesse = Interesse::where('slug', $slug)
+        ->withCount(['seguidores', 'postagens'])
+        ->firstOrFail();
+    
+    $usuario = Auth::user();
+    
+    // Postagens com mais curtidas (em vez de recentes)
+    $postagensMaisCurtidas = $interesse->postagens()
+        ->with(['usuario', 'imagens', 'interesses'])
+        ->withCount(['curtidas', 'comentarios'])
+        ->where('bloqueada_auto', false)
+        ->where('removida_manual', false)
+        ->orderBy('curtidas_count', 'desc')
+        ->limit(20)
+        ->get();
+    
+    // Usuários populares
+    $usuariosPopulares = $interesse->usuariosPopulares(6);
+    
+    // Postagens destacadas
+    $postagensDestacadas = $interesse->postagensDestacadas(5);
+    
+    // Verificar se usuário segue o interesse
+    $usuarioSegue = $usuario ? $interesse->usuarioSegue($usuario->id) : false;
+    
+    // Verificar se usuário é moderador
+    $usuarioEhModerador = $usuario ? $interesse->moderadores()->where('usuario_id', $usuario->id)->exists() : false;
+    
+    // Estatísticas do interesse
+    $estatisticas = $interesse->obterEstatisticas();
+    
+    // Tendencias populares para sidebar
+    $tendenciasPopulares = Tendencia::populares(7)->get();
 
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-        
-        return view('interesses.show', compact(
-            'interesse', 
-            'postagens', 
-            'usuariosPopulares',
-            'postagensDestacadas',
-            'usuarioSegue',
-            'tendenciasPopulares',
-        ));
-    }
+    return view('interesses.show', compact(
+        'interesse', 
+        'postagensMaisCurtidas', 
+        'usuariosPopulares',
+        'postagensDestacadas',
+        'usuarioSegue',
+        'usuarioEhModerador',
+        'estatisticas',
+        'tendenciasPopulares'
+    ));
+}
 
     public function seguir(Request $request, $id)
     {

@@ -461,4 +461,16 @@ class Interesse extends Model
             'moderacao_ativa' => $this->moderacao_ativa ? 'Sim' : 'Não',
         ];
     }
+
+    public function postagensMaisCurtidas($limite = 20)
+{
+    return $this->postagens()
+        ->with(['usuario', 'imagens', 'interesses'])
+        ->withCount(['curtidas', 'comentarios'])
+        ->where('bloqueada_auto', false)
+        ->where('removida_manual', false)
+        ->orderBy('curtidas_count', 'desc')
+        ->limit($limite)
+        ->get();
+}
 }
