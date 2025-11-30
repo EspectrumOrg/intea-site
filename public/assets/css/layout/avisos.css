@@ -24,6 +24,7 @@
     animation: scaleUp 0.25s ease;
     position: relative;
     overflow: hidden;
+    z-index: 10000;
 }
 
 /* Ícone */

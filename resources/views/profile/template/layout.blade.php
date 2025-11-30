@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/post/update/modal.css') }}">
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
     <div class="layout">
         <div class="container-content">
             <!-- conteúdo sidebar  -->
