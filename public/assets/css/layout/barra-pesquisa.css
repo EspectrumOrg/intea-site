@@ -112,12 +112,16 @@
 @media (max-width: 1024px) {
     .buscar-container {
         width: 75%;
-        max-width: 240px;
-        margin: auto;
+        max-height: 20vh;
+        max-width: 200px;
+        margin: 0.7rem auto;
     }
 
     .input-barra-pesquisa {
         width: 100%;
+        white-space: nowrap; /*impede a quebra de linha*/
+        overflow: hidden; /* oculta o q sobrar*/
+        text-overflow: ellipsis; /* reticências*/
     }
 }
 

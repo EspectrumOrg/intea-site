@@ -145,11 +145,40 @@
 
 
 @media (max-width: 1024px) {
-    
+    .sidebar-tendencias {
+        max-width: 160px;
+        max-height: 75vh;
+        margin: auto 0.2rem;
+        padding: 0.25rem;
+        overflow: hidden;
+    }
+
+    .sidebar-header {
+        padding-left: 0.3rem;
+    }
+    .sidebar-header h3 {
+        font-size: clamp(0.75rem, 1vw + 0.75rem, 1.2rem);
+    }
+
+    .sidebar-tendencias .tendencias-list {
+        overflow: hidden;
+    }
+
+    .sidebar-tendencias .ver-mais {
+        overflow: visible;
+        visibility: visible;
+    }
+
 }
 
 @media (max-width: 764px) {
+    .sidebar-tendencias {
+        display: none;
+    }
 
+    .sidebar-tendencias-monochrome {
+        display: none;
+    }
 }
 
 @media (max-width: 600px) {

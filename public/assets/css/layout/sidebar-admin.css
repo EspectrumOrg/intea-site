@@ -638,36 +638,95 @@
 }
 
 @media (max-width: 1024px) {
-    links .nav-link:hover,
-    .admin .links .nav-link:hover {
-        transform: translate(7.5px, -4px);
+    /* Parte tablet grande*/
+    .content {
+        min-height: 100vh;
+        max-width: 25vw;
+        width: 17.5vw;
+        gap: 0.75rem;
+        scroll-behavior: smooth;
+        white-space: nowrap; /*impede a quebra de linha*/
+        overflow: hidden; /* oculta o q sobrar*/
+        text-overflow: ellipsis; /* reticências*/
     }
 
-    .links .nav-link:hover .material-symbols-outlined::after,
-    .admin .links .nav-link:hover .material-symbols-outlined::after {
-        transform: translateY(-4px);
+    .content .admin-topo img {
+        width: 80%;
+        height: fit-content;
+        object-fit: contain;
+        padding: 0;
+        margin: auto;
+    }
+
+    .content .links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: flex-start;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0 20%;
+    }
+
+    /* Base dos links ADM*/
+    .content .links .nav-link {
+        min-block-size: 2.7rem;
+        max-block-size: 3.4rem;
+        border-radius: 0;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        text-align: left;
+        white-space: nowrap; /*impede a quebra de linha*/
+        overflow: hidden; /* oculta o q sobrar*/
+        text-overflow: ellipsis; /* reticências*/
+        object-fit: contain;
+    }
+
+    .content .links .nav-link span,
+    .links .nav-link span {
+        size: clamp(2.8rem, 1vw + 2.8rem, 3.4rem);
+        margin: 0 0.2rem;
+        text-align: left;
+    }
+    .content .links .nav-link h1,
+    .links .nav-link h1{
+        font-size: clamp(0.4rem, 0.75vw + 0.6rem, 0.9rem);
+        margin: 0;
+        padding: 0;
+        white-space: nowrap; /*impede a quebra de linha*/
+        overflow: hidden; /* oculta o q sobrar*/
+        text-overflow: ellipsis; /* reticências*/
+        text-align: left;
     }
 }
 
 @media (max-width: 764px) {
-     /* Parte tablet */
-    .admin .content {
+     /* Parte tablet pequeno */
+    .admin .container-sidebar .content {
         display: flex;
-        flex-direction: column;
+        flex-direction: row-reverse;
         align-items: center;
         position: fixed;
-        bottom: 0;
         left: 0;
+        bottom: 0;
+        top: 95vh;
+        margin: 0;
         padding: 0;
         min-width: 100vw;
-        max-height: 10vh;
-        height: 10vh;
+        max-height: 5rem;
+        min-height: 3.5rem;
+        height: fit-content;
         z-index: 1000;
         background-color: brown;
     }
 
-    .admin-topo .foto-administrador {
+    .admin .admin-topo {
         display: none;
+    }
+
+    .admin .links {
+        display: inline-flex;
+        flex-direction: row-reverse;
     }
 
     /* Base dos links ADM*/
@@ -700,35 +759,43 @@
 
 @media (max-width: 600px) {
     /* Parte mobile*/
-    .admin .content {
+    .admin .container-sidebar .content {
         display: flex;
-        flex-direction: row;
+        flex-direction: row-reverse;
         align-items: center;
         position: fixed;
-        top: 90vh;
+        top: 91.5vh;
+        margin: auto 0;
         bottom: 0;
         left: 0;
         padding: 0;
         min-width: 100vw;
-        max-height: 10vh;
-        height: 10vh;
-        z-index: 1000;
-        background-color: brown;
+        max-height: 5rem;
+        min-height: 2rem;
+        overflow: hidden;
+        height: 5rem;
+        z-index: 999;
+        background-color: var(--branco);
     }
 
-    .admin-topo {
+    .admin .admin-topo {
         display: none;
     }
 
-    .admin .links {
-        max-width: 90%;
+    .admin .content .links {
+        max-width: 95vw;
         min-width: 78vw;
+        max-height: 11vh;
         display: inline-flex;
-        flex-direction: row;
+        flex-direction: row-reverse;
+        align-items: center;
         justify-content: space-evenly;
         margin: auto;
-        padding: 0;
-        gap: 0.3rem;
+        z-index: 1000;
+        overflow-y: visible;
+        padding: 5px;
+        gap: 0.2rem;
+        background-color: var(--branco);
     }
 
     .admin .links h1 {
@@ -739,7 +806,9 @@
         min-block-size: 2rem;
         max-block-size: 2.6rem;
         border-radius: 0;
-        padding: 0;
+        overflow:visible;
+        margin: 0;
+        z-index: 1001;
         border: none;
         outline: none;
         object-fit: contain;
