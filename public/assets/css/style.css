@@ -106,7 +106,6 @@ body::-webkit-scrollbar-thumb {
 }
 
 /* Modo Monochromatico */
-
 .monochrome  {
     filter: grayscale(100%);
 }

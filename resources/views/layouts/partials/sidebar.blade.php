@@ -74,15 +74,16 @@
         </a>
 
         <!-- NOTIFICAÇÕES (5) -->
-        <a href="{{ route('notificacao.index') }}" class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}" 
+        <a href="{{ route('notificacao.index') }}" class="nav-link {{ request()->routeIs('notificacao.index') ? 'active' : '' }}"
             id="notificacoes">
             <span class="material-symbols-outlined">notifications</span>
             <h1>
                 Notificações
                 @if($totalNotificacoes > 0)
-                    <span>
-                        {{ $totalNotificacoes }}
-                    </span>
+                <span class="material-symbols-outlined icon-notificacao">
+                    {{-- $totalNotificacoes --}}
+                    exclamation
+                </span>
                 @endif
             </h1>
         </a>

@@ -22,11 +22,11 @@
     width: 100%;
 }
 
-.not-found .text-not span{
+.not-found .text-not span {
     font-size: 34px;
 }
 
-.not-found .text-not h4{
+.not-found .text-not h4 {
     font-size: 24px;
 }
 
@@ -40,7 +40,7 @@
     width: 100%;
 }
 
-.not-found .subtext-not p{
+.not-found .subtext-not p {
     font-size: 16px;
     color: var(--preto);
     text-indent: 4px;
@@ -448,7 +448,7 @@
 }
 
 .btn-cancelar {
-    background: #ccc;
+    background: var(--branco-light);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
@@ -456,17 +456,25 @@
 }
 
 .btn-salvar {
-    background: #4CAF50;
-    color: white;
+    background: var(--verde);
+    color: var(--branco);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
+    transition: .3s;
+}
+
+.btn-salvar:hover {
+    background: var(--verde-apagado);
 }
 
 .abrir-modal-btn {
-    background: #2196F3;
-    color: white;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: var(--azul);
+    color: var(--branco);
     border: none;
     border-radius: 6px;
     padding: 8px 15px;
@@ -475,9 +483,9 @@
 }
 
 .btn-remover {
-    background: #f44336;
+    background: var(--vermelho);
     /* vermelho */
-    color: white;
+    color: var(--branco);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
@@ -511,27 +519,27 @@
     margin-bottom: 1rem;
 }
 
-.post-header .dados-post{
+.post-header .dados-post {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 1rem;
 }
 
-.post-header .dados-post{
+.post-header .dados-post {
     display: flex;
     flex-direction: row;
     align-items: end;
     gap: 1rem;
 }
 
-.post-header .dados-post a{
+.post-header .dados-post a {
     text-decoration: none;
     color: var(--preto);
     font-size: 10px;
 }
 
-.post-header .dados-post a:hover{
+.post-header .dados-post a:hover {
     text-decoration: underline;
 }
 
@@ -1094,7 +1102,8 @@ textarea {
     }
 
     .tab-scroll-btn {
-        display: none !important; /* tira os botões de seta */
+        display: none !important;
+        /* tira os botões de seta */
     }
 
     .tab-button {
@@ -1136,7 +1145,9 @@ textarea {
 /* ----------- RESPONSIVIDADE EXTREMA (celulares muito pequenos) ----------- */
 @media (max-width: 480px) {
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
         font-size: 18px !important;
     }
 
@@ -1158,7 +1169,8 @@ textarea {
     }
 
     .tab-button .tab-text {
-        display: none; /* mostra só ícones para economizar espaço */
+        display: none;
+        /* mostra só ícones para economizar espaço */
     }
 
     .modal-box {
