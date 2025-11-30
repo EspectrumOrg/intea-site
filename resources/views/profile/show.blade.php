@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
 </head>
 
-<body>
+<body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
 
     @php
     use App\Models\Tendencia;

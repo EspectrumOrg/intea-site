@@ -110,8 +110,3 @@ body::-webkit-scrollbar-thumb {
 .monochrome  {
     filter: grayscale(100%);
 }
-
-
-monochrome-img {
-    filter: grayscale(0%);
-}

@@ -111,14 +111,7 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
         // Aguarda o carregamento completo do DOM antes de executar
         document.addEventListener('DOMContentLoaded', function() {
 
-            /*
-            CÓDIGO ANTIGO DO MODO MONOCROMÁTICO
-
-            // Executa a função ao carregar a página com a preferência do usuário
-            const userThemePreference = "<?php echo auth()->user()->tema_preferencia; ?>";
-            const isMonochrome = userThemePreference === 'monocromatico';
-            toggleMonochrome(isMonochrome);
-
+            // Body
             const body = document.body;
 
             // Captura o toggle (checkbox) que ativa/desativa o modo monocromático
@@ -136,7 +129,7 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
               Aqui você adiciona novas áreas/componentes no futuro
               Só precis repetir o padrão "if (elemento) { add/remove class }"
             ===========================================================
-            /
+            */
             function toggleMonochrome(isMonochrome) {
 
                 if (body) {
@@ -202,9 +195,8 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
                 }
                 Isso já vai estar no código, recomendo inclusive que deixe no Style.css tudo isso (que fica no public/assets/css)
                 por que todas as páginas usam isso. Só identifica com um comentário onde inicia. Mas é basicamente isso.
-                /
+                */
             }
-            */
 
             /*
                 ===========================================================
@@ -212,43 +204,6 @@ $tendenciasPopulares = Tendencia::populares(7)->get();
                   (CLIQUE DO USUÁRIO)
                 ===========================================================
                 */
-
-             // Provisório
-            const sidebar = document.querySelector('.container-sidebar .content');
-            const sidebarTendencias = document.querySelector('.sidebar-tendencias');
-
-            // O body dessa página
-            const body = document.body;
-
-            // Captura o toggle (checkbox) que ativa/desativa o modo monocromático
-            const toggle = document.getElementById('monochrome-sidebar-toggle');
-
-
-            function toggleMonochrome(isMonochrome) {
-
-                if (body) {
-                    if (isMonochrome) {
-                        // Adiciona a classe que deixa ela monocromática
-                        body.classList.add('monochrome');
-                    } else {
-                        // Remove e volta ao modo normal
-                        body.classList.remove('monochrome');
-                    }
-                }
-
-
-
-                // Provisório
-                if (sidebar) {
-                    sidebar.classList.remove('sidebar-monochrome');
-                }
-                if (sidebarTendencias) {
-                    sidebarTendencias.classList.remove('sidebar-tendencias-monochrome');
-                }
-
-
-
-            }
 
             if (toggle) {
                 toggle.addEventListener('change', function() {
