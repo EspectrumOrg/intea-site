@@ -173,27 +173,6 @@
                     </div>
                     @endif
 
-                    @if($userPosts->count() > 0)
-                    <div class="tab-content" id="posts-tab">
-                        <h3>Postagens</h3>
-                        <div class="posts-grid">
-                            @foreach($userPosts as $post)
-                            <div class="post-card">
-                                <div class="post-header">
-                                    <div class="dados-post">
-                                        <a href="{{ route('post.read', ['postagem' => $post->id]) }}">
-                                            <h1>{{ Str::limit($post->usuario->user ?? 'Desconhecido', 25, '...') }}</h1>
-                                        </a>
-                                        <small>{{ $post->created_at->format('d/m/Y H:i') }}</small>
-                                    </div>
-                                </div>
-                                <p class="post-content">{{ $post->texto_postagem }}</p>
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    @endif
-
                     <!-- Aba 2: Postagens (só mostra se tiver conteúdo) ------------------------------------------->
                     @if($userPosts->count() > 0)
                     <div class="tab-content" id="posts-tab">
@@ -210,115 +189,127 @@
                                     </div>
 
                                     <div class="dropdown">
-    <!-- Botão dos pontinhos -->
-    <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
-        <span class="material-symbols-outlined">more_horiz</span>
-    </button>
+                                        <!-- Botão dos pontinhos -->
+                                        <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                                            <span class="material-symbols-outlined">more_horiz</span>
+                                        </button>
 
-    <ul class="dropdown-content">
-        @php
-            $authUser = Auth::user();
+                                        <ul class="dropdown-content">
+                                            @php
+                                            $authUser = Auth::user();
 
-            // Verifica se o usuário é dono do post
-            $isOwner = intval($authUser->id) === intval($post->usuario_id);
+                                            // Verifica se o usuário é dono do post
+                                            $isOwner = intval($authUser->id) === intval($post->usuario_id);
 
-            // Responsável (tipo_usuario = 5) pode gerenciar posts de seus autistas
-            if (!$isOwner && $authUser->tipo_usuario == 5 && isset($autistas)) {
-                $isOwner = $autistas->contains(function($autista) use ($post) {
-                    return intval($autista->usuario->id) === intval($post->usuario_id);
-                });
-            }
+                                            // Responsável (tipo_usuario = 5) pode gerenciar posts de seus autistas
+                                            if (!$isOwner && $authUser->tipo_usuario == 5 && isset($autistas)) {
+                                            $isOwner = $autistas->contains(function($autista) use ($post) {
+                                            return intval($autista->usuario->id) === intval($post->usuario_id);
+                                            });
+                                            }
 
-            // Checa se já segue o usuário
-            $isFollowing = $authUser->seguindo->pluck('id')->map('intval')->contains(intval($post->usuario_id));
+                                            // Checa se já segue o usuário
+                                            $isFollowing =
+                                            $authUser->seguindo->pluck('id')->map('intval')->contains(intval($post->usuario_id));
 
-            // Checa se já enviou pedido de seguir
-            $pedidoFeito = \App\Models\Notificacao::where('solicitante_id', $authUser->id)
-                ->where('alvo_id', $post->usuario_id)
-                ->where('tipo', 'seguir')
-                ->exists();
-        @endphp
+                                            // Checa se já enviou pedido de seguir
+                                            $pedidoFeito = \App\Models\Notificacao::where('solicitante_id',
+                                            $authUser->id)
+                                            ->where('alvo_id', $post->usuario_id)
+                                            ->where('tipo', 'seguir')
+                                            ->exists();
+                                            @endphp
 
-        {{-- Editar / Excluir para dono/responsável --}}
-        @if($isOwner)
-            <li>
-                <button type="button" class="btn-acao editar" onclick="abrirModalEditar('{{ $post->id }}')">
-                    <span class="material-symbols-outlined">edit</span>Editar
-                </button>
-            </li>
-            <li>
-                <form action="{{ route('post.destroy', $post->id) }}" method="POST" style="display:inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn-acao excluir">
-                        <span class="material-symbols-outlined">delete</span>Excluir
-                    </button>
-                </form>
-            </li>
+                                            {{-- Editar / Excluir para dono/responsável --}}
+                                            @if($isOwner)
+                                            <li>
+                                                <button type="button" class="btn-acao editar"
+                                                    onclick="abrirModalEditar('{{ $post->id }}')">
+                                                    <span class="material-symbols-outlined">edit</span>Editar
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('post.destroy', $post->id) }}" method="POST"
+                                                    style="display:inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-acao excluir">
+                                                        <span class="material-symbols-outlined">delete</span>Excluir
+                                                    </button>
+                                                </form>
+                                            </li>
 
-        {{-- Posts de terceiros --}}
-        @else
-            {{-- Banir usuário (Admin) --}}
-            @if($authUser->tipo_usuario === 1)
-                <li>
-                    <button type="button" class="btn-acao btn-excluir-usuario"
-                        onclick="abrirModalBanimentoUsuarioEspecifico('{{ $post->usuario->id }}')">
-                        <span class="material-symbols-outlined">person_off</span>Banir
-                    </button>
-                </li>
-            {{-- Denunciar usuário --}}
-            @else
-                <li>
-                    <a class="btn-acao denunciar" href="javascript:void(0)"
-                        onclick="abrirModalDenuncia('{{ $post->id }}')">
-                        <span class="material-symbols-outlined">flag_2</span>Denunciar
-                    </a>
-                </li>
-            @endif
+                                            {{-- Posts de terceiros --}}
+                                            @else
+                                            {{-- Banir usuário (Admin) --}}
+                                            @if($authUser->tipo_usuario === 1)
+                                            <li>
+                                                <button type="button" class="btn-acao btn-excluir-usuario"
+                                                    onclick="abrirModalBanimentoUsuarioEspecifico('{{ $post->usuario->id }}')">
+                                                    <span class="material-symbols-outlined">person_off</span>Banir
+                                                </button>
+                                            </li>
+                                            {{-- Denunciar usuário --}}
+                                            @else
+                                            <li>
+                                                <a class="btn-acao denunciar" href="javascript:void(0)"
+                                                    onclick="abrirModalDenuncia('{{ $post->id }}')">
+                                                    <span class="material-symbols-outlined">flag_2</span>Denunciar
+                                                </a>
+                                            </li>
+                                            @endif
 
-            {{-- Seguir / Deixar de seguir / Pedido enviado --}}
-            @if ($authUser->id !== $post->usuario_id)
-                <li>
-                    @if ($isFollowing)
-                        <form action="{{ route('seguir.destroy', $post->usuario_id) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn-acao deixar-btn">
-                                <span class="material-symbols-outlined">person_remove</span>Deixar de seguir
-                            </button>
-                        </form>
-                    @elseif ($post->usuario->visibilidade == 0)
-                        @if ($pedidoFeito)
-                            <form action="{{ route('seguir.cancelar', $post->usuario_id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn-acao seguir-btn">
-                                    <span class="material-symbols-outlined">hourglass_empty</span>Pedido enviado
-                                </button>
-                            </form>
-                        @else
-                            <form action="{{ route('seguir.store') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
-                                <button type="submit" class="btn-acao seguir-btn">
-                                    <span class="material-symbols-outlined">person_add</span>Pedir para seguir
-                                </button>
-                            </form>
-                        @endif
-                    @else
-                        <form action="{{ route('seguir.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
-                            <button type="submit" class="btn-acao seguir-btn">
-                                <span class="material-symbols-outlined">person_add</span>Seguir {{ $post->usuario->user }}
-                            </button>
-                        </form>
-                    @endif
-                </li>
-            @endif
-        @endif
-    </ul>
-</div>
+                                            {{-- Seguir / Deixar de seguir / Pedido enviado --}}
+                                            @if ($authUser->id !== $post->usuario_id)
+                                            <li>
+                                                @if ($isFollowing)
+                                                <form action="{{ route('seguir.destroy', $post->usuario_id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-acao deixar-btn">
+                                                        <span
+                                                            class="material-symbols-outlined">person_remove</span>Deixar
+                                                        de seguir
+                                                    </button>
+                                                </form>
+                                                @elseif ($post->usuario->visibilidade == 0)
+                                                @if ($pedidoFeito)
+                                                <form action="{{ route('seguir.cancelar', $post->usuario_id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-acao seguir-btn">
+                                                        <span
+                                                            class="material-symbols-outlined">hourglass_empty</span>Pedido
+                                                        enviado
+                                                    </button>
+                                                </form>
+                                                @else
+                                                <form action="{{ route('seguir.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
+                                                    <button type="submit" class="btn-acao seguir-btn">
+                                                        <span class="material-symbols-outlined">person_add</span>Pedir
+                                                        para seguir
+                                                    </button>
+                                                </form>
+                                                @endif
+                                                @else
+                                                <form action="{{ route('seguir.store') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_id" value="{{ $post->usuario_id }}">
+                                                    <button type="submit" class="btn-acao seguir-btn">
+                                                        <span class="material-symbols-outlined">person_add</span>Seguir
+                                                        {{ $post->usuario->user }}
+                                                    </button>
+                                                </form>
+                                                @endif
+                                            </li>
+                                            @endif
+                                            @endif
+                                        </ul>
+                                    </div>
 
                                 </div>
                                 <p class="texto-curto" id="texto-{{ $post->id }}">
@@ -402,6 +393,7 @@
                         </div>
                     </div>
                     @endif
+
 
                     <div class="tab-content" id="autista-tab">
                         @if(isset($selectedAutista) && $selectedAutista)
@@ -528,7 +520,6 @@
                         button.addEventListener('click', scrollToActiveTab);
                     });
                 });
-                
 
             </script>
 

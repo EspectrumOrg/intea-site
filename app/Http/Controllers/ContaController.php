@@ -88,6 +88,10 @@ class ContaController extends Controller
                 $autistas = $responsavel->autistas()->get();
             }
         }
+        if ($user->data_nascimento) {
+            $idade = \Carbon\Carbon::parse($user->data_nascimento)->age;
+            $maiorDeIdade = $idade >= 18;
+        }
 
 
         return view('profile.show', compact(
@@ -102,7 +106,8 @@ class ContaController extends Controller
             'autistas',
             'responsavel',
             'seguindo',
-            'seguidores'
+            'seguidores',
+            'maiorDeIdade'
         ));
 
     } catch (\Exception $e) {
