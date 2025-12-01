@@ -104,28 +104,24 @@ Route::resource("responsavel", ResponsavelController::class)->names("responsavel
 // Usuário Logado PADRÃO
 Route::middleware(['auth', 'check.ban'])->group(function () {
 
-    // ========== INTERESSES - PRIMEIRO (PARA EVITAR CONFLITOS) ==========
-    Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
-    Route::get('/interesses/criar', [InteresseController::class, 'create'])->name('interesses.create');
-    Route::post('/interesses', [InteresseController::class, 'store'])->name('interesses.store');
-    Route::get('/interesses/pesquisar', [InteresseController::class, 'pesquisar'])->name('interesses.pesquisar');
-    Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
-    Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
-    Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
-    Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
-    Route::get('/feed/create', [PostagemController::class, 'create'])->name('feed.create');
+    // ========== INTERESSES ==========
+Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
+Route::get('/interesses/criar', [InteresseController::class, 'create'])->name('interesses.create');
+Route::post('/interesses', [InteresseController::class, 'store'])->name('interesses.store');
+Route::get('/interesses/pesquisar', [InteresseController::class, 'pesquisar'])->name('interesses.pesquisar');
+Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
+Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
+Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
+Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
 
-
-    // ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
-    Route::get('/interesses/gerenciar', [InteresseController::class, 'gerenciar'])->name('interesses.gerenciar');
-    Route::get('/interesses/{slug}/editar', [InteresseController::class, 'edit'])->name('interesses.edit');
-    Route::put('/interesses/{slug}', [InteresseController::class, 'update'])->name('interesses.update');
-    Route::delete('/interesses/{slug}', [InteresseController::class, 'destroy'])->name('interesses.destroy');
-    Route::post('/interesses/{slug}/remover-postagem', [InteresseController::class, 'removerPostagem'])->name('interesses.remover-postagem');
-    Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moderadores'])->name('interesses.moderadores');
-    Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador');
-    Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador');
-    Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade');
+// ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
+Route::get('/interesses/{slug}/editar', [InteresseController::class, 'edit'])->name('interesses.edit')->middleware('auth');
+Route::put('/interesses/{slug}', [InteresseController::class, 'update'])->name('interesses.update')->middleware('auth');
+Route::delete('/interesses/{slug}', [InteresseController::class, 'destroy'])->name('interesses.destroy')->middleware('auth');
+Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moderadores'])->name('interesses.moderadores')->middleware('auth');
+Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador')->middleware('auth');
+Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador')->middleware('auth');
+Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade')->middleware('auth');
 
     // Feeds por interesse
     Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');

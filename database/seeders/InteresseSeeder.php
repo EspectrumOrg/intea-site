@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Interesse;
+use App\Models\Usuario;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -10,8 +11,25 @@ class InteresseSeeder extends Seeder
 {
     public function run()
     {
-        // Limpar a tabela antes de popular (opcional)
-        //DB::table('interesses')->truncate();
+        // Primeiro, encontrar o administrador (id 1)
+        $admin = Usuario::find(1);
+        
+        if (!$admin) {
+            // Criar admin se não existir
+            $admin = Usuario::create([
+                'nome' => 'Administrador Sistema',
+                'user' => 'admin',
+                'email' => 'admin@intea.com',
+                'senha' => bcrypt('admin123'),
+                'tipo_usuario' => 1,
+                'ativo' => true,
+                'email_verificado' => true,
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            
+            $this->command->info('✅ Admin criado automaticamente!');
+        }
 
         $interesses = [
             [
@@ -196,10 +214,26 @@ class InteresseSeeder extends Seeder
             ]
         ];
 
-        foreach ($interesses as $interesse) {
-            Interesse::create($interesse);
+        foreach ($interesses as $interesseData) {
+            // Criar o interesse
+            $interesse = Interesse::create($interesseData);
+            
+            // Fazer o admin seguir o interesse
+            $admin->seguirInteresse($interesse->id, true);
+            
+            // Tornar o admin moderador DONO do interesse
+            $interesse->moderadores()->attach($admin->id, [
+                'cargo' => 'dono',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            
+            // Incrementar contador manualmente
+            $interesse->increment('contador_membros');
+            
+            $this->command->info("✅ Interesse '{$interesse->nome}' criado com admin como dono");
         }
 
-        $this->command->info('✅ Interesses criados com sucesso!');
+        $this->command->info('🎉 Todos os 12 interesses criados com sucesso! Admin é dono de todos.');
     }
 }
