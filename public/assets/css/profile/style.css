@@ -1198,3 +1198,24 @@ textarea {
         width: 95% !important;
     }
 }
+
+.hover-verde:hover {
+    color: var(--verde-apagado) !important;
+}
+
+.container-foto-dependente label{
+    text-align: center;
+}
+
+.foto-dependente {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.foto-dependente img {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+}

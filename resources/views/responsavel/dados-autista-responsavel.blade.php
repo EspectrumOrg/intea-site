@@ -14,11 +14,11 @@
         @method('patch')
 
         {{-- 🖼️ Campo para upload da foto --}}
-        <div class="mb-3">
+        <div class="container-foto-dependente">
             <label for="foto" class="form-label">Foto</label>
 
             @if ($autista->usuario->foto)
-                <div class="mb-2">
+                <div class="foto-dependente">
                     <img src="{{ asset('storage/' . $autista->usuario->foto) }}" 
                          alt="{{ basename($autista->usuario->foto) }}" 
                          width="100" 
