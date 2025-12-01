@@ -162,11 +162,24 @@ class Usuario extends Authenticatable
             ->withTimestamps();
     }
 
+    /**
+     * RELAÇÕES PARA O SISTEMA DE MODERAÇÃO E PROPRIEDADE
+     */
+
+    // Interesses onde é dono
+    public function interessesComoDono()
+    {
+        return $this->belongsToMany(Interesse::class, 'interesse_moderadores')
+                    ->wherePivot('cargo', 'dono')
+                    ->withTimestamps();
+    }
+
+    // Interesses onde é moderador (incluindo dono)
     public function interessesComoModerador()
     {
         return $this->belongsToMany(Interesse::class, 'interesse_moderadores')
-            ->withPivot('cargo')
-            ->withTimestamps();
+                    ->withPivot('cargo')
+                    ->withTimestamps();
     }
 
     public function alertasModeracao()
@@ -182,18 +195,6 @@ class Usuario extends Authenticatable
     public function postagensModeradas()
     {
         return $this->hasMany(Postagem::class, 'removida_por');
-    }
-
-    /**
-     * RELAÇÕES PARA O SISTEMA DE MODERAÇÃO
-     */
-
-    // Interesses onde é dono
-    public function interessesComoDono()
-    {
-        return $this->belongsToMany(Interesse::class, 'interesse_moderadores')
-                    ->wherePivot('cargo', 'dono')
-                    ->withTimestamps();
     }
 
     // Penalidades do usuário
@@ -268,18 +269,6 @@ class Usuario extends Authenticatable
             ->exists();
     }
 
-    public function ehModeradorDe($interesseId): bool
-    {
-        return $this->interessesComoModerador()
-            ->where('interesses.id', $interesseId)
-            ->exists();
-    }
-
-    public function podeModerar($interesseId): bool
-    {
-        return $this->ehModeradorDe($interesseId) || $this->tipo_usuario === 'admin';
-    }
-
     public function obterFeedInteresses($limite = 20)
     {
         $interessesIds = $this->interesses()->pluck('interesses.id');
@@ -308,16 +297,6 @@ class Usuario extends Authenticatable
             ->populares($limite)
             ->get();
     }
-
-    /*
-    public function obterInteressesSugeridos($limite = 6)
-    {
-        $servicoInteresses = app('servico.interesses');
-        $sugestoes = $servicoInteresses->sugerirInteressesUsuario($this, $limite);
-        
-        return collect($sugestoes)->pluck('interesse');
-    }
-    */
 
     public function obterEstatisticasModeracao()
     {
@@ -357,7 +336,7 @@ class Usuario extends Authenticatable
     }
 
     /**
-     * MÉTODOS DE VERIFICAÇÃO DE CARGO
+     * MÉTODOS DE VERIFICAÇÃO DE CARGO E PROPRIEDADE
      */
 
     // Verificar se é dono de um interesse
@@ -380,8 +359,7 @@ class Usuario extends Authenticatable
     // Verificar se pode moderar (dono, moderador ou admin)
     public function podeModerarInteresse($interesseId): bool
     {
-        return $this->isModeradorInteresse($interesseId) || 
-               $this->tipo_usuario === 'admin';
+        return $this->isModeradorInteresse($interesseId) || $this->isAdministrador();
     }
 
     /**
@@ -432,7 +410,7 @@ class Usuario extends Authenticatable
     }
 
     /**
-     * MÉTODOS DE GERENCIAMENTO DE MODERADORES
+     * MÉTODOS DE GERENCIAMENTO DE MODERADORES E PROPRIEDADE
      */
 
     // Adicionar moderador a um interesse (apenas donos)
@@ -493,6 +471,143 @@ class Usuario extends Authenticatable
         // Atualizar cargo para dono
         $interesse->moderadores()->updateExistingPivot($usuarioId, [
             'cargo' => 'dono',
+            'updated_at' => now()
+        ]);
+
+        return true;
+    }
+
+    /**
+     * MÉTODOS DE CRIAÇÃO E GERENCIAMENTO DE INTERESSES
+     */
+
+    // Criar um novo interesse (torna-se dono automaticamente)
+    public function criarInteresse($dados)
+    {
+        $interesse = Interesse::criar($dados);
+        
+        // Tornar-se dono do interesse
+        $interesse->moderadores()->attach($this->id, [
+            'cargo' => 'dono',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+
+        // Seguir o interesse automaticamente
+        $this->seguirInteresse($interesse->id, true);
+
+        return $interesse;
+    }
+
+    // Editar interesse (apenas dono)
+    public function editarInteresse($interesseId, $dados): bool
+    {
+        if (!$this->isDonoInteresse($interesseId)) {
+            return false;
+        }
+
+        $interesse = Interesse::find($interesseId);
+        
+        if (!$interesse) {
+            return false;
+        }
+
+        try {
+            $interesse->update($dados);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    // Deletar interesse (apenas dono)
+    public function deletarInteresse($interesseId): bool
+    {
+        if (!$this->isDonoInteresse($interesseId)) {
+            return false;
+        }
+
+        $interesse = Interesse::find($interesseId);
+        
+        if (!$interesse) {
+            return false;
+        }
+
+        try {
+            $interesse->delete();
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    // Remover postagem do interesse (dono ou moderador)
+    public function removerPostagemDoInteresse($interesseId, $postagemId, $motivo = null): bool
+    {
+        if (!$this->isModeradorInteresse($interesseId)) {
+            return false;
+        }
+
+        $interesse = Interesse::find($interesseId);
+        $postagem = Postagem::find($postagemId);
+
+        if (!$interesse || !$postagem) {
+            return false;
+        }
+
+        try {
+            // Remover do interesse
+            $interesse->removerPostagem($postagemId);
+
+            // Registrar ação de moderação
+            \App\Models\HistoricoModeracao::create([
+                'interesse_id' => $interesseId,
+                'usuario_id' => $this->id,
+                'postagem_id' => $postagemId,
+                'acao' => 'remocao_postagem',
+                'motivo' => $motivo,
+                'created_at' => now()
+            ]);
+
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+
+    // Transferir propriedade (apenas dono atual)
+    public function transferirPropriedade($interesseId, $novoDonoId): bool
+    {
+        if (!$this->isDonoInteresse($interesseId)) {
+            return false;
+        }
+
+        // Não permitir transferir para si mesmo
+        if ($this->id == $novoDonoId) {
+            return false;
+        }
+
+        $interesse = Interesse::find($interesseId);
+        
+        // Verificar se o novo dono é moderador
+        if (!$interesse->moderadores()->where('usuario_id', $novoDonoId)->exists()) {
+            // Adicionar como moderador primeiro
+            $interesse->moderadores()->attach($novoDonoId, [
+                'cargo' => 'moderador',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+        }
+
+        // Atualizar cargo do novo dono para dono
+        $interesse->moderadores()->updateExistingPivot($novoDonoId, [
+            'cargo' => 'dono',
+            'updated_at' => now()
+        ]);
+
+        // Atualizar cargo do dono atual para moderador
+        $interesse->moderadores()->updateExistingPivot($this->id, [
+            'cargo' => 'moderador',
             'updated_at' => now()
         ]);
 
@@ -581,6 +696,49 @@ class Usuario extends Authenticatable
         }
 
         return true;
+    }
+
+    /**
+     * MÉTODOS DE VERIFICAÇÃO DE PERMISSÃO
+     */
+
+    public function podeGerenciarInteresse($interesseId): bool
+    {
+        return $this->isModeradorInteresse($interesseId) || $this->isAdministrador();
+    }
+
+    public function podeEditarInteresse($interesseId): bool
+    {
+        return $this->isDonoInteresse($interesseId) || $this->isAdministrador();
+    }
+
+    public function podeDeletarInteresse($interesseId): bool
+    {
+        return $this->isDonoInteresse($interesseId) || $this->isAdministrador();
+    }
+
+    public function podeRemoverPostagem($interesseId): bool
+    {
+        return $this->isModeradorInteresse($interesseId) || $this->isAdministrador();
+    }
+
+    public function podeAdicionarModerador($interesseId): bool
+    {
+        return $this->isDonoInteresse($interesseId) || $this->isAdministrador();
+    }
+
+    // Obter interesses que pode gerenciar
+    public function obterInteressesGerenciáveis()
+    {
+        return $this->interessesComoModerador()
+                    ->withCount(['seguidores', 'postagens'])
+                    ->get()
+                    ->map(function($interesse) {
+                        $interesse->pode_editar = $this->isDonoInteresse($interesse->id);
+                        $interesse->pode_deletar = $this->isDonoInteresse($interesse->id);
+                        $interesse->pode_moderar = $this->isModeradorInteresse($interesse->id);
+                        return $interesse;
+                    });
     }
 
     /**
@@ -719,20 +877,18 @@ class Usuario extends Authenticatable
      */
 
     // Verificar se o usuário tem permissões administrativas
-  public function isAdministrador(): bool
-{
-    // Se for string
-    if ($this->tipo_usuario === 'admin') {
-        return true;
+    public function isAdministrador(): bool
+    {
+        if ($this->tipo_usuario === 'admin') {
+            return true;
+        }
+        
+        if ($this->tipo_usuario === 1 || $this->tipo_usuario === '1') {
+            return true;
+        }
+        
+        return ($this->is_admin ?? false) || $this->admin()->exists();
     }
-    
-    if ($this->tipo_usuario === 1 || $this->tipo_usuario === '1') {
-        return true;
-    }
-    
-    // Outras verificações
-    return ($this->is_admin ?? false) || $this->admin()->exists();
-}
 
     // Verificar se o usuário pode acessar painel de moderação
     public function podeAcessarPainelModeracao(): bool

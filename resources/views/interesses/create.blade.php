@@ -53,6 +53,7 @@
             <div class="form-group">
                 <label for="icone">Escolha o Ícone *</label>
                 
+                <!-- TIPO DE ÍCONE -->
                 <div class="icone-option-type">
                     <label>
                         <input type="radio" name="icone_type" value="default" checked id="icone_type_default">
@@ -81,7 +82,7 @@
                             @foreach($icones as $icone)
                                 <label class="icone-option">
                                     <input type="radio" name="icone" value="{{ $icone }}" 
-                                           {{ old('icone') == $icone ? 'checked' : '' }}>
+                                           {{ old('icone') == $icone ? 'checked' : ($loop->first ? 'checked' : '') }}>
                                     <span class="material-symbols-outlined">{{ $icone }}</span>
                                 </label>
                             @endforeach
@@ -92,7 +93,7 @@
                     <div id="iconeCustomContainer" class="icone-content" style="display: none;">
                         <div class="icone-upload-area">
                             <input type="file" id="icone_custom" name="icone_custom" 
-                                   accept="image/*" class="form-file">
+                                   accept="image/jpeg,image/png,image/svg+xml" class="form-file">
                             <label for="icone_custom" class="upload-label">
                                 <span class="material-symbols-outlined">upload</span>
                                 <span>Clique para fazer upload do ícone</span>
@@ -111,10 +112,11 @@
                 @enderror
             </div>
 
-            <!-- Cor com mais opções + cor personalizada -->
+            <!-- Cor com opção personalizada -->
             <div class="form-group">
                 <label for="cor">Cor do Interesse *</label>
                 
+                <!-- TIPO DE COR -->
                 <div class="cor-option-type">
                     <label>
                         <input type="radio" name="cor_type" value="predefinida" checked id="cor_type_predefinida">
@@ -132,25 +134,16 @@
                         <div class="cores-grid">
                             @php
                                 $cores = [
-                                    '#3B82F6' => 'Azul', '#2563EB' => 'Azul Escuro', '#60A5FA' => 'Azul Claro',
-                                    '#EF4444' => 'Vermelho', '#DC2626' => 'Vermelho Escuro', '#F87171' => 'Vermelho Claro',
-                                    '#10B981' => 'Verde', '#059669' => 'Verde Escuro', '#34D399' => 'Verde Claro',
-                                    '#F59E0B' => 'Amarelo', '#D97706' => 'Amarelo Escuro', '#FBBF24' => 'Amarelo Claro',
-                                    '#8B5CF6' => 'Roxo', '#7C3AED' => 'Roxo Escuro', '#A78BFA' => 'Roxo Claro',
-                                    '#EC4899' => 'Rosa', '#DB2777' => 'Rosa Escuro', '#F472B6' => 'Rosa Claro',
-                                    '#06B6D4' => 'Ciano', '#0891B2' => 'Ciano Escuro', '#22D3EE' => 'Ciano Claro',
-                                    '#84CC16' => 'Lima', '#65A30D' => 'Lima Escuro', '#A3E635' => 'Lima Claro',
-                                    '#F97316' => 'Laranja', '#EA580C' => 'Laranja Escuro', '#FB923C' => 'Laranja Claro',
-                                    '#6366F1' => 'Índigo', '#4F46E5' => 'Índigo Escuro', '#818CF8' => 'Índigo Claro',
-                                    '#64748B' => 'Cinza', '#475569' => 'Cinza Escuro', '#94A3B8' => 'Cinza Claro',
-                                    '#000000' => 'Preto', '#FFFFFF' => 'Branco', '#A855F7' => 'Púrpura',
-                                    '#EAB308' => 'Amarelo Ouro', '#14B8A6' => 'Verde Água', '#F43F5E' => 'Rosa Vibrante'
+                                    '#3B82F6' => 'Azul', '#EF4444' => 'Vermelho', '#10B981' => 'Verde',
+                                    '#F59E0B' => 'Amarelo', '#8B5CF6' => 'Roxo', '#EC4899' => 'Rosa',
+                                    '#06B6D4' => 'Ciano', '#84CC16' => 'Lima', '#F97316' => 'Laranja',
+                                    '#6366F1' => 'Índigo', '#64748B' => 'Cinza', '#000000' => 'Preto'
                                 ];
                             @endphp
                             @foreach($cores as $cor => $nome)
                                 <label class="cor-option" style="background-color: {{ $cor }}; border: {{ $cor == '#FFFFFF' ? '1px solid #d1d5db' : 'none' }};">
                                     <input type="radio" name="cor" value="{{ $cor }}" 
-                                           {{ old('cor') == $cor ? 'checked' : '' }}>
+                                           {{ old('cor') == $cor ? 'checked' : ($loop->first ? 'checked' : '') }}>
                                     <span class="checkmark">✓</span>
                                 </label>
                             @endforeach
@@ -162,9 +155,11 @@
                         <div class="cor-personalizada-area">
                             <input type="color" id="cor_personalizada" name="cor_personalizada" 
                                    value="{{ old('cor_personalizada', '#3B82F6') }}" class="color-picker">
+                            <input type="hidden" id="cor_personalizada_value" name="cor" value="{{ old('cor_personalizada', '#3B82F6') }}">
                             <label for="cor_personalizada" class="color-label">
                                 <span class="material-symbols-outlined">palette</span>
                                 <span>Clique para escolher uma cor personalizada</span>
+                                <small id="corSelecionadaText">Cor selecionada: <span style="color: {{ old('cor_personalizada', '#3B82F6') }}">{{ old('cor_personalizada', '#3B82F6') }}</span></small>
                             </label>
                         </div>
                     </div>
@@ -214,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const corTypeInputs = document.querySelectorAll('input[name="cor_type"]');
     const corInputs = document.querySelectorAll('input[name="cor"]');
     const corPersonalizadaInput = document.getElementById('cor_personalizada');
+    const corPersonalizadaValue = document.getElementById('cor_personalizada_value');
     
     const iconesPadraoContainer = document.getElementById('iconesPadraoContainer');
     const iconeCustomContainer = document.getElementById('iconeCustomContainer');
@@ -222,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const coresPredefinidasContainer = document.getElementById('coresPredefinidasContainer');
     const corPersonalizadaContainer = document.getElementById('corPersonalizadaContainer');
+    const corSelecionadaText = document.getElementById('corSelecionadaText');
     
     // Estado
     let currentIconType = 'default';
@@ -271,13 +268,15 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 coresPredefinidasContainer.style.display = 'none';
                 corPersonalizadaContainer.style.display = 'block';
+                // Atualiza o valor do campo hidden com a cor personalizada
+                corPersonalizadaValue.value = corPersonalizadaInput.value;
             }
             
             atualizarPreview();
         });
     });
 
-    // Preview do ícone customizado - FUNCIONANDO
+    // Preview do ícone customizado - CORRIGIDO
     iconeCustomInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -300,7 +299,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 customIconUrl = e.target.result;
                 
                 // Preview na área de upload
-                iconePreview.innerHTML = `<img src="${customIconUrl}" alt="Preview do ícone" style="width: 60px; height: 60px; object-fit: contain; border-radius: 12px; border: 2px solid #e5e7eb;">`;
+                iconePreview.innerHTML = `
+                    <div class="preview-custom-icon">
+                        <img src="${customIconUrl}" alt="Preview do ícone">
+                        <button type="button" class="btn-remover-imagem" onclick="removerImagemCustomizada()">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                `;
                 
                 // Atualiza o preview principal
                 atualizarPreview();
@@ -313,8 +319,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Atualizar cor personalizada no preview
-    corPersonalizadaInput.addEventListener('input', atualizarPreview);
+    // Atualizar cor personalizada
+    corPersonalizadaInput.addEventListener('input', function() {
+        const cor = this.value;
+        corPersonalizadaValue.value = cor;
+        if (corSelecionadaText) {
+            corSelecionadaText.innerHTML = `Cor selecionada: <span style="color: ${cor}">${cor}</span>`;
+        }
+        atualizarPreview();
+    });
+
+    // Função para remover imagem customizada
+    window.removerImagemCustomizada = function() {
+        iconeCustomInput.value = '';
+        customIconUrl = null;
+        iconePreview.innerHTML = '';
+        atualizarPreview();
+    };
 
     function atualizarPreview() {
         // Nome
@@ -329,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
             previewDescricao.textContent = descricaoInput.value || 'Descrição do interesse aparecerá aqui';
         }
         
-        // Ícone - FUNCIONANDO
+        // Ícone - CORRIGIDO
         const previewIcon = document.getElementById('previewIcon');
         if (previewIcon) {
             // Limpa o conteúdo anterior
@@ -352,8 +373,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const imgElement = document.createElement('img');
                     imgElement.src = customIconUrl;
                     imgElement.alt = 'Ícone customizado';
-                    imgElement.style.width = '40px';
-                    imgElement.style.height = '40px';
+                    imgElement.style.width = '100%';
+                    imgElement.style.height = '100%';
                     imgElement.style.objectFit = 'contain';
                     imgElement.style.borderRadius = '8px';
                     previewIcon.appendChild(imgElement);
@@ -372,19 +393,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const previewHeader = document.getElementById('previewHeader');
         if (previewHeader && previewIcon) {
             let corSelecionada;
+            
             if (currentCorType === 'predefinida') {
                 corSelecionada = document.querySelector('input[name="cor"]:checked');
             } else {
-                corSelecionada = { value: corPersonalizadaInput.value };
+                corSelecionada = { value: corPersonalizadaValue.value };
             }
             
             if (corSelecionada && corSelecionada.value) {
+                // Aplica cor ao fundo do header
+                previewHeader.style.backgroundColor = corSelecionada.value + '20';
+                previewHeader.style.borderLeft = `4px solid ${corSelecionada.value}`;
+                
                 // Aplica cor apenas aos ícones de material (não às imagens)
                 const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
                 if (materialIcon) {
                     materialIcon.style.color = corSelecionada.value;
                 }
-                previewHeader.style.backgroundColor = corSelecionada.value + '20';
+                
+                // Aplica cor ao título
+                previewNome.style.color = corSelecionada.value;
             }
         }
     }
@@ -399,6 +427,45 @@ document.addEventListener('DOMContentLoaded', function() {
     
     corInputs.forEach(input => {
         input.addEventListener('change', atualizarPreview);
+    });
+
+    // Validação do formulário antes de enviar
+    document.getElementById('interesseForm').addEventListener('submit', function(e) {
+        let isValid = true;
+        let errorMessage = '';
+
+        // Verifica se um ícone foi selecionado
+        if (currentIconType === 'default') {
+            const iconeSelecionado = document.querySelector('input[name="icone"]:checked');
+            if (!iconeSelecionado) {
+                isValid = false;
+                errorMessage = 'Por favor, selecione um ícone padrão.';
+            }
+        } else {
+            const iconeCustom = document.getElementById('icone_custom').files[0];
+            if (!iconeCustom) {
+                isValid = false;
+                errorMessage = 'Por favor, faça upload de um ícone customizado.';
+            }
+        }
+
+        // Verifica se uma cor foi selecionada
+        let corSelecionada;
+        if (currentCorType === 'predefinida') {
+            corSelecionada = document.querySelector('input[name="cor"]:checked');
+        } else {
+            corSelecionada = { value: corPersonalizadaValue.value };
+        }
+        
+        if (!corSelecionada || !corSelecionada.value) {
+            isValid = false;
+            errorMessage = 'Por favor, selecione uma cor.';
+        }
+
+        if (!isValid) {
+            e.preventDefault();
+            alert(errorMessage);
+        }
     });
 
     // Inicializar
@@ -422,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
     cursor: pointer;
 }
 
-/* Container unificado para ícones */
+/* Container unificado */
 .icone-container-unificado,
 .cor-container-unificado {
     width: 100%;
@@ -461,10 +528,6 @@ document.addEventListener('DOMContentLoaded', function() {
     display: none;
 }
 
-.icone-option input[type="radio"]:checked + .material-symbols-outlined {
-    color: #3b82f6;
-}
-
 .icone-option input[type="radio"]:checked {
     border-color: #3b82f6;
     background: #eff6ff;
@@ -475,9 +538,12 @@ document.addEventListener('DOMContentLoaded', function() {
     color: #6b7280;
 }
 
-/* Área de upload unificada */
-.icone-upload-area,
-.cor-personalizada-area {
+.icone-option input[type="radio"]:checked + .material-symbols-outlined {
+    color: #3b82f6;
+}
+
+/* Área de upload */
+.icone-upload-area {
     border: 2px dashed #d1d5db;
     border-radius: 8px;
     padding: 40px 20px;
@@ -489,10 +555,10 @@ document.addEventListener('DOMContentLoaded', function() {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
-.upload-label,
-.color-label {
+.upload-label {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -504,14 +570,42 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .icone-preview {
     margin-top: 15px;
+    display: flex;
+    justify-content: center;
 }
 
-.icone-preview img {
-    width: 60px;
-    height: 60px;
+.preview-custom-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-custom-icon img {
+    width: 80px;
+    height: 80px;
     object-fit: contain;
     border-radius: 12px;
     border: 2px solid #e5e7eb;
+}
+
+.btn-remover-imagem {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-remover-imagem:hover {
+    background: #dc2626;
 }
 
 .preview-icon {
@@ -523,8 +617,8 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 .preview-icon img {
-    width: 40px;
-    height: 40px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     border-radius: 8px;
 }
@@ -581,6 +675,20 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 /* Cor personalizada */
+.cor-personalizada-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
 .color-picker {
     width: 80px;
     height: 80px;
@@ -597,6 +705,15 @@ document.addEventListener('DOMContentLoaded', function() {
 .color-picker::-moz-color-swatch {
     border: none;
     border-radius: 6px;
+}
+
+.color-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #6b7280;
 }
 
 /* Preview do interesse */
@@ -616,12 +733,15 @@ document.addEventListener('DOMContentLoaded', function() {
     padding: 1rem;
     border-radius: 8px;
     background: #3b82f620;
+    border-left: 4px solid #3b82f6;
+    transition: all 0.3s ease;
 }
 
 .preview-header h3 {
     margin: 0;
     color: #1f2937;
     font-size: 1.2rem;
+    transition: color 0.3s ease;
 }
 
 .preview-stats {

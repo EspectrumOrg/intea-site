@@ -7,6 +7,8 @@ use App\Models\FoneUsuario;
 use App\Models\Postagem;
 use App\Models\Usuario;
 use App\Models\Autista;
+use App\Models\Curtida;
+use App\Models\Comentario;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -71,12 +73,18 @@ class ResponsavelPainelController extends Controller
         ->get()
     : collect();
 
-    // ❤️ Postagens curtidas pelo autista selecionado
-    $likedPosts = $selectedAutista && $selectedAutista->usuario
-        ? Postagem::whereHas('curtidas', function ($q) use ($selectedAutista) {
-            $q->where('usuario_id', $selectedAutista->usuario->id);
-        })->get()
-        : collect();
+    $likedPosts = $selectedAutista && $selectedAutista->usuario ? Curtida::with('postagem.usuario') // carrega a postagem + usuário dono da postagem
+        ->where('id_usuario', $selectedAutista->usuario->id)
+        ->orderByDesc('created_at')
+        ->get()
+    : collect();
+
+    $comentariosAutista = $selectedAutista && $selectedAutista->usuario
+    ? Comentario::with(['postagem', 'image'])
+        ->where('id_usuario', $selectedAutista->usuario->id)
+        ->orderByDesc('created_at')
+        ->get()
+    : collect();
 
     return view('responsavel.painel', compact(
         'user',
@@ -87,7 +95,8 @@ class ResponsavelPainelController extends Controller
         'likedPosts',
         'postsPopulares',
         'autistas',
-        'selectedAutista'
+        'selectedAutista',
+        'comentariosAutista'
     ));
 }
 

@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/profile/modalSeguir.css') }}">
     <!-- Postagem -->
     <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
+    <!-- Interesses -->
+    <link rel="stylesheet" href="{{ asset('assets/css/interesses.css') }}">
 </head>
 
 <body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
@@ -239,6 +241,14 @@
                                     <span class="tab-text">Perfil</span>
                                 </button>
 
+                                <!-- Aba Interesses (só mostra se tiver interesses) -->
+                                @if($interessesUsuario->count() > 0)
+                                <button class="tab-button" data-tab="interests">
+                                    <span class="material-symbols-outlined">tag</span>
+                                    <span class="tab-text">Interesses ({{ $interessesUsuario->count() }})</span>
+                                </button>
+                                @endif
+
                                 <!-- Aba Postagens (só mostra se tiver postagens) -->
                                 @if($userPosts->count() > 0)
                                 <button class="tab-button" data-tab="posts">
@@ -254,6 +264,7 @@
                                     <span class="tab-text">Curtidas ({{ $likedPosts->count() }})</span>
                                 </button>
                                 @endif
+
                                 @if($seguidores->count() > 0)
                                 <button class="tab-button" data-tab="followers">
                                     <span class="material-symbols-outlined">group</span>
@@ -297,10 +308,6 @@
                                 <div class="info-item">
                                     <strong>Apelido:</strong>
                                     <span>{{ $user->apelido ?? 'Não informado' }}</span>
-                                </div>
-                                <div class="info-item">
-                                    <strong>Email:</strong>
-                                    <span>{{ $user->email }}</span>
                                 </div>
 
                                 <div class="info-item">
@@ -435,7 +442,59 @@
                         </section>
                     </div>
 
-                    <!-- Aba 2: Postagens (só mostra se tiver conteúdo) ------------------------------------------->
+                    <!-- Aba 2: Interesses do Usuário -->
+                    @if($interessesUsuario->count() > 0)
+                    <div class="tab-content" id="interests-tab">
+                        <section class="interesses-section">
+                            <header class="headerInteresses">
+                                <h2>Interesses Seguidos</h2>
+                                <p class="section-description">Comunidades que {{ $user->apelido }} participa</p>
+                            </header>
+
+                            <div class="interesses-grid">
+                                @foreach($interessesUsuario as $interesse)
+                                <div class="interesse-card">
+                                    <div class="interesse-header" style="background-color: {{ $interesse->cor }}20;">
+                                        <div class="interesse-icon" style="color: {{ $interesse->cor }};">
+                                            @if($interesse->is_custom_icone && $interesse->icone)
+                                                <img src="{{ $interesse->icone }}" alt="{{ $interesse->nome }}" style="width: 40px; height: 40px; border-radius: 10px;" onerror="this.style.display='none'">
+                                            @else
+                                                <span class="material-symbols-outlined">{{ $interesse->icone ?? 'tag' }}</span>
+                                            @endif
+                                        </div>
+                                        <h3>{{ $interesse->nome }}</h3>
+                                    </div>
+                                    <div class="interesse-body">
+                                        <p>{{ $interesse->descricao }}</p>
+                                        <div class="interesse-stats">
+                                            <span class="stat">
+                                                <span class="material-symbols-outlined">people</span>
+                                                {{ $interesse->seguidores_count }} seguidores
+                                            </span>
+                                            <span class="stat">
+                                                <span class="material-symbols-outlined">chat</span>
+                                                {{ $interesse->postagens_count }} postagens
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="interesse-actions">
+                                        <a href="{{ route('post.interesse', $interesse->slug) }}" class="btn-visitar-interesse">
+                                            Ver Feed
+                                        </a>
+                                        @if(auth()->id() == $user->id)
+                                            <button class="btn-deixar-seguir" data-interesse-id="{{ $interesse->id }}">
+                                                Deixar de Seguir
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </section>
+                    </div>
+                    @endif
+
+                    <!-- Aba 3: Postagens (só mostra se tiver conteúdo) -->
                     @if($userPosts->count() > 0)
                     <div class="tab-content" id="posts-tab">
                         <h3>Minhas Postagens</h3>
@@ -643,124 +702,123 @@
                     </div>
                     @endif
 
+                    <!-- Aba 4: Curtidas -->
+                    <div class="tab-content" id="likes-tab">
+                        <h3>Conteúdo Curtido</h3>
 
-<!-- Aba 3: Curtidas (sempre aparece — OPÇÃO B) -->
-<div class="tab-content" id="likes-tab">
-    <h3>Conteúdo Curtido</h3>
+                        <!-- Abas internas para Postagens e Comentários -->
+                        <div class="likes-tabs">
+                            <button class="likes-tab-button active" data-likes-tab="posts">
+                                Postagens ({{ $likedPosts->count() }})
+                            </button>
+                        </div>
 
-    <!-- Abas internas para Postagens e Comentários -->
-    <div class="likes-tabs">
-        <button class="likes-tab-button active" data-likes-tab="posts">
-            Postagens ({{ $likedPosts->count() }})
-        </button>
-    </div>
+                        <!-- Conteúdo de Postagens Curtidas -->
+                        <div class="likes-tab-content active" id="posts-likes-content">
+                            @if($likedPosts->count() > 0)
+                            <div class="likes-list">
+                                @foreach($likedPosts as $like)
+                                @if($like->postagem)
+                                <div class="like-item">
+                                    <div class="like-avatar">
+                                        @if($like->postagem->usuario->foto)
+                                        <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->apelido }}">
+                                        @else
+                                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                                        @endif
+                                    </div>
 
-    <!-- Conteúdo de Postagens Curtidas -->
-    <div class="likes-tab-content active" id="posts-likes-content">
-        @if($likedPosts->count() > 0)
-        <div class="likes-list">
-            @foreach($likedPosts as $like)
-            @if($like->postagem)
-            <div class="like-item">
-                <div class="like-avatar">
-                    @if($like->postagem->usuario->foto)
-                    <img src="{{ asset('storage/'.$like->postagem->usuario->foto) }}" alt="{{ $like->postagem->usuario->apelido }}">
-                    @else
-                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                    @endif
-                </div>
+                                    <div class="like-content">
+                                        <strong>{{ $like->postagem->usuario->apelido }}</strong>
+                                        <p>{{ Str::limit($like->postagem->texto_postagem, 100) }}</p>
+                                        <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
 
-                <div class="like-content">
-                    <strong>{{ $like->postagem->usuario->apelido }}</strong>
-                    <p>{{ Str::limit($like->postagem->texto_postagem, 100) }}</p>
-                    <small>Curtido em {{ $like->created_at->format('d/m/Y H:i') }}</small>
+                                        <a href="{{ route('post.read', ['postagem' => $like->postagem->id]) }}" class="ver-post-link">
+                                            Ver postagem completa
+                                        </a>
+                                    </div>
+                                </div>
+                                @endif
+                                @endforeach
+                            </div>
+                            @else
+                            <div class="no-content-message">
+                                <p>Nenhuma postagem curtida ainda.</p>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
 
-                    <a href="{{ route('post.read', ['postagem' => $like->postagem->id]) }}" class="ver-post-link">
-                        Ver postagem completa
-                    </a>
-                </div>
-            </div>
-            @endif
-            @endforeach
-        </div>
-        @else
-        <div class="no-content-message">
-            <p>Nenhuma postagem curtida ainda.</p>
-        </div>
-        @endif
-    </div>
-</div>
+                    <!-- Aba: Seguindo -->
+                    <div class="tab-content" id="following-tab">
+                        <h3>Seguindo</h3>
 
-<!-- Aba: Seguindo -->
-<div class="tab-content" id="following-tab">
-    <h3>Seguindo</h3>
+                        @if($seguindo->count() > 0)
+                            <div class="likes-list">
+                                @foreach($seguindo as $usuario)
+                                <div class="like-item">
 
-    @if($seguindo->count() > 0)
-        <div class="likes-list">
-            @foreach($seguindo as $usuario)
-            <div class="like-item">
+                                    <div class="like-avatar">
+                                        @if($usuario->foto)
+                                    <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                                        @else
+                                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                                        @endif
+                                    </div>
 
-                <div class="like-avatar">
-                    @if($usuario->foto)
-                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
-                    @else
-                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                    @endif
-                </div>
+                                    <div class="like-content">
+                                    <p>{{ $usuario->user }}</p>
 
-                <div class="like-content">
-                <p>{{ $usuario->user }}</p>
+                                        <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                                            Ver perfil
+                                        </a>
+                                    </div>
 
-                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
-                        Ver perfil
-                    </a>
-                </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="no-content-message">
+                                <p>Você não está seguindo ninguém ainda.</p>
+                            </div>
+                        @endif
+                    </div>
 
-            </div>
-            @endforeach
-        </div>
-    @else
-        <div class="no-content-message">
-            <p>Você não está seguindo ninguém ainda.</p>
-        </div>
-    @endif
-</div>
-<div class="tab-content" id="followers-tab">
-    <h3>Seguidores</h3>
+                    <div class="tab-content" id="followers-tab">
+                        <h3>Seguidores</h3>
 
-    @if($seguidores->count() > 0)
-        <div class="likes-list">
-            @foreach($seguidores as $usuario)
-            <div class="like-item">
+                        @if($seguidores->count() > 0)
+                            <div class="likes-list">
+                                @foreach($seguidores as $usuario)
+                                <div class="like-item">
 
-                <div class="like-avatar">
-                    @if($usuario->foto)
-                <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
-                    @else
-                        <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                    @endif
-                </div>
+                                    <div class="like-avatar">
+                                        @if($usuario->foto)
+                                    <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
+                                        @else
+                                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                                        @endif
+                                    </div>
 
-                <div class="like-content">
-                      <p>{{ $usuario->user }}</p>
+                                    <div class="like-content">
+                                          <p>{{ $usuario->user }}</p>
 
-                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
-                        Ver perfil
-                    </a>
-                </div>
+                                        <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                                            Ver perfil
+                                        </a>
+                                    </div>
 
-            </div>
-            @endforeach
-        </div>
-    @else
-        <div class="no-content-message">
-            <p>Você ainda não tem seguidores.</p>
-        </div>
-    @endif
-</div>
-                      
+                                </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="no-content-message">
+                                <p>Você ainda não tem seguidores.</p>
+                            </div>
+                        @endif
+                    </div>
 
-                    <!-- Aba 4: Configurações (apenas para o próprio usuário) -->
+                    <!-- Aba 5: Configurações (apenas para o próprio usuário) -->
                     @if(auth()->id() == $user->id)
                     <div class="tab-content" id="settings-tab">
                         <!-- Inclui os formulários de configurações -->
@@ -770,7 +828,7 @@
                     @endif
 
                     <!-- Mensagem quando não há conteúdo nas abas opcionais -->
-                    @if($userPosts->count() == 0 && $likedPosts->count() == 0 && auth()->id() != $user->id)
+                    @if($interessesUsuario->count() == 0 && $userPosts->count() == 0 && $likedPosts->count() == 0 && auth()->id() != $user->id)
                     <div class="no-content-message">
                         <p>Este usuário ainda não tem atividades para mostrar.</p>
                     </div>
@@ -789,10 +847,17 @@
         <!-- modal de avisos -->
         @include("layouts.partials.avisos")
 
-
         <!-- Modal Criação de postagem -->
         @include('feed.post.create-modal')
     </div>
+
+    <style>
+    .headerInteresses {
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -899,6 +964,51 @@
             // Recalcula scroll quando mudar de aba
             tabButtons.forEach(button => {
                 button.addEventListener('click', scrollToActiveTab);
+            });
+
+            // Sistema de seguir/deixar de seguir interesses
+            document.querySelectorAll('.btn-deixar-seguir').forEach(button => {
+                button.addEventListener('click', function() {
+                    const interesseId = this.getAttribute('data-interesse-id');
+                    if (!interesseId) return;
+
+                    if (!confirm('Tem certeza que deseja deixar de seguir este interesse?')) {
+                        return;
+                    }
+
+                    const buttonElement = this;
+                    const originalHTML = buttonElement.innerHTML;
+
+                    // Mostrar loading
+                    buttonElement.innerHTML = '<span class="material-symbols-outlined">sync</span> Processando...';
+                    buttonElement.disabled = true;
+
+                    fetch(`/interesses/${interesseId}/deixar-seguir`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.sucesso) {
+                            // Recarregar a página para atualizar a interface
+                            window.location.reload();
+                        } else {
+                            alert(data.mensagem || 'Erro ao deixar de seguir o interesse');
+                            buttonElement.innerHTML = originalHTML;
+                            buttonElement.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        alert('Erro de conexão');
+                        buttonElement.innerHTML = originalHTML;
+                        buttonElement.disabled = false;
+                    });
+                });
             });
         });
     </script>

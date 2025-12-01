@@ -22,11 +22,11 @@
     width: 100%;
 }
 
-.not-found .text-not span{
+.not-found .text-not span {
     font-size: 34px;
 }
 
-.not-found .text-not h4{
+.not-found .text-not h4 {
     font-size: 24px;
 }
 
@@ -40,7 +40,7 @@
     width: 100%;
 }
 
-.not-found .subtext-not p{
+.not-found .subtext-not p {
     font-size: 16px;
     color: var(--preto);
     text-indent: 4px;
@@ -73,93 +73,115 @@
     color: var(--branco);
 }
 
-/* ====== Botões de Seguir, Mensagem e Denunciar/Banir (somente para o admin) ===== */
-/* Coisa base, no <a> e <button>*/
+/* ---------------------------- */
+/* ESTILO BASE PARA TODOS BOTÕES */
+/* ---------------------------- */
 .profile-action-buttons button,
 .profile-action-buttons .btn-mensagem,
 .profile-action-buttons .btn-denuncia {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: .5rem .75rem;
-    border-radius: 50px / 100%;
+    justify-content: center;
+    gap: 6px;
+
+    padding: .5rem 1.2rem;
+
+    background-color: #fff;
+    border-radius: 999px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    border: none;
     transition:
-        background-color 0.3s ease,
-        transform 0.2s ease,
-        box-shadow 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-}
-
-/* Hover geral */
-.profile-action-buttons button:hover,
-.profile-action-buttons .btn-mensagem:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
-}
-
-/* Active (clique) */
-.profile-action-buttons button:active,
-.profile-action-buttons .btn-mensagem:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
-}
-
-/* Botão de Seguir */
-.seguir-btn {
-    background-color: #e3f2fd;
-    color: var(--azul);
-}
-
-.seguir-btn:hover {
-    background-color: #cce6ff;
-}
-
-/* Ícone dentro do "botão seguir" */
-.seguir-btn span.material-symbols-outlined {
-    font-size: 20px;
-}
-
-/* Quando for disabled */
-.seguir-btn:disabled,
-.seguir-btn[disabled] {
-    background-color: #e0e0e0;
-    color: #9e9e9e;
-    cursor: not-allowed;
-    transform: none;
+        background-color .2s ease,
+        color .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
     box-shadow: none;
 }
 
-/* Esse é o botão de "deixar de seguir" */
-.deixar-profile-btn {
-    background-color: #f8e0e3;
-    color: var(--vermelho);
+/* Apenas animação geral */
+.profile-action-buttons button:hover,
+.profile-action-buttons .btn-mensagem:hover,
+.profile-action-buttons .btn-denuncia:hover {
+    transform: translateY(-1px);
 }
 
-.deixar-profile-btn:hover {
-    background-color: #ffcdd2;
+.profile-action-buttons button:active,
+.profile-action-buttons .btn-mensagem:active,
+.profile-action-buttons .btn-denuncia:active {
+    transform: translateY(0);
 }
 
-/* Aqui é o "botão de mensagem" */
+/* ---------------------------- */
+/* CORES ESPECÍFICAS */
+/* ---------------------------- */
+
+/* 🟢 SEGUIR — VERDE */
+.seguir-btn {
+    border: 2px solid var(--verde);
+    color: var(--verde);
+}
+
+.seguir-btn:hover {
+    background-color: rgba(0, 200, 83, 0.15); /* Hover VERDE */
+}
+
+/* 🔵 MENSAGEM — AZUL */
 .btn-mensagem {
-    background-color: #e3f2fd;
+    border: 2px solid var(--azul);
     color: var(--azul);
 }
 
 .btn-mensagem:hover {
-    background-color: #cce6ff;
+    background-color: rgba(33, 150, 243, 0.15);
 }
 
-.seguir-btn .material-symbols-outlined {
-    margin-top: 1px;
-    /* corrige baseline */
-    font-size: 23px !important;
-    /* mesmo tamanho do outro */
-    line-height: 1;
+/* 🟥 DEIXAR DE SEGUIR — VERMELHO */
+.deixar-profile-btn {
+    border: 2px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.deixar-profile-btn:hover {
+    background-color: rgba(255, 0, 0, 0.15);
+}
+
+/* 🟥 BANIR — VERMELHO */
+.banir-btn {
+    border: 2px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.banir-btn:hover {
+    background-color: rgba(255, 0, 0, 0.15);
+}
+
+/* 🟥 DENUNCIAR — VERMELHO */
+.btn-denuncia {
+    border: 2px solid var(--vermelho);
+    color: var(--vermelho);
+}
+
+.btn-denuncia:hover {
+    background-color: rgba(255, 0, 0, 0.15);
+}
+
+/* Ícones */
+.seguir-btn span.material-symbols-outlined,
+.btn-mensagem span.material-symbols-outlined,
+.banir-btn span.material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* Disabled */
+.seguir-btn:disabled,
+.seguir-btn[disabled] {
+    background-color: #f2f2f2;
+    border-color: #ccc !important;
+    color: #9e9e9e;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* Esconder itens */
@@ -167,30 +189,6 @@
     display: none;
 }
 
-/* Botão de banir */
-.banir-btn {
-    background-color: #f8e0e3;
-    color: var(--vermelho);
-}
-
-.banir-btn:hover {
-    background-color: #ffcdd2;
-}
-
-/* Ícone dentro do "botão banir" */
-.banir-btn span.material-symbols-outlined {
-    font-size: 20px;
-}
-
-/* Botão denunciar */
-.btn-denuncia {
-    background-color: #f8e0e3;
-    color: var(--vermelho);
-}
-
-.btn-denuncia:hover {
-    background-color: #ffcdd2;
-}
 
 /* ===== CABEÇALHO DO PERFIL ===== */
 .profile-header {
@@ -448,7 +446,7 @@
 }
 
 .btn-cancelar {
-    background: #ccc;
+    background: var(--branco-light);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
@@ -456,17 +454,25 @@
 }
 
 .btn-salvar {
-    background: #4CAF50;
-    color: white;
+    background: var(--verde);
+    color: var(--branco);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
+    transition: .3s;
+}
+
+.btn-salvar:hover {
+    background: var(--verde-apagado);
 }
 
 .abrir-modal-btn {
-    background: #2196F3;
-    color: white;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    background: var(--azul);
+    color: var(--branco);
     border: none;
     border-radius: 6px;
     padding: 8px 15px;
@@ -475,9 +481,9 @@
 }
 
 .btn-remover {
-    background: #f44336;
+    background: var(--vermelho);
     /* vermelho */
-    color: white;
+    color: var(--branco);
     border: none;
     padding: 8px 15px;
     border-radius: 6px;
@@ -511,27 +517,27 @@
     margin-bottom: 1rem;
 }
 
-.post-header .dados-post{
+.post-header .dados-post {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 1rem;
 }
 
-.post-header .dados-post{
+.post-header .dados-post {
     display: flex;
     flex-direction: row;
     align-items: end;
     gap: 1rem;
 }
 
-.post-header .dados-post a{
+.post-header .dados-post a {
     text-decoration: none;
     color: var(--preto);
     font-size: 10px;
 }
 
-.post-header .dados-post a:hover{
+.post-header .dados-post a:hover {
     text-decoration: underline;
 }
 
@@ -1094,7 +1100,8 @@ textarea {
     }
 
     .tab-scroll-btn {
-        display: none !important; /* tira os botões de seta */
+        display: none !important;
+        /* tira os botões de seta */
     }
 
     .tab-button {
@@ -1136,7 +1143,9 @@ textarea {
 /* ----------- RESPONSIVIDADE EXTREMA (celulares muito pequenos) ----------- */
 @media (max-width: 480px) {
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
         font-size: 18px !important;
     }
 
@@ -1158,7 +1167,8 @@ textarea {
     }
 
     .tab-button .tab-text {
-        display: none; /* mostra só ícones para economizar espaço */
+        display: none;
+        /* mostra só ícones para economizar espaço */
     }
 
     .modal-box {
