@@ -488,8 +488,31 @@
     padding: 8px 15px;
     border-radius: 6px;
     cursor: pointer;
+    transition: .3s;
 }
 
+.btn-remover:hover {
+    background: var(--vermelho-apagado);
+}
+
+.form-group .select-dependente {
+    width: 100%;
+    font-size: 14px;
+    color: var(--preto);
+    border-radius: 8px;
+    padding: .5rem;
+    text-align: center;
+    outline: none;
+    border: 1px solid var(--branco-light);
+    background-color: var(--branco);
+}
+
+.alerta {
+    width: 100%;
+    font-size: 14px;
+    color: var(--preto);
+    text-align: center;
+}
 
 /* ===== ABA POSTAGENS (ABA 2) ===== */
 .posts-grid {
@@ -1174,4 +1197,25 @@ textarea {
     .modal-box {
         width: 95% !important;
     }
+}
+
+.hover-verde:hover {
+    color: var(--verde-apagado) !important;
+}
+
+.container-foto-dependente label{
+    text-align: center;
+}
+
+.foto-dependente {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.foto-dependente img {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
 }

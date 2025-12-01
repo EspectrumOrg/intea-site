@@ -2,9 +2,10 @@
 <html lang="pt-br">
 
 <head>
+    <link rel="shortcut icon" type="imagex/png" href="{{ url('assets/images/logos/intea/39.png') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intea - Painel Responsável</title>
+    <title>Intea - Responsável</title>
     <!-- icones-->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -37,7 +38,7 @@
                     <!-- Verificação de segurança -->
                     @if(!isset($user) || is_null($user))
                     <div class="alert alert-danger text-center">
-                        <h4>❌ Erro: Perfil não encontrado</h4>
+                        <h4> Erro: Perfil não encontrado</h4>
                         <p>O usuário que você está tentando acessar não existe.</p>
                         <a href="/feed" class="btn btn-primary">Voltar para o Feed</a>
                     </div>
@@ -84,7 +85,7 @@
                                 <form action="{{ route('seguir.store') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ $selectedAutista->usuario->id }}">
-                                    <button type="submit" class="seguir-btn">
+                                    <button type="submit" class="seguir-btn hover-verde">
                                         <span class="material-symbols-outlined">person_add</span> Seguir
                                     </button>
                                 </form>
