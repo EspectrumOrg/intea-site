@@ -145,17 +145,24 @@ class ComentarioController extends Controller
 
 
     public function destroy($id)
-    {
-        $comentario = Comentario::findOrFail($id);
+{
+    $comentario = Comentario::findOrFail($id);
 
-        //Comentários, Curtidas e Denúncias relacionadas
-        $comentario->respostas()->delete();
-        $comentario->curtidas_comentario()->delete();
-        $comentario->denuncias()->delete();
-
-        // Deletar comentário
-        $comentario->delete();
-
-        return redirect()->back()->with('success', 'Comentário excluído com êxito!');
+    // Apagar imagem (se existir)
+    if ($comentario->image) {
+        Storage::disk('public')->delete($comentario->image->caminho_imagem);
+        $comentario->image->delete();
     }
+
+    // Comentários, Curtidas e Denúncias relacionadas
+    $comentario->respostas()->delete();
+    $comentario->curtidas_comentario()->delete();
+    $comentario->denuncias()->delete();
+
+    // Deletar comentário
+    $comentario->delete();
+
+    return redirect()->back()->with('success', 'Comentário excluído com êxito!');
+}
+    
 }

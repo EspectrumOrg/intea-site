@@ -154,6 +154,7 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     Route::get('/feed/{id}/foco', [ComentarioController::class, 'focus'])->name('comentario.focus');
     Route::post('/feed/{id}', [ComentarioController::class, 'store'])->name('comentario.curtida');
     Route::delete('/comentario/{id}/destroy', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
+    Route::put('/comentario/{comentario}', [ComentarioController::class, 'update'])->name('comentario.update');
 
     Route::get('/buscar', [UsuarioController::class, 'buscarUsuarios'])->name('buscar.usuarios');
     Route::get('/notificacao', [NotificacaoController::class, 'index'])->name('notificacao.index');
