@@ -414,8 +414,8 @@
 
                                         <div class="form-group">
                                             <label for="dependente_id">Escolha um dependente:</label>
-                                            <select name="dependente_id" id="dependente_id" required>
-                                                <option value="">-- Escolha um dependente --</option>
+                                            <select name="dependente_id" id="dependente_id" class="select-dependente" required>
+                                                <option value=""> Dependente </option>
                                                 @if(isset($autistas) && $autistas->count())
                                                 @foreach($autistas as $autista)
                                                 <option value="{{ $autista->id }}">
@@ -427,7 +427,7 @@
                                         </div>
 
                                         <p class="alerta">
-                                            ⚠️ Tem certeza que deseja remover este dependente? Essa ação não poderá ser
+                                             Tem certeza que deseja remover este dependente? Essa ação não poderá ser
                                             desfeita.
                                         </p>
 
