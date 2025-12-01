@@ -507,32 +507,37 @@ class InteresseController extends Controller
     /**
      * Gerenciar moderadores
      */
-    public function moderadores($slug)
-    {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
-        
-        if (!$usuario) {
-            return redirect()->route('login');
-        }
-        
-        // Verificar se usuário é dono ou administrador
-        $dono = $interesse->moderadores()
-            ->wherePivot('cargo', 'dono')
-            ->first();
-        
-        $usuarioEhDono = $dono && $usuario->id === $dono->id;
-        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
-        
-        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
-            return redirect()->route('interesses.show', $slug)
-                ->with('error', 'Você não tem permissão para gerenciar moderadores.');
-        }
-        
-        $tendenciasPopulares = Tendencia::populares(7)->get();
-        
-        return view('interesses.moderadores', compact('interesse', 'tendenciasPopulares'));
+   public function moderadores($slug)
+{
+    $interesse = Interesse::where('slug', $slug)->firstOrFail();
+    $usuario = Auth::user();
+    
+    if (!$usuario) {
+        return redirect()->route('login');
     }
+    
+    // Verificar se usuário é dono ou administrador
+    $dono = $interesse->moderadores()
+        ->wherePivot('cargo', 'dono')
+        ->first();
+    
+    $usuarioEhDono = $dono && $usuario->id === $dono->id; // ← ADICIONE ESTA LINHA
+    $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+    
+    if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+        return redirect()->route('interesses.show', $slug)
+            ->with('error', 'Você não tem permissão para gerenciar moderadores.');
+    }
+    
+    $tendenciasPopulares = Tendencia::populares(7)->get();
+    
+    return view('interesses.moderadores', compact(
+        'interesse', 
+        'tendenciasPopulares',
+        'usuarioEhDono', 
+        'usuarioEhAdministrador',
+    ));
+}
     
     /**
      * Adicionar moderador
