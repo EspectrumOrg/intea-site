@@ -366,25 +366,36 @@ class Interesse extends Model
     }
 
     /**
-     * Método para criar um novo interesse
+     * Método para criar um novo interesse - CORRIGIDO
      */
     public static function criar($dados)
     {
+        // Gerar slug único
+        $slug = \Illuminate\Support\Str::slug($dados['nome']);
+        $counter = 1;
+        $originalSlug = $slug;
+        
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
         return static::create([
             'nome' => $dados['nome'],
-            'slug' => \Illuminate\Support\Str::slug($dados['nome']),
+            'slug' => $slug,
             'descricao' => $dados['descricao'],
             'sobre' => $dados['sobre'] ?? null,
             'icone' => $dados['icone'] ?? 'smartphone',
             'icone_custom' => $dados['icone_custom'] ?? null,
             'cor' => $dados['cor'] ?? '#3B82F6',
-            'contador_membros' => 1,
+            'banner' => $dados['banner'] ?? null,
+            'contador_membros' => 0, // Começa com 0, será incrementado quando o criador seguir
             'contador_postagens' => 0,
-            'destaque' => false,
-            'ativo' => true,
-            'moderacao_ativa' => true,
-            'limite_alertas_ban' => 3,
-            'dias_expiracao_alerta' => 30,
+            'destaque' => $dados['destaque'] ?? false,
+            'ativo' => $dados['ativo'] ?? true,
+            'moderacao_ativa' => $dados['moderacao_ativa'] ?? true,
+            'limite_alertas_ban' => $dados['limite_alertas_ban'] ?? 3,
+            'dias_expiracao_alerta' => $dados['dias_expiracao_alerta'] ?? 30,
         ]);
     }
 
@@ -463,14 +474,14 @@ class Interesse extends Model
     }
 
     public function postagensMaisCurtidas($limite = 20)
-{
-    return $this->postagens()
-        ->with(['usuario', 'imagens', 'interesses'])
-        ->withCount(['curtidas', 'comentarios'])
-        ->where('bloqueada_auto', false)
-        ->where('removida_manual', false)
-        ->orderBy('curtidas_count', 'desc')
-        ->limit($limite)
-        ->get();
-}
+    {
+        return $this->postagens()
+            ->with(['usuario', 'imagens', 'interesses'])
+            ->withCount(['curtidas', 'comentarios'])
+            ->where('bloqueada_auto', false)
+            ->where('removida_manual', false)
+            ->orderBy('curtidas_count', 'desc')
+            ->limit($limite)
+            ->get();
+    }
 }

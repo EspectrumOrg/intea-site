@@ -114,6 +114,17 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
     Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
 
+    // ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
+    Route::get('/interesses/gerenciar', [InteresseController::class, 'gerenciar'])->name('interesses.gerenciar');
+    Route::get('/interesses/{slug}/editar', [InteresseController::class, 'edit'])->name('interesses.edit');
+    Route::put('/interesses/{slug}', [InteresseController::class, 'update'])->name('interesses.update');
+    Route::delete('/interesses/{slug}', [InteresseController::class, 'destroy'])->name('interesses.destroy');
+    Route::post('/interesses/{slug}/remover-postagem', [InteresseController::class, 'removerPostagem'])->name('interesses.remover-postagem');
+    Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moderadores'])->name('interesses.moderadores');
+    Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador');
+    Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador');
+    Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade');
+
     // Feeds por interesse
     Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
     Route::get('/personalizado', [PostagemController::class, 'personalizado'])->name('post.personalizado');

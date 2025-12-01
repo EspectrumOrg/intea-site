@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Interesse;
 use App\Models\Postagem;
 use App\Models\Tendencia;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -12,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class InteresseController extends Controller
 {
-  public function show($slug)
+    public function show($slug)
 {
     $interesse = Interesse::where('slug', $slug)
         ->withCount(['seguidores', 'postagens'])
@@ -20,7 +21,7 @@ class InteresseController extends Controller
     
     $usuario = Auth::user();
     
-    // Postagens com mais curtidas (em vez de recentes)
+    // Postagens com mais curtidas
     $postagensMaisCurtidas = $interesse->postagens()
         ->with(['usuario', 'imagens', 'interesses'])
         ->withCount(['curtidas', 'comentarios'])
@@ -42,6 +43,12 @@ class InteresseController extends Controller
     // Verificar se usuário é moderador
     $usuarioEhModerador = $usuario ? $interesse->moderadores()->where('usuario_id', $usuario->id)->exists() : false;
     
+    // Verificar se usuário é dono
+    $usuarioEhDono = $usuario ? $interesse->moderadores()->where('usuario_id', $usuario->id)->wherePivot('cargo', 'dono')->exists() : false;
+    
+    // Obter o dono do interesse
+    $dono = $interesse->moderadores()->wherePivot('cargo', 'dono')->first();
+    
     // Estatísticas do interesse
     $estatisticas = $interesse->obterEstatisticas();
     
@@ -55,6 +62,8 @@ class InteresseController extends Controller
         'postagensDestacadas',
         'usuarioSegue',
         'usuarioEhModerador',
+        'usuarioEhDono',
+        'dono', // NOVO: Passando o dono para a view
         'estatisticas',
         'tendenciasPopulares'
     ));
@@ -201,7 +210,7 @@ class InteresseController extends Controller
     }
 
     /**
-     * Salvar novo interesse
+     * Salvar novo interesse - CORRIGIDO
      */
     public function store(Request $request)
     {
@@ -228,16 +237,6 @@ class InteresseController extends Controller
         ]);
 
         try {
-            // Criar slug único
-            $slug = Str::slug($request->nome);
-            $counter = 1;
-            $originalSlug = $slug;
-            
-            while (Interesse::where('slug', $slug)->exists()) {
-                $slug = $originalSlug . '-' . $counter;
-                $counter++;
-            }
-
             // Processar ícone
             $icone = null;
             $iconeCustomPath = null;
@@ -252,30 +251,22 @@ class InteresseController extends Controller
                 }
             }
 
-            // Criar interesse
-            $interesse = Interesse::create([
+            // Usar o método criar do modelo Interesse
+            $interesse = Interesse::criar([
                 'nome' => $request->nome,
-                'slug' => $slug,
                 'descricao' => $request->descricao,
                 'sobre' => $request->sobre,
                 'icone' => $icone,
                 'icone_custom' => $iconeCustomPath,
                 'cor' => $request->cor,
-                'contador_membros' => 1,
-                'contador_postagens' => 0,
-                'destaque' => false,
-                'ativo' => true,
-                'moderacao_ativa' => true,
-                'limite_alertas_ban' => 3,
-                'dias_expiracao_alerta' => 30,
             ]);
 
             // O criador automaticamente segue o interesse
             Auth::user()->seguirInteresse($interesse->id, true);
 
-            // Tornar o criador moderador
+            // Tornar o criador moderador com cargo de DONO
             $interesse->moderadores()->attach(Auth::id(), [
-                'cargo' => 'fundador',
+                'cargo' => 'dono',
                 'created_at' => now(),
                 'updated_at' => now()
             ]);
@@ -284,6 +275,10 @@ class InteresseController extends Controller
                 ->with('success', 'Interesse criado com sucesso! Você é o moderador fundador.');
 
         } catch (\Exception $e) {
+            // Log do erro para debug
+            \Log::error('Erro ao criar interesse: ' . $e->getMessage());
+            \Log::error('Trace: ' . $e->getTraceAsString());
+            
             return redirect()->back()
                 ->with('error', 'Erro ao criar interesse: ' . $e->getMessage())
                 ->withInput();
@@ -321,5 +316,360 @@ class InteresseController extends Controller
             'tendenciasPopulares',
             'query'
         ));
+    }
+
+    /**
+     * Gerenciar Interesses do Usuário
+     */
+    public function gerenciar()
+    {
+        $usuario = Auth::user();
+        $interessesGerenciáveis = $usuario->obterInteressesGerenciáveis();
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        return view('interesses.gerenciar', compact(
+            'interessesGerenciáveis',
+            'tendenciasPopulares'
+        ));
+    }
+
+    /**
+     * Editar Interesse
+     */
+    public function edit($slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeEditarInteresse($interesse->id)) {
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('error', 'Você não tem permissão para editar este interesse.');
+        }
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        return view('interesses.edit', compact(
+            'interesse',
+            'tendenciasPopulares'
+        ));
+    }
+
+    /**
+     * Atualizar Interesse
+     */
+    public function update(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeEditarInteresse($interesse->id)) {
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('error', 'Você não tem permissão para editar este interesse.');
+        }
+
+        $request->validate([
+            'nome' => 'required|string|max:50|unique:interesses,nome,' . $interesse->id,
+            'descricao' => 'required|string|max:200',
+            'sobre' => 'nullable|string|max:1000',
+            'icone_type' => 'required|in:default,custom',
+            'icone' => 'required_if:icone_type,default|string|max:50',
+            'icone_custom' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:1024',
+            'cor' => 'required|string|size:7',
+            'moderacao_ativa' => 'boolean',
+        ]);
+
+        try {
+            $dados = [
+                'nome' => $request->nome,
+                'descricao' => $request->descricao,
+                'sobre' => $request->sobre,
+                'cor' => $request->cor,
+                'moderacao_ativa' => $request->boolean('moderacao_ativa', true),
+            ];
+
+            // Processar ícone
+            if ($request->icone_type === 'default') {
+                $dados['icone'] = $request->icone;
+                $dados['icone_custom'] = null;
+            } else {
+                $dados['icone'] = 'custom';
+                if ($request->hasFile('icone_custom')) {
+                    $dados['icone_custom'] = $request->file('icone_custom')->store('arquivos/interesses/icones', 'public');
+                }
+            }
+
+            // Atualizar slug se o nome mudou
+            if ($interesse->nome !== $request->nome) {
+                $dados['slug'] = Str::slug($request->nome);
+            }
+
+            $interesse->update($dados);
+
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('success', 'Interesse atualizado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Erro ao atualizar interesse: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Deletar Interesse
+     */
+    public function destroy($slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeDeletarInteresse($interesse->id)) {
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('error', 'Você não tem permissão para deletar este interesse.');
+        }
+
+        try {
+            $usuario->deletarInteresse($interesse->id);
+
+            return redirect()->route('interesses.index')
+                ->with('success', 'Interesse deletado com sucesso!');
+
+        } catch (\Exception $e) {
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('error', 'Erro ao deletar interesse: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remover Postagem do Interesse
+     */
+    public function removerPostagem(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeRemoverPostagem($interesse->id)) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Você não tem permissão para remover postagens deste interesse.'
+            ], 403);
+        }
+
+        $request->validate([
+            'postagem_id' => 'required|exists:postagens,id',
+            'motivo' => 'nullable|string|max:500'
+        ]);
+
+        try {
+            $sucesso = $usuario->removerPostagemDoInteresse(
+                $interesse->id,
+                $request->postagem_id,
+                $request->motivo
+            );
+
+            if ($sucesso) {
+                return response()->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Postagem removida do interesse com sucesso.'
+                ]);
+            } else {
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Erro ao remover postagem do interesse.'
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Gerenciar Moderadores
+     */
+    public function moderadores($slug)
+    {
+        $interesse = Interesse::where('slug', $slug)
+            ->with(['moderadores' => function($query) {
+                $query->select('tb_usuario.id', 'user', 'apelido', 'foto');
+            }])
+            ->firstOrFail();
+
+        $usuario = Auth::user();
+
+        if (!$usuario->podeAdicionarModerador($interesse->id)) {
+            return redirect()->route('interesses.show', $interesse->slug)
+                ->with('error', 'Você não tem permissão para gerenciar moderadores.');
+        }
+
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+
+        return view('interesses.moderadores', compact(
+            'interesse',
+            'tendenciasPopulares'
+        ));
+    }
+
+    /**
+     * Adicionar Moderador
+     */
+    public function adicionarModerador(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeAdicionarModerador($interesse->id)) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Você não tem permissão para adicionar moderadores.'
+            ], 403);
+        }
+
+        $request->validate([
+            'usuario_id' => 'required|exists:tb_usuario,id'
+        ]);
+
+        try {
+            $sucesso = $usuario->adicionarModerador($interesse->id, $request->usuario_id);
+
+            if ($sucesso) {
+                return response()->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Moderador adicionado com sucesso.'
+                ]);
+            } else {
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Erro ao adicionar moderador.'
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Remover Moderador
+     */
+    public function removerModerador(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeAdicionarModerador($interesse->id)) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Você não tem permissão para remover moderadores.'
+            ], 403);
+        }
+
+        $request->validate([
+            'usuario_id' => 'required|exists:tb_usuario,id'
+        ]);
+
+        try {
+            $sucesso = $usuario->removerModerador($interesse->id, $request->usuario_id);
+
+            if ($sucesso) {
+                return response()->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Moderador removido com sucesso.'
+                ]);
+            } else {
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Erro ao remover moderador.'
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Transferir Propriedade
+     */
+    public function transferirPropriedade(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->isDonoInteresse($interesse->id)) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Apenas o dono atual pode transferir a propriedade.'
+            ], 403);
+        }
+
+        $request->validate([
+            'novo_dono_id' => 'required|exists:tb_usuario,id'
+        ]);
+
+        try {
+            $sucesso = $usuario->transferirPropriedade($interesse->id, $request->novo_dono_id);
+
+            if ($sucesso) {
+                return response()->json([
+                    'sucesso' => true,
+                    'mensagem' => 'Propriedade transferida com sucesso.'
+                ]);
+            } else {
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Erro ao transferir propriedade.'
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Pesquisar usuários para adicionar como moderador
+     */
+    public function pesquisarUsuarios(Request $request, $slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+
+        if (!$usuario->podeAdicionarModerador($interesse->id)) {
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Sem permissão.'
+            ], 403);
+        }
+
+        $query = $request->get('q');
+        
+        if (!$query || strlen($query) < 3) {
+            return response()->json([]);
+        }
+
+        $usuarios = Usuario::where(function($q) use ($query) {
+                $q->where('user', 'LIKE', "%{$query}%")
+                  ->orWhere('apelido', 'LIKE', "%{$query}%")
+                  ->orWhere('nome', 'LIKE', "%{$query}%");
+            })
+            ->where('id', '!=', $usuario->id) // Não incluir a si mesmo
+            ->whereNotIn('id', $interesse->moderadores()->pluck('usuario_id')) // Não incluir moderadores existentes
+            ->limit(10)
+            ->get(['id', 'user', 'apelido', 'foto']);
+
+        return response()->json($usuarios);
     }
 }
