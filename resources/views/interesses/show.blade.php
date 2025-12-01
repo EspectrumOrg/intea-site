@@ -93,10 +93,6 @@
 
     <!-- ABA DE NAVEGAÇÃO COM GERENCIAMENTO -->
     <div class="interesse-navigation">
-        <a href="{{ route('interesses.show', $interesse->slug) }}" class="nav-item active" style="border-color: {{ $interesse->cor }}; color: {{ $interesse->cor }};">
-            <span class="material-symbols-outlined">info</span>
-            Sobre
-        </a>
         <a href="{{ route('post.interesse', $interesse->slug) }}" class="nav-item" style="border-color: {{ $interesse->cor }}; color: {{ $interesse->cor }};">
             <span class="material-symbols-outlined">feed</span>
             Feed
@@ -880,21 +876,94 @@ document.addEventListener('DOMContentLoaded', function() {
         this.disabled = true;
     });
 
-    // Botões de seguir interesse (implementação básica)
-    document.querySelector('.btn-seguir-interesse')?.addEventListener('click', function() {
-        const interesseId = this.getAttribute('data-interesse-id');
-        // Implementar lógica AJAX para seguir interesse
-        this.innerHTML = '<span class="material-symbols-outlined">check</span>Seguindo';
-        this.style.background = '#10B981';
-        this.disabled = true;
+    // Botão criar primeira postagem - CORRIGIDO
+    document.getElementById('btnCriarPrimeiraPostagem')?.addEventListener('click', function() {
+        @if(Route::has('feed.create'))
+            window.location.href = "{{ route('feed.create') }}?interesse_id={{ $interesse->id }}";
+        @elseif(Route::has('post.create'))
+            window.location.href = "{{ route('post.create') }}?interesse_id={{ $interesse->id }}";
+        @else
+            // Fallback seguro
+            window.location.href = "/feed/create?interesse_id={{ $interesse->id }}";
+        @endif
     });
 
-    document.querySelector('.btn-deixar-seguir')?.addEventListener('click', function() {
-        const interesseId = this.getAttribute('data-interesse-id');
-        // Implementar lógica AJAX para deixar de seguir
-        this.innerHTML = '<span class="material-symbols-outlined">add</span>Seguir';
-        this.style.background = '#3B82F6';
-    });
+    // Sistema de seguir/deixar de seguir interesse
+    const btnSeguir = document.querySelector('.btn-seguir-interesse');
+    const btnDeixarSeguir = document.querySelector('.btn-deixar-seguir');
+
+    if (btnSeguir) {
+        btnSeguir.addEventListener('click', function() {
+            const interesseId = this.getAttribute('data-interesse-id');
+            seguirInteresse(interesseId, this);
+        });
+    }
+
+    if (btnDeixarSeguir) {
+        btnDeixarSeguir.addEventListener('click', function() {
+            const interesseId = this.getAttribute('data-interesse-id');
+            deixarSeguirInteresse(interesseId, this);
+        });
+    }
+
+    function seguirInteresse(interesseId, elemento) {
+        fetch(`/interesses/${interesseId}/seguir`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ notificacoes: true })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.sucesso) {
+                elemento.outerHTML = `
+                    <button class="btn-deixar-seguir" data-interesse-id="${interesseId}">
+                        <span class="material-symbols-outlined">close</span>
+                        Deixar de Seguir
+                    </button>
+                `;
+                // Reconectar evento
+                document.querySelector('.btn-deixar-seguir').addEventListener('click', function() {
+                    deixarSeguirInteresse(interesseId, this);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao seguir interesse');
+        });
+    }
+
+    function deixarSeguirInteresse(interesseId, elemento) {
+        fetch(`/interesses/${interesseId}/deixar-seguir`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.sucesso) {
+                elemento.outerHTML = `
+                    <button class="btn-seguir-interesse interesse-dynamic-button" data-interesse-id="${interesseId}">
+                        <span class="material-symbols-outlined">add</span>
+                        Seguir
+                    </button>
+                `;
+                // Reconectar evento
+                document.querySelector('.btn-seguir-interesse').addEventListener('click', function() {
+                    seguirInteresse(interesseId, this);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao deixar de seguir interesse');
+        });
+    }
 });
 
 function confirmarDelecaoInteresse(slug) {

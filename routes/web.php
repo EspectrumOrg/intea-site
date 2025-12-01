@@ -113,6 +113,8 @@ Route::middleware(['auth', 'check.ban'])->group(function () {
     Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
     Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
     Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
+    Route::get('/feed/create', [PostagemController::class, 'create'])->name('feed.create');
+
 
     // ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
     Route::get('/interesses/gerenciar', [InteresseController::class, 'gerenciar'])->name('interesses.gerenciar');
