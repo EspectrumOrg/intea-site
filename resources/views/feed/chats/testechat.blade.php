@@ -41,16 +41,16 @@
         <!-- Lado direito: chat -->
         <div class="chat-window">
             <div class="top"> 
-                    <div id="btn-fechar-chat" >
-            <a href="{{ route('chat.dashboard') }}" class="botao-voltar-chat">
-                <span class="material-symbols-outlined">arrow_back</span>
-            </a>
-        </div>
-            <img id="avatar-destinatario" src="">
-            <div class="sem-usuario">
-                <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
-                <small id="status-destinatario"></small>
-             </div>
+                <div class="botaoFecharChat" id="btn-fechar-chat" >
+                    <a href="{{ route('chat.dashboard') }}" class="botao-voltar-chat" id="fecharChatBtn">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                    </a>
+                </div>
+                <img id="avatar-destinatario" src="">
+                <div class="sem-usuario">
+                    <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
+                    <small id="status-destinatario"></small>
+                </div>
         </div>
 
         <div class="messages" id="messages"></div>
@@ -61,6 +61,7 @@
                 <button type="submit">Enviar</button>
             </form>
         </div>
+
     </div>
 </div>
 
@@ -115,6 +116,7 @@ function appendMensagem(data) {
 // Função para abrir chat via AJAX
 function abrirChat(usuarioId) {
     usuarioSelecionado = usuarioId;
+    $(".chat-container").addClass("chat-ativo");
     $("#btn-fechar-chat").show();
 
 
@@ -215,6 +217,17 @@ function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
 }
+
+// Botão fechar chat, pra responsividade
+$("#fecharChatBtn").on("click", function(e) {
+    if (window.innerWidth <= 764) {
+        // MOBILE — apenas fecha o chat
+        e.preventDefault();
+        $(".chat-container").removeClass("chat-ativo");
+        return;
+    }
+
+});
 
 $(document).ready(function() {
     const usuario2 = getQueryParam('usuario2');

@@ -1183,9 +1183,10 @@
         text-overflow: ellipsis; /* reticências*/
     }
 
-    .post-button {
+    .post-button button{
+        margin: 0 auto;
         max-width: 110px;
-        font-size: 0.6rem;
+        font-size: 1rem;
     }
 }
 
