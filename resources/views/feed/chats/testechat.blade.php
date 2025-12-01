@@ -46,12 +46,12 @@
                 <span class="material-symbols-outlined">arrow_back</span>
             </a>
         </div>
-                <img id="avatar-destinatario" src="">
-                <div class="sem-usuario">
-                    <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
-                    <small id="status-destinatario"></small>
-                </div>
-            </div>
+            <img id="avatar-destinatario" src="">
+            <div class="sem-usuario">
+                <p id="nome-destinatario">Nenhum usuário selecionado para conversa</p>
+                <small id="status-destinatario"></small>
+             </div>
+        </div>
 
         <div class="messages" id="messages"></div>
 

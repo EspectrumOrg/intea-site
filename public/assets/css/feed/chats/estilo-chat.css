@@ -171,9 +171,32 @@
     overflow: hidden;
 }
 
+.chat-window .top #btn-fechar-chat {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin: auto 5% auto 0;
+    padding: 0.1rem;
+    text-align: center;
+}
+.chat-window .top #btn-fechar-chat a {
+    padding: 0;
+    text-align: center;
+    color: var(--preto);
+    background-color: var(--cinza-font);
+    border-radius: 50%;
+    border: none;
+    max-width: 1.4rem;
+    min-width: 0.6rem;
+    max-height: 1.4rem;
+    min-height: 0.6rem;
+}
+
 .chat-window .top img {
     border-radius: 50%;
     margin-right: 10px;
+    border-left: 1px solid var(--branco-light);
     width: 2.6rem;
     height: 2.6rem;
     border: 2px solid var(--vermelho-apagado);
