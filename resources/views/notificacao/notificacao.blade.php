@@ -16,37 +16,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/chats/estilo-chat.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/feed/style.css') }}">
+    <!-- estilo do notificacao -->
+    <link rel="stylesheet" href="{{ asset('assets/css/feed/notificacao/notificacao.css') }}">
     <!-- Postagem -->
     <link rel="stylesheet" href="{{ asset('assets/css/profile/postagem.css') }}">
-
-    <style>
-        body {
-            background-color: #f9fafb;
-            font-family: Arial, sans-serif;
-        }
-
-        .container {
-            margin-top: 50px;
-            max-width: 700px;
-        }
-
-        .list-group-item {
-            border-radius: 10px;
-            margin-bottom: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        h2 {
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .btn {
-            min-width: 90px;
-        }
-    </style>
 </head>
 
 <body class="{{ auth()->user()->tema_preferencia === 'monocromatico' ? 'monochrome' : '' }}">
@@ -84,19 +57,21 @@
                         @php
                         $linkConta = route('conta.index', $notificacao->solicitante_id);
                         $nomeUsuario = $notificacao->solicitante->user ?? 'Usuário desconhecido';
-$fotoUsuario = $notificacao->solicitante->foto ? asset('storage/'.$notificacao->solicitante->foto)    : url('assets/images/logos/contas/user.png');          
-    
-    
-    @endphp
+                        $fotoUsuario = $notificacao->solicitante->foto ? asset('storage/'.$notificacao->solicitante->foto) : url('assets/images/logos/contas/user.png');
+
+
+                        @endphp
 
                         {{-- TIPOS DE NOTIFICAÇÃO --}}
                         @if($notificacao->tipo === 'seguir')
-                        <div>
-                           <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}" width="50px" height="100%">
-                            <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
-                                {{ $nomeUsuario }}
-                            </a>
-                            enviou uma solicitação para seguir você.
+                        <div class="foto-usuario-seguir">
+                            <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}">
+                            <div class="dados">
+                                <a href="{{ $linkConta }}">
+                                    {{ $nomeUsuario }}
+                                </a>
+                                <p>enviou uma solicitação para seguir você.</p>
+                            </div>
                         </div>
 
                         <div>
@@ -113,26 +88,22 @@ $fotoUsuario = $notificacao->solicitante->foto ? asset('storage/'.$notificacao->
                         </div>
 
                         @elseif($notificacao->tipo === 'seguindo_voce')
-                        <div>
-
-
-                    <div>
-                            <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}" width="50px" height="100%">
-                            <a href="{{ $linkConta }}" style="font-weight: bold; text-decoration: none;">
-                                {{ $nomeUsuario }}
-                            </a>
-                            começou a seguir você.
+                        <div class="foto-usuario-seguir">
+                            <img src="{{ $fotoUsuario }}" alt="{{ $nomeUsuario }}">
+                            <div class="dados">
+                                <a href="{{ $linkConta }}">
+                                    {{ $nomeUsuario }}
+                                </a>
+                                começou a seguir você.
                             </div>
                         </div>
 
-                        <div class="d-flex align-items-center gap-2">
-                            <span class="badge bg-success">Novo seguidor</span>
-
+                        <div class="novo-seguidor">
                             {{-- BOTÃO OK PARA REMOVER A NOTIFICAÇÃO --}}
                             <form action="{{ route('notificacao.destroy', $notificacao->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-primary btn-sm">OK</button>
+                                <button type="submit" class="btn-ok">OK</button>
                             </form>
                         </div>
                         @endif

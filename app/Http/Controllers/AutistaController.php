@@ -97,7 +97,7 @@ public function update_responsavel(Request $request, $id)
 {
     Log::info('Início do método store', $request->all());
 
-    // 1️⃣ Validação
+    // Validação
     $validator = Validator::make($request->all(), [
         'user' => 'nullable|string|max:255',
         'apelido' => 'nullable|string|max:255',
@@ -120,13 +120,13 @@ public function update_responsavel(Request $request, $id)
     }
     Log::info('Validação passou');
 
-    // 2️⃣ Calcula idade
+    // 2Calcula idade
     $data_nascimento = new \DateTime($request->data_nascimento);
     $hoje = new \DateTime();
     $idade = $hoje->diff($data_nascimento)->y;
     Log::info('Idade calculada: ' . $idade);
 
-    // 3️⃣ Valida CPF do responsável se menor de idade
+    // Valida CPF do responsável se menor de idade
     if ($idade < 18 && empty($request->cpf_responsavel)) {
         Log::warning('Menor de idade sem CPF do responsável');
         return redirect()->back()->withErrors([
@@ -134,7 +134,7 @@ public function update_responsavel(Request $request, $id)
         ])->withInput();
     }
 
-    // 4️⃣ Limpa CPF
+    // Limpa CPF
     $cpfRequest = preg_replace('/[^0-9]/', '', $request->cpf);
     Log::info('CPF limpo: ' . $cpfRequest);
 
@@ -149,7 +149,7 @@ public function update_responsavel(Request $request, $id)
     }
     Log::info('CPF validado');
 
-    // 5️⃣ Salva foto
+    // Salva foto
     $path = null;
     if ($request->hasFile('foto')) {
         try {
@@ -162,12 +162,12 @@ public function update_responsavel(Request $request, $id)
         Log::info('Nenhuma foto enviada');
     }
 
-    // 6️⃣ Nome de usuário
+    // Nome de usuário
     $user_usuario = $request->user ?? $request->apelido ?? '';
     Log::info('Nome de usuário definido: ' . $user_usuario);
 
     try {
-        // 7️⃣ Cria usuário
+        // Cria usuário
         $usuario = Usuario::create([
             'email' => $request->email,
             'user' => $user_usuario,
@@ -182,7 +182,7 @@ public function update_responsavel(Request $request, $id)
         ]);
         Log::info('Usuário criado com ID: ' . $usuario->id);
 
-        // 8️⃣ Salva telefones
+        // Salva telefones
         if ($request->has('numero_telefone') && is_array($request->numero_telefone)) {
             foreach ($request->numero_telefone as $telefone) {
                 $telefone_limpo = preg_replace('/\D/', '', $telefone);
@@ -194,7 +194,7 @@ public function update_responsavel(Request $request, $id)
             }
         }
 
-        // 9️⃣ Menor de idade? Cria responsável
+        //  Cria responsável caso menor de idade
         $idResponsavel = null;
         if ($idade < 18) {
             $cpfRespLimpo = preg_replace('/\D/', '', $request->cpf_responsavel);
@@ -221,7 +221,7 @@ public function update_responsavel(Request $request, $id)
             Log::info('Responsável criado ou encontrado, ID: ' . $idResponsavel);
         }
 
-        // 10️⃣ Cria autista
+        // Cria autista
         $autista = Autista::create([
             'usuario_id' => $usuario->id,
             'cipteia_autista' => $request->CipteiaAutista ?? null,
@@ -229,7 +229,7 @@ public function update_responsavel(Request $request, $id)
         ]);
         Log::info('Autista criado com ID: ' . $autista->id);
 
-        // 11️⃣ Relacionamento pivot
+        // Relacionamento pivot
         if ($idResponsavel) {
             $autista->responsaveis()->attach($idResponsavel);
             Log::info("Responsável {$idResponsavel} associado ao autista {$autista->id}");
