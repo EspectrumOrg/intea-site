@@ -5,6 +5,10 @@
     <link rel="stylesheet" href="{{ asset('assets/css/interesses.css') }}">
 @endsection
 
+@push('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('main')
 <div class="container-post">
     <div class="interesses-page-header">
@@ -369,30 +373,38 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function confirmarDelecaoInteresse(slug) {
-    if (confirm('⚠️ ATENÇÃO: Esta ação é PERMANENTE e IRREVERSÍVEL!\n\nTodos os dados deste interesse serão deletados:\n• Todas as postagens\n• Todos os seguidores\n• Histórico de moderação\n• Configurações\n\nTem certeza que deseja continuar?')) {
-        fetch(`/interesses/${slug}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => {
-            if (data && data.success) {
-                window.location.href = '/interesses';
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro ao deletar interesse.');
-        });
+    if (confirm('⚠️ ATENÇÃO: Esta ação é PERMANENTE e IRREVERSÍVEL!\n\nTodos os dados deste interesse serão deletados permanentemente.\n\nTem certeza que deseja continuar?')) {
+        // Usar o token CSRF que já está no formulário da página
+        const tokenInput = document.querySelector('input[name="_token"]');
+        if (!tokenInput) {
+            alert('Erro: Token de segurança não encontrado.');
+            return;
+        }
+        
+        // Criar um formulário dinâmico
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/interesses/${slug}`;
+        form.style.display = 'none';
+        
+        // Token CSRF (usa o mesmo token do formulário de edição)
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = tokenInput.value;
+        
+        // Método spoofing para DELETE
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'DELETE';
+        
+        form.appendChild(csrfInput);
+        form.appendChild(methodInput);
+        document.body.appendChild(form);
+        
+        // Enviar o formulário
+        form.submit();
     }
 }
 </script>

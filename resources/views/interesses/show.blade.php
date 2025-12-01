@@ -1,5 +1,9 @@
 @extends('feed.post.template.layout')
 
+@push('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('styles')
     @parent
     <link rel="stylesheet" href="{{ asset('assets/css/interesses.css') }}">
@@ -292,38 +296,7 @@
 
 <!-- Modal de Transferência de Propriedade (HTML será injetado via JS quando necessário) -->
 <div id="modalTransferirContainer"></div>
-    <div class="modal-content" style="max-width: 500px;">
-        <div class="modal-header">
-            <h3 style="color: {{ $interesse->cor }};">Transferir Propriedade</h3>
-            <button type="button" class="modal-close" onclick="fecharModalTransferir()" style="background: none; border: none; cursor: pointer; color: #666;">
-                <span class="material-symbols-outlined">close</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <p style="margin-bottom: 1rem; color: #666;">
-                Escolha um novo dono para este interesse. Esta ação é permanente e você perderá o controle total.
-            </p>
-            
-            <div class="form-group">
-                <label for="buscarUsuarioTransferir" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Buscar Usuário</label>
-                <input type="text" id="buscarUsuarioTransferir" placeholder="Digite nome, usuário ou email..." 
-                       style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem;">
-                <div id="resultadosTransferencia" style="max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; display: none;"></div>
-            </div>
-            
-            <div id="usuarioSelecionadoInfo" style="display: none; padding: 1rem; background: #f9f9f9; border-radius: 8px; margin-top: 1rem;">
-                <p><strong>Novo dono selecionado:</strong> <span id="nomeUsuarioSelecionado"></span></p>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn-cancelar" onclick="fecharModalTransferir()" style="padding: 0.75rem 1.5rem; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer;">Cancelar</button>
-            <button type="button" id="btnConfirmarTransferencia" class="btn-confirmar" onclick="confirmarTransferencia()" 
-                    style="padding: 0.75rem 1.5rem; background: {{ $interesse->cor }}; color: white; border: none; border-radius: 8px; cursor: pointer; display: none;">
-                Transferir Propriedade
-            </button>
-        </div>
-    </div>
-</div>
+
 
 <!-- STYLES (Mantendo o CSS original e adicionando apenas o modal) -->
 <style>
@@ -375,25 +348,11 @@
     gap: 1rem;
 }
 
-/* Resultados da busca */
-.resultado-usuario-transferir {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #f3f4f6;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.resultado-usuario-transferir:hover {
-    background: #f9fafb;
-}
-
 .usuario-info-transferir {
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    flex: 1;
 }
 
 .usuario-avatar-transferir {
@@ -405,6 +364,7 @@
     align-items: center;
     justify-content: center;
     background: #f3f4f6;
+    flex-shrink: 0;
 }
 
 .usuario-avatar-transferir img {
@@ -416,11 +376,16 @@
 .usuario-detalhes-transferir {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-width: 0; /* Permite que o texto quebre */
 }
 
 .usuario-detalhes-transferir strong {
     font-size: 0.9rem;
     color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .usuario-detalhes-transferir span {
@@ -437,6 +402,32 @@
     cursor: pointer;
     font-size: 0.85rem;
     font-weight: 500;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.resultado-usuario-transferir {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #f3f4f6;
+    cursor: pointer;
+    transition: background 0.2s;
+    gap: 1rem;
+}
+
+/* Responsividade para mobile */
+@media (max-width: 480px) {
+    .resultado-usuario-transferir {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .btn-selecionar-transferir {
+        align-self: flex-end;
+    }
 }
 
 /* Resto do CSS original (mantido do seu template) */
@@ -1103,35 +1094,47 @@ function fecharModalTransferir() {
 }
 
 function buscarUsuariosParaTransferir(query) {
-    fetch(`/api/usuarios/buscar?q=${encodeURIComponent(query)}&exclude_current=true`)
-        .then(response => response.json())
+    const resultados = document.getElementById('resultadosTransferencia');
+    resultados.innerHTML = '<div style="padding: 1rem; text-align: center; color: #6b7280;">Buscando usuários...</div>';
+    resultados.style.display = 'block';
+    
+    fetch(`/buscar?q=${encodeURIComponent(query)}&exclude_current=true`)
+        .then(res => res.json())
         .then(usuarios => {
-            const resultados = document.getElementById('resultadosTransferencia');
             resultados.innerHTML = '';
             
-            if (usuarios.length === 0) {
+            if (!usuarios || usuarios.length === 0) {
                 resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #6b7280;">Nenhum usuário encontrado</div>';
-                resultados.style.display = 'block';
                 return;
             }
             
-            usuarios.forEach(usuario => {
+            // Filtrar apenas usuários (não tendências)
+            const usuariosFiltrados = usuarios.filter(u => u.tipo !== 'tendencia');
+            
+            if (usuariosFiltrados.length === 0) {
+                resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #6b7280;">Nenhum usuário encontrado</div>';
+                return;
+            }
+            
+            usuariosFiltrados.forEach(usuario => {
                 const div = document.createElement('div');
                 div.className = 'resultado-usuario-transferir';
                 div.innerHTML = `
                     <div class="usuario-info-transferir">
                         <div class="usuario-avatar-transferir">
                             ${usuario.foto ? 
-                                `<img src="/storage/${usuario.foto}" alt="${usuario.apelido}" onerror="this.style.display='none'">` : 
+                                `<img src="/storage/${usuario.foto}" alt="${usuario.apelido || usuario.user}" 
+                                      onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<span class=\"material-symbols-outlined\" style=\"color: #6b7280;\">account_circle</span>';">` : 
                                 '<span class="material-symbols-outlined" style="color: #6b7280;">account_circle</span>'
                             }
                         </div>
                         <div class="usuario-detalhes-transferir">
                             <strong>${usuario.apelido || usuario.user}</strong>
                             <span>@${usuario.user}</span>
+                            ${usuario.descricao ? `<small style="color: #6b7280; font-size: 0.75rem; margin-top: 0.25rem;">${usuario.descricao}</small>` : ''}
                         </div>
                     </div>
-                    <button type="button" class="btn-selecionar-transferir" onclick="selecionarUsuarioParaTransferir(${usuario.id}, '${usuario.apelido || usuario.user}', '${usuario.user}')">
+                    <button type="button" class="btn-selecionar-transferir" onclick="selecionarUsuarioParaTransferir(${usuario.id}, '${(usuario.apelido || usuario.user).replace(/'/g, "\\'")}', '${usuario.user.replace(/'/g, "\\'")}')">
                         Selecionar
                     </button>
                 `;
@@ -1143,55 +1146,117 @@ function buscarUsuariosParaTransferir(query) {
         })
         .catch(error => {
             console.error('Erro na busca:', error);
-            mostrarToast('Erro ao buscar usuários', 'error');
+            resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #ef4444;">Erro ao buscar usuários</div>';
         });
 }
 
 function selecionarUsuarioParaTransferir(usuarioId, nome, usuario) {
     usuarioSelecionado = { id: usuarioId, nome: nome, usuario: usuario };
     
-    document.getElementById('nomeUsuarioSelecionado').textContent = `${nome} (@${usuario})`;
-    document.getElementById('usuarioSelecionadoInfo').style.display = 'block';
-    document.getElementById('btnConfirmarTransferencia').style.display = 'block';
-    document.getElementById('resultadosTransferencia').style.display = 'none';
+    // Atualizar exibição
+    const nomeElement = document.getElementById('nomeUsuarioSelecionado');
+    if (nomeElement) {
+        nomeElement.textContent = `${nome} (@${usuario})`;
+    }
+    
+    // Mostrar seção de confirmação
+    const infoSection = document.getElementById('usuarioSelecionadoInfo');
+    const confirmButton = document.getElementById('btnConfirmarTransferencia');
+    
+    if (infoSection) infoSection.style.display = 'block';
+    if (confirmButton) confirmButton.style.display = 'block';
+    
+    // Esconder resultados
+    const resultados = document.getElementById('resultadosTransferencia');
+    if (resultados) resultados.style.display = 'none';
+    
+    // Limpar campo de busca
+    const buscarInput = document.getElementById('buscarUsuarioTransferir');
+    if (buscarInput) buscarInput.value = '';
+    
+    // Rolar para a seção de confirmação
+    setTimeout(() => {
+        if (infoSection) {
+            infoSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }, 100);
 }
 
 function confirmarTransferencia() {
-    if (!usuarioSelecionado) return;
+    if (!usuarioSelecionado) {
+        mostrarToast('Selecione um usuário primeiro', 'error');
+        return;
+    }
     
-    if (!confirm(`⚠️ ATENÇÃO: Você está transferindo a propriedade do interesse "${document.querySelector('.interesse-titulo').textContent}" para ${usuarioSelecionado.nome} (@${usuarioSelecionado.usuario}).\n\nEsta ação é PERMANENTE e IRREVERSÍVEL.\n\nVocê perderá o controle total sobre este interesse.\n\nTem certeza que deseja continuar?`)) {
+    const interesseNome = document.querySelector('.interesse-titulo')?.textContent || 'este interesse';
+    const mensagem = `⚠️ ATENÇÃO: Você está transferindo a propriedade do interesse "${interesseNome}" para ${usuarioSelecionado.nome} (@${usuarioSelecionado.usuario}).\n\n`
+                    + `✅ ${usuarioSelecionado.nome} será o novo dono\n`
+                    + `❌ Você perderá o controle total\n`
+                    + `🔄 Esta ação é PERMANENTE e IRREVERSÍVEL\n\n`
+                    + `Tem certeza que deseja continuar?`;
+    
+    if (!confirm(mensagem)) {
         return;
     }
     
     const interesseSlug = '{{ $interesse->slug }}';
+    const token = document.querySelector('input[name="_token"]')?.value || '{{ csrf_token() }}';
+    
+    // Mostrar loading
+    const confirmButton = document.getElementById('btnConfirmarTransferencia');
+    const originalText = confirmButton.innerHTML;
+    confirmButton.innerHTML = '<span class="material-symbols-outlined" style="vertical-align: middle; animation: spin 1s linear infinite;">sync</span> Transferindo...';
+    confirmButton.disabled = true;
     
     fetch(`/interesses/${interesseSlug}/transferir-propriedade`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-            'Content-Type': 'application/json'
+            'X-CSRF-TOKEN': token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         },
         body: JSON.stringify({
             novo_dono_id: usuarioSelecionado.id
         })
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         if (data.sucesso) {
             mostrarToast(data.mensagem, 'success');
             fecharModalTransferir();
+            
+            // Recarregar a página após 1.5 segundos
             setTimeout(() => {
                 location.reload();
             }, 1500);
         } else {
-            mostrarToast(data.mensagem || 'Erro ao transferir propriedade', 'error');
+            throw new Error(data.mensagem || 'Erro ao transferir propriedade');
         }
     })
     .catch(error => {
         console.error('Erro:', error);
-        mostrarToast('Erro ao transferir propriedade', 'error');
+        mostrarToast(error.message || 'Erro ao transferir propriedade', 'error');
+        
+        // Restaurar botão
+        confirmButton.innerHTML = originalText;
+        confirmButton.disabled = false;
     });
 }
+
+// Adicionar animação de spin
+const spinStyle = document.createElement('style');
+spinStyle.textContent = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(spinStyle);
 
 // Funções auxiliares
 function seguirInteresse(interesseId, elemento) {
@@ -1260,31 +1325,44 @@ function deixarSeguirInteresse(interesseId, elemento) {
 
 function confirmarDelecaoInteresse(slug) {
     if (confirm('⚠️ ATENÇÃO: Esta ação é PERMANENTE e IRREVERSÍVEL!\n\nTodos os dados deste interesse serão deletados permanentemente.\n\nTem certeza que deseja continuar?')) {
-        fetch(`/interesses/${slug}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => {
-            if (response.redirected) {
-                window.location.href = response.url;
-            } else {
-                return response.json();
-            }
-        })
-        .then(data => {
-            if (data && data.success) {
-                window.location.href = data.redirect || '/interesses';
-            } else if (data && data.error) {
-                mostrarToast(data.error, 'error');
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            mostrarToast('Erro ao deletar interesse', 'error');
-        });
+        // Buscar token CSRF de qualquer formulário na página
+        const tokenInput = document.querySelector('input[name="_token"]');
+        let token = '';
+        
+        if (tokenInput) {
+            // Se encontrar token em algum formulário
+            token = tokenInput.value;
+        } else {
+            // Se não encontrar, usar token do Blade (fallback)
+            token = '{{ csrf_token() }}';
+        }
+        
+        console.log('Deletando interesse:', slug, 'Token:', token ? 'Encontrado' : 'Não encontrado');
+        
+        // Criar um formulário dinâmico
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/interesses/${slug}`;
+        form.style.display = 'none';
+        
+        // Token CSRF
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = token;
+        
+        // Método spoofing para DELETE
+        const methodInput = document.createElement('input');
+        methodInput.type = 'hidden';
+        methodInput.name = '_method';
+        methodInput.value = 'DELETE';
+        
+        form.appendChild(csrfInput);
+        form.appendChild(methodInput);
+        document.body.appendChild(form);
+        
+        // Enviar o formulário
+        form.submit();
     }
 }
 
@@ -1344,33 +1422,74 @@ function criarModalTransferir() {
         <div id="modalTransferir" class="modal" style="display: flex;">
             <div class="modal-content" style="max-width: 500px;">
                 <div class="modal-header">
-                    <h3 style="color: {{ $interesse->cor }};">Transferir Propriedade</h3>
+                    <h3 style="color: {{ $interesse->cor }};">
+                        <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">swap_horiz</span>
+                        Transferir Propriedade
+                    </h3>
                     <button type="button" class="modal-close" onclick="fecharModalTransferir()" style="background: none; border: none; cursor: pointer; color: #666;">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p style="margin-bottom: 1rem; color: #666;">
-                        Escolha um novo dono para este interesse. Esta ação é permanente e você perderá o controle total.
-                    </p>
+                    <div style="background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <span class="material-symbols-outlined" style="color: #f59e0b;">warning</span>
+                            <div>
+                                <strong style="color: #92400e;">Atenção!</strong>
+                                <p style="color: #78350f; margin: 0.25rem 0 0 0; font-size: 0.9rem;">
+                                    Você está transferindo a propriedade do interesse "<strong>{{ $interesse->nome }}</strong>". 
+                                    Esta ação é permanente e você perderá o controle total.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="form-group">
-                        <label for="buscarUsuarioTransferir" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Buscar Usuário</label>
-                        <input type="text" id="buscarUsuarioTransferir" placeholder="Digite nome, usuário ou email..." 
-                               style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 1rem;">
-                        <div id="resultadosTransferencia" style="max-height: 300px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; display: none;"></div>
+                        <label for="buscarUsuarioTransferir" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+                            <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.1rem; margin-right: 4px;">search</span>
+                            Buscar Usuário
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" id="buscarUsuarioTransferir" placeholder="Digite nome ou usuário..." 
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem;">
+                            <span class="material-symbols-outlined" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none;">
+                                search
+                            </span>
+                        </div>
+                        <small style="display: block; margin-top: 0.5rem; color: #6b7280; font-size: 0.85rem;">
+                            Busque pelo nome, apelido ou usuário (@) do novo dono
+                        </small>
+                        <div id="resultadosTransferencia" style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 1rem; display: none;"></div>
                     </div>
                     
-                    <div id="usuarioSelecionadoInfo" style="display: none; padding: 1rem; background: #f9f9f9; border-radius: 8px; margin-top: 1rem;">
-                        <p><strong>Novo dono selecionado:</strong> <span id="nomeUsuarioSelecionado"></span></p>
+                    <div id="usuarioSelecionadoInfo" style="display: none; padding: 1.25rem; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; margin-top: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="material-symbols-outlined" style="color: #0284c7;">check_circle</span>
+                            <div style="flex: 1;">
+                                <p style="margin: 0 0 0.25rem 0; font-weight: 600; color: #0369a1;">Novo dono selecionado</p>
+                                <p style="margin: 0; color: #0c4a6e;">
+                                    <strong id="nomeUsuarioSelecionado"></strong>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancelar" onclick="fecharModalTransferir()" style="padding: 0.75rem 1.5rem; background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer;">Cancelar</button>
-                    <button type="button" id="btnConfirmarTransferencia" class="btn-confirmar" onclick="confirmarTransferencia()" 
-                            style="padding: 0.75rem 1.5rem; background: {{ $interesse->cor }}; color: white; border: none; border-radius: 8px; cursor: pointer; display: none;">
-                        Transferir Propriedade
-                    </button>
+                <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-size: 0.85rem; color: #6b7280;">
+                        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">info</span>
+                        Transferência irreversível
+                    </div>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button type="button" class="btn-cancelar" onclick="fecharModalTransferir()" 
+                                style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                            Cancelar
+                        </button>
+                        <button type="button" id="btnConfirmarTransferencia" class="btn-confirmar" onclick="confirmarTransferencia()" 
+                                style="padding: 0.75rem 1.5rem; background: {{ $interesse->cor }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: none; transition: all 0.2s;">
+                            <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">swap_horiz</span>
+                            Transferir Propriedade
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1378,21 +1497,39 @@ function criarModalTransferir() {
     
     document.getElementById('modalTransferirContainer').innerHTML = modalHTML;
     
-    // Adicionar event listeners após criar o modal
-    document.getElementById('buscarUsuarioTransferir').addEventListener('input', function(e) {
-        clearTimeout(window.buscaTimeout);
-        const query = e.target.value.trim();
+    // Adicionar event listeners
+    const buscarInput = document.getElementById('buscarUsuarioTransferir');
+    if (buscarInput) {
+        let buscaTimeout;
         
-        if (query.length < 2) {
-            document.getElementById('resultadosTransferencia').innerHTML = '';
-            document.getElementById('resultadosTransferencia').style.display = 'none';
-            return;
-        }
+        buscarInput.addEventListener('input', function(e) {
+            clearTimeout(buscaTimeout);
+            const query = e.target.value.trim();
+            
+            if (query.length < 2) {
+                document.getElementById('resultadosTransferencia').innerHTML = '';
+                document.getElementById('resultadosTransferencia').style.display = 'none';
+                return;
+            }
+            
+            buscaTimeout = setTimeout(() => {
+                buscarUsuariosParaTransferir(query);
+            }, 500);
+        });
         
-        window.buscaTimeout = setTimeout(() => {
-            buscarUsuariosParaTransferir(query);
-        }, 500);
-    });
+        // Focar no input quando abrir o modal
+        setTimeout(() => buscarInput.focus(), 100);
+    }
+    
+    // Adicionar estilo para hover dos botões
+    const style = document.createElement('style');
+    style.textContent = `
+        .btn-cancelar:hover { background: #e5e7eb !important; }
+        .btn-confirmar:hover { opacity: 0.9 !important; transform: translateY(-1px) !important; }
+        .btn-selecionar-transferir:hover { background: #059669 !important; }
+        .resultado-usuario-transferir:hover { background: #f9fafb; }
+    `;
+    document.head.appendChild(style);
 }
 
 </script>

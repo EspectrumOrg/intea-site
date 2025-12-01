@@ -329,65 +329,68 @@ class InteresseController extends Controller
      * Excluir interesse
      */
     public function destroy($slug)
-    {
-        try {
-            $interesse = Interesse::where('slug', $slug)->firstOrFail();
-            $usuario = Auth::user();
-            
-            if (!$usuario) {
-                return redirect()->route('login');
-            }
-            
-            // Verificar se usuário é dono ou administrador
-            $dono = $interesse->moderadores()
-                ->wherePivot('cargo', 'dono')
-                ->first();
-            
-            $usuarioEhDono = $dono && $usuario->id === $dono->id;
-            $usuarioEhAdministrador = $usuario->tipo_usuario == 1; // Administrador
-            
-            if (!$usuarioEhDono && !$usuarioEhAdministrador) {
-                if (request()->ajax()) {
-                    return response()->json([
-                        'success' => false,
-                        'error' => 'Você não tem permissão para deletar este interesse.'
-                    ], 403);
-                }
-                return redirect()->back()
-                    ->with('error', 'Você não tem permissão para deletar este interesse.');
-            }
-            
-            // Backup do nome para mensagem
-            $nomeInteresse = $interesse->nome;
-            
-            // Deletar o interesse (o model já tem lógica para deletar ícone customizado)
-            $interesse->delete();
-            
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => "Interesse '{$nomeInteresse}' deletado com sucesso!",
-                    'redirect' => route('interesses.index')
-                ]);
-            }
-            
-            return redirect()->route('interesses.index')
-                ->with('success', "Interesse '{$nomeInteresse}' deletado com sucesso!");
-                
-        } catch (\Exception $e) {
-            Log::error('Erro ao deletar interesse: ' . $e->getMessage());
-            
-            if (request()->ajax()) {
+{
+    try {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+        
+        if (!$usuario) {
+            if (request()->ajax() || request()->wantsJson()) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Erro ao deletar interesse: ' . $e->getMessage()
-                ], 500);
+                    'error' => 'Usuário não autenticado'
+                ], 401);
             }
-            
-            return redirect()->back()
-                ->with('error', 'Erro ao deletar interesse: ' . $e->getMessage());
+            return redirect()->route('login');
         }
+        
+        // Verificar se usuário é dono ou administrador
+        $dono = $interesse->moderadores()
+            ->wherePivot('cargo', 'dono')
+            ->first();
+        
+        $usuarioEhDono = $dono && $usuario->id === $dono->id;
+        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+        
+        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Você não tem permissão para deletar este interesse.'
+                ], 403);
+            }
+            return redirect()->back()
+                ->with('error', 'Você não tem permissão para deletar este interesse.');
+        }
+        
+        $nomeInteresse = $interesse->nome;
+        $interesse->delete();
+        
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => "Interesse '{$nomeInteresse}' deletado com sucesso!",
+                'redirect' => route('interesses.index')
+            ]);
+        }
+        
+        return redirect()->route('interesses.index')
+            ->with('success', "Interesse '{$nomeInteresse}' deletado com sucesso!");
+            
+    } catch (\Exception $e) {
+        Log::error('Erro ao deletar interesse: ' . $e->getMessage());
+        
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Erro ao deletar interesse: ' . $e->getMessage()
+            ], 500);
+        }
+        
+        return redirect()->back()
+            ->with('error', 'Erro ao deletar interesse: ' . $e->getMessage());
     }
+}
     
     /**
      * Mostrar formulário de edição
