@@ -46,6 +46,29 @@
             @endif
         </div>
 
+                    <!-- Seção de Transferência de Propriedade -->
+            @if($usuarioEhDono || (auth()->user() && auth()->user()->tipo_usuario == 1))
+            <div class="danger-zone" style="margin-top: 3rem;">
+                <h3 style="color: #c53030;">
+                    <span class="material-symbols-outlined">warning</span>
+                    Transferir Propriedade
+                </h3>
+                <p style="color: #718096; margin-bottom: 1.5rem;">
+                    Transfira a propriedade deste interesse para outro usuário. Esta ação é permanente e você perderá o controle total.
+                </p>
+                
+                <div class="transferir-container">
+                    <button type="button" class="btn-transferir" onclick="abrirModalTransferir('{{ $interesse->slug }}')">
+                        <span class="material-symbols-outlined">swap_horiz</span>
+                        Transferir Propriedade do Interesse
+                    </button>
+                    <small style="display: block; margin-top: 0.5rem; color: #a0aec0;">
+                        Apenas o dono atual pode realizar esta ação.
+                    </small>
+                </div>
+            </div>
+            @endif
+
         <!-- Lista de Moderadores -->
         <div class="moderador-section">
             <div class="section-header">
