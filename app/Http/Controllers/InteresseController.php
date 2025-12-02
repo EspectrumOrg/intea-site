@@ -212,7 +212,7 @@ class InteresseController extends Controller
             'sobre' => 'nullable|string|max:1000',
             'icone_type' => 'required|in:default,custom',
             'icone' => 'required_if:icone_type,default|string|max:50',
-            'icone_custom' => 'required_if:icone_type,custom|image|mimes:jpeg,png,jpg,svg|max:1024',
+            'icone_custom' => 'required_if:icone_type,custom|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             'cor' => 'required|string|size:7',
         ], [
             'nome.required' => 'O nome do interesse é obrigatório',
@@ -223,7 +223,7 @@ class InteresseController extends Controller
             'icone.required_if' => 'Selecione um ícone padrão',
             'icone_custom.required_if' => 'Faça upload de um ícone customizado',
             'icone_custom.image' => 'O arquivo deve ser uma imagem',
-            'icone_custom.mimes' => 'Formatos permitidos: JPEG, PNG, JPG, SVG',
+            'icone_custom.mimes' => 'Formatos permitidos: JPEG, PNG, JPG, GIF, SVG',
             'icone_custom.max' => 'O ícone não pode ter mais de 1MB',
             'cor.required' => 'Selecione uma cor',
         ]);
@@ -246,9 +246,21 @@ class InteresseController extends Controller
             if ($request->icone_type === 'default') {
                 $icone = $request->icone;
             } else {
-                // Salvar ícone customizado
+                // CORREÇÃO: Salvar ícone customizado CORRETAMENTE
                 if ($request->hasFile('icone_custom')) {
-                    $iconeCustomPath = $request->file('icone_custom')->store('arquivos/interesses/icones', 'public');
+                    // 1. Obter o arquivo
+                    $file = $request->file('icone_custom');
+                    
+                    // 2. Gerar nome único
+                    $filename = 'icone_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                    
+                    // 3. Salvar no diretório correto (sem 'arquivos/' no início)
+                    $iconeCustomPath = $file->storeAs('interesses/icones', $filename, 'public');
+                    
+                    // 4. Log para debug
+                    Log::info('Ícone salvo em: ' . $iconeCustomPath);
+                    Log::info('Caminho completo: ' . storage_path('app/public/' . $iconeCustomPath));
+                    
                     $icone = 'custom';
                 }
             }
@@ -286,6 +298,7 @@ class InteresseController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Erro ao criar interesse: ' . $e->getMessage());
+            Log::error('Trace: ' . $e->getTraceAsString());
             return redirect()->back()
                 ->with('error', 'Erro ao criar interesse: ' . $e->getMessage())
                 ->withInput();
@@ -329,68 +342,74 @@ class InteresseController extends Controller
      * Excluir interesse
      */
     public function destroy($slug)
-{
-    try {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
-        
-        if (!$usuario) {
-            if (request()->ajax() || request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Usuário não autenticado'
-                ], 401);
-            }
-            return redirect()->route('login');
-        }
-        
-        // Verificar se usuário é dono ou administrador
-        $dono = $interesse->moderadores()
-            ->wherePivot('cargo', 'dono')
-            ->first();
-        
-        $usuarioEhDono = $dono && $usuario->id === $dono->id;
-        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
-        
-        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
-            if (request()->ajax() || request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Você não tem permissão para deletar este interesse.'
-                ], 403);
-            }
-            return redirect()->back()
-                ->with('error', 'Você não tem permissão para deletar este interesse.');
-        }
-        
-        $nomeInteresse = $interesse->nome;
-        $interesse->delete();
-        
-        if (request()->ajax() || request()->wantsJson()) {
-            return response()->json([
-                'success' => true,
-                'message' => "Interesse '{$nomeInteresse}' deletado com sucesso!",
-                'redirect' => route('interesses.index')
-            ]);
-        }
-        
-        return redirect()->route('interesses.index')
-            ->with('success', "Interesse '{$nomeInteresse}' deletado com sucesso!");
+    {
+        try {
+            $interesse = Interesse::where('slug', $slug)->firstOrFail();
+            $usuario = Auth::user();
             
-    } catch (\Exception $e) {
-        Log::error('Erro ao deletar interesse: ' . $e->getMessage());
-        
-        if (request()->ajax() || request()->wantsJson()) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Erro ao deletar interesse: ' . $e->getMessage()
-            ], 500);
+            if (!$usuario) {
+                if (request()->ajax() || request()->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Usuário não autenticado'
+                    ], 401);
+                }
+                return redirect()->route('login');
+            }
+            
+            // Verificar se usuário é dono ou administrador
+            $dono = $interesse->moderadores()
+                ->wherePivot('cargo', 'dono')
+                ->first();
+            
+            $usuarioEhDono = $dono && $usuario->id === $dono->id;
+            $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+            
+            if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+                if (request()->ajax() || request()->wantsJson()) {
+                    return response()->json([
+                        'success' => false,
+                        'error' => 'Você não tem permissão para deletar este interesse.'
+                    ], 403);
+                }
+                return redirect()->back()
+                    ->with('error', 'Você não tem permissão para deletar este interesse.');
+            }
+            
+            $nomeInteresse = $interesse->nome;
+            
+            // Deletar o arquivo do ícone se existir
+            if ($interesse->icone_custom && Storage::disk('public')->exists($interesse->icone_custom)) {
+                Storage::disk('public')->delete($interesse->icone_custom);
+            }
+            
+            $interesse->delete();
+            
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Interesse '{$nomeInteresse}' deletado com sucesso!",
+                    'redirect' => route('interesses.index')
+                ]);
+            }
+            
+            return redirect()->route('interesses.index')
+                ->with('success', "Interesse '{$nomeInteresse}' deletado com sucesso!");
+                
+        } catch (\Exception $e) {
+            Log::error('Erro ao deletar interesse: ' . $e->getMessage());
+            
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Erro ao deletar interesse: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return redirect()->back()
+                ->with('error', 'Erro ao deletar interesse: ' . $e->getMessage());
         }
-        
-        return redirect()->back()
-            ->with('error', 'Erro ao deletar interesse: ' . $e->getMessage());
     }
-}
     
     /**
      * Mostrar formulário de edição
@@ -453,7 +472,7 @@ class InteresseController extends Controller
             'sobre' => 'nullable|string|max:1000',
             'icone_type' => 'required|in:default,custom',
             'icone' => 'required_if:icone_type,default|string|max:50',
-            'icone_custom' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:1024',
+            'icone_custom' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             'cor' => 'required|string|size:7',
             'moderacao_ativa' => 'nullable|boolean',
         ]);
@@ -468,7 +487,7 @@ class InteresseController extends Controller
             if ($request->icone_type === 'default') {
                 $interesse->icone = $request->icone;
                 // Se estava usando ícone customizado, deletar o arquivo
-                if ($interesse->icone_custom) {
+                if ($interesse->icone_custom && Storage::disk('public')->exists($interesse->icone_custom)) {
                     Storage::disk('public')->delete($interesse->icone_custom);
                     $interesse->icone_custom = null;
                 }
@@ -476,13 +495,19 @@ class InteresseController extends Controller
                 // Manter ícone customizado existente ou fazer upload novo
                 if ($request->hasFile('icone_custom')) {
                     // Deletar ícone antigo se existir
-                    if ($interesse->icone_custom) {
+                    if ($interesse->icone_custom && Storage::disk('public')->exists($interesse->icone_custom)) {
                         Storage::disk('public')->delete($interesse->icone_custom);
                     }
                     
-                    $iconeCustomPath = $request->file('icone_custom')->store('arquivos/interesses/icones', 'public');
+                    // CORREÇÃO: Salvar ícone corretamente
+                    $file = $request->file('icone_custom');
+                    $filename = 'icone_' . time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                    $iconeCustomPath = $file->storeAs('interesses/icones', $filename, 'public');
+                    
                     $interesse->icone_custom = $iconeCustomPath;
                     $interesse->icone = 'custom';
+                    
+                    Log::info('Ícone atualizado para: ' . $iconeCustomPath);
                 }
                 // Se não enviou novo arquivo, manter o existente
             }
@@ -501,6 +526,7 @@ class InteresseController extends Controller
                 
         } catch (\Exception $e) {
             Log::error('Erro ao atualizar interesse: ' . $e->getMessage());
+            Log::error('Trace: ' . $e->getTraceAsString());
             return redirect()->back()
                 ->with('error', 'Erro ao atualizar interesse: ' . $e->getMessage())
                 ->withInput();
@@ -510,83 +536,152 @@ class InteresseController extends Controller
     /**
      * Gerenciar moderadores
      */
-   public function moderadores($slug)
-{
-    $interesse = Interesse::where('slug', $slug)->firstOrFail();
-    $usuario = Auth::user();
-    
-    if (!$usuario) {
-        return redirect()->route('login');
+    public function moderadores($slug)
+    {
+        $interesse = Interesse::where('slug', $slug)->firstOrFail();
+        $usuario = Auth::user();
+        
+        if (!$usuario) {
+            return redirect()->route('login');
+        }
+        
+        // Verificar se usuário é dono ou administrador
+        $dono = $interesse->moderadores()
+            ->wherePivot('cargo', 'dono')
+            ->first();
+        
+        $usuarioEhDono = $dono && $usuario->id === $dono->id;
+        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+        
+        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+            return redirect()->route('interesses.show', $slug)
+                ->with('error', 'Você não tem permissão para gerenciar moderadores.');
+        }
+        
+        // Carregar moderadores com a tabela correta
+        $moderadores = $interesse->moderadores()
+            ->select('tb_usuario.*', 'interesse_moderadores.cargo', 'interesse_moderadores.created_at')
+            ->get();
+        
+        $tendenciasPopulares = Tendencia::populares(7)->get();
+        
+        return view('interesses.moderadores', compact(
+            'interesse', 
+            'tendenciasPopulares',
+            'usuarioEhDono', 
+            'usuarioEhAdministrador',
+            'moderadores',
+            'dono'
+        ));
     }
-    
-    // Verificar se usuário é dono ou administrador
-    $dono = $interesse->moderadores()
-        ->wherePivot('cargo', 'dono')
-        ->first();
-    
-    $usuarioEhDono = $dono && $usuario->id === $dono->id; // ← ADICIONE ESTA LINHA
-    $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
-    
-    if (!$usuarioEhDono && !$usuarioEhAdministrador) {
-        return redirect()->route('interesses.show', $slug)
-            ->with('error', 'Você não tem permissão para gerenciar moderadores.');
-    }
-    
-    $tendenciasPopulares = Tendencia::populares(7)->get();
-    
-    return view('interesses.moderadores', compact(
-        'interesse', 
-        'tendenciasPopulares',
-        'usuarioEhDono', 
-        'usuarioEhAdministrador',
-    ));
-}
     
     /**
      * Adicionar moderador
      */
     public function adicionarModerador(Request $request, $slug)
     {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
-        
-        // Verificar permissões
-        $dono = $interesse->moderadores()->wherePivot('cargo', 'dono')->first();
-        $usuarioEhDono = $dono && $usuario->id === $dono->id;
-        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
-        
-        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+        try {
+            Log::info('=== ADICIONAR MODERADOR INICIADO ===');
+            Log::info('Slug: ' . $slug);
+            Log::info('Usuário autenticado: ' . (Auth::id() ?? 'null'));
+            Log::info('Dados recebidos: ' . json_encode($request->all()));
+            
+            $interesse = Interesse::where('slug', $slug)->firstOrFail();
+            $usuario = Auth::user();
+            
+            if (!$usuario) {
+                Log::error('Usuário não autenticado');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário não autenticado'
+                ], 401);
+            }
+            
+            // Verificar permissões
+            $dono = $interesse->moderadores()->wherePivot('cargo', 'dono')->first();
+            $usuarioEhDono = $dono && $usuario->id === $dono->id;
+            $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+            
+            if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+                Log::error('Usuário sem permissão. ID: ' . $usuario->id . ', Dono: ' . ($dono ? $dono->id : 'null'));
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Apenas o dono pode adicionar moderadores'
+                ], 403);
+            }
+            
+            $request->validate([
+                'usuario_id' => 'required|exists:tb_usuario,id'
+            ]);
+            
+            $novoModerador = Usuario::find($request->usuario_id);
+            
+            if (!$novoModerador) {
+                Log::error('Usuário não encontrado: ' . $request->usuario_id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário não encontrado'
+                ], 404);
+            }
+            
+            // Verificar se já é moderador
+            if ($interesse->moderadores()->where('usuario_id', $novoModerador->id)->exists()) {
+                Log::warning('Usuário já é moderador. ID: ' . $novoModerador->id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => $novoModerador->apelido . ' já é moderador deste interesse'
+                ], 400);
+            }
+            
+            // Não permitir adicionar o dono como moderador (já é)
+            if ($dono && $novoModerador->id === $dono->id) {
+                Log::warning('Tentativa de adicionar dono como moderador');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'O dono já possui privilégios totais'
+                ], 400);
+            }
+            
+            // Adicionar como moderador
+            $interesse->moderadores()->attach($novoModerador->id, [
+                'cargo' => 'moderador',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]);
+            
+            Log::info('✅ Moderador adicionado com sucesso!');
+            Log::info('Interesse: ' . $interesse->nome);
+            Log::info('Novo moderador: ' . $novoModerador->user);
+            Log::info('Adicionado por: ' . $usuario->user);
+            
+            return response()->json([
+                'sucesso' => true,
+                'mensagem' => $novoModerador->apelido . ' adicionado como moderador com sucesso!'
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Erro de validação: ' . json_encode($e->errors()));
             return response()->json([
                 'sucesso' => false,
-                'mensagem' => 'Sem permissão'
-            ], 403);
-        }
-        
-        $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id'
-        ]);
-        
-        $novoModerador = Usuario::find($request->usuario_id);
-        
-        // Verificar se já é moderador
-        if ($interesse->moderadores()->where('usuario_id', $novoModerador->id)->exists()) {
+                'mensagem' => 'Dados inválidos',
+                'erros' => $e->errors()
+            ], 422);
+            
+        } catch (\Exception $e) {
+            Log::error('ERRO: ' . $e->getMessage());
+            Log::error('Arquivo: ' . $e->getFile());
+            Log::error('Linha: ' . $e->getLine());
+            
             return response()->json([
                 'sucesso' => false,
-                'mensagem' => 'Usuário já é moderador'
-            ], 400);
+                'mensagem' => 'Erro interno: ' . $e->getMessage(),
+                'debug' => env('APP_DEBUG') ? [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'message' => $e->getMessage()
+                ] : null
+            ], 500);
         }
-        
-        // Adicionar como moderador
-        $interesse->moderadores()->attach($novoModerador->id, [
-            'cargo' => 'moderador',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Moderador adicionado com sucesso'
-        ]);
     }
     
     /**
@@ -594,127 +689,347 @@ class InteresseController extends Controller
      */
     public function removerModerador(Request $request, $slug)
     {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
-        
-        // Verificar permissões
-        $dono = $interesse->moderadores()->wherePivot('cargo', 'dono')->first();
-        $usuarioEhDono = $dono && $usuario->id === $dono->id;
-        $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
-        
-        if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+        try {
+            Log::info('=== REMOVER MODERADOR INICIADO ===');
+            Log::info('Slug: ' . $slug);
+            Log::info('Usuário autenticado: ' . (Auth::id() ?? 'null'));
+            Log::info('Dados recebidos: ' . json_encode($request->all()));
+            
+            $interesse = Interesse::where('slug', $slug)->firstOrFail();
+            $usuario = Auth::user();
+            
+            if (!$usuario) {
+                Log::error('Usuário não autenticado');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário não autenticado'
+                ], 401);
+            }
+            
+            // Verificar permissões
+            $dono = $interesse->moderadores()->wherePivot('cargo', 'dono')->first();
+            $usuarioEhDono = $dono && $usuario->id === $dono->id;
+            $usuarioEhAdministrador = $usuario->tipo_usuario == 1;
+            
+            Log::info('Dono encontrado: ' . ($dono ? 'ID=' . $dono->id . ', Nome=' . $dono->user : 'Nenhum'));
+            Log::info('Usuário é dono? ' . ($usuarioEhDono ? 'SIM' : 'NÃO'));
+            Log::info('Usuário é admin? ' . ($usuarioEhAdministrador ? 'SIM' : 'NÃO'));
+            
+            if (!$usuarioEhDono && !$usuarioEhAdministrador) {
+                Log::error('Usuário sem permissão. ID: ' . $usuario->id . ', Dono: ' . ($dono ? $dono->id : 'null'));
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Apenas o dono pode remover moderadores'
+                ], 403);
+            }
+            
+            $request->validate([
+                'usuario_id' => 'required|exists:tb_usuario,id'
+            ]);
+            
+            $moderador = Usuario::find($request->usuario_id);
+            
+            if (!$moderador) {
+                Log::error('Moderador não encontrado: ' . $request->usuario_id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário não encontrado'
+                ], 404);
+            }
+            
+            Log::info('Moderador a ser removido: ID=' . $moderador->id . ', Nome=' . $moderador->user);
+            
+            // Não permitir remover o dono
+            if ($dono && $moderador->id === $dono->id) {
+                Log::warning('Tentativa de remover o dono: ID=' . $moderador->id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Não é possível remover o dono do interesse'
+                ], 400);
+            }
+            
+            // Verificar se realmente é moderador
+            $ehModerador = $interesse->moderadores()
+                ->where('usuario_id', $moderador->id)
+                ->exists();
+                
+            if (!$ehModerador) {
+                Log::warning('Usuário não é moderador: ID=' . $moderador->id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => $moderador->apelido . ' não é moderador deste interesse'
+                ], 400);
+            }
+            
+            // Remover moderador
+            $interesse->moderadores()->detach($moderador->id);
+            
+            Log::info('✅ Moderador removido com sucesso!');
+            Log::info('Interesse: ' . $interesse->nome);
+            Log::info('Moderador removido: ' . $moderador->user);
+            Log::info('Removido por: ' . $usuario->user);
+            
+            return response()->json([
+                'sucesso' => true,
+                'mensagem' => $moderador->apelido . ' removido como moderador com sucesso!'
+            ]);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Erro de validação: ' . json_encode($e->errors()));
             return response()->json([
                 'sucesso' => false,
-                'mensagem' => 'Sem permissão'
-            ], 403);
-        }
-        
-        $request->validate([
-            'usuario_id' => 'required|exists:usuarios,id'
-        ]);
-        
-        $moderador = Usuario::find($request->usuario_id);
-        
-        // Não permitir remover o dono
-        if ($moderador->id === $dono->id) {
+                'mensagem' => 'Dados inválidos',
+                'erros' => $e->errors()
+            ], 422);
+            
+        } catch (\Exception $e) {
+            Log::error('ERRO: ' . $e->getMessage());
+            Log::error('Arquivo: ' . $e->getFile());
+            Log::error('Linha: ' . $e->getLine());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            
             return response()->json([
                 'sucesso' => false,
-                'mensagem' => 'Não é possível remover o dono do interesse'
-            ], 400);
+                'mensagem' => 'Erro interno: ' . $e->getMessage(),
+                'debug' => env('APP_DEBUG') ? [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'message' => $e->getMessage()
+                ] : null
+            ], 500);
         }
+    }
+    
+    public function transferirPropriedade(Request $request, $slug)
+    {
+        // INICIAR LOG COMPLETO
+        Log::info('=== TRANSFERIR PROPRIEDADE INICIADO ===');
+        Log::info('Slug: ' . $slug);
+        Log::info('Usuário ID: ' . (Auth::id() ?? 'null'));
+        Log::info('Dados recebidos: ' . json_encode($request->all()));
+        Log::info('Token: ' . $request->bearerToken() ?? 'null');
+        Log::info('Content-Type: ' . $request->header('Content-Type'));
+        Log::info('X-CSRF-TOKEN: ' . $request->header('X-CSRF-TOKEN'));
         
-        // Remover moderador
-        $interesse->moderadores()->detach($moderador->id);
+        try {
+            // 1. Encontrar interesse
+            $interesse = Interesse::where('slug', $slug)->first();
+            
+            if (!$interesse) {
+                Log::error('Interesse não encontrado: ' . $slug);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Interesse não encontrado: ' . $slug
+                ], 404);
+            }
+            
+            Log::info('Interesse encontrado: ID=' . $interesse->id . ', Nome=' . $interesse->nome);
+            
+            // 2. Usuário autenticado
+            $usuario = Auth::user();
+            if (!$usuario) {
+                Log::error('Usuário não autenticado');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário não autenticado'
+                ], 401);
+            }
+            
+            Log::info('Usuário autenticado: ID=' . $usuario->id . ', Nome=' . $usuario->user);
+            
+            // 3. Validar dados
+            if (!$request->has('novo_dono_id')) {
+                Log::error('Campo novo_dono_id não encontrado no request');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'ID do novo dono é obrigatório'
+                ], 400);
+            }
+            
+            $novoDonoId = $request->novo_dono_id;
+            Log::info('Novo dono ID recebido: ' . $novoDonoId);
+            
+            // 4. Buscar novo dono
+            $novoDono = Usuario::find($novoDonoId);
+            if (!$novoDono) {
+                Log::error('Novo dono não encontrado: ID=' . $novoDonoId);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Usuário selecionado não encontrado (ID: ' . $novoDonoId . ')'
+                ], 404);
+            }
+            
+            Log::info('Novo dono encontrado: ID=' . $novoDono->id . ', Nome=' . $novoDono->user);
+            
+            // 5. Verificar dono atual
+            Log::info('Verificando dono atual...');
+            $donoAtual = $interesse->moderadores()
+                ->wherePivot('cargo', 'dono')
+                ->first();
+            
+            Log::info('Dono atual encontrado: ' . ($donoAtual ? 'ID=' . $donoAtual->id : 'Nenhum'));
+            
+            if (!$donoAtual) {
+                Log::warning('Interesse sem dono definido. Usando criador como dono.');
+            }
+            
+            if ($donoAtual && $donoAtual->id !== $usuario->id) {
+                Log::error('Usuário não é dono atual. Dono atual: ' . $donoAtual->id . ', Usuário: ' . $usuario->id);
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Apenas o dono atual pode transferir a propriedade. Dono atual: ' . ($donoAtual->apelido ?? $donoAtual->user)
+                ], 403);
+            }
+            
+            // 6. Não permitir transferir para si mesmo
+            if ($novoDono->id === $usuario->id) {
+                Log::error('Tentativa de transferir para si mesmo');
+                return response()->json([
+                    'sucesso' => false,
+                    'mensagem' => 'Você já é o dono deste interesse'
+                ], 400);
+            }
+            
+            // 7. Verificar se novo dono já é moderador
+            $jaEhModerador = $interesse->moderadores()
+                ->where('usuario_id', $novoDono->id)
+                ->exists();
+            
+            Log::info('Novo dono já é moderador? ' . ($jaEhModerador ? 'SIM' : 'NÃO'));
+            
+            // 8. TRANSFERIR PROPRIEDADE
+            Log::info('Iniciando transferência...');
+            
+            // Remover cargo de dono do atual
+            if ($donoAtual) {
+                $interesse->moderadores()->updateExistingPivot($usuario->id, [
+                    'cargo' => $jaEhModerador ? 'moderador' : 'ex-dono',
+                    'updated_at' => now()
+                ]);
+                Log::info('Dono anterior atualizado para: ' . ($jaEhModerador ? 'moderador' : 'ex-dono'));
+            }
+            
+            // Definir novo dono
+            if ($jaEhModerador) {
+                $interesse->moderadores()->updateExistingPivot($novoDono->id, [
+                    'cargo' => 'dono',
+                    'updated_at' => now()
+                ]);
+                Log::info('Moderador promovido a dono');
+            } else {
+                $interesse->moderadores()->attach($novoDono->id, [
+                    'cargo' => 'dono',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+                Log::info('Novo dono adicionado');
+            }
+            
+            // 9. Garantir que novo dono segue o interesse
+            if (!$interesse->seguidores()->where('usuario_id', $novoDono->id)->exists()) {
+                $interesse->seguidores()->attach($novoDono->id);
+                Log::info('Novo dono adicionado como seguidor');
+            }
+            
+            // 10. Log de sucesso
+            Log::info('✅ Transferência concluída com sucesso!');
+            Log::info('Interesse: ' . $interesse->nome);
+            Log::info('De: ' . $usuario->user . ' (ID: ' . $usuario->id . ')');
+            Log::info('Para: ' . $novoDono->user . ' (ID: ' . $novoDono->id . ')');
+            
+            return response()->json([
+                'sucesso' => true,
+                'mensagem' => 'Propriedade transferida para ' . ($novoDono->apelido ?? $novoDono->user) . ' com sucesso!',
+                'debug' => [
+                    'interesse' => $interesse->nome,
+                    'antigo_dono' => $usuario->user,
+                    'novo_dono' => $novoDono->user,
+                    'transferido_em' => now()->toDateTimeString()
+                ]
+            ]);
+            
+        } catch (\Illuminate\Database\QueryException $e) {
+            Log::error('ERRO DE BANCO DE DADOS: ' . $e->getMessage());
+            Log::error('SQL: ' . $e->getSql());
+            Log::error('Bindings: ' . json_encode($e->getBindings()));
+            
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro de banco de dados: ' . $e->getMessage(),
+                'debug' => env('APP_DEBUG') ? [
+                    'sql' => $e->getSql(),
+                    'bindings' => $e->getBindings()
+                ] : null
+            ], 500);
+            
+        } catch (\Exception $e) {
+            Log::error('ERRO GERAL: ' . $e->getMessage());
+            Log::error('Arquivo: ' . $e->getFile());
+            Log::error('Linha: ' . $e->getLine());
+            Log::error('Trace: ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'sucesso' => false,
+                'mensagem' => 'Erro interno: ' . $e->getMessage(),
+                'debug' => env('APP_DEBUG') ? [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString()
+                ] : null
+            ], 500);
+        }
+    }
+
+    /**
+     * API para buscar todos interesses
+     */
+    public function todosInteresses(Request $request)
+    {
+        $limit = $request->get('limit', 20);
+        
+        $interesses = Interesse::ativos()
+            ->withCount('seguidores')
+            ->orderBy('seguidores_count', 'desc')
+            ->limit($limit)
+            ->get()
+            ->map(function($interesse) {
+                return [
+                    'id' => $interesse->id,
+                    'nome' => $interesse->nome,
+                    'slug' => $interesse->slug,
+                    'descricao' => $interesse->descricao,
+                    'icone' => $interesse->icone,
+                    'icone_custom' => $interesse->icone_custom,
+                    'cor' => $interesse->cor,
+                    'seguidores_count' => $interesse->seguidores_count,
+                    'contador_membros' => $interesse->contador_membros,
+                    'tipo' => 'interesse'
+                ];
+            });
         
         return response()->json([
             'sucesso' => true,
-            'mensagem' => 'Moderador removido com sucesso'
+            'interesses' => $interesses
         ]);
     }
 
-    public function transferirPropriedade(Request $request, $slug)
-{
-    try {
-        $interesse = Interesse::where('slug', $slug)->firstOrFail();
-        $usuario = Auth::user();
+    /**
+     * API para servir arquivos do storage (solução temporária)
+     */
+    public function servirArquivo(Request $request, $path)
+    {
+        $storagePath = storage_path('app/public/' . $path);
         
-        if (!$usuario) {
-            return response()->json([
-                'sucesso' => false,
-                'mensagem' => 'Usuário não autenticado'
-            ], 401);
+        if (!file_exists($storagePath)) {
+            Log::warning('Arquivo não encontrado: ' . $path);
+            abort(404);
         }
         
-        // Verificar se usuário é dono atual
-        $donoAtual = $interesse->moderadores()
-            ->wherePivot('cargo', 'dono')
-            ->first();
+        $mimeType = mime_content_type($storagePath);
         
-        if (!$donoAtual || $donoAtual->id !== $usuario->id) {
-            return response()->json([
-                'sucesso' => false,
-                'mensagem' => 'Apenas o dono atual pode transferir a propriedade'
-            ], 403);
-        }
-        
-        $request->validate([
-            'novo_dono_id' => 'required|exists:usuarios,id'
+        return response()->file($storagePath, [
+            'Content-Type' => $mimeType,
+            'Cache-Control' => 'public, max-age=31536000'
         ]);
-        
-        $novoDono = Usuario::findOrFail($request->novo_dono_id);
-        
-        // Não permitir transferir para si mesmo
-        if ($novoDono->id === $usuario->id) {
-            return response()->json([
-                'sucesso' => false,
-                'mensagem' => 'Você já é o dono deste interesse'
-            ], 400);
-        }
-        
-        // Verificar se novo dono já é moderador
-        $jaEhModerador = $interesse->moderadores()
-            ->where('usuario_id', $novoDono->id)
-            ->exists();
-        
-        // Remover o cargo de dono do atual
-        $interesse->moderadores()->updateExistingPivot($usuario->id, [
-            'cargo' => $jaEhModerador ? 'moderador' : 'ex-dono'
-        ]);
-        
-        // Se novo dono já é moderador, atualizar cargo
-        if ($jaEhModerador) {
-            $interesse->moderadores()->updateExistingPivot($novoDono->id, [
-                'cargo' => 'dono',
-                'updated_at' => now()
-            ]);
-        } else {
-            // Se não é moderador, adicionar como dono
-            $interesse->moderadores()->attach($novoDono->id, [
-                'cargo' => 'dono',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
-        
-        // Garantir que novo dono segue o interesse
-        if (!$interesse->usuarioSegue($novoDono->id)) {
-            $interesse->adicionarSeguidor($novoDono->id);
-        }
-        
-        // Registrar histórico da transferência
-        Log::info("Interesse {$interesse->nome} transferido de {$usuario->user} para {$novoDono->user}");
-        
-        return response()->json([
-            'sucesso' => true,
-            'mensagem' => 'Propriedade transferida para ' . ($novoDono->apelido ?? $novoDono->user) . ' com sucesso!'
-        ]);
-        
-    } catch (\Exception $e) {
-        Log::error('Erro ao transferir propriedade: ' . $e->getMessage());
-        return response()->json([
-            'sucesso' => false,
-            'mensagem' => 'Erro ao transferir propriedade: ' . $e->getMessage()
-        ], 500);
     }
-}
 }
