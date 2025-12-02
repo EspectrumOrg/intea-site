@@ -17,8 +17,10 @@ return new class extends Migration
             $table->foreign('conversa_id')->references('id')->on('tb_chatprivado')->onDelete('cascade');
             $table->unsignedBigInteger('remetente_id');
             $table->foreign('remetente_id')->references('id')->on('tb_usuario')->onDelete('cascade');   
-            $table->text('texto');
-            $table->timestamps();
+            $table->text('texto')->nullable();
+            $table->string('imagem')->nullable();
+
+            $table->timestamps(); 
         });
     }
 

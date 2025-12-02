@@ -14,6 +14,7 @@ class MensagemPrivada extends Model
         'conversa_id',
         'remetente_id',
         'texto',
+        'imagem',
     ];
     public function conversa()
     {
