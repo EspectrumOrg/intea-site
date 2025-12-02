@@ -249,27 +249,61 @@ class Interesse extends Model
         ]);
     }
 
-    /**
-     * Acessor para obter o ícone (padrão ou customizado)
-     */
-    public function getIconeAttribute($value)
-    {
-        // Se tem ícone customizado, retorna o caminho completo
-        if ($this->icone_custom) {
-            return Storage::url($this->icone_custom);
+   public function getIconeAttribute($value)
+{
+    // Se tem ícone customizado, retorna a URL completa
+    if ($this->icone_custom && $this->attributes['icone'] === 'custom') {
+        // Verifica se o arquivo existe
+        $path = $this->icone_custom;
+        
+        // Garante que o caminho está correto
+        if (!empty($path)) {
+            // Se o caminho não começa com 'storage/', adiciona
+            if (!str_starts_with($path, 'storage/')) {
+                // Verifica se o arquivo existe fisicamente
+                $fullPath = storage_path('app/public/' . $path);
+                
+                if (file_exists($fullPath)) {
+                    // Retorna URL usando Storage
+                    return Storage::url($path);
+                } else {
+                    // Se não encontrou, tenta sem 'arquivos/'
+                    if (str_starts_with($path, 'arquivos/')) {
+                        $altPath = substr($path, 9); // Remove 'arquivos/'
+                        $altFullPath = storage_path('app/public/' . $altPath);
+                        
+                        if (file_exists($altFullPath)) {
+                            return Storage::url($altPath);
+                        }
+                    }
+                    
+                    // Se ainda não encontrou, retorna fallback
+                    \Log::warning("Ícone custom não encontrado: {$path}");
+                    return null;
+                }
+            }
+            
+            return $path;
         }
         
-        // Senão, retorna o ícone padrão
-        return $value;
+        return null;
     }
+    
+    // Se não é custom, retorna o valor original (nome do ícone Material)
+    return $value;
+}
 
-    /**
-     * Acessor para verificar se é ícone customizado
-     */
-    public function getIsCustomIconeAttribute()
-    {
-        return !empty($this->icone_custom);
+/**
+ * Accessor adicional para obter URL do ícone custom
+ */
+public function getIconeCustomUrlAttribute()
+{
+    if (!$this->icone_custom || $this->attributes['icone'] !== 'custom') {
+        return null;
     }
+    
+    return Storage::url($this->icone_custom);
+}
 
     /**
      * Acessor para obter o tipo de ícone

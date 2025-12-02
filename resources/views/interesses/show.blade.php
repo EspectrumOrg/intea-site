@@ -133,10 +133,15 @@
             <div class="section-content">
                 <div class="dono-card" style="border-left-color: {{ $interesse->cor }};">
                     <div class="dono-avatar">
-                        @if($dono->foto && Storage::exists($dono->foto))
-                            <img src="{{ asset('storage/' . $dono->foto) }}" alt="{{ $dono->apelido }}">
+                        @if($dono->foto)
+                            <img src="{{ asset('storage/' . $dono->foto) }}" 
+                                alt="{{ $dono->apelido ?: $dono->user }}"
+                                onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-fallback').style.display='flex';">
+                            <div class="avatar-fallback" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f3f4f6; border-radius: 50%; align-items: center; justify-content: center; color: #6b7280;">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
                         @else
-                            <span class="material-symbols-outlined">account_circle</span>
+                            <span class="material-symbols-outlined" style="font-size: 3rem; color: #6b7280;">account_circle</span>
                         @endif
                         <div class="dono-badge" style="background: {{ $interesse->cor }};">
                             <span class="material-symbols-outlined">star</span>
@@ -147,7 +152,7 @@
                             <h3>{{ $dono->apelido ?: $dono->user }}</h3>
                             <span class="dono-role" style="background: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
                                 <span class="material-symbols-outlined">verified</span>
-                                Criador & Dono
+                             Dono
                             </span>
                         </div>
                         <p class="dono-bio">{{ $dono->descricao ?: 'Criador desta comunidade incrível!' }}</p>
@@ -209,11 +214,16 @@
             <div class="usuarios-grid">
                 @foreach($usuariosPopulares as $usuario)
                 <div class="usuario-card">
-                    <div class="usuario-avatar">
-                        @if($usuario->foto && Storage::exists($usuario->foto))
-                            <img src="{{ asset('storage/' . $usuario->foto) }}" alt="{{ $usuario->apelido }}">
+                   <div class="usuario-avatar">
+                        @if($usuario->foto)
+                            <img src="{{ asset('storage/' . $usuario->foto) }}" 
+                                alt="{{ $usuario->apelido ?: $usuario->user }}"
+                                onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-fallback').style.display='flex';">
+                            <div class="avatar-fallback" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f3f4f6; border-radius: 50%; align-items: center; justify-content: center; color: #6b7280;">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </div>
                         @else
-                            <span class="material-symbols-outlined">account_circle</span>
+                            <span class="material-symbols-outlined" style="color: #6b7280;">account_circle</span>
                         @endif
                         <!-- BADGE ESPECIAL PARA O DONO -->
                         @if($dono && $usuario->id === $dono->id)
@@ -251,10 +261,15 @@
                             <div class="postagem-header">
                                 <div class="usuario-info">
                                     <div class="usuario-avatar-mini">
-                                        @if($postagem->usuario->foto && Storage::exists($postagem->usuario->foto))
-                                            <img src="{{ asset('storage/' . $postagem->usuario->foto) }}" alt="{{ $postagem->usuario->apelido }}">
+                                        @if($postagem->usuario->foto)
+                                            <img src="{{ asset('storage/' . $postagem->usuario->foto) }}" 
+                                                alt="{{ $postagem->usuario->apelido ?: $postagem->usuario->user }}"
+                                                onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-fallback').style.display='flex';">
+                                            <div class="avatar-fallback" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #f3f4f6; border-radius: 50%; align-items: center; justify-content: center; color: #6b7280;">
+                                                <span class="material-symbols-outlined">account_circle</span>
+                                            </div>
                                         @else
-                                            <span class="material-symbols-outlined">account_circle</span>
+                                            <span class="material-symbols-outlined" style="font-size: 1.5rem; color: #6b7280;">account_circle</span>
                                         @endif
                                         <!-- MINI BADGE PARA IDENTIFICAR O DONO NAS POSTAGENS -->
                                         @if($dono && $postagem->usuario->id === $dono->id)
@@ -986,12 +1001,47 @@
         min-width: 120px;
         justify-content: center;
     }
+
+    .avatar-fallback {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f3f4f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+}
+
+/* Garantir que avatares tenham position relative para os fallbacks funcionarem */
+.dono-avatar,
+.usuario-avatar,
+.usuario-avatar-mini,
+.usuario-avatar-mini {
+    position: relative;
+}
+
+/* Melhorar a aparência dos ícones fallback */
+.dono-avatar .avatar-fallback {
+    font-size: 3rem;
+}
+
+.usuario-avatar .avatar-fallback {
+    font-size: 1.5rem;
+}
+
+.usuario-avatar-mini .avatar-fallback {
+    font-size: 1.2rem;
+    background: #e5e7eb;
+}
 }
 </style>
 
 <!-- SCRIPTS -->
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
     // Compartilhar interesse
     document.getElementById('btnCompartilhar')?.addEventListener('click', function() {
@@ -1046,28 +1096,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Busca de usuários para transferência
-    let buscaTimeout;
-    let usuarioSelecionado = null;
-    
-    const buscarInput = document.getElementById('buscarUsuarioTransferir');
-    if (buscarInput) {
-        buscarInput.addEventListener('input', function(e) {
-            clearTimeout(buscaTimeout);
-            const query = e.target.value.trim();
-            
-            if (query.length < 2) {
-                document.getElementById('resultadosTransferencia').innerHTML = '';
-                document.getElementById('resultadosTransferencia').style.display = 'none';
-                return;
-            }
-            
-            buscaTimeout = setTimeout(() => {
-                buscarUsuariosParaTransferir(query);
-            }, 500);
-        });
-    }
-
     // Fechar modal ao clicar fora
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('modalTransferir');
@@ -1077,34 +1105,218 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Funções de transferência
+// ============================================
+// VARIÁVEIS GLOBAIS
+// ============================================
+let usuarioSelecionadoTransferencia = null;
+
+// ============================================
+// FUNÇÕES DE TRANSFERÊNCIA DE PROPRIEDADE
+// ============================================
+
 function abrirModalTransferir() {
-    criarModalTransferir(); // Cria o modal dinamicamente
-    document.getElementById('buscarUsuarioTransferir').value = '';
-    document.getElementById('resultadosTransferencia').innerHTML = '';
-    document.getElementById('resultadosTransferencia').style.display = 'none';
-    document.getElementById('usuarioSelecionadoInfo').style.display = 'none';
-    document.getElementById('btnConfirmarTransferencia').style.display = 'none';
-    usuarioSelecionado = null;
+    criarModalTransferir();
+    usuarioSelecionadoTransferencia = null;
 }
 
 function fecharModalTransferir() {
-    // Remove completamente o modal do DOM
-    document.getElementById('modalTransferirContainer').innerHTML = '';
+    const container = document.getElementById('modalTransferirContainer');
+    if (container) {
+        container.innerHTML = '';
+    }
+    usuarioSelecionadoTransferencia = null;
+}
+
+function criarModalTransferir() {
+    const modalHTML = `
+        <div id="modalTransferir" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 10000;">
+            <div style="background: white; border-radius: 12px; width: 95%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); max-height: 90vh; display: flex; flex-direction: column;">
+                <!-- Cabeçalho -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid #e5e7eb; flex-shrink: 0;">
+                    <div>
+                        <h3 style="margin: 0; color: {{ $interesse->cor }}; font-size: 1.25rem; display: flex; align-items: center; gap: 8px;">
+                            <span class="material-symbols-outlined" style="font-size: 1.4rem;">swap_horiz</span>
+                            Transferir Propriedade
+                        </h3>
+                        <p style="margin: 4px 0 0 0; color: #6b7280; font-size: 0.9rem;">
+                            Interesse: <strong>{{ $interesse->nome }}</strong>
+                        </p>
+                    </div>
+                    <button type="button" onclick="fecharModalTransferir()" style="background: none; border: none; cursor: pointer; color: #666; font-size: 1.5rem; padding: 0; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                        ×
+                    </button>
+                </div>
+                
+                <!-- Corpo do modal -->
+                <div style="padding: 1.5rem; overflow-y: auto; flex: 1;">
+                    <!-- Alerta de atenção -->
+                    <div style="background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <span class="material-symbols-outlined" style="color: #f59e0b; font-size: 1.2rem; flex-shrink: 0;">warning</span>
+                            <div style="font-size: 0.9rem;">
+                                <strong style="color: #92400e;">Atenção! Esta ação é permanente</strong>
+                                <p style="color: #78350f; margin: 0.25rem 0 0 0;">
+                                    Você perderá todos os privilégios de dono sobre este interesse.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Busca de usuários -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">
+                            <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px; font-size: 1.1rem;">search</span>
+                            Buscar novo dono
+                        </label>
+                        <div style="position: relative;">
+                            <input type="text" id="buscarUsuarioTransferir" placeholder="Digite nome, apelido ou usuário..." 
+                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; box-sizing: border-box;">
+                            <span class="material-symbols-outlined" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none;">
+                                search
+                            </span>
+                        </div>
+                        <small style="display: block; margin-top: 0.5rem; color: #6b7280; font-size: 0.85rem;">
+                            Procure pelo nome, apelido ou @usuário da pessoa
+                        </small>
+                    </div>
+                    
+                    <!-- Resultados da busca -->
+                    <div id="resultadosTransferencia" style="border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 1rem; display: none; max-height: 300px; overflow-y: auto;"></div>
+                    
+                    <!-- Usuário selecionado -->
+                    <div id="usuarioSelecionadoInfo" style="display: none; padding: 1.25rem; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; margin-top: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span class="material-symbols-outlined" style="color: #0284c7; font-size: 1.5rem;">check_circle</span>
+                            <div>
+                                <p style="margin: 0 0 0.25rem 0; font-weight: 600; color: #0369a1;">Novo dono selecionado</p>
+                                <p style="margin: 0; color: #0c4a6e; font-size: 1.1rem;">
+                                    <strong id="nomeUsuarioSelecionado"></strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rodapé do modal -->
+                <div style="padding: 1.5rem; border-top: 1px solid #e5e7eb; flex-shrink: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 0.85rem; color: #6b7280; display: flex; align-items: center; gap: 4px;">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;">info</span>
+                            <span>Transferência irreversível</span>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <button type="button" onclick="fecharModalTransferir()" 
+                                    style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 500; transition: background 0.2s;">
+                                Cancelar
+                            </button>
+                            <button type="button" id="btnConfirmarTransferencia" onclick="confirmarTransferencia()" 
+                                    style="padding: 0.75rem 1.5rem; background: {{ $interesse->cor }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: none; transition: all 0.2s;">
+                                <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">swap_horiz</span>
+                                Confirmar Transferência
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Adicionar ao container
+    const container = document.getElementById('modalTransferirContainer');
+    if (!container) {
+        console.error('Container modalTransferirContainer não encontrado');
+        return;
+    }
+    
+    container.innerHTML = modalHTML;
+    
+    // Configurar evento de busca
+    const buscarInput = document.getElementById('buscarUsuarioTransferir');
+    let buscaTimeout;
+    
+    if (buscarInput) {
+        buscarInput.addEventListener('input', function(e) {
+            clearTimeout(buscaTimeout);
+            const query = e.target.value.trim();
+            
+            if (query.length < 2) {
+                const resultados = document.getElementById('resultadosTransferencia');
+                if (resultados) {
+                    resultados.innerHTML = '';
+                    resultados.style.display = 'none';
+                }
+                return;
+            }
+            
+            buscaTimeout = setTimeout(() => {
+                buscarUsuariosParaTransferir(query);
+            }, 500);
+        });
+        
+        // Focar no campo de busca
+        setTimeout(() => buscarInput.focus(), 100);
+    }
+    
+    // Adicionar estilos de hover
+    const style = document.createElement('style');
+    style.textContent = `
+        #buscarUsuarioTransferir:focus {
+            outline: none;
+            border-color: {{ $interesse->cor }};
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .btn-selecionar-transferir:hover {
+            background: #059669 !important;
+            transform: translateY(-1px);
+        }
+        .resultado-usuario-transferir:hover {
+            background-color: #f9fafb !important;
+        }
+        #btnConfirmarTransferencia:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px {{ $interesse->cor }}20;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 function buscarUsuariosParaTransferir(query) {
     const resultados = document.getElementById('resultadosTransferencia');
-    resultados.innerHTML = '<div style="padding: 1rem; text-align: center; color: #6b7280;">Buscando usuários...</div>';
+    const buscarInput = document.getElementById('buscarUsuarioTransferir');
+    
+    if (!resultados || !buscarInput) {
+        console.error('Elementos necessários não encontrados');
+        return;
+    }
+    
+    // Mostrar loading
+    resultados.innerHTML = `
+        <div style="padding: 2rem; text-align: center; color: #6b7280;">
+            <div style="display: inline-block; width: 24px; height: 24px; border: 2px solid #f3f4f6; border-top-color: {{ $interesse->cor }}; border-radius: 50%; animation: spin 0.6s linear infinite; margin-bottom: 0.5rem;"></div>
+            <div>Buscando usuários...</div>
+        </div>
+    `;
     resultados.style.display = 'block';
     
-    fetch(`/buscar?q=${encodeURIComponent(query)}&exclude_current=true`)
-        .then(res => res.json())
+    // Adicionar feedback no input
+    buscarInput.style.borderColor = '{{ $interesse->cor }}';
+    
+    fetch(`/buscar?q=${encodeURIComponent(query)}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na busca');
+            return response.json();
+        })
         .then(usuarios => {
             resultados.innerHTML = '';
             
             if (!usuarios || usuarios.length === 0) {
-                resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #6b7280;">Nenhum usuário encontrado</div>';
+                resultados.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #6b7280;">
+                        <span class="material-symbols-outlined" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;">person_off</span>
+                        <div>Nenhum usuário encontrado</div>
+                        <small style="font-size: 0.85rem; margin-top: 0.5rem; display: block;">Tente outro termo de busca</small>
+                    </div>
+                `;
                 return;
             }
             
@@ -1112,66 +1324,124 @@ function buscarUsuariosParaTransferir(query) {
             const usuariosFiltrados = usuarios.filter(u => u.tipo !== 'tendencia');
             
             if (usuariosFiltrados.length === 0) {
-                resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #6b7280;">Nenhum usuário encontrado</div>';
+                resultados.innerHTML = `
+                    <div style="padding: 2rem; text-align: center; color: #6b7280;">
+                        <span class="material-symbols-outlined" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;">group_off</span>
+                        <div>Nenhum usuário encontrado</div>
+                    </div>
+                `;
                 return;
             }
             
+            // Exibir resultados
             usuariosFiltrados.forEach(usuario => {
-                const div = document.createElement('div');
-                div.className = 'resultado-usuario-transferir';
-                div.innerHTML = `
-                    <div class="usuario-info-transferir">
-                        <div class="usuario-avatar-transferir">
-                            ${usuario.foto ? 
-                                `<img src="/storage/${usuario.foto}" alt="${usuario.apelido || usuario.user}" 
-                                      onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<span class=\"material-symbols-outlined\" style=\"color: #6b7280;\">account_circle</span>';">` : 
-                                '<span class="material-symbols-outlined" style="color: #6b7280;">account_circle</span>'
+                const resultadoItem = document.createElement('div');
+                resultadoItem.className = 'resultado-usuario-transferir';
+                resultadoItem.style.cssText = `
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0.75rem 1rem;
+                    border-bottom: 1px solid #f3f4f6;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                    gap: 0.75rem;
+                `;
+                
+                resultadoItem.onmouseover = () => resultadoItem.style.backgroundColor = '#f9fafb';
+                resultadoItem.onmouseout = () => resultadoItem.style.backgroundColor = 'white';
+                
+                // Avatar (versão corrigida - sem onerror problemático)
+let avatarHTML = '';
+if (usuario.foto) {
+    // Usar uma função JavaScript para handle do erro
+    const fotoUrl = `/storage/${usuario.foto}`;
+    avatarHTML = `<div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: #f3f4f6; position: relative;">
+        <img src="${fotoUrl}" 
+             alt="${usuario.apelido || usuario.user}" 
+             style="width: 100%; height: 100%; object-fit: cover;"
+             onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\"material-symbols-outlined\" style=\"position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #6b7280; font-size: 1.5rem;\">account_circle</span>';">
+    </div>`;
+} else {
+    avatarHTML = `<div style="width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; color: #6b7280;">
+        <span class="material-symbols-outlined" style="font-size: 1.5rem;">account_circle</span>
+    </div>`;
+}
+                
+                // Informações do usuário
+                resultadoItem.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0;">
+                        ${avatarHTML}
+                        <div style="min-width: 0;">
+                            <div style="font-weight: 600; color: #1f2937; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${usuario.apelido || usuario.user}
+                            </div>
+                            <div style="font-size: 0.85rem; color: #6b7280; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                @${usuario.user}
+                            </div>
+                            ${usuario.descricao ? 
+                                `<div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${usuario.descricao}
+                                </div>` : ''
                             }
                         </div>
-                        <div class="usuario-detalhes-transferir">
-                            <strong>${usuario.apelido || usuario.user}</strong>
-                            <span>@${usuario.user}</span>
-                            ${usuario.descricao ? `<small style="color: #6b7280; font-size: 0.75rem; margin-top: 0.25rem;">${usuario.descricao}</small>` : ''}
-                        </div>
                     </div>
-                    <button type="button" class="btn-selecionar-transferir" onclick="selecionarUsuarioParaTransferir(${usuario.id}, '${(usuario.apelido || usuario.user).replace(/'/g, "\\'")}', '${usuario.user.replace(/'/g, "\\'")}')">
+                    <button type="button" 
+                            class="btn-selecionar-transferir"
+                            onclick="selecionarUsuarioParaTransferir(${usuario.id}, '${(usuario.apelido || usuario.user).replace(/'/g, "\\'")}', '${usuario.user.replace(/'/g, "\\'")}')"
+                            style="padding: 0.5rem 1rem; background: #10b981; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 500; transition: background 0.2s; flex-shrink: 0;">
                         Selecionar
                     </button>
                 `;
                 
-                resultados.appendChild(div);
+                resultados.appendChild(resultadoItem);
             });
             
-            resultados.style.display = 'block';
+            // Adicionar contador de resultados
+            const contador = document.createElement('div');
+            contador.style.cssText = 'padding: 0.5rem 1rem; font-size: 0.85rem; color: #6b7280; border-top: 1px solid #f3f4f6; background: #f9fafb;';
+            contador.textContent = `${usuariosFiltrados.length} usuário${usuariosFiltrados.length !== 1 ? 's' : ''} encontrado${usuariosFiltrados.length !== 1 ? 's' : ''}`;
+            resultados.appendChild(contador);
+            
         })
         .catch(error => {
             console.error('Erro na busca:', error);
-            resultados.innerHTML = '<div style="padding: 2rem; text-align: center; color: #ef4444;">Erro ao buscar usuários</div>';
+            resultados.innerHTML = `
+                <div style="padding: 2rem; text-align: center; color: #ef4444;">
+                    <span class="material-symbols-outlined" style="font-size: 2rem; margin-bottom: 0.5rem; color: #ef4444;">error</span>
+                    <div>Erro ao buscar usuários</div>
+                    <small style="font-size: 0.85rem; margin-top: 0.5rem; display: block; color: #9ca3af;">
+                        ${error.message}
+                    </small>
+                </div>
+            `;
+        })
+        .finally(() => {
+            buscarInput.style.borderColor = '#d1d5db';
         });
 }
 
 function selecionarUsuarioParaTransferir(usuarioId, nome, usuario) {
-    usuarioSelecionado = { id: usuarioId, nome: nome, usuario: usuario };
+    usuarioSelecionadoTransferencia = { 
+        id: usuarioId, 
+        nome: nome, 
+        usuario: usuario 
+    };
     
     // Atualizar exibição
     const nomeElement = document.getElementById('nomeUsuarioSelecionado');
-    if (nomeElement) {
-        nomeElement.textContent = `${nome} (@${usuario})`;
-    }
-    
-    // Mostrar seção de confirmação
     const infoSection = document.getElementById('usuarioSelecionadoInfo');
     const confirmButton = document.getElementById('btnConfirmarTransferencia');
     
+    if (nomeElement) nomeElement.textContent = `${nome} (@${usuario})`;
     if (infoSection) infoSection.style.display = 'block';
     if (confirmButton) confirmButton.style.display = 'block';
     
-    // Esconder resultados
+    // Esconder resultados e limpar busca
     const resultados = document.getElementById('resultadosTransferencia');
-    if (resultados) resultados.style.display = 'none';
-    
-    // Limpar campo de busca
     const buscarInput = document.getElementById('buscarUsuarioTransferir');
+    
+    if (resultados) resultados.style.display = 'none';
     if (buscarInput) buscarInput.value = '';
     
     // Rolar para a seção de confirmação
@@ -1183,14 +1453,15 @@ function selecionarUsuarioParaTransferir(usuarioId, nome, usuario) {
 }
 
 function confirmarTransferencia() {
-    if (!usuarioSelecionado) {
+    if (!usuarioSelecionadoTransferencia) {
         mostrarToast('Selecione um usuário primeiro', 'error');
         return;
     }
     
     const interesseNome = document.querySelector('.interesse-titulo')?.textContent || 'este interesse';
-    const mensagem = `⚠️ ATENÇÃO: Você está transferindo a propriedade do interesse "${interesseNome}" para ${usuarioSelecionado.nome} (@${usuarioSelecionado.usuario}).\n\n`
-                    + `✅ ${usuarioSelecionado.nome} será o novo dono\n`
+    const mensagem = `⚠️ ATENÇÃO: Você está transferindo a propriedade do interesse "${interesseNome}"\n\n`
+                    + `Novo dono: ${usuarioSelecionadoTransferencia.nome} (@${usuarioSelecionadoTransferencia.usuario})\n\n`
+                    + `✅ ${usuarioSelecionadoTransferencia.nome} será o novo dono\n`
                     + `❌ Você perderá o controle total\n`
                     + `🔄 Esta ação é PERMANENTE e IRREVERSÍVEL\n\n`
                     + `Tem certeza que deseja continuar?`;
@@ -1200,14 +1471,36 @@ function confirmarTransferencia() {
     }
     
     const interesseSlug = '{{ $interesse->slug }}';
-    const token = document.querySelector('input[name="_token"]')?.value || '{{ csrf_token() }}';
+    
+    // Buscar token CSRF de forma segura
+    let token = '';
+    const tokenInput = document.querySelector('input[name="_token"]');
+    if (tokenInput) {
+        token = tokenInput.value;
+    } else {
+        const metaToken = document.querySelector('meta[name="csrf-token"]');
+        if (metaToken) {
+            token = metaToken.getAttribute('content');
+        }
+    }
+    
+    if (!token) {
+        mostrarToast('Erro de segurança. Recarregue a página e tente novamente.', 'error');
+        return;
+    }
     
     // Mostrar loading
-    const confirmButton = document.getElementById('btnConfirmarTransferencia');
-    const originalText = confirmButton.innerHTML;
-    confirmButton.innerHTML = '<span class="material-symbols-outlined" style="vertical-align: middle; animation: spin 1s linear infinite;">sync</span> Transferindo...';
-    confirmButton.disabled = true;
+    const btn = document.getElementById('btnConfirmarTransferencia');
+    if (!btn) return;
     
+    const originalText = btn.innerHTML;
+    btn.innerHTML = `
+        <span style="display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; margin-right: 8px;"></span>
+        Processando...
+    `;
+    btn.disabled = true;
+    
+    // Enviar requisição
     fetch(`/interesses/${interesseSlug}/transferir-propriedade`, {
         method: 'POST',
         headers: {
@@ -1216,54 +1509,59 @@ function confirmarTransferencia() {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            novo_dono_id: usuarioSelecionado.id
+            novo_dono_id: usuarioSelecionadoTransferencia.id
         })
     })
     .then(response => {
+        console.log('Status:', response.status);
+        
+        if (response.status === 500) {
+            return response.text().then(text => {
+                console.error('Erro 500 detalhado:', text);
+                throw new Error('Erro interno no servidor');
+            });
+        }
+        
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}`);
         }
+        
         return response.json();
     })
     .then(data => {
+        console.log('Resposta:', data);
+        
         if (data.sucesso) {
             mostrarToast(data.mensagem, 'success');
             fecharModalTransferir();
             
-            // Recarregar a página após 1.5 segundos
+            // Recarregar após 1.5 segundos
             setTimeout(() => {
                 location.reload();
             }, 1500);
         } else {
-            throw new Error(data.mensagem || 'Erro ao transferir propriedade');
+            throw new Error(data.mensagem || 'Erro desconhecido ao transferir propriedade');
         }
     })
     .catch(error => {
-        console.error('Erro:', error);
+        console.error('Erro completo:', error);
         mostrarToast(error.message || 'Erro ao transferir propriedade', 'error');
         
         // Restaurar botão
-        confirmButton.innerHTML = originalText;
-        confirmButton.disabled = false;
+        btn.innerHTML = originalText;
+        btn.disabled = false;
     });
 }
 
-// Adicionar animação de spin
-const spinStyle = document.createElement('style');
-spinStyle.textContent = `
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-`;
-document.head.appendChild(spinStyle);
+// ============================================
+// FUNÇÕES AUXILIARES
+// ============================================
 
-// Funções auxiliares
 function seguirInteresse(interesseId, elemento) {
     fetch(`/interesses/${interesseId}/seguir`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ notificacoes: true })
@@ -1278,7 +1576,7 @@ function seguirInteresse(interesseId, elemento) {
                 </button>
             `;
             // Reconectar evento
-            document.querySelector('.btn-deixar-seguir').addEventListener('click', function() {
+            document.querySelector('.btn-deixar-seguir')?.addEventListener('click', function() {
                 deixarSeguirInteresse(interesseId, this);
             });
             mostrarToast(data.mensagem, 'success');
@@ -1296,7 +1594,7 @@ function deixarSeguirInteresse(interesseId, elemento) {
     fetch(`/interesses/${interesseId}/deixar-seguir`, {
         method: 'POST',
         headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
             'Content-Type': 'application/json'
         }
     })
@@ -1309,7 +1607,7 @@ function deixarSeguirInteresse(interesseId, elemento) {
                     Seguir
                 </button>
             `;
-            document.querySelector('.btn-seguir-interesse').addEventListener('click', function() {
+            document.querySelector('.btn-seguir-interesse')?.addEventListener('click', function() {
                 seguirInteresse(interesseId, this);
             });
             mostrarToast(data.mensagem, 'success');
@@ -1330,10 +1628,8 @@ function confirmarDelecaoInteresse(slug) {
         let token = '';
         
         if (tokenInput) {
-            // Se encontrar token em algum formulário
             token = tokenInput.value;
         } else {
-            // Se não encontrar, usar token do Blade (fallback)
             token = '{{ csrf_token() }}';
         }
         
@@ -1388,11 +1684,29 @@ function mostrarToast(mensagem, tipo = 'info') {
         font-size: 14px;
         font-weight: 500;
         animation: slideIn 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 90%;
     `;
     
-    toast.textContent = mensagem;
+    // Ícone baseado no tipo
+    let icone = '';
+    switch(tipo) {
+        case 'success':
+            icone = '<span class="material-symbols-outlined" style="font-size: 1.2rem;">check_circle</span>';
+            break;
+        case 'error':
+            icone = '<span class="material-symbols-outlined" style="font-size: 1.2rem;">error</span>';
+            break;
+        default:
+            icone = '<span class="material-symbols-outlined" style="font-size: 1.2rem;">info</span>';
+    }
+    
+    toast.innerHTML = `${icone}<span>${mensagem}</span>`;
     document.body.appendChild(toast);
     
+    // Auto remover após 3 segundos
     setTimeout(() => {
         toast.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
@@ -1403,9 +1717,17 @@ function mostrarToast(mensagem, tipo = 'info') {
     }, 3000);
 }
 
-// Adicionar keyframes de animação
-const style = document.createElement('style');
-style.textContent = `
+// ============================================
+// ESTILOS GLOBAIS
+// ============================================
+
+// Adicionar animações CSS
+const globalStyles = document.createElement('style');
+globalStyles.textContent = `
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
     @keyframes slideIn {
         from { transform: translateX(100%); opacity: 0; }
         to { transform: translateX(0); opacity: 1; }
@@ -1414,123 +1736,181 @@ style.textContent = `
         from { transform: translateX(0); opacity: 1; }
         to { transform: translateX(100%); opacity: 0; }
     }
-`;
-document.head.appendChild(style);
-
-function criarModalTransferir() {
-    const modalHTML = `
-        <div id="modalTransferir" class="modal" style="display: flex;">
-            <div class="modal-content" style="max-width: 500px;">
-                <div class="modal-header">
-                    <h3 style="color: {{ $interesse->cor }};">
-                        <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 8px;">swap_horiz</span>
-                        Transferir Propriedade
-                    </h3>
-                    <button type="button" class="modal-close" onclick="fecharModalTransferir()" style="background: none; border: none; cursor: pointer; color: #666;">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div style="background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
-                        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
-                            <span class="material-symbols-outlined" style="color: #f59e0b;">warning</span>
-                            <div>
-                                <strong style="color: #92400e;">Atenção!</strong>
-                                <p style="color: #78350f; margin: 0.25rem 0 0 0; font-size: 0.9rem;">
-                                    Você está transferindo a propriedade do interesse "<strong>{{ $interesse->nome }}</strong>". 
-                                    Esta ação é permanente e você perderá o controle total.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="buscarUsuarioTransferir" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
-                            <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1.1rem; margin-right: 4px;">search</span>
-                            Buscar Usuário
-                        </label>
-                        <div style="position: relative;">
-                            <input type="text" id="buscarUsuarioTransferir" placeholder="Digite nome ou usuário..." 
-                                   style="width: 100%; padding: 0.75rem 2.5rem 0.75rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 0.95rem;">
-                            <span class="material-symbols-outlined" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none;">
-                                search
-                            </span>
-                        </div>
-                        <small style="display: block; margin-top: 0.5rem; color: #6b7280; font-size: 0.85rem;">
-                            Busque pelo nome, apelido ou usuário (@) do novo dono
-                        </small>
-                        <div id="resultadosTransferencia" style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; margin-top: 1rem; display: none;"></div>
-                    </div>
-                    
-                    <div id="usuarioSelecionadoInfo" style="display: none; padding: 1.25rem; background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; margin-top: 1.5rem;">
-                        <div style="display: flex; align-items: center; gap: 1rem;">
-                            <span class="material-symbols-outlined" style="color: #0284c7;">check_circle</span>
-                            <div style="flex: 1;">
-                                <p style="margin: 0 0 0.25rem 0; font-weight: 600; color: #0369a1;">Novo dono selecionado</p>
-                                <p style="margin: 0; color: #0c4a6e;">
-                                    <strong id="nomeUsuarioSelecionado"></strong>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 0.85rem; color: #6b7280;">
-                        <span class="material-symbols-outlined" style="vertical-align: middle; font-size: 1rem;">info</span>
-                        Transferência irreversível
-                    </div>
-                    <div style="display: flex; gap: 0.75rem;">
-                        <button type="button" class="btn-cancelar" onclick="fecharModalTransferir()" 
-                                style="padding: 0.75rem 1.5rem; background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
-                            Cancelar
-                        </button>
-                        <button type="button" id="btnConfirmarTransferencia" class="btn-confirmar" onclick="confirmarTransferencia()" 
-                                style="padding: 0.75rem 1.5rem; background: {{ $interesse->cor }}; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: none; transition: all 0.2s;">
-                            <span class="material-symbols-outlined" style="vertical-align: middle; margin-right: 4px;">swap_horiz</span>
-                            Transferir Propriedade
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
     
-    document.getElementById('modalTransferirContainer').innerHTML = modalHTML;
-    
-    // Adicionar event listeners
-    const buscarInput = document.getElementById('buscarUsuarioTransferir');
-    if (buscarInput) {
-        let buscaTimeout;
-        
-        buscarInput.addEventListener('input', function(e) {
-            clearTimeout(buscaTimeout);
-            const query = e.target.value.trim();
-            
-            if (query.length < 2) {
-                document.getElementById('resultadosTransferencia').innerHTML = '';
-                document.getElementById('resultadosTransferencia').style.display = 'none';
-                return;
-            }
-            
-            buscaTimeout = setTimeout(() => {
-                buscarUsuariosParaTransferir(query);
-            }, 500);
-        });
-        
-        // Focar no input quando abrir o modal
-        setTimeout(() => buscarInput.focus(), 100);
+    /* Estilos para scroll */
+    #resultadosTransferencia::-webkit-scrollbar {
+        width: 6px;
     }
-    
-    // Adicionar estilo para hover dos botões
-    const style = document.createElement('style');
-    style.textContent = `
-        .btn-cancelar:hover { background: #e5e7eb !important; }
-        .btn-confirmar:hover { opacity: 0.9 !important; transform: translateY(-1px) !important; }
-        .btn-selecionar-transferir:hover { background: #059669 !important; }
-        .resultado-usuario-transferir:hover { background: #f9fafb; }
-    `;
-    document.head.appendChild(style);
+    #resultadosTransferencia::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+    #resultadosTransferencia::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+    #resultadosTransferencia::-webkit-scrollbar-thumb:hover {
+        background: #a1a1a1;
+    }
+`;
+document.head.appendChild(globalStyles);
+
+// Função para verificar conexão
+function verificarConexao() {
+    if (!navigator.onLine) {
+        mostrarToast('Sem conexão com a internet', 'error');
+    }
 }
 
+// Verificar conexão ao carregar
+window.addEventListener('load', verificarConexao);
+window.addEventListener('online', () => mostrarToast('Conexão restabelecida', 'success'));
+window.addEventListener('offline', () => mostrarToast('Sem conexão com a internet', 'error'));
+
+// Prevenir fechamento acidental durante transferência
+window.addEventListener('beforeunload', function(e) {
+    const btn = document.getElementById('btnConfirmarTransferencia');
+    if (btn && btn.disabled) {
+        e.preventDefault();
+        e.returnValue = 'Uma transferência está em andamento. Tem certeza que deseja sair?';
+        return e.returnValue;
+    }
+});
+
+// Adicionar efeito de clique nos botões
+document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
+        e.target.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            e.target.style.transform = '';
+        }, 150);
+    }
+});
+
+// ============================================
+// CORREÇÃO DE IMAGENS QUEBRADAS EM MEMBROS POPULARES
+// ============================================
+
+function corrigirImagensQuebradas() {
+    console.log('🔍 Corrigindo imagens quebradas...');
+    
+    // 1. Imagens do criador do interesse
+    document.querySelectorAll('.dono-avatar img, .dono-card img').forEach(img => {
+        verificarECorrigirImagem(img, 'dono');
+    });
+    
+    // 2. Imagens dos membros populares
+    document.querySelectorAll('.usuario-avatar img, .usuarios-grid img').forEach(img => {
+        verificarECorrigirImagem(img, 'membro');
+    });
+    
+    // 3. Imagens nas postagens
+    document.querySelectorAll('.usuario-avatar-mini img, .postagem-curtida-item img').forEach(img => {
+        verificarECorrigirImagem(img, 'postagem');
+    });
+    
+    // 4. Imagens de usuários em geral
+    document.querySelectorAll('.avatar-usuario img').forEach(img => {
+        verificarECorrigirImagem(img, 'usuario');
+    });
+}
+
+function verificarECorrigirImagem(imgElement, tipo) {
+    if (!imgElement || imgElement.tagName !== 'IMG') return;
+    
+    // Se a imagem já falhou, substituir por fallback
+    if (imgElement.complete && imgElement.naturalHeight === 0) {
+        substituirPorFallback(imgElement, tipo);
+        return;
+    }
+    
+    // Adicionar listener de erro
+    imgElement.onerror = function() {
+        console.log(`❌ Imagem falhou: ${this.src}`);
+        substituirPorFallback(this, tipo);
+    };
+    
+    // Adicionar listener de load bem-sucedido
+    imgElement.onload = function() {
+        console.log(`✅ Imagem carregada: ${this.src}`);
+    };
+}
+
+function substituirPorFallback(imgElement, tipo) {
+    const parent = imgElement.parentElement;
+    if (!parent) return;
+    
+    // Verificar se já tem um fallback
+    const fallbacks = parent.querySelectorAll('.avatar-fallback, .material-symbols-outlined');
+    if (fallbacks.length > 0) {
+        imgElement.style.display = 'none';
+        fallbacks.forEach(fallback => {
+            if (fallback.classList.contains('avatar-fallback')) {
+                fallback.style.display = 'flex';
+            } else {
+                fallback.style.display = 'block';
+            }
+        });
+        return;
+    }
+    
+    // Criar novo fallback
+    const fallback = document.createElement('div');
+    fallback.className = 'avatar-fallback';
+    
+    // Estilos baseados no tipo
+    let styles = {
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        width: '100%',
+        height: '100%',
+        background: '#f3f4f6',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#6b7280'
+    };
+    
+    // Ajustes por tipo
+    if (tipo === 'postagem') {
+        styles.background = '#e5e7eb';
+        styles.fontSize = '1.5rem';
+    } else if (tipo === 'dono') {
+        styles.background = '#f3f4f6';
+        styles.fontSize = '3rem';
+    }
+    
+    // Aplicar estilos
+    Object.assign(fallback.style, styles);
+    
+    // Ícone
+    const icon = document.createElement('span');
+    icon.className = 'material-symbols-outlined';
+    icon.textContent = 'account_circle';
+    icon.style.fontSize = styles.fontSize || '1.5rem';
+    
+    fallback.appendChild(icon);
+    parent.appendChild(fallback);
+    imgElement.style.display = 'none';
+}
+
+// Executar quando o DOM carregar
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(corrigirImagensQuebradas, 1000); // Aguardar 1 segundo para imagens carregarem
+});
+
+// Executar quando todas as imagens carregarem
+window.addEventListener('load', function() {
+    setTimeout(corrigirImagensQuebradas, 500); // Verificar novamente após load
+});
+
+// Executar quando o usuário voltar para a página
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        setTimeout(corrigirImagensQuebradas, 300);
+    }
+});
 </script>
 @endsection

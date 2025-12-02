@@ -127,29 +127,60 @@
                 @enderror
             </div>
 
-            <!-- Cor -->
+            <!-- Cor com opção personalizada (igual ao create) -->
             <div class="form-group">
                 <label for="cor">Cor do Interesse *</label>
                 
-                <div class="cor-simplificada">
-                    <div class="cores-grid">
-                        @php
-                            $cores = [
-                                '#3B82F6' => 'Azul', '#EF4444' => 'Vermelho', '#10B981' => 'Verde',
-                                '#F59E0B' => 'Amarelo', '#8B5CF6' => 'Roxo', '#EC4899' => 'Rosa',
-                                '#06B6D4' => 'Ciano', '#84CC16' => 'Lima', '#F97316' => 'Laranja',
-                                '#6366F1' => 'Índigo', '#64748B' => 'Cinza', '#000000' => 'Preto'
-                            ];
-                        @endphp
-                        @foreach($cores as $cor => $nome)
-                            <label class="cor-option" style="background-color: {{ $cor }}; border: {{ $cor == '#FFFFFF' ? '1px solid #d1d5db' : 'none' }};">
-                                <input type="radio" name="cor" value="{{ $cor }}" 
-                                       {{ old('cor', $interesse->cor) == $cor ? 'checked' : '' }}>
-                                <span class="checkmark">✓</span>
-                            </label>
-                        @endforeach
+                <!-- TIPO DE COR - ADICIONADO -->
+                <div class="cor-option-type">
+                    <label>
+                        <input type="radio" name="cor_type" value="predefinida" checked id="cor_type_predefinida">
+                        Cores predefinidas
+                    </label>
+                    <label>
+                        <input type="radio" name="cor_type" value="personalizada" id="cor_type_personalizada">
+                        Cor personalizada
+                    </label>
+                </div>
+
+                <div class="cor-container-unificado">
+                    <!-- Cores Predefinidas -->
+                    <div id="coresPredefinidasContainer" class="cor-content">
+                        <div class="cores-grid">
+                            @php
+                                $cores = [
+                                    '#3B82F6' => 'Azul', '#EF4444' => 'Vermelho', '#10B981' => 'Verde',
+                                    '#F59E0B' => 'Amarelo', '#8B5CF6' => 'Roxo', '#EC4899' => 'Rosa',
+                                    '#06B6D4' => 'Ciano', '#84CC16' => 'Lima', '#F97316' => 'Laranja',
+                                    '#6366F1' => 'Índigo', '#64748B' => 'Cinza', '#000000' => 'Preto'
+                                ];
+                            @endphp
+                            @foreach($cores as $cor => $nome)
+                                <label class="cor-option" style="background-color: {{ $cor }};">
+                                    <input type="radio" name="cor_predefinida" value="{{ $cor }}" 
+                                           {{ old('cor_predefinida', $interesse->cor) == $cor ? 'checked' : '' }}>
+                                    <span class="checkmark">✓</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Cor Personalizada -->
+                    <div id="corPersonalizadaContainer" class="cor-content" style="display: none;">
+                        <div class="cor-personalizada-area">
+                            <input type="color" id="cor_personalizada" name="cor_personalizada" 
+                                   value="{{ old('cor_personalizada', $interesse->cor) }}" class="color-picker">
+                            <div class="cor-preview">
+                                <div class="cor-display" id="corDisplay" style="background-color: {{ old('cor_personalizada', $interesse->cor) }};"></div>
+                                <span id="corValueText">{{ old('cor_personalizada', $interesse->cor) }}</span>
+                            </div>
+                            <small id="corSelecionadaText">Clique no seletor acima para escolher uma cor personalizada</small>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Campo oculto para valor final da cor -->
+                <input type="hidden" id="cor_final" name="cor" value="{{ old('cor_predefinida', $interesse->cor) }}">
                 
                 @error('cor')
                     <span class="error-message">{{ $message }}</span>
@@ -175,15 +206,15 @@
                 <label>Preview do Interesse:</label>
                 <div class="interesse-preview" id="interessePreview">
                     <div class="preview-card">
-                        <div class="preview-header" id="previewHeader" style="border-left-color: {{ $interesse->cor }}; background: {{ $interesse->cor }}20;">
+                        <div class="preview-header" id="previewHeader">
                             <div class="preview-icon" id="previewIcon">
                                 @if($interesse->icone_custom)
                                     <img src="{{ $interesse->icone }}" alt="Ícone atual" style="width: 40px; height: 40px; border-radius: 8px;">
                                 @else
-                                    <span class="material-symbols-outlined" style="color: {{ $interesse->cor }};">{{ $interesse->icone }}</span>
+                                    <span class="material-symbols-outlined">{{ $interesse->icone }}</span>
                                 @endif
                             </div>
-                            <h3 id="previewNome" style="color: {{ $interesse->cor }};">{{ $interesse->nome }}</h3>
+                            <h3 id="previewNome">{{ $interesse->nome }}</h3>
                         </div>
                         <p id="previewDescricao">{{ $interesse->descricao }}</p>
                         <div class="preview-stats">
@@ -219,20 +250,54 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Mesmo JavaScript do create.blade.php, mas adaptado para edição
+    // Elementos do DOM
     const nomeInput = document.getElementById('nome');
     const descricaoInput = document.getElementById('descricao');
     const iconeInputs = document.querySelectorAll('input[name="icone"]');
     const iconeTypeInputs = document.querySelectorAll('input[name="icone_type"]');
-    const corInputs = document.querySelectorAll('input[name="cor"]');
+    const corTypeInputs = document.querySelectorAll('input[name="cor_type"]');
+    const corPredefinidaInputs = document.querySelectorAll('input[name="cor_predefinida"]');
+    const corPersonalizadaInput = document.getElementById('cor_personalizada');
+    const corFinalInput = document.getElementById('cor_final');
+    const corDisplay = document.getElementById('corDisplay');
+    const corValueText = document.getElementById('corValueText');
     
     const iconesPadraoContainer = document.getElementById('iconesPadraoContainer');
     const iconeCustomContainer = document.getElementById('iconeCustomContainer');
     const iconeCustomInput = document.getElementById('icone_custom');
     const iconePreview = document.getElementById('iconePreview');
     
+    const coresPredefinidasContainer = document.getElementById('coresPredefinidasContainer');
+    const corPersonalizadaContainer = document.getElementById('corPersonalizadaContainer');
+    
+    // Estado
     let currentIconType = '{{ $interesse->icone_custom ? "custom" : "default" }}';
+    let currentCorType = 'predefinida';
     let customIconUrl = null;
+
+    // Inicializar cor final com o valor atual
+    let corSelecionada = '{{ $interesse->cor }}';
+    corFinalInput.value = corSelecionada;
+
+    // Verificar se a cor atual está nas predefinidas
+    const coresPredefinidas = [
+        '#3B82F6', '#EF4444', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899',
+        '#06B6D4', '#84CC16', '#F97316', '#6366F1', '#64748B', '#000000'
+    ];
+    
+    if (!coresPredefinidas.includes(corSelecionada.toUpperCase())) {
+        // Se a cor não está nas predefinidas, selecionar "personalizada"
+        document.getElementById('cor_type_personalizada').checked = true;
+        currentCorType = 'personalizada';
+        coresPredefinidasContainer.style.display = 'none';
+        corPersonalizadaContainer.style.display = 'block';
+    } else {
+        // Se está nas predefinidas, selecionar a cor correspondente
+        const corRadio = document.querySelector(`input[name="cor_predefinida"][value="${corSelecionada}"]`);
+        if (corRadio) {
+            corRadio.checked = true;
+        }
+    }
 
     // Alternar entre ícone padrão e customizado
     iconeTypeInputs.forEach(input => {
@@ -258,6 +323,64 @@ document.addEventListener('DOMContentLoaded', function() {
             
             atualizarPreview();
         });
+    });
+
+    // Alternar entre cores predefinidas e personalizada
+    corTypeInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            currentCorType = this.value;
+            
+            if (currentCorType === 'predefinida') {
+                coresPredefinidasContainer.style.display = 'block';
+                corPersonalizadaContainer.style.display = 'none';
+                if (!document.querySelector('input[name="cor_predefinida"]:checked')) {
+                    document.querySelector('input[name="cor_predefinida"]').checked = true;
+                }
+                // Atualiza cor final com a predefinida selecionada
+                const corPredefinida = document.querySelector('input[name="cor_predefinida"]:checked');
+                if (corPredefinida) {
+                    corSelecionada = corPredefinida.value;
+                    corFinalInput.value = corSelecionada;
+                }
+            } else {
+                coresPredefinidasContainer.style.display = 'none';
+                corPersonalizadaContainer.style.display = 'block';
+                // Atualiza cor final com a personalizada
+                corSelecionada = corPersonalizadaInput.value;
+                corFinalInput.value = corSelecionada;
+                
+                // Atualiza display da cor
+                if (corDisplay) corDisplay.style.backgroundColor = corSelecionada;
+                if (corValueText) corValueText.textContent = corSelecionada;
+            }
+            
+            atualizarPreview();
+        });
+    });
+
+    // Atualizar cor predefinida
+    corPredefinidaInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (currentCorType === 'predefinida') {
+                corSelecionada = this.value;
+                corFinalInput.value = corSelecionada;
+                atualizarPreview();
+            }
+        });
+    });
+
+    // Atualizar cor personalizada
+    corPersonalizadaInput.addEventListener('input', function() {
+        if (currentCorType === 'personalizada') {
+            corSelecionada = this.value;
+            corFinalInput.value = corSelecionada;
+            
+            // Atualiza display da cor
+            if (corDisplay) corDisplay.style.backgroundColor = corSelecionada;
+            if (corValueText) corValueText.textContent = corSelecionada;
+            
+            atualizarPreview();
+        }
     });
 
     // Preview do ícone customizado
@@ -298,14 +421,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Função para remover imagem customizada
+    window.removerImagemCustomizada = function() {
+        iconeCustomInput.value = '';
+        customIconUrl = null;
+        iconePreview.innerHTML = '';
+        atualizarPreview();
+    };
+
     function atualizarPreview() {
         const previewNome = document.getElementById('previewNome');
         const previewDescricao = document.getElementById('previewDescricao');
         const previewIcon = document.getElementById('previewIcon');
         const previewHeader = document.getElementById('previewHeader');
         
-        if (previewNome) previewNome.textContent = nomeInput.value || 'Nome do Interesse';
-        if (previewDescricao) previewDescricao.textContent = descricaoInput.value || 'Descrição do interesse';
+        if (previewNome) previewNome.textContent = nomeInput.value || '{{ $interesse->nome }}';
+        if (previewDescricao) previewDescricao.textContent = descricaoInput.value || '{{ $interesse->descricao }}';
         
         if (previewIcon) {
             previewIcon.innerHTML = '';
@@ -318,6 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 iconElement.className = 'material-symbols-outlined';
                 iconElement.textContent = iconValue;
                 iconElement.style.fontSize = '2rem';
+                iconElement.style.color = corSelecionada;
                 previewIcon.appendChild(iconElement);
             } else {
                 if (customIconUrl) {
@@ -343,22 +475,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     iconElement.className = 'material-symbols-outlined';
                     iconElement.textContent = 'image';
                     iconElement.style.fontSize = '2rem';
+                    iconElement.style.color = corSelecionada;
                     previewIcon.appendChild(iconElement);
                 }
             }
         }
         
-        if (previewHeader) {
-            const corSelecionada = document.querySelector('input[name="cor"]:checked');
-            if (corSelecionada && corSelecionada.value) {
-                previewHeader.style.backgroundColor = corSelecionada.value + '20';
-                previewHeader.style.borderLeftColor = corSelecionada.value;
-                previewNome.style.color = corSelecionada.value;
-                
-                const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
-                if (materialIcon) {
-                    materialIcon.style.color = corSelecionada.value;
-                }
+        if (previewHeader && previewNome) {
+            previewHeader.style.backgroundColor = corSelecionada + '20';
+            previewHeader.style.borderLeft = `4px solid ${corSelecionada}`;
+            previewNome.style.color = corSelecionada;
+            
+            const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
+            if (materialIcon) {
+                materialIcon.style.color = corSelecionada;
             }
         }
     }
@@ -366,7 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
     nomeInput.addEventListener('input', atualizarPreview);
     descricaoInput.addEventListener('input', atualizarPreview);
     iconeInputs.forEach(input => input.addEventListener('change', atualizarPreview));
-    corInputs.forEach(input => input.addEventListener('change', atualizarPreview));
 
     // Inicializar
     atualizarPreview();
@@ -374,26 +503,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function confirmarDelecaoInteresse(slug) {
     if (confirm('⚠️ ATENÇÃO: Esta ação é PERMANENTE e IRREVERSÍVEL!\n\nTodos os dados deste interesse serão deletados permanentemente.\n\nTem certeza que deseja continuar?')) {
-        // Usar o token CSRF que já está no formulário da página
         const tokenInput = document.querySelector('input[name="_token"]');
         if (!tokenInput) {
             alert('Erro: Token de segurança não encontrado.');
             return;
         }
         
-        // Criar um formulário dinâmico
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = `/interesses/${slug}`;
         form.style.display = 'none';
         
-        // Token CSRF (usa o mesmo token do formulário de edição)
         const csrfInput = document.createElement('input');
         csrfInput.type = 'hidden';
         csrfInput.name = '_token';
         csrfInput.value = tokenInput.value;
         
-        // Método spoofing para DELETE
         const methodInput = document.createElement('input');
         methodInput.type = 'hidden';
         methodInput.name = '_method';
@@ -403,7 +528,6 @@ function confirmarDelecaoInteresse(slug) {
         form.appendChild(methodInput);
         document.body.appendChild(form);
         
-        // Enviar o formulário
         form.submit();
     }
 }
@@ -493,6 +617,296 @@ function confirmarDelecaoInteresse(slug) {
 .checkbox-label input[type="checkbox"] {
     width: 18px;
     height: 18px;
+}
+
+/* Estilos adicionais para compatibilidade com create */
+.icone-option-type,
+.cor-option-type {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.icone-option-type label,
+.cor-option-type label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.icone-container-unificado,
+.cor-container-unificado {
+    width: 100%;
+}
+
+.icone-content,
+.cor-content {
+    width: 100%;
+}
+
+.icones-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.icone-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: white;
+}
+
+.icone-option:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+.icone-option input[type="radio"] {
+    display: none;
+}
+
+.icone-option .material-symbols-outlined {
+    font-size: 2rem;
+    color: #6b7280;
+}
+
+.icone-option input[type="radio"]:checked + .material-symbols-outlined {
+    color: #3b82f6;
+}
+
+.icone-upload-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 40px 20px;
+    text-align: center;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #6b7280;
+    width: 100%;
+}
+
+.icone-preview {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.preview-custom-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-custom-icon img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid #e5e7eb;
+}
+
+.btn-remover-imagem {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-remover-imagem:hover {
+    background: #dc2626;
+}
+
+.cores-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.cor-option {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.cor-option:hover {
+    transform: scale(1.1);
+}
+
+.cor-option input[type="radio"] {
+    display: none;
+}
+
+.cor-option input[type="radio"]:checked + .checkmark {
+    opacity: 1;
+}
+
+.checkmark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 14px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.cor-personalizada-area {
+    border: 2px dashed #d1d5db;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.color-picker {
+    width: 80px;
+    height: 80px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.color-picker::-webkit-color-swatch {
+    border: none;
+    border-radius: 10px;
+}
+
+.color-picker::-moz-color-swatch {
+    border: none;
+    border-radius: 10px;
+}
+
+.cor-preview {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+.cor-display {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+}
+
+.cor-preview span {
+    font-family: monospace;
+    font-weight: 600;
+    color: #374151;
+}
+
+.preview-card {
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background: #f9fafb;
+    max-width: 300px;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.preview-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.preview-stats {
+    display: flex;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 1024px) {
+    .icones-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    .cores-grid {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .icones-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .cores-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .icones-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .cores-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .icone-option-type,
+    .cor-option-type {
+        flex-direction: column;
+        gap: 10px;
+    }
 }
 </style>
 @endsection

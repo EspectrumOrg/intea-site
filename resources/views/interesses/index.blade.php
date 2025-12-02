@@ -13,14 +13,30 @@
 
         <!-- Barra de pesquisa e botão criar -->
         <div class="interesses-actions">
-            <form action="{{ route('interesses.pesquisar') }}" method="GET" class="pesquisa-interesses-form">
-                <div class="search-container">
-                    <input type="text" name="q" value="{{ request('q') }}" placeholder="Pesquisar interesses..." class="search-input" required>
-                    <button type="submit" class="search-btn">
-                        <span class="material-symbols-outlined">search</span>
-                    </button>
+            <div class="pesquisa-interesses-container" style="position: relative; width: 100%; max-width: 500px;">
+                <form action="{{ route('interesses.pesquisar') }}" method="GET" class="pesquisa-interesses-form">
+                    <div class="search-container" style="position: relative;">
+                        <input type="text" 
+                               name="q" 
+                               id="buscarInteresses" 
+                               value="{{ request('q') }}" 
+                               placeholder="Pesquisar interesses..." 
+                               class="search-input" 
+                               autocomplete="off"
+                               onfocus="mostrarSugestoes()"
+                               onblur="setTimeout(() => esconderSugestoes(), 200)">
+                        <button type="submit" class="search-btn">
+                            <span class="material-symbols-outlined">search</span>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Sugestões de busca -->
+                <div id="sugestoesBusca" 
+                     style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 1000; max-height: 300px; overflow-y: auto; margin-top: 4px;">
+                    <!-- Conteúdo será preenchido via JavaScript -->
                 </div>
-            </form>
+            </div>
 
             <a href="{{ route('interesses.create') }}" class="btn-criar-interesse">
                 <span class="material-symbols-outlined">add</span>
@@ -50,7 +66,18 @@
             <div class="interesse-card">
                 <div class="interesse-header" style="background-color: {{ $interesse->cor }}20;">
                     <div class="interesse-icon" style="color: {{ $interesse->cor }};">
-                        <span class="material-symbols-outlined">{{ $interesse->icone }}</span>
+                        @if($interesse->icone_custom)
+                            <!-- SOLUÇÃO SIMPLES - Sem onerror complexo -->
+                            <img src="{{ $interesse->icone }}" 
+                                 alt="{{ $interesse->nome }}" 
+                                 style="width: 50px; height: 50px; object-fit: contain;"
+                                 class="icone-custom"
+                                 data-cor="{{ $interesse->cor }}"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <span class="material-symbols-outlined icone-fallback" style="display: none; font-size: 50px;">tag</span>
+                        @else
+                            <span class="material-symbols-outlined" style="font-size: 50px;">{{ $interesse->icone ?? 'tag' }}</span>
+                        @endif
                     </div>
                     <h3>{{ $interesse->nome }}</h3>
                 </div>
@@ -96,7 +123,18 @@
                 <div class="interesse-numero">{{ $index + 1 }}</div>
                 <div class="interesse-info">
                     <div class="interesse-badge-mini" style="background-color: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
-                        <span class="material-symbols-outlined">{{ $interesse->icone }}</span>
+                        @if($interesse->icone_custom)
+                            <!-- SOLUÇÃO SIMPLES - Sem onerror complexo -->
+                            <img src="{{ $interesse->icone }}" 
+                                 alt="{{ $interesse->nome }}" 
+                                 style="width: 40px; height: 40px; object-fit: contain;"
+                                 class="icone-custom-mini"
+                                 data-cor="{{ $interesse->cor }}"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <span class="material-symbols-outlined icone-fallback-mini" style="display: none; font-size: 32px;">tag</span>
+                        @else
+                            <span class="material-symbols-outlined">{{ $interesse->icone ?? 'tag' }}</span>
+                        @endif
                     </div>
                     <div class="interesse-detalhes">
                         <h3>{{ $interesse->nome }}</h3>
@@ -197,7 +235,6 @@
     </section>
 </div>
 
-<!-- CSS para a nova lista enumerada -->
 <style>
     .interesses-count {
         margin: 2rem 0;
@@ -227,11 +264,11 @@
         align-items: center;
         gap: 1rem;
         padding: 1.5rem;
-        background: var(--branco);
+        background: white;
         border: 1px solid #e5e7eb;
         border-radius: 12px;
         transition: all 0.3s ease;
-        width: 96%; /* 100% - 2% left - 2% right */
+        width: 96%;
         margin-left: 2%;
         margin-right: 2%;   
     }
@@ -263,14 +300,25 @@
     }
 
     .interesse-badge-mini {
-        width: 50px;
-        height: 50px;
-        border-radius: 10px;
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
         flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .interesse-badge-mini img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+    }
+
+    .interesse-badge-mini .material-symbols-outlined {
+        font-size: 32px;
     }
 
     .interesse-detalhes {
@@ -365,6 +413,146 @@
         background: #e5e7eb;
     }
 
+    /* Para cards grandes (seção "Seus Interesses") */
+    .interesse-icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    
+    .interesse-icon img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+    }
+    
+    .interesse-icon .material-symbols-outlined {
+        font-size: 50px !important;
+    }
+    
+    .icone-fallback {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    .icone-fallback-mini {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Estilos para a busca em tempo real */
+    .resultado-busca-interesse {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #f1f5f9;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .resultado-busca-interesse:hover {
+        background-color: #f9fafb;
+    }
+
+    .resultado-busca-interesse:last-child {
+        border-bottom: none;
+    }
+
+    .interesse-icon-mini {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .interesse-icon-mini img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .info h4 {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #1f2937;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .info p {
+        margin: 0.25rem 0 0 0;
+        font-size: 0.8rem;
+        color: #6b7280;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .seguidores {
+        font-size: 0.75rem;
+        color: #9ca3af;
+        white-space: nowrap;
+        margin-left: 0.5rem;
+    }
+
+    .sugestoes-header {
+        padding: 0.75rem 1rem;
+        background: #f9fafb;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #6b7280;
+    }
+
+    .nenhum-resultado-sugestao {
+        padding: 1.5rem;
+        text-align: center;
+        color: #6b7280;
+        font-size: 0.9rem;
+    }
+
+    /* Loading para busca */
+    .loading-sugestoes {
+        padding: 1.5rem;
+        text-align: center;
+        color: #6b7280;
+    }
+
+    .loading-sugestoes .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #f3f4f6;
+        border-top-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-bottom: 0.5rem;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
     /* Responsividade */
     @media (max-width: 768px) {
         .interesse-item {
@@ -385,8 +573,410 @@
         .interesse-meta {
             justify-content: center;
         }
+
+        .pesquisa-interesses-container {
+            max-width: 100%;
+        }
+        
+        .interesse-icon {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .interesse-icon img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .interesse-icon .material-symbols-outlined {
+            font-size: 40px !important;
+        }
+        
+        .interesse-badge-mini {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .interesse-badge-mini img {
+            width: 32px;
+            height: 32px;
+        }
+        
+        .interesse-badge-mini .material-symbols-outlined {
+            font-size: 24px;
+        }
+    }
+
+    /* Estilo para input focado */
+    #buscarInteresses:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 </style>
+
+<script>
+// ============================================
+// BUSCA EM TEMPO REAL DE INTERESSES
+// ============================================
+
+let timeoutBuscaInteresses;
+let ultimaQueryInteresses = '';
+
+// Mostrar sugestões quando o input recebe foco
+function mostrarSugestoes() {
+    const input = document.getElementById('buscarInteresses');
+    const sugestoes = document.getElementById('sugestoesBusca');
+    
+    if (!input || !sugestoes) return;
+    
+    if (input.value.trim().length > 0) {
+        sugestoes.style.display = 'block';
+        buscarInteressesEmTempoReal(input.value.trim());
+    } else {
+        // Mostrar TODOS os interesses quando vazio
+        mostrarTodosInteresses();
+    }
+}
+
+// Esconder sugestões
+function esconderSugestoes() {
+    const sugestoes = document.getElementById('sugestoesBusca');
+    if (sugestoes) {
+        sugestoes.style.display = 'none';
+    }
+}
+
+// Buscar TODOS os interesses (quando input vazio)
+function mostrarTodosInteresses() {
+    const sugestoes = document.getElementById('sugestoesBusca');
+    if (!sugestoes) return;
+    
+    sugestoes.innerHTML = `
+        <div class="sugestoes-header">Todos os Interesses</div>
+        <div class="loading-sugestoes">
+            <div class="spinner"></div>
+            <div>Carregando...</div>
+        </div>
+    `;
+    sugestoes.style.display = 'block';
+    
+    // Usar os interesses já carregados na página
+    const interessesPagina = @json($interesses->items());
+    
+    if (interessesPagina.length > 0) {
+        const interessesFormatados = interessesPagina.map(interesse => ({
+            id: interesse.id,
+            nome: interesse.nome,
+            slug: interesse.slug,
+            descricao: interesse.descricao,
+            icone: interesse.icone,
+            icone_custom: interesse.icone_custom,
+            cor: interesse.cor,
+            seguidores_count: interesse.seguidores_count,
+            contador_membros: interesse.contador_membros,
+            tipo: 'interesse'
+        }));
+        
+        exibirResultadosBuscaInteresses(interessesFormatados, true);
+    } else {
+        // Se não tiver na página, buscar via API
+        fetch('/api/interesses/todos?limit=20')
+            .then(response => response.json())
+            .then(data => {
+                if (data.sucesso && data.interesses.length > 0) {
+                    exibirResultadosBuscaInteresses(data.interesses, true);
+                } else {
+                    sugestoes.innerHTML = `
+                        <div class="sugestoes-header">Todos os Interesses</div>
+                        <div class="nenhum-resultado-sugestao">
+                            Nenhum interesse encontrado
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar interesses:', error);
+                sugestoes.innerHTML = `
+                    <div class="sugestoes-header">Todos os Interesses</div>
+                    <div class="nenhum-resultado-sugestao">
+                        Erro ao carregar interesses
+                    </div>
+                `;
+            });
+    }
+}
+
+// Buscar interesses em tempo real
+function buscarInteressesEmTempoReal(query) {
+    const sugestoes = document.getElementById('sugestoesBusca');
+    if (!sugestoes) return;
+    
+    // Mostrar loading
+    sugestoes.innerHTML = `
+        <div class="loading-sugestoes">
+            <div class="spinner"></div>
+            <div>Buscando interesses...</div>
+        </div>
+    `;
+    
+    clearTimeout(timeoutBuscaInteresses);
+    
+    timeoutBuscaInteresses = setTimeout(() => {
+        // Usar a rota de busca global
+        fetch(`/buscar?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(resultados => {
+                // Filtrar apenas interesses
+                const interessesFiltrados = resultados.filter(item => 
+                    item.tipo === 'interesse' || (item.nome && item.descricao)
+                );
+                
+                // Verificar se a query ainda é a mesma
+                const input = document.getElementById('buscarInteresses');
+                if (input && input.value.trim() === query) {
+                    exibirResultadosBuscaInteresses(interessesFiltrados, false);
+                }
+            })
+            .catch(error => {
+                console.error('Erro na busca de interesses:', error);
+                if (sugestoes) {
+                    sugestoes.innerHTML = `
+                        <div class="nenhum-resultado-sugestao">
+                            Erro ao buscar interesses
+                        </div>
+                    `;
+                }
+            });
+    }, 300); // Debounce de 300ms
+}
+
+// Exibir resultados da busca
+function exibirResultadosBuscaInteresses(interesses, ehTodos = false) {
+    const sugestoes = document.getElementById('sugestoesBusca');
+    if (!sugestoes) return;
+    
+    if (!interesses || interesses.length === 0) {
+        sugestoes.innerHTML = `
+            <div class="sugestoes-header">${ehTodos ? 'Todos os Interesses' : 'Resultados da busca'}</div>
+            <div class="nenhum-resultado-sugestao">
+                Nenhum interesse encontrado
+            </div>
+        `;
+        return;
+    }
+    
+    let html = `
+        <div class="sugestoes-header">
+            ${ehTodos ? 'Todos os Interesses' : `${interesses.length} resultado(s) encontrado(s)`}
+        </div>
+    `;
+    
+    interesses.forEach(interesse => {
+        // Determinar cor do ícone
+        const cor = interesse.cor || '#3b82f6';
+        
+        // Determinar ícone
+        let iconeHTML = '';
+        if (interesse.icone_custom) {
+            iconeHTML = `
+                <div class="interesse-icon-mini" style="background-color: ${cor}20;">
+                    <img src="${interesse.icone}" 
+                         alt="${interesse.nome}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="material-symbols-outlined" style="display: none; color: ${cor}; font-size: 24px;">tag</span>
+                </div>
+            `;
+        } else {
+            iconeHTML = `
+                <div class="interesse-icon-mini" style="background-color: ${cor}20; color: ${cor};">
+                    <span class="material-symbols-outlined">${interesse.icone || 'tag'}</span>
+                </div>
+            `;
+        }
+        
+        // Determinar contador de seguidores
+        const seguidores = interesse.seguidores_count || interesse.contador_membros || 0;
+        
+        html += `
+            <div class="resultado-busca-interesse" onclick="selecionarInteresseBusca('${interesse.slug || interesse.id}', '${interesse.nome.replace(/'/g, "\\'")}')">
+                ${iconeHTML}
+                <div class="info">
+                    <h4>${interesse.nome}</h4>
+                    <p>${interesse.descricao || 'Sem descrição'}</p>
+                </div>
+                <div class="seguidores">
+                    ${seguidores} seguidores
+                </div>
+            </div>
+        `;
+    });
+    
+    // Adicionar link para ver todos resultados
+    const input = document.getElementById('buscarInteresses');
+    if (input && input.value.trim() && !ehTodos) {
+        html += `
+            <div class="resultado-busca-interesse" 
+                 onclick="pesquisarInteresses('${input.value.replace(/'/g, "\\'")}')"
+                 style="justify-content: center; background-color: #f8fafc; font-weight: 500; color: #3b82f6;">
+                <span class="material-symbols-outlined" style="font-size: 1rem; margin-right: 0.5rem;">search</span>
+                Ver todos os resultados para "${input.value}"
+            </div>
+        `;
+    }
+    
+    sugestoes.innerHTML = html;
+}
+
+// Selecionar interesse da busca
+function selecionarInteresseBusca(slug, nome) {
+    // Preencher input
+    const input = document.getElementById('buscarInteresses');
+    if (input) {
+        input.value = nome;
+    }
+    
+    // Redirecionar para o interesse
+    window.location.href = `/interesses/${slug}`;
+}
+
+// Pesquisar interesses (submeter form)
+function pesquisarInteresses(query) {
+    const input = document.getElementById('buscarInteresses');
+    if (input) {
+        input.value = query;
+    }
+    
+    // Submeter form
+    const form = document.querySelector('.pesquisa-interesses-form');
+    if (form) {
+        form.submit();
+    } else {
+        // Se não encontrar form, redirecionar
+        window.location.href = `/interesses/pesquisar?q=${encodeURIComponent(query)}`;
+    }
+}
+
+// Event listener para input
+document.addEventListener('DOMContentLoaded', function() {
+    const inputBusca = document.getElementById('buscarInteresses');
+    
+    if (inputBusca) {
+        // Buscar ao digitar
+        inputBusca.addEventListener('input', function(e) {
+            clearTimeout(timeoutBuscaInteresses);
+            const query = e.target.value.trim();
+            ultimaQueryInteresses = query;
+            
+            const sugestoes = document.getElementById('sugestoesBusca');
+            if (!sugestoes) return;
+            
+            if (query.length === 0) {
+                mostrarTodosInteresses();
+                return;
+            }
+            
+            if (query.length < 2) {
+                sugestoes.style.display = 'none';
+                return;
+            }
+            
+            sugestoes.style.display = 'block';
+            
+            timeoutBuscaInteresses = setTimeout(() => {
+                buscarInteressesEmTempoReal(query);
+            }, 300);
+        });
+        
+        // Focar no input se tiver query
+        if (inputBusca.value.trim().length > 0) {
+            setTimeout(() => {
+                inputBusca.focus();
+                inputBusca.setSelectionRange(inputBusca.value.length, inputBusca.value.length);
+            }, 100);
+        }
+    }
+    
+    // Fechar sugestões ao clicar fora
+    document.addEventListener('click', function(e) {
+        const sugestoes = document.getElementById('sugestoesBusca');
+        const input = document.getElementById('buscarInteresses');
+        
+        if (sugestoes && sugestoes.style.display === 'block') {
+            if (!sugestoes.contains(e.target) && (!input || !input.contains(e.target))) {
+                esconderSugestoes();
+            }
+        }
+    });
+});
+
+// Função para seguidores
+function seguirInteresse(interesseId) {
+    fetch(`/interesses/${interesseId}/seguir`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            notificacoes: true
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.sucesso) {
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Erro:', error));
+}
+
+function deixarSeguirInteresse(interesseId) {
+    fetch(`/interesses/${interesseId}/deixar-seguir`, {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.sucesso) {
+            location.reload();
+        }
+    })
+    .catch(error => console.error('Erro:', error));
+}
+
+// Adicionar event listeners para os botões
+document.addEventListener('DOMContentLoaded', function() {
+    // Botões de seguir
+    document.querySelectorAll('.btn-seguir-interesse:not(.seguindo)').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const interesseId = this.dataset.interesseId;
+            seguirInteresse(interesseId);
+        });
+    });
+    
+    // Botões de deixar de seguir (na lista principal)
+    document.querySelectorAll('.btn-seguir-interesse.seguindo').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const interesseId = this.dataset.interesseId;
+            deixarSeguirInteresse(interesseId);
+        });
+    });
+    
+    // Botões "Deixar de Seguir" (na seção de interesses do usuário)
+    document.querySelectorAll('.btn-deixar-seguir').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const interesseId = this.dataset.interesseId;
+            deixarSeguirInteresse(interesseId);
+        });
+    });
+});
+</script>
 
 <!-- Incluir o JavaScript externo -->
 <script src="{{ asset('assets/js/interesses/seguir-interesse.js') }}"></script>

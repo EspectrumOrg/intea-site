@@ -122,6 +122,18 @@ Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moder
 Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador')->middleware('auth');
 Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador')->middleware('auth');
 Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade')->middleware('auth');
+Route::get('/api/interesses/todos', [InteresseController::class, 'todosInteresses']);
+
+// Rota para servir arquivos no Windows (onde storage:link não funciona)
+Route::get('/storage/serve/{path}', function($path) {
+    $storagePath = storage_path('app/public/' . $path);
+    
+    if (!file_exists($storagePath)) {
+        abort(404);
+    }
+    
+    return response()->file($storagePath);
+})->where('path', '.*')->name('storage.serve');
 
     // Feeds por interesse
     Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');

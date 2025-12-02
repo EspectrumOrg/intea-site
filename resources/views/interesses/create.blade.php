@@ -116,7 +116,7 @@
             <div class="form-group">
                 <label for="cor">Cor do Interesse *</label>
                 
-                <!-- TIPO DE COR -->
+                <!-- TIPO DE COR - FIXADO: agora usa a mesma lógica do edit -->
                 <div class="cor-option-type">
                     <label>
                         <input type="radio" name="cor_type" value="predefinida" checked id="cor_type_predefinida">
@@ -141,9 +141,9 @@
                                 ];
                             @endphp
                             @foreach($cores as $cor => $nome)
-                                <label class="cor-option" style="background-color: {{ $cor }}; border: {{ $cor == '#FFFFFF' ? '1px solid #d1d5db' : 'none' }};">
-                                    <input type="radio" name="cor" value="{{ $cor }}" 
-                                           {{ old('cor') == $cor ? 'checked' : ($loop->first ? 'checked' : '') }}>
+                                <label class="cor-option" style="background-color: {{ $cor }};">
+                                    <input type="radio" name="cor_predefinida" value="{{ $cor }}" 
+                                           {{ old('cor_predefinida') == $cor ? 'checked' : ($loop->first ? 'checked' : '') }}>
                                     <span class="checkmark">✓</span>
                                 </label>
                             @endforeach
@@ -155,15 +155,17 @@
                         <div class="cor-personalizada-area">
                             <input type="color" id="cor_personalizada" name="cor_personalizada" 
                                    value="{{ old('cor_personalizada', '#3B82F6') }}" class="color-picker">
-                            <input type="hidden" id="cor_personalizada_value" name="cor" value="{{ old('cor_personalizada', '#3B82F6') }}">
-                            <label for="cor_personalizada" class="color-label">
-                                <span class="material-symbols-outlined">palette</span>
-                                <span>Clique para escolher uma cor personalizada</span>
-                                <small id="corSelecionadaText">Cor selecionada: <span style="color: {{ old('cor_personalizada', '#3B82F6') }}">{{ old('cor_personalizada', '#3B82F6') }}</span></small>
-                            </label>
+                            <div class="cor-preview">
+                                <div class="cor-display" id="corDisplay" style="background-color: {{ old('cor_personalizada', '#3B82F6') }};"></div>
+                                <span id="corValueText">{{ old('cor_personalizada', '#3B82F6') }}</span>
+                            </div>
+                            <small id="corSelecionadaText">Clique no seletor acima para escolher uma cor personalizada</small>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Campo oculto para valor final da cor -->
+                <input type="hidden" id="cor_final" name="cor" value="{{ old('cor_predefinida', '#3B82F6') }}">
                 
                 @error('cor')
                     <span class="error-message">{{ $message }}</span>
@@ -207,9 +209,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const iconeInputs = document.querySelectorAll('input[name="icone"]');
     const iconeTypeInputs = document.querySelectorAll('input[name="icone_type"]');
     const corTypeInputs = document.querySelectorAll('input[name="cor_type"]');
-    const corInputs = document.querySelectorAll('input[name="cor"]');
+    const corPredefinidaInputs = document.querySelectorAll('input[name="cor_predefinida"]');
     const corPersonalizadaInput = document.getElementById('cor_personalizada');
-    const corPersonalizadaValue = document.getElementById('cor_personalizada_value');
+    const corFinalInput = document.getElementById('cor_final');
+    const corDisplay = document.getElementById('corDisplay');
+    const corValueText = document.getElementById('corValueText');
     
     const iconesPadraoContainer = document.getElementById('iconesPadraoContainer');
     const iconeCustomContainer = document.getElementById('iconeCustomContainer');
@@ -218,12 +222,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const coresPredefinidasContainer = document.getElementById('coresPredefinidasContainer');
     const corPersonalizadaContainer = document.getElementById('corPersonalizadaContainer');
-    const corSelecionadaText = document.getElementById('corSelecionadaText');
     
     // Estado
     let currentIconType = 'default';
     let currentCorType = 'predefinida';
     let customIconUrl = null;
+
+    // Inicializar cor final
+    let corSelecionada = document.querySelector('input[name="cor_predefinida"]:checked').value;
+    corFinalInput.value = corSelecionada;
 
     // Alternar entre ícone padrão e customizado
     iconeTypeInputs.forEach(input => {
@@ -233,18 +240,15 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentIconType === 'default') {
                 iconesPadraoContainer.style.display = 'block';
                 iconeCustomContainer.style.display = 'none';
-                // Garante que um ícone padrão esteja selecionado
                 if (!document.querySelector('input[name="icone"]:checked')) {
                     document.querySelector('input[name="icone"]').checked = true;
                 }
-                // Limpa o arquivo customizado
                 iconeCustomInput.value = '';
                 customIconUrl = null;
                 iconePreview.innerHTML = '';
             } else {
                 iconesPadraoContainer.style.display = 'none';
                 iconeCustomContainer.style.display = 'block';
-                // Limpa qualquer seleção de ícone padrão
                 document.querySelectorAll('input[name="icone"]').forEach(input => {
                     input.checked = false;
                 });
@@ -262,21 +266,53 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentCorType === 'predefinida') {
                 coresPredefinidasContainer.style.display = 'block';
                 corPersonalizadaContainer.style.display = 'none';
-                if (!document.querySelector('input[name="cor"]:checked')) {
-                    document.querySelector('input[name="cor"]').checked = true;
+                if (!document.querySelector('input[name="cor_predefinida"]:checked')) {
+                    document.querySelector('input[name="cor_predefinida"]').checked = true;
+                }
+                // Atualiza cor final com a predefinida selecionada
+                const corPredefinida = document.querySelector('input[name="cor_predefinida"]:checked');
+                if (corPredefinida) {
+                    corSelecionada = corPredefinida.value;
+                    corFinalInput.value = corSelecionada;
                 }
             } else {
                 coresPredefinidasContainer.style.display = 'none';
                 corPersonalizadaContainer.style.display = 'block';
-                // Atualiza o valor do campo hidden com a cor personalizada
-                corPersonalizadaValue.value = corPersonalizadaInput.value;
+                // Atualiza cor final com a personalizada
+                corSelecionada = corPersonalizadaInput.value;
+                corFinalInput.value = corSelecionada;
             }
             
             atualizarPreview();
         });
     });
 
-    // Preview do ícone customizado - CORRIGIDO
+    // Atualizar cor predefinida
+    corPredefinidaInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            if (currentCorType === 'predefinida') {
+                corSelecionada = this.value;
+                corFinalInput.value = corSelecionada;
+                atualizarPreview();
+            }
+        });
+    });
+
+    // Atualizar cor personalizada
+    corPersonalizadaInput.addEventListener('input', function() {
+        if (currentCorType === 'personalizada') {
+            corSelecionada = this.value;
+            corFinalInput.value = corSelecionada;
+            
+            // Atualiza display da cor
+            if (corDisplay) corDisplay.style.backgroundColor = corSelecionada;
+            if (corValueText) corValueText.textContent = corSelecionada;
+            
+            atualizarPreview();
+        }
+    });
+
+    // Preview do ícone customizado
     iconeCustomInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (file) {
@@ -319,16 +355,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Atualizar cor personalizada
-    corPersonalizadaInput.addEventListener('input', function() {
-        const cor = this.value;
-        corPersonalizadaValue.value = cor;
-        if (corSelecionadaText) {
-            corSelecionadaText.innerHTML = `Cor selecionada: <span style="color: ${cor}">${cor}</span>`;
-        }
-        atualizarPreview();
-    });
-
     // Função para remover imagem customizada
     window.removerImagemCustomizada = function() {
         iconeCustomInput.value = '';
@@ -350,10 +376,9 @@ document.addEventListener('DOMContentLoaded', function() {
             previewDescricao.textContent = descricaoInput.value || 'Descrição do interesse aparecerá aqui';
         }
         
-        // Ícone - CORRIGIDO
+        // Ícone
         const previewIcon = document.getElementById('previewIcon');
         if (previewIcon) {
-            // Limpa o conteúdo anterior
             previewIcon.innerHTML = '';
             
             if (currentIconType === 'default') {
@@ -365,6 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 iconElement.className = 'material-symbols-outlined';
                 iconElement.textContent = iconValue;
                 iconElement.style.fontSize = '2rem';
+                iconElement.style.color = corSelecionada;
                 previewIcon.appendChild(iconElement);
                 
             } else {
@@ -384,6 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     iconElement.className = 'material-symbols-outlined';
                     iconElement.textContent = 'image';
                     iconElement.style.fontSize = '2rem';
+                    iconElement.style.color = corSelecionada;
                     previewIcon.appendChild(iconElement);
                 }
             }
@@ -391,28 +418,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Cor
         const previewHeader = document.getElementById('previewHeader');
-        if (previewHeader && previewIcon) {
-            let corSelecionada;
+        if (previewHeader && previewNome) {
+            // Aplica cor ao fundo do header
+            previewHeader.style.backgroundColor = corSelecionada + '20';
+            previewHeader.style.borderLeft = `4px solid ${corSelecionada}`;
             
-            if (currentCorType === 'predefinida') {
-                corSelecionada = document.querySelector('input[name="cor"]:checked');
-            } else {
-                corSelecionada = { value: corPersonalizadaValue.value };
-            }
+            // Aplica cor ao título
+            previewNome.style.color = corSelecionada;
             
-            if (corSelecionada && corSelecionada.value) {
-                // Aplica cor ao fundo do header
-                previewHeader.style.backgroundColor = corSelecionada.value + '20';
-                previewHeader.style.borderLeft = `4px solid ${corSelecionada.value}`;
-                
-                // Aplica cor apenas aos ícones de material (não às imagens)
-                const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
-                if (materialIcon) {
-                    materialIcon.style.color = corSelecionada.value;
-                }
-                
-                // Aplica cor ao título
-                previewNome.style.color = corSelecionada.value;
+            // Aplica cor apenas aos ícones de material (se existirem)
+            const materialIcon = previewIcon.querySelector('.material-symbols-outlined');
+            if (materialIcon) {
+                materialIcon.style.color = corSelecionada;
             }
         }
     }
@@ -422,10 +439,6 @@ document.addEventListener('DOMContentLoaded', function() {
     descricaoInput.addEventListener('input', atualizarPreview);
     
     iconeInputs.forEach(input => {
-        input.addEventListener('change', atualizarPreview);
-    });
-    
-    corInputs.forEach(input => {
         input.addEventListener('change', atualizarPreview);
     });
 
@@ -450,14 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Verifica se uma cor foi selecionada
-        let corSelecionada;
-        if (currentCorType === 'predefinida') {
-            corSelecionada = document.querySelector('input[name="cor"]:checked');
-        } else {
-            corSelecionada = { value: corPersonalizadaValue.value };
-        }
-        
-        if (!corSelecionada || !corSelecionada.value) {
+        if (!corFinalInput.value) {
             isValid = false;
             errorMessage = 'Por favor, selecione uma cor.';
         }
@@ -686,34 +692,49 @@ document.addEventListener('DOMContentLoaded', function() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 20px;
 }
 
 .color-picker {
     width: 80px;
     height: 80px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
+    padding: 0;
 }
 
 .color-picker::-webkit-color-swatch {
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
 }
 
 .color-picker::-moz-color-swatch {
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
 }
 
-.color-label {
+.cor-preview {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    color: #6b7280;
+    gap: 15px;
+    background: #f8fafc;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+.cor-display {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+}
+
+.cor-preview span {
+    font-family: monospace;
+    font-weight: 600;
+    color: #374151;
 }
 
 /* Preview do interesse */
