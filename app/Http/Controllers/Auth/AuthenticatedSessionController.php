@@ -23,36 +23,40 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
-    $request->session()->regenerate();
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
+        $request->session()->regenerate();
 
-    $usuario = Auth::user();
+        $usuario = Auth::user();
 
-    switch ($usuario->status_conta) {
-        case 0: // conta excluída
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return back()->with('warning', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
+        switch ($usuario->status_conta) {
+            case 0: // conta excluída
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->with('warning', 'Esta conta não existe ou foi desativada. Por favor, contate a empresa.');
 
-        case 1: // login normal
-            return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Login realizado com sucesso!');
+            case 1: // login normal
+                if ($usuario->tipo_usuario === 1) {
+                    return redirect()->route('dashboard.index')->with('success', 'Login realizado com sucesso!');
+                } else {
+                    return redirect()->intended(RouteServiceProvider::HOME)->with('success', 'Login realizado com sucesso!');
+                }
 
-        case 2: // conta banida
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return back()->with('ban_reason', 'Sua conta foi banida. Para mais informações, por favor, acesse seu e-mail e contate a empresa.');
+            case 2: // conta banida
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->with('ban_reason', 'Sua conta foi banida. Para mais informações, por favor, acesse seu e-mail e contate a empresa.');
 
-        default:
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-            return back()->with('error', 'Erro de validação.');
+            default:
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+                return back()->with('error', 'Erro de validação.');
+        }
     }
-}
 
 
     /**
