@@ -28,15 +28,36 @@
                     </span>
                 </button>
             </div>
+
+            {{-- Preview do vídeo --}}
+            <div id="video-preview" class="video-preview" style="display:none;">
+                <video id="preview-video" controls></video>
+
+                <button type="button" id="remove-video" class="remove-video">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
         </div>
 
         <div class="content">
             <div class="extras">
+                <!-- imagem/gif -->
                 <label for="caminho_imagem" class="upload-label">
                     <span class="material-symbols-outlined">image</span>
                 </label>
+
                 <input id="caminho_imagem" name="caminho_imagem" type="file" accept="image/*" class="input-file">
+
                 <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
+
+                <!-- vídeo -->
+                <label for="caminho_video" class="upload-label">
+                    <span class="material-symbols-outlined">videocam</span>
+                </label>
+
+                <input id="caminho_video" name="caminho_video" type="file" accept="video/mp4,video/webm,video/ogg" class="input-file">
+
+                <x-input-error class="mt-2" :messages="$errors->get('caminho_video')" />
             </div>
 
             <div class="contador">
@@ -76,6 +97,40 @@
         previewContainer.style.display = 'none';
     });
 </script>
+
+<!-- Preview do Vídeo -->
+<script>
+    const inputVideo = document.getElementById('caminho_video');
+    const videoPreviewContainer = document.getElementById('video-preview');
+    const previewVideo = document.getElementById('preview-video');
+    const removeVideoButton = document.getElementById('remove-video');
+
+    inputVideo.addEventListener('change', () => {
+        const file = inputVideo.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = e => {
+                previewVideo.src = e.target.result;
+                previewVideo.controls = true;
+                previewVideo.muted = true; // autoplay seguro
+                previewVideo.autoplay = true;
+
+                videoPreviewContainer.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removeVideoButton.addEventListener('click', () => {
+        inputVideo.value = ''; // limpar input
+        previewVideo.src = '';
+        videoPreviewContainer.style.display = 'none';
+    });
+</script>
+
 
 <!-- JS -->
 <script src="{{ url('assets/js/posts/create/hashtag-create.js') }}"></script>

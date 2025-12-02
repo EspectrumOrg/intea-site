@@ -427,7 +427,7 @@
                                         </div>
 
                                         <p class="alerta">
-                                             Tem certeza que deseja remover este dependente? Essa ação não poderá ser
+                                            Tem certeza que deseja remover este dependente? Essa ação não poderá ser
                                             desfeita.
                                         </p>
 
@@ -457,9 +457,9 @@
                                     <div class="interesse-header" style="background-color: {{ $interesse->cor }}20;">
                                         <div class="interesse-icon" style="color: {{ $interesse->cor }};">
                                             @if($interesse->is_custom_icone && $interesse->icone)
-                                                <img src="{{ $interesse->icone }}" alt="{{ $interesse->nome }}" style="width: 40px; height: 40px; border-radius: 10px;" onerror="this.style.display='none'">
+                                            <img src="{{ $interesse->icone }}" alt="{{ $interesse->nome }}" style="width: 40px; height: 40px; border-radius: 10px;" onerror="this.style.display='none'">
                                             @else
-                                                <span class="material-symbols-outlined">{{ $interesse->icone ?? 'tag' }}</span>
+                                            <span class="material-symbols-outlined">{{ $interesse->icone ?? 'tag' }}</span>
                                             @endif
                                         </div>
                                         <h3>{{ $interesse->nome }}</h3>
@@ -482,9 +482,9 @@
                                             Ver Feed
                                         </a>
                                         @if(auth()->id() == $user->id)
-                                            <button class="btn-deixar-seguir" data-interesse-id="{{ $interesse->id }}">
-                                                Deixar de Seguir
-                                            </button>
+                                        <button class="btn-deixar-seguir" data-interesse-id="{{ $interesse->id }}">
+                                            Deixar de Seguir
+                                        </button>
                                         @endif
                                     </div>
                                 </div>
@@ -639,6 +639,13 @@
                                     class="post-image">
                                 @endforeach
                                 @endif
+
+                                @if($post->video)
+                                <video controls class="video-postagem" style="max-height: 30vh; z-index: 0;">
+                                    <source src="{{ asset('storage/' . $post->video->caminho_video) }}" type="video/mp4">
+                                    Seu navegador não suporta vídeo.
+                                </video>
+                                @endif
                                 <div class="post-stats">
                                     <div>
                                         <button type="button" onclick="toggleForm('{{ $post->id }}')"
@@ -754,33 +761,33 @@
                         <h3>Seguindo</h3>
 
                         @if($seguindo->count() > 0)
-                            <div class="likes-list">
-                                @foreach($seguindo as $usuario)
-                                <div class="like-item">
+                        <div class="likes-list">
+                            @foreach($seguindo as $usuario)
+                            <div class="like-item">
 
-                                    <div class="like-avatar">
-                                        @if($usuario->foto)
+                                <div class="like-avatar">
+                                    @if($usuario->foto)
                                     <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
-                                        @else
-                                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                        @endif
-                                    </div>
+                                    @else
+                                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                                    @endif
+                                </div>
 
-                                    <div class="like-content">
+                                <div class="like-content">
                                     <p>{{ $usuario->user }}</p>
 
-                                        <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
-                                            Ver perfil
-                                        </a>
-                                    </div>
-
+                                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                                        Ver perfil
+                                    </a>
                                 </div>
-                                @endforeach
+
                             </div>
+                            @endforeach
+                        </div>
                         @else
-                            <div class="no-content-message">
-                                <p>Você não está seguindo ninguém ainda.</p>
-                            </div>
+                        <div class="no-content-message">
+                            <p>Você não está seguindo ninguém ainda.</p>
+                        </div>
                         @endif
                     </div>
 
@@ -788,33 +795,33 @@
                         <h3>Seguidores</h3>
 
                         @if($seguidores->count() > 0)
-                            <div class="likes-list">
-                                @foreach($seguidores as $usuario)
-                                <div class="like-item">
+                        <div class="likes-list">
+                            @foreach($seguidores as $usuario)
+                            <div class="like-item">
 
-                                    <div class="like-avatar">
-                                        @if($usuario->foto)
+                                <div class="like-avatar">
+                                    @if($usuario->foto)
                                     <img src="{{ asset('storage/'.$usuario->foto) }}" class="card-img-top" alt="foto perfil">
-                                        @else
-                                            <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
-                                        @endif
-                                    </div>
-
-                                    <div class="like-content">
-                                          <p>{{ $usuario->user }}</p>
-
-                                        <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
-                                            Ver perfil
-                                        </a>
-                                    </div>
-
+                                    @else
+                                    <img src="{{ url('assets/images/logos/contas/user.png') }}" alt="Usuário">
+                                    @endif
                                 </div>
-                                @endforeach
+
+                                <div class="like-content">
+                                    <p>{{ $usuario->user }}</p>
+
+                                    <a href="{{ route('profile.show', $usuario->id) }}" class="ver-post-link">
+                                        Ver perfil
+                                    </a>
+                                </div>
+
                             </div>
+                            @endforeach
+                        </div>
                         @else
-                            <div class="no-content-message">
-                                <p>Você ainda não tem seguidores.</p>
-                            </div>
+                        <div class="no-content-message">
+                            <p>Você ainda não tem seguidores.</p>
+                        </div>
                         @endif
                     </div>
 
@@ -852,11 +859,11 @@
     </div>
 
     <style>
-    .headerInteresses {
-        align-items: center;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+        .headerInteresses {
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 
     <script>
@@ -984,30 +991,30 @@
                     buttonElement.disabled = true;
 
                     fetch(`/interesses/${interesseId}/deixar-seguir`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.sucesso) {
-                            // Recarregar a página para atualizar a interface
-                            window.location.reload();
-                        } else {
-                            alert(data.mensagem || 'Erro ao deixar de seguir o interesse');
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.sucesso) {
+                                // Recarregar a página para atualizar a interface
+                                window.location.reload();
+                            } else {
+                                alert(data.mensagem || 'Erro ao deixar de seguir o interesse');
+                                buttonElement.innerHTML = originalHTML;
+                                buttonElement.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            alert('Erro de conexão');
                             buttonElement.innerHTML = originalHTML;
                             buttonElement.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Erro:', error);
-                        alert('Erro de conexão');
-                        buttonElement.innerHTML = originalHTML;
-                        buttonElement.disabled = false;
-                    });
+                        });
                 });
             });
         });

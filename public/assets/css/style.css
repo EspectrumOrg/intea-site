@@ -15,7 +15,7 @@
     --cor-branco: #D0D6D9;
     --cor-preto: #000000;
     --cor-vermelho: #F22222;
-    
+
 
 
     /* ===================================== site colorido (em ordem dos slides) =============================================*/
@@ -99,13 +99,18 @@ body::-webkit-scrollbar-thumb {
     background: var(--azul);
 }
 
+video {
+    max-width: 100%;
+}
+
 @media (max-width: 600px) {
     body {
-        padding-bottom: calc(10vh + 16px); /* esse +16 é a distância do conteúdo pro footer quando ele tiver o mais pra baixo possível, pode mudar*/
+        padding-bottom: calc(10vh + 16px);
+        /* esse +16 é a distância do conteúdo pro footer quando ele tiver o mais pra baixo possível, pode mudar*/
     }
 }
 
 /* Modo Monochromatico */
-.monochrome  {
+.monochrome {
     filter: grayscale(100%);
 }

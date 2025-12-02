@@ -25,6 +25,7 @@
     border-radius: 12px;
     border: 1px solid var(--branco-light);
 }
+
 .create-post .form form {
     width: 100%;
 }
@@ -178,5 +179,46 @@
 }
 
 .image-preview .remove-image span {
+    color: var(--branco);
+}
+
+/* ----------------------------- preview vídeo ------------------------------- */
+.video-preview {
+    position: relative;
+    display: inline-block;
+    margin-top: 1rem;
+    max-width: 100%;
+}
+
+.video-preview video {
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--branco-light);
+    max-height: 30vh;
+}
+
+.video-preview .remove-video {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: var(--branco);
+    font-size: 20px;
+    line-height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.video-preview .remove-video:hover {
+    background-color: var(--azul-apagado);
+}
+
+.video-preview .remove-video span {
     color: var(--branco);
 }

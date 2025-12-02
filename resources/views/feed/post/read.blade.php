@@ -163,6 +163,15 @@
         @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
         <img src="{{ asset('storage/' . $postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
         @endif
+
+
+        @if($postagem->video)
+        <video controls class="video-postagem" style="z-index: 0;">
+            <source src="{{ asset('storage/' . $postagem->video->caminho_video) }}" type="video/mp4">
+            Seu navegador não suporta vídeo.
+        </video>
+        @endif
+
         <div class="dados">
             <h3>{{ $postagem->created_at->translatedFormat('g:i A . M j, Y') }}</h3>
         </div>

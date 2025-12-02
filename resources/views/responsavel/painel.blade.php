@@ -46,10 +46,10 @@
 
                     {{-- Se houver múltiplos autistas, mostrar seleção --}}
                     @if(isset($autistas) && $autistas->count() > 1)
-                    <div class="autistas-list" style="margin-bottom: 20px; display:flex; gap:10px; overflow:auto;">
+                    <div class="autistas-list">
                         @foreach($autistas as $autista)
                         <a href="?autista={{ $autista->id }}"
-                            class="btn btn-sm {{ isset($selectedAutista) && $selectedAutista && $selectedAutista->id == $autista->id ? 'btn-primary' : 'btn-outline-primary' }}">
+                            class="btn btn-sm {{ isset($selectedAutista) && $selectedAutista && $selectedAutista->id == $autista->id ? 'btn-dependente-selecionado' : 'btn-dependente-nao-selecionado' }}">
                             {{ $autista->usuario->apelido}}
                         </a>
                         @endforeach
@@ -475,221 +475,224 @@
 
                                 <div class="like-content">
 
+                                    <div class="dropdown" style="width: 100%; display:flex; justify-content: end;">
+                                        <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
+                                            <span class="material-symbols-outlined">more_horiz</span>
+                                        </button>
 
-                                        <div class="dropdown">
-                                            <button class="menu-opcoes" onclick="toggleDropdown(event, this)">
-                                                <span class="material-symbols-outlined">more_horiz</span>
-                                            </button>
+                                        <ul class="dropdown-content">
+                                            @php
+                                            $authUser = Auth::user();
+                                            $isOwner = intval($authUser->id) === intval($comentario->id_usuario);
 
-                                            <ul class="dropdown-content">
-                                                @php
-                                                $authUser = Auth::user();
-                                                $isOwner = intval($authUser->id) === intval($comentario->id_usuario);
+                                            if (!$isOwner && $authUser->tipo_usuario == 5 && isset($autistas)) {
+                                            $isOwner = $autistas->contains(function($autista) use ($comentario) {
+                                            return intval($autista->usuario->id) ===
+                                            intval($comentario->id_usuario);
+                                            });
+                                            }
+                                            @endphp
 
-                                                if (!$isOwner && $authUser->tipo_usuario == 5 && isset($autistas)) {
-                                                $isOwner = $autistas->contains(function($autista) use ($comentario) {
-                                                return intval($autista->usuario->id) ===
-                                                intval($comentario->id_usuario);
-                                                });
-                                                }
-                                                @endphp
-
-                                                @if($isOwner)
-                                                <li>
-                                                    <button type="button" class="btn-acao editar"
-                                                        onclick="event.stopPropagation(); abrirModalEditarComentario('{{ $comentario->id }}')">
-                                                        <span class="material-symbols-outlined">edit</span>Editar
+                                            @if($isOwner)
+                                            <li>
+                                                <button type="button" class="btn-acao editar"
+                                                    onclick="event.stopPropagation(); abrirModalEditarComentario('{{ $comentario->id }}')">
+                                                    <span class="material-symbols-outlined">edit</span>Editar
+                                                </button>
+                                            </li>
+                                            <li>
+                                                <form action="{{ route('comentario.destroy', $comentario->id) }}"
+                                                    method="POST" style="display:inline"
+                                                    onsubmit="return confirm('Deseja excluir este comentário?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn-acao excluir">
+                                                        <span class="material-symbols-outlined">delete</span>Excluir
                                                     </button>
-                                                </li>
-                                                <li>
-                                                    <form action="{{ route('comentario.destroy', $comentario->id) }}"
-                                                        method="POST" style="display:inline"
-                                                        onsubmit="return confirm('Deseja excluir este comentário?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn-acao excluir">
-                                                            <span class="material-symbols-outlined">delete</span>Excluir
-                                                        </button>
-                                                    </form>
-                                                </li>
-                                                @endif
-                                            </ul>
-                                        </div>
-
-
-                                        <strong>
-                                            Comentou na postagem de {{ $comentario->postagem->usuario->apelido }}
-                                        </strong>
-
-                                        <p>{{ Str::limit($comentario->comentario, 120) }}</p>
-
-                                        @if ($comentario->image)
-                                        <img src="{{ asset('storage/'.$comentario->image->caminho) }}"
-                                            alt="Imagem do comentário" class="comment-image">
-                                        @endif
-
-                                        <small>Enviado em {{ $comentario->created_at->format('d/m/Y H:i') }}</small>
-
-                                        <a href="{{ route('post.read', ['postagem' => $comentario->postagem->id]) }}"
-                                            class="ver-post-link">
-                                            Ver postagem
-                                        </a>
+                                                </form>
+                                            </li>
+                                            @endif
+                                        </ul>
                                     </div>
+
+
+                                    <strong>
+                                        Comentou na postagem de {{ $comentario->postagem->usuario->apelido }}
+                                    </strong>
+
+                                    <p>{{ Str::limit($comentario->comentario, 120) }}</p>
+
+                                    @if ($comentario->image)
+                                    <img src="{{ asset('storage/'.$comentario->image->caminho) }}"
+                                        alt="Imagem do comentário" class="comment-image">
+                                    @endif
+
+                                    <small>Enviado em {{ $comentario->created_at->format('d/m/Y H:i') }}</small>
+
+                                    <a href="{{ route('post.read', ['postagem' => $comentario->postagem->id]) }}"
+                                        class="ver-post-link">
+                                        Ver postagem
+                                    </a>
                                 </div>
-
-                                <!-- Modal Edição dessa postagem -->
-                                @include('responsavel.editComentario', ['comentario' => $comentario])
-
-                                @endforeach
-
-                                @else
-
-                                <div class="no-content-message">
-                                    <p>Nenhum comentário enviado ainda.</p>
-                                </div>
-
-                                @endif
                             </div>
 
-                        </div>
+                            <!-- Modal Edição dessa postagem -->
+                            @include('responsavel.editComentario', ['comentario' => $comentario])
 
+                            @endforeach
 
+                            @else
 
-                        <div class="tab-content" id="autista-tab">
-                            @if(isset($selectedAutista) && $selectedAutista)
-                            @include('responsavel.dados-autista-responsavel', ['autista' => $selectedAutista])
+                            <div class="no-content-message">
+                                <p>Nenhum comentário enviado ainda.</p>
+                            </div>
+
                             @endif
                         </div>
 
-
-                        @endif
-
                     </div>
+
+
+
+                    <div class="tab-content" id="autista-tab">
+                        @if(isset($selectedAutista) && $selectedAutista)
+                        @include('responsavel.dados-autista-responsavel', ['autista' => $selectedAutista])
+                        @endif
+                    </div>
+                    @endif
                 </div>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-                        // Controle das abas
-                        const tabButtons = document.querySelectorAll('.tab-button');
-                        const tabContents = document.querySelectorAll('.tab-content');
-                        const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
-                        const prevBtn = document.querySelector('.tab-scroll-prev');
-                        const nextBtn = document.querySelector('.tab-scroll-next');
+            </div>
 
-                        tabButtons.forEach(button => {
-                            button.addEventListener('click', function () {
-                                const tabId = this.getAttribute('data-tab');
-                                // Remove classe active de todos os botões e conteúdos
-                                tabButtons.forEach(btn => btn.classList.remove('active'));
-                                tabContents.forEach(content => content.classList.remove(
-                                    'active'));
-                                // Adiciona classe active ao botão clicado e conteúdo correspondente
-                                this.classList.add('active');
-                                const targetContent = document.getElementById(`${tabId}-tab`);
-                                if (targetContent) {
-                                    targetContent.classList.add('active');
-                                }
-                            });
-                        });
+            <!-- conteúdo popular  -->
+            <div class="content-popular">
+                @include('profile.partials.buscar')
+                @include('feed.post.partials.sidebar-popular')
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controle das abas
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabsWrapper = document.querySelector('.profile-tabs-wrapper');
+            const prevBtn = document.querySelector('.tab-scroll-prev');
+            const nextBtn = document.querySelector('.tab-scroll-next');
 
-                        // Controle do scroll horizontal
-                        function updateScrollButtons() {
-                            if (!tabsWrapper || !prevBtn || !nextBtn) return;
-                            const scrollLeft = tabsWrapper.scrollLeft;
-                            const scrollWidth = tabsWrapper.scrollWidth;
-                            const clientWidth = tabsWrapper.clientWidth;
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    // Remove classe active de todos os botões e conteúdos
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove(
+                        'active'));
+                    // Adiciona classe active ao botão clicado e conteúdo correspondente
+                    this.classList.add('active');
+                    const targetContent = document.getElementById(`${tabId}-tab`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
 
-                            // Mostra/oculta botões baseado no scroll
-                            prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
-                            nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' :
-                                'none';
+            // Controle do scroll horizontal
+            function updateScrollButtons() {
+                if (!tabsWrapper || !prevBtn || !nextBtn) return;
+                const scrollLeft = tabsWrapper.scrollLeft;
+                const scrollWidth = tabsWrapper.scrollWidth;
+                const clientWidth = tabsWrapper.clientWidth;
 
-                            // Ativa/desativa botões
-                            prevBtn.disabled = scrollLeft <= 0;
-                            nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
-                        }
+                // Mostra/oculta botões baseado no scroll
+                prevBtn.style.display = scrollLeft > 0 ? 'flex' : 'none';
+                nextBtn.style.display = scrollLeft < (scrollWidth - clientWidth - 10) ? 'flex' :
+                    'none';
 
-                        // Eventos dos botões de scroll
-                        if (prevBtn && nextBtn && tabsWrapper) {
-                            prevBtn.addEventListener('click', () => {
-                                tabsWrapper.scrollBy({
-                                    left: -200,
-                                    behavior: 'smooth'
-                                });
-                            });
-                            nextBtn.addEventListener('click', () => {
-                                tabsWrapper.scrollBy({
-                                    left: 200,
-                                    behavior: 'smooth'
-                                });
-                            });
+                // Ativa/desativa botões
+                prevBtn.disabled = scrollLeft <= 0;
+                nextBtn.disabled = scrollLeft >= (scrollWidth - clientWidth - 10);
+            }
 
-                            // Atualiza botões quando scrollar
-                            tabsWrapper.addEventListener('scroll', updateScrollButtons);
-
-                            // Atualiza botões no carregamento e redimensionamento
-                            window.addEventListener('resize', updateScrollButtons);
-                            updateScrollButtons();
-                        }
-
-                        // Scroll suave para a aba ativa se estiver fora da view
-                        function scrollToActiveTab() {
-                            const activeTab = document.querySelector('.tab-button.active');
-                            if (activeTab && tabsWrapper) {
-                                const tabRect = activeTab.getBoundingClientRect();
-                                const wrapperRect = tabsWrapper.getBoundingClientRect();
-
-                                if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
-                                    activeTab.scrollIntoView({
-                                        behavior: 'smooth',
-                                        block: 'nearest',
-                                        inline: 'center'
-                                    });
-                                }
-                            }
-                        }
-
-                        document.addEventListener('DOMContentLoaded', function () {
-                            const likesTabButtons = document.querySelectorAll('.likes-tab-button');
-                            const likesTabContents = document.querySelectorAll('.likes-tab-content');
-
-                            likesTabButtons.forEach(button => {
-                                button.addEventListener('click', function () {
-                                    const tabId = this.getAttribute('data-likes-tab');
-
-                                    // Remove classe active de todos os botões e conteúdos
-                                    likesTabButtons.forEach(btn => btn.classList.remove(
-                                        'active'));
-                                    likesTabContents.forEach(content => content
-                                        .classList
-                                        .remove('active'));
-
-                                    // Adiciona classe active ao botão clicado e conteúdo correspondente
-                                    this.classList.add('active');
-                                    const targetContent = document.getElementById(
-                                        `${tabId}-likes-content`);
-                                    if (targetContent) {
-                                        targetContent.classList.add('active');
-                                    }
-                                });
-                            });
-                        });
-
-                        // Recalcula scroll quando mudar de aba
-                        tabButtons.forEach(button => {
-                            button.addEventListener('click', scrollToActiveTab);
-                        });
+            // Eventos dos botões de scroll
+            if (prevBtn && nextBtn && tabsWrapper) {
+                prevBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({
+                        left: -200,
+                        behavior: 'smooth'
                     });
+                });
+                nextBtn.addEventListener('click', () => {
+                    tabsWrapper.scrollBy({
+                        left: 200,
+                        behavior: 'smooth'
+                    });
+                });
 
-                </script>
+                // Atualiza botões quando scrollar
+                tabsWrapper.addEventListener('scroll', updateScrollButtons);
 
-                <!-- JS -->
-                <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
-                <!-- modal de denúncia usuário -->
-                <script src="{{ url('assets/js/perfil/modal-denuncia-usuario.js') }}"></script>
-                <!-- modal de denúncia usuário -->
-                <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
-                <!-- dropdown-->
-                <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
+                // Atualiza botões no carregamento e redimensionamento
+                window.addEventListener('resize', updateScrollButtons);
+                updateScrollButtons();
+            }
+
+            // Scroll suave para a aba ativa se estiver fora da view
+            function scrollToActiveTab() {
+                const activeTab = document.querySelector('.tab-button.active');
+                if (activeTab && tabsWrapper) {
+                    const tabRect = activeTab.getBoundingClientRect();
+                    const wrapperRect = tabsWrapper.getBoundingClientRect();
+
+                    if (tabRect.left < wrapperRect.left || tabRect.right > wrapperRect.right) {
+                        activeTab.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'nearest',
+                            inline: 'center'
+                        });
+                    }
+                }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const likesTabButtons = document.querySelectorAll('.likes-tab-button');
+                const likesTabContents = document.querySelectorAll('.likes-tab-content');
+
+                likesTabButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const tabId = this.getAttribute('data-likes-tab');
+
+                        // Remove classe active de todos os botões e conteúdos
+                        likesTabButtons.forEach(btn => btn.classList.remove(
+                            'active'));
+                        likesTabContents.forEach(content => content
+                            .classList
+                            .remove('active'));
+
+                        // Adiciona classe active ao botão clicado e conteúdo correspondente
+                        this.classList.add('active');
+                        const targetContent = document.getElementById(
+                            `${tabId}-likes-content`);
+                        if (targetContent) {
+                            targetContent.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Recalcula scroll quando mudar de aba
+            tabButtons.forEach(button => {
+                button.addEventListener('click', scrollToActiveTab);
+            });
+        });
+    </script>
+
+    <!-- JS -->
+    <script src="{{ asset('assets/js/perfil/modalSeguir.js') }}"></script>
+    <!-- modal de denúncia usuário -->
+    <script src="{{ url('assets/js/perfil/modal-denuncia-usuario.js') }}"></script>
+    <!-- modal de denúncia usuário -->
+    <script src="{{ url('assets/js/posts/modal-denuncia.js') }}"></script>
+    <!-- dropdown-->
+    <script src="{{ url('assets/js/posts/dropdown-option.js') }}"></script>
 </body>
 
 </html>

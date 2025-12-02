@@ -319,6 +319,12 @@
     z-index: 9999 !important;
 }
 
+.video-postagem {
+    z-index: 1;
+    position: relative;
+    max-height: 70vh;
+}
+
 /* Garante que o overlay e botões fiquem abaixo */
 .corpo-post .post-overlay,
 .comentario .comentario-overlay,

@@ -66,9 +66,9 @@ e($texto)
             @if($postagem->interesses->count() > 0)
             <div class="post-interesses">
                 @foreach($postagem->interesses->take(2) as $interesse)
-                <a href="{{ route('post.interesse', $interesse->slug) }}" 
-                   class="interesse-badge-mini" 
-                   style="background-color: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
+                <a href="{{ route('post.interesse', $interesse->slug) }}"
+                    class="interesse-badge-mini"
+                    style="background-color: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
                     <span class="material-symbols-outlined" style="font-size: 14px;">{{ $interesse->icone }}</span>
                     {{ $interesse->nome }}
                 </a>
@@ -223,6 +223,13 @@ e($texto)
                         @if ($postagem->imagens->isNotEmpty() && $postagem->imagens->first()->caminho_imagem)
                         <img src="{{ asset('storage/' . $postagem->imagens->first()->caminho_imagem) }}" class="card-img-top" alt="Imagem da postagem">
                         @endif
+
+                        @if($postagem->video)
+                        <video controls class="video-postagem">
+                            <source src="{{ asset('storage/' . $postagem->video->caminho_video) }}" type="video/mp4">
+                            Seu navegador não suporta vídeo.
+                        </video>
+                        @endif
                     </div>
 
 
@@ -286,17 +293,17 @@ e($texto)
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Ativar navegação de feed
-    const currentPath = window.location.pathname;
-    document.querySelectorAll('.nav-feed').forEach(link => {
-        if (link.href === window.location.href) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ativar navegação de feed
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-feed').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     });
-});
 </script>
 
 <!-- JS -->

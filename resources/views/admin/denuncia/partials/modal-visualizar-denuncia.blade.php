@@ -57,6 +57,13 @@
                                 @endforeach
                             </div>
                             @endif
+
+                            @if($item->postagem->video)
+                            <video controls class="video-postagem">
+                                <source src="{{ asset('storage/' . $item->postagem->video->caminho_video) }}" type="video/mp4">
+                                Seu navegador não suporta vídeo.
+                            </video>
+                            @endif
                         </div>
 
                         @elseif ($item->comentario)

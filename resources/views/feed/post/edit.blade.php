@@ -53,19 +53,49 @@
                                 <span class="material-symbols-outlined">close</span>
                             </button>
                         </div>
+
+                        {{-- Preview de vídeo --}}
+                        @php
+                        $video = $postagem->video;
+                        @endphp
+
+                        <input type="hidden" name="remover_video" id="remover_video_{{$postagem->id}}" value="0">
+
+                        <div id="video-preview_postagem_edit-{{ $postagem->id }}"
+                            class="video-preview"
+                            @if($video) style="display:block;" @else style="display:none;" @endif>
+
+                            <video id="preview-video_postagem_edit-{{ $postagem->id }}"
+                                class="preview-video"
+                                playsinline muted controls
+                                style="max-width:100%; border-radius: 8px;">
+                                @if($video)
+                                <source src="{{ asset('storage/' . $video->caminho_video) }}" type="video/mp4">
+                                @endif
+                            </video>
+
+                            <button type="button"
+                                id="remove-video_postagem_edit-{{$postagem->id}}"
+                                class="remove-video">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
                     </div>
 
                     <div class="content">
                         <div class="extras">
+                            <!-- imagem/gif -->
                             <label for="caminho_imagem_edit_modal_{{ $postagem->id }}" class="upload-label">
                                 <span class="material-symbols-outlined">image</span>
                             </label>
-                            <input
-                                id="caminho_imagem_edit_modal_{{ $postagem->id }}"
-                                name="caminho_imagem"
-                                type="file"
-                                accept="image/*"
-                                class="input-file">
+                            <input id="caminho_imagem_edit_modal_{{ $postagem->id }}" name="caminho_imagem" type="file" accept="image/*" class="input-file">
+
+                            <!-- vídeo -->
+                            <label for="caminho_video_edit_{{ $postagem->id }}" class="upload-label">
+                                <span class="material-symbols-outlined">videocam</span>
+                            </label>
+                            <input id="caminho_video_edit_{{ $postagem->id }}" type="file" name="caminho_video" accept="video/*" class="input-file">
                         </div>
 
                         <div class="contador">
@@ -130,39 +160,86 @@
         });
     });
 </script>
+
 <!-- Preview da Imagem ------------------------------------------------>
 <script>
-(function() {
-    const postId = "{{ $postagem->id }}";
-    const inputFile = document.getElementById(`caminho_imagem_edit_modal_${postId}`);
-    const previewContainer = document.getElementById(`image-preview_postagem_edit-${postId}`);
-    const previewImage = document.getElementById(`preview-img_postagem_edit-${postId}`);
-    const removeButton = document.getElementById(`remove-image_postagem_edit-${postId}`);
-    const removerInput = document.getElementById(`remover_imagem_${postId}`);
+    (function() {
+        const postId = "{{ $postagem->id }}";
+        const inputFile = document.getElementById(`caminho_imagem_edit_modal_${postId}`);
+        const previewContainer = document.getElementById(`image-preview_postagem_edit-${postId}`);
+        const previewImage = document.getElementById(`preview-img_postagem_edit-${postId}`);
+        const removeButton = document.getElementById(`remove-image_postagem_edit-${postId}`);
+        const removerInput = document.getElementById(`remover_imagem_${postId}`);
 
-    // Trocar imagem
-    inputFile.addEventListener('change', () => {
-        const file = inputFile.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                previewImage.src = e.target.result;
-                previewContainer.style.display = 'block';
-                removerInput.value = 0; // não remover, imagem nova
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+        // Trocar imagem
+        inputFile.addEventListener('change', () => {
+            const file = inputFile.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    removerInput.value = 0; // não remover, imagem nova
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    // Remover imagem
-    removeButton.addEventListener('click', () => {
-        inputFile.value = '';
-        previewImage.src = '';
-        previewContainer.style.display = 'none';
-        removerInput.value = 1; // sinaliza para o controller apagar
-    });
-})();
+        // Remover imagem
+        removeButton.addEventListener('click', () => {
+            inputFile.value = '';
+            previewImage.src = '';
+            previewContainer.style.display = 'none';
+            removerInput.value = 1; // sinaliza para o controller apagar
+        });
+    })();
 </script>
+
+<!-- Preview da Vídeo ------------------------------------------------>
+<script>
+    (function() {
+        const id = "{{ $postagem->id }}";
+
+        const inputVideo = document.getElementById(`caminho_video_edit_${id}`);
+        const previewContainerVideo = document.getElementById(`video-preview_postagem_edit-${id}`);
+        const previewVideo = document.getElementById(`preview-video_postagem_edit-${id}`);
+        const removeVideoBtn = document.getElementById(`remove-video_postagem_edit-${id}`);
+        const removerVideoInput = document.getElementById(`remover_video_${id}`);
+
+        if (!inputVideo) return;
+
+        // Novo vídeo enviado
+        inputVideo.addEventListener('change', () => {
+            const file = inputVideo.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = e => {
+                    previewVideo.src = e.target.result;
+                    previewVideo.muted = true;
+                    previewVideo.autoplay = true;
+                    previewVideo.controls = true;
+
+                    previewContainerVideo.style.display = 'block';
+                    removerVideoInput.value = 0; // não remover vídeo
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remover vídeo atual
+        removeVideoBtn.addEventListener('click', () => {
+            inputVideo.value = "";
+            previewVideo.src = "";
+            previewContainerVideo.style.display = "none";
+            removerVideoInput.value = 1; // avisar o back pra excluir
+        });
+
+    })();
+</script>
+
 
 
 <!-- JS -->

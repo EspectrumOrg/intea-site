@@ -338,11 +338,15 @@
 }
 
 .links .icon-notificacao {
-    font-size: 16px !important;
-    color: var(--branco);
-    background-color: var(--vermelho);
+    font-size: 20px !important;
+    background-color: rgba(230, 78, 78, 0.5);
+    color: var(--vermelho);
     border-radius: 50%;
-    padding: .8rem !important;
+    padding: .02rem !important;
+}
+
+.links .icon-notificacao::after {
+    background-color: transparent !important;
 }
 
 /* CONFIGURAÇÕES (6º link) */

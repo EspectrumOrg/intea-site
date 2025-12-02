@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Postagem;
 use App\Models\ImagemPostagem;
+use App\Models\VideoPostagem;
 use App\Models\Tendencia;
 use App\Models\Interesse;
 use Faker\Core\File;
@@ -234,6 +235,7 @@ class PostagemController extends Controller
         $request->validate([
             'texto_postagem' => 'required|string|max:1000',
             'caminho_imagem' => 'nullable|image|mimes:png,jpg,gif|max:4096',
+            'caminho_video'  => 'nullable|mimetypes:video/mp4,video/webm,video/ogg|max:20480',
             'interesse_id' => 'nullable|exists:interesses,id',
             'interesses_ids' => 'nullable|array',
             'interesses_ids.*' => 'exists:interesses,id',
@@ -256,6 +258,15 @@ class PostagemController extends Controller
             $imagem = $request->file('caminho_imagem')->store('arquivos/postagens', 'public');
             ImagemPostagem::create([
                 'caminho_imagem' => $imagem,
+                'id_postagem' => $postagem->id,
+            ]);
+        }
+
+        // Criar Vídeos
+        if ($request->hasFile('caminho_video')) {
+            $video = $request->file('caminho_video')->store('arquivos/videos', 'public');
+            VideoPostagem::create([
+                'caminho_video' => $video,
                 'id_postagem' => $postagem->id,
             ]);
         }
@@ -417,6 +428,27 @@ class PostagemController extends Controller
                 $imagemPrincipal->update(['caminho_imagem' => $caminho]);
             } else {
                 $post->imagens()->create(['caminho_imagem' => $caminho]);
+            }
+        }
+
+        $videoPrincipal = $post->video;
+
+        /* Remover vídeo */
+        if ($request->boolean('remover_video')) {
+            if ($videoPrincipal) {
+                Storage::disk('public')->delete($videoPrincipal->caminho_video);
+                $videoPrincipal->delete();
+            }
+        }
+        elseif ($request->hasFile('caminho_video')) {
+            $arquivo = $request->file('caminho_video');
+            $caminho = $arquivo->store('arquivos/postagens/videos', 'public');
+
+            if ($videoPrincipal) {
+                Storage::disk('public')->delete($videoPrincipal->caminho_video);
+                $videoPrincipal->update(['caminho_video' => $caminho]);
+            } else {
+                $post->video()->create(['caminho_video' => $caminho]);
             }
         }
 

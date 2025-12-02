@@ -52,6 +52,11 @@ class Postagem extends Model
         return $this->hasMany(ImagemPostagem::class, 'id_postagem');
     }
 
+    public function video()
+    {
+        return $this->hasOne(VideoPostagem::class, 'id_postagem');
+    }
+
     public function curtidas()
     {
         return $this->hasMany(Curtida::class, 'id_postagem');

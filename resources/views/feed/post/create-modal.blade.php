@@ -58,20 +58,35 @@
                                 </span>
                             </button>
                         </div>
+
+                        {{-- Preview do vídeo --}}
+                        <div id="video-preview-create-modal" class="video-preview" style="display:none;">
+                            <video id="preview-video-create-modal" controls></video>
+
+                            <button type="button" id="remove-video-create-modal" class="remove-video">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="content">
                         <div class="extras">
+                            <!-- imagem/gif -->
                             <label for="caminho_imagem_create_modal" class="upload-label">
                                 <span class="material-symbols-outlined">image</span>
                             </label>
-                            <input
-                                id="caminho_imagem_create_modal"
-                                name="caminho_imagem"
-                                type="file"
-                                accept="image/*"
-                                class="input-file">
+                            <input id="caminho_imagem_create_modal" name="caminho_imagem" type="file" accept="image/*" class="input-file">
+
                             <x-input-error class="mt-2" :messages="$errors->get('caminho_imagem')" />
+
+                            <!-- vídeo -->
+                            <label for="caminho_video_create_modal" class="upload-label">
+                                <span class="material-symbols-outlined">videocam</span>
+                            </label>
+
+                            <input id="caminho_video_create_modal" name="caminho_video" type="file" accept="video/mp4,video/webm,video/ogg" class="input-file">
+
+                            <x-input-error class="mt-2" :messages="$errors->get('caminho_video')" />
                         </div>
 
                         <div class="contador">
@@ -111,6 +126,39 @@
         inputFileCreateModal.value = ''; // limpa o input
         previewImageCreateModal.src = '';
         previewContainerCreateModal.style.display = 'none';
+    });
+</script>
+
+<!-- Preview do Vídeo -->
+<script>
+    const inputVideoCreateModal = document.getElementById('caminho_video_create_modal');
+    const videoPreviewContainerCreateModal = document.getElementById('video-preview-create-modal');
+    const previewVideoCreateModal = document.getElementById('preview-video-create-modal');
+    const removeVideoButtonCreateModal = document.getElementById('remove-video-create-modal');
+
+    inputVideoCreateModal.addEventListener('change', () => {
+        const file = inputVideoCreateModal.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = e => {
+                previewVideoCreateModal.src = e.target.result;
+                previewVideoCreateModal.controls = true;
+                previewVideoCreateModal.muted = true; // autoplay seguro
+                previewVideoCreateModal.autoplay = true;
+
+                videoPreviewContainerCreateModal.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    removeVideoButtonCreateModal.addEventListener('click', () => {
+        inputVideoCreateModal.value = ''; // limpar input
+        previewVideoCreateModal.src = '';
+        videoPreviewContainerCreateModal.style.display = 'none';
     });
 </script>
 
