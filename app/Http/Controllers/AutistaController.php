@@ -53,7 +53,6 @@ public function update_responsavel(Request $request, $id)
         'user' => 'required|string|max:255',
         'apelido' => 'nullable|string|max:255',
         'email' => 'required|email|max:255',
-        'cpf' => 'required|string|max:14',
         'data_nascimento' => 'nullable|date',
         'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ]);
@@ -62,7 +61,6 @@ public function update_responsavel(Request $request, $id)
         'user' => $validated['user'],
         'apelido' => $validated['apelido'] ?? null,
         'email' => $validated['email'],
-        'cpf' => $validated['cpf'],
         'data_nascimento' => $validated['data_nascimento'] ?? null,
     ]);
 

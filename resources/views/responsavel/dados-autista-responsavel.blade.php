@@ -48,12 +48,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="cpf" class="form-label">CPF</label>
-            <input id="cpf" name="cpf" type="text" class="form-control" 
-                   value="{{ $autista->usuario->cpf ?? old('cpf') }}" required />
-        </div>
-
-        <div class="mb-3">
             <label for="data_nascimento" class="form-label">Data de Nascimento</label>
             <input id="data_nascimento" name="data_nascimento" type="date" class="form-control" 
                    value="{{ $autista->usuario->data_nascimento ?? old('data_nascimento') }}" />
