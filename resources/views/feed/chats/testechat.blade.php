@@ -56,10 +56,20 @@
         <div class="messages" id="messages"></div>
 
         <div class="bottom" id="chat-form-container">
-            <form id="chatForm">
-                <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off">
-                <button type="submit">Enviar</button>
-            </form>
+           <form id="chatForm" enctype="multipart/form-data">
+            
+
+    <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off">
+
+             <img id="preview-img" src="" style="display:none;" />
+ 
+<input type="file" id="foto" name="imagem" accept="image/*" style="display:none;">
+
+            <button type="button" id="btnEnviarFoto" class="btn-image">
+                📷
+            </button>
+    <button type="submit">Enviar</button>
+</form>
         </div>
 
     </div>
@@ -99,20 +109,31 @@ function appendMensagem(data) {
         avatarHtml = `<img src="{{ asset('storage/') }}/${data.foto}" alt="Avatar">`;
     }
 
+    // coloca a imagem dentro do <p>
+    let imagemHtml = '';
+    if (data.imagem) {
+        imagemHtml = `<img src="/storage/${data.imagem}" class="msg-imagem">`;
+    }
+
     const messageHtml = `
-        <div class="${classe} message"">
+        <div class="${classe} message">
             ${isRemetente ? '' : avatarHtml}
-            <p>
-                ${data.message}
-                <small class="hora-msg">${data.hora ?? data.created_at ?? ''}</small>
-            </p>
+
+            <div class="msg-content-wrapper">
+                <p>
+                    ${imagemHtml}
+                    ${data.message ?? ''}
+                    <small class="hora-msg">${data.hora ?? data.created_at ?? ''}</small>
+                </p>
+            </div>
+
             ${isRemetente ? avatarHtml : ''}
         </div>
     `;
+
     $("#messages").append(messageHtml);
     $("#messages").scrollTop($("#messages")[0].scrollHeight);
 }
-
 // Função para abrir chat via AJAX
 function abrirChat(usuarioId) {
     usuarioSelecionado = usuarioId;
@@ -183,31 +204,55 @@ $("#buscarUsuario").on('keyup', function() {
     });
 });
 
+$("#btnEnviarFoto").on("click", function() {
+    $("#foto").click();
+});
+
 // Enviar mensagem
 $("#chatForm").submit(function(e) {
     e.preventDefault();
 
     const input = $(".chat-window #message");
     const texto = input.val().trim();
-    if (!texto || !usuarioSelecionado) return;
+const imagem = $("#foto")[0]?.files[0]; // primeira e única declaração
+
+if (!usuarioSelecionado || (!texto && !imagem)) return;
+
+let formData = new FormData();
+formData.append("_token", "{{ csrf_token() }}");
+formData.append("usuario2_id", usuarioSelecionado);
+
+// só adiciona o texto se existir
+if (texto) {
+    formData.append("message", texto);
+}
+
+// só adiciona a imagem se existir
+if (imagem) {
+    formData.append("imagem", imagem);
+}
+ 
+
 
     $.ajax({
         url: "{{ route('broadcast') }}",
         method: "POST",
         headers: { "X-Socket-Id": pusher.connection.socket_id },
-        data: {
-            _token: "{{ csrf_token() }}",
-            message: texto,
-            usuario2_id: usuarioSelecionado
-        },
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function(res) {
             appendMensagem({
                 remetente_id: usuarioLogado,
                 message: res.message,
                 foto: "{{ Auth::user()->foto }}",
-                 hora: res.hora
+                 hora: res.hora,
+                     imagem: res.imagem // <-- ADICIONE ISTO
+
             });
             input.val('');
+            $("#preview-img").hide().attr("src", "");
+            $("#foto").val("");
         }
     });
 });
@@ -227,6 +272,20 @@ $("#fecharChatBtn").on("click", function(e) {
         return;
     }
 
+});
+$("#foto").on("change", function () {
+    const file = this.files[0];
+
+    if (!file) {
+        $("#preview-img").hide();
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        $("#preview-img").attr("src", e.target.result).show();
+    };
+    reader.readAsDataURL(file);
 });
 
 $(document).ready(function() {

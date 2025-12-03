@@ -40,6 +40,14 @@ class PusherController extends Controller
         $usuario1 = auth()->id();
         $usuario2 = $request->usuario2_id;
         $texto = $request->message;
+        $caminhoImagem = null;
+
+if ($request->hasFile('imagem')) {
+    $foto = $request->file('imagem');
+    $nomeArquivo = uniqid() . '.' . $foto->getClientOriginalExtension();
+    $foto->storeAs('arquivos/chat', $nomeArquivo, 'public');
+    $caminhoImagem = "arquivos/chat/" . $nomeArquivo;
+}
 
         // Busca ou cria conversa
         $conversa = \App\Models\ChatPrivado::where(function ($q) use ($usuario1, $usuario2) {
@@ -55,11 +63,14 @@ class PusherController extends Controller
             ]);
         }
 
+
         // Salva mensagem
         $mensagem = \App\Models\MensagemPrivada::create([
             'conversa_id' => $conversa->id,
             'remetente_id' => $usuario1,
             'texto' => $texto,
+                'imagem'        => $caminhoImagem, // <- AQUI
+
         ]);
 
         // Busca a foto do usuário remetente
@@ -70,14 +81,18 @@ broadcast(new \App\Events\PusherBroadcast(
     $texto,
     $usuario1,
     $foto,
-    $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i')
+    $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
+    $caminhoImagem 
+
 ))->toOthers();
 
         return response()->json([
     'message' => $texto,
     'remetente_id' => $usuario1,
     'foto' => $foto,
-    'hora' => $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i')
+    'hora' => $mensagem->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
+        'imagem' => $caminhoImagem 
+
 ]);
     }
 
@@ -147,6 +162,7 @@ public function webzap(Request $request)
                         'message' => $msg->texto,
                         'foto' => $remetente->foto ?? 'default.jpg',
                         'hora' => $msg->created_at->setTimezone('America/Sao_Paulo')->format('H:i'),
+                        'imagem' => $msg->imagem, // <--- AQUI
 
                     ];
                 });

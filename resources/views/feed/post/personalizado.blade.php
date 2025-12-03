@@ -36,7 +36,6 @@ e($texto)
         </div>
     </div>
 
-
     <div class="create-post">
         @include("feed.post.create")
     </div>
@@ -83,7 +82,13 @@ e($texto)
                             <a href="{{ route('post.interesse', $interesse->slug) }}"
                                 class="interesse-badge-mini"
                                 style="color: {{ $interesse->cor }}; font-size: 14px;">
-                                <span class="material-symbols-outlined" style="font-size: 16px;">{{ $interesse->icone }}</span>
+                                @if($interesse->icone_custom)
+                                    <img src="{{ $interesse->icone }}" 
+                                         alt="{{ $interesse->nome }}"
+                                         style="width: 16px; height: 16px; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 2px;">
+                                @else
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">{{ $interesse->icone }}</span>
+                                @endif
                                 {{ substr($interesse->nome, 0, 10) . (strlen($interesse->nome) > 7 ? '...' : '') }}
                             </a>
                             @endforeach
