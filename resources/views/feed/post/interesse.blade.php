@@ -33,7 +33,14 @@ e($texto)
     <div class="feed-header interesse" style="border-left: 4px solid {{ $interesse->cor }};">
         <div class="interesse-header-info">
             <div class="interesse-avatar" style="background-color: {{ $interesse->cor }}20; color: {{ $interesse->cor }};">
-                <span class="material-symbols-outlined">{{ $interesse->icone }}</span>
+                <!-- CORREÇÃO 1: Ícone do header principal -->
+                @if($interesse->icone_custom)
+                    <img src="{{ $interesse->icone }}" 
+                         alt="{{ $interesse->nome }}"
+                         style="width: 40px; height: 40px; object-fit: contain;">
+                @else
+                    <span class="material-symbols-outlined">{{ $interesse->icone }}</span>
+                @endif
             </div>
             <div class="interesse-info">
                 <h1 class="interesse-titulo">{{ $interesse->nome }}</h1>
@@ -109,7 +116,14 @@ e($texto)
                             <a href="{{ route('post.interesse', $postInteresse->slug) }}"
                                 class="interesse-badge-mini"
                                 style="color: {{ $postInteresse->cor }}; font-size: 14px;">
-                                <span class="material-symbols-outlined" style="font-size: 16px;">{{ $postInteresse->icone }}</span>
+                                <!-- CORREÇÃO 2: Ícones dos badges nas postagens -->
+                                @if($postInteresse->icone_custom)
+                                    <img src="{{ $postInteresse->icone }}" 
+                                         alt="{{ $postInteresse->nome }}"
+                                         style="width: 16px; height: 16px; object-fit: contain; display: inline-block; vertical-align: middle; margin-right: 2px;">
+                                @else
+                                    <span class="material-symbols-outlined" style="font-size: 16px;">{{ $postInteresse->icone }}</span>
+                                @endif
                                 {{ substr($postInteresse->nome, 0, 10) . (strlen($postInteresse->nome) > 7 ? '...' : '') }}
                             </a>
                             @endforeach
