@@ -236,6 +236,49 @@
 </div>
 
 <style>
+    /* CORREÇÃO ESPECÍFICA PARA O PROBLEMA DA userDropdown */
+    /* Esta correção deve ser adicionada ao template layout, mas como solução temporária, 
+       vamos forçar a correção aqui */
+    
+    /* Sobrescrever estilos problemáticos da userDropdown */
+    #userDropdown.info.dropdown-container {
+        max-height: 50px !important;
+        min-height: auto !important;
+        height: auto !important;
+        overflow: visible !important;
+        position: relative !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Garantir que o flex não crie espaço extra */
+    .flex {
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+    }
+    
+    /* Se o template layout tiver sidebar esquerda, ajustar */
+    .sidebar-left,
+    .left-sidebar,
+    .layout-left {
+        position: relative !important;
+        top: 0 !important;
+        height: auto !important;
+        min-height: auto !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Garantir que o container principal não seja empurrado para baixo */
+    .container-post {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        clear: both;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Estilos existentes da página (mantidos do seu código original) */
     .interesses-count {
         margin: 2rem 0;
         text-align: center;
@@ -707,7 +750,7 @@ function mostrarTodosInteresses() {
     }
 }
 
-// Buscar interesses em tempo real
+// Buscar interesses em tempo real 
 function buscarInteressesEmTempoReal(query) {
     const sugestoes = document.getElementById('sugestoesBusca');
     if (!sugestoes) return;
@@ -723,32 +766,46 @@ function buscarInteressesEmTempoReal(query) {
     clearTimeout(timeoutBuscaInteresses);
     
     timeoutBuscaInteresses = setTimeout(() => {
-        // Usar a rota de busca global
-        fetch(`/buscar?q=${encodeURIComponent(query)}`)
+        // ✅ CORREÇÃO DEFINITIVA: Usar rota específica para busca de interesses
+        fetch(`/api/interesses/buscar?q=${encodeURIComponent(query)}&limit=10`)
             .then(response => response.json())
-            .then(resultados => {
-                // Filtrar apenas interesses
-                const interessesFiltrados = resultados.filter(item => 
-                    item.tipo === 'interesse' || (item.nome && item.descricao)
-                );
-                
+            .then(data => {
                 // Verificar se a query ainda é a mesma
                 const input = document.getElementById('buscarInteresses');
                 if (input && input.value.trim() === query) {
-                    exibirResultadosBuscaInteresses(interessesFiltrados, false);
+                    if (data.sucesso && data.interesses.length > 0) {
+                        exibirResultadosBuscaInteresses(data.interesses, false);
+                    } else {
+                        sugestoes.innerHTML = `
+                            <div class="nenhum-resultado-sugestao">
+                                Nenhum interesse encontrado para "${query}"
+                            </div>
+                        `;
+                    }
                 }
             })
             .catch(error => {
                 console.error('Erro na busca de interesses:', error);
-                if (sugestoes) {
-                    sugestoes.innerHTML = `
-                        <div class="nenhum-resultado-sugestao">
-                            Erro ao buscar interesses
-                        </div>
-                    `;
-                }
+                // Fallback: mostrar mensagem de erro
+                sugestoes.innerHTML = `
+                    <div class="nenhum-resultado-sugestao">
+                        Use a tecla Enter para pesquisar
+                    </div>
+                `;
             });
-    }, 300); // Debounce de 300ms
+    }, 300);
+}
+
+// Função para mostrar erro
+function mostrarErroBusca() {
+    const sugestoes = document.getElementById('sugestoesBusca');
+    if (sugestoes) {
+        sugestoes.innerHTML = `
+            <div class="nenhum-resultado-sugestao">
+                Erro ao buscar interesses. Tente novamente.
+            </div>
+        `;
+    }
 }
 
 // Exibir resultados da busca
@@ -907,6 +964,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 esconderSugestoes();
             }
         }
+    });
+    
+    // CORREÇÃO ESPECÍFICA: Ajustar a userDropdown que está causando o problema
+    const userDropdown = document.getElementById('userDropdown');
+    if (userDropdown) {
+        // Forçar altura máxima
+        userDropdown.style.maxHeight = '50px';
+        userDropdown.style.overflow = 'visible';
+        userDropdown.style.position = 'relative';
+        
+        // Remover qualquer margem ou padding excessivo
+        userDropdown.style.margin = '0';
+        userDropdown.style.padding = '0';
+        
+        // Se estiver dentro de um flex container problemático
+        const parentFlex = userDropdown.closest('.flex');
+        if (parentFlex) {
+            parentFlex.style.alignItems = 'flex-start';
+            parentFlex.style.justifyContent = 'flex-start';
+            parentFlex.style.height = 'auto';
+            parentFlex.style.minHeight = 'auto';
+        }
+    }
+    
+    // Corrigir qualquer layout esquerdo problemático
+    const leftSidebars = document.querySelectorAll('.sidebar-left, .left-sidebar, .layout-left');
+    leftSidebars.forEach(sidebar => {
+        sidebar.style.position = 'relative';
+        sidebar.style.top = '0';
+        sidebar.style.height = 'auto';
+        sidebar.style.marginTop = '0';
     });
 });
 
