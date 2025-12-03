@@ -40,9 +40,9 @@ use App\Http\Controllers\ModeracaoController;
 
 // Início
 Route::get('/', function () {
-    if (Auth::check()) {
+    /*if (Auth::check()) {
         return redirect()->route('post.index');
-    }
+    }*/
     return view('landpage');
 })->name('landpage');
 
