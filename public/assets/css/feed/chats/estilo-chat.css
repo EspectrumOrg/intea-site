@@ -305,14 +305,51 @@
 }
 
 .message p img.msg-imagem {
-    display: block;              /* remove gaps indesejados */
     width: 100%;                 
     height: auto;                
     max-width: 250px;            
-    max-height: 200px;           
-    border-radius: 1rem;         
-    object-fit: cover;           /* mantém proporção e preenche o container */
+    max-height: 200px;    
+    
+    margin: 0 auto;
+    border-radius: 0.6rem;         
+    object-fit: cover;
 }
+.message p img.msg-imagem {
+    object-fit: contain;
+}
+
+#preview-img {
+    max-width: 30%;
+    max-height: 100%;
+    border-radius: 0.75rem;
+    object-fit: cover;
+    image-orientation: from-image;
+    margin: auto;
+    border: 1px solid var(--branco-light);
+}
+
+
+.msg-content-wrapper {
+    display: flex;
+    flex-direction: column; /* coloca a imagem acima do texto */
+    gap: 0.35rem;           /* espaçamento entre imagem e texto */
+    max-width: 75%;
+}
+
+.msg-img-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start; /* ou flex-end para mensagens do usuário */
+}
+.msg-img-wrapper img.msg-imagem {
+    width: 100%;         /* preenche a largura do container */
+    height: auto;        /* mantém proporção da imagem */
+    max-width: 200px;    /* limite de largura */
+    border-radius: 1rem; /* borda arredondada igual do texto */
+    object-fit: cover;   /* mantém cortes suaves, se necessário */
+    display: block;
+}
+
 /* horario mensagem 
 .message p .tempo {
   position: absolute;
@@ -370,28 +407,6 @@
     right: 0.75rem;
 }
 
-
-
-.msg-content-wrapper {
-    display: flex;
-    flex-direction: column; /* coloca a imagem acima do texto */
-    gap: 0.35rem;           /* espaçamento entre imagem e texto */
-    max-width: 75%;
-}
-
-.msg-img-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start; /* ou flex-end para mensagens do usuário */
-}
-.msg-img-wrapper img.msg-imagem {
-    width: 100%;         /* preenche a largura do container */
-    height: auto;        /* mantém proporção da imagem */
-    max-width: 200px;    /* limite de largura */
-    border-radius: 1rem; /* borda arredondada igual do texto */
-    object-fit: cover;   /* mantém cortes suaves, se necessário */
-    display: block;
-}
 
 /* destinatário === lefft*/
 .left  {
@@ -569,6 +584,7 @@
 
     .chat-window .top .botaoFecharChat {
         display: flex;
+        background-color: var(--branco);
     }
 
     .messages {
@@ -636,12 +652,4 @@
     .bottom button {
         padding: 0.5rem 1rem;
     }
-}
-#preview-img {
-    max-width: 120px;    /* 🔥 A imagem nunca vai ultrapassar isso */
-    max-height: 120px;   /* limite de altura */
-    border-radius: 0.75rem;
-    object-fit: cover;
-    margin-left: 10px;
-    border: 1px solid var(--branco-light);
 }

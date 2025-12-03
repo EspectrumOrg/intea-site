@@ -59,17 +59,19 @@
            <form id="chatForm" enctype="multipart/form-data">
             
 
-    <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off">
+                <input type="text" id="message" placeholder="Insira a mensagem..." autocomplete="off">
 
-             <img id="preview-img" src="" style="display:none;" />
- 
-<input type="file" id="foto" name="imagem" accept="image/*" style="display:none;">
+                <img id="preview-img" src="" style="display:none;" />
+            
+                <input type="file" id="foto" name="imagem" accept="image/*" style="display:none;">
 
-            <button type="button" id="btnEnviarFoto" class="btn-image">
-                📷
-            </button>
-    <button type="submit">Enviar</button>
-</form>
+                        <button type="button" id="btnEnviarFoto" class="btn-image">
+                            <span class="material-symbols-outlined">
+                                imagesmode
+                            </span>
+                        </button>
+                <button type="submit">Enviar</button>
+            </form>
         </div>
 
     </div>
