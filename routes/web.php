@@ -101,50 +101,78 @@ Route::resource("profissional", ProfissionalSaudeController::class)->names("prof
 // Cadastro de Responsável
 Route::resource("responsavel", ResponsavelController::class)->names("responsavel");
 
-// Usuário Logado PADRÃO
-Route::middleware(['auth', 'check.ban'])->group(function () {
+// ========== ROTAS PÚBLICAS ==========
+Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
+Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
+Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
+Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
+Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
+Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
+
+// API pública para interesses
+Route::get('/api/interesses/slug/{slug}', function ($slug) {
+    $interesse = \App\Models\Interesse::where('slug', $slug)->first();
+    if (!$interesse) {
+        return response()->json(['error' => 'Interesse não encontrado'], 404);
+    }
+    return response()->json([
+        'id' => $interesse->id,
+        'nome' => $interesse->nome,
+        'slug' => $interesse->slug
+    ]);
+});
+
+// ========== ROTAS EXCLUÍDAS DO MIDDLEWARE DE ONBOARDING ==========
+Route::middleware(['auth'])->group(function () {
+    // Rotas de onboarding (acessíveis mesmo com onboarding não concluído)
+    Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
+    Route::post('/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
+    Route::post('/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
+    
+    // Logout
+    Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+});
+
+// ========== USUÁRIO LOGADO PADRÃO (COM ONBOARDING OBRIGATÓRIO) ==========
+Route::middleware(['auth', 'check.ban', 'check.onboarding'])->group(function () {
 
     // ========== INTERESSES ==========
-Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
-Route::get('/interesses/criar', [InteresseController::class, 'create'])->name('interesses.create');
-Route::post('/interesses', [InteresseController::class, 'store'])->name('interesses.store');
-Route::get('/interesses/pesquisar', [InteresseController::class, 'pesquisar'])->name('interesses.pesquisar');
-Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
-Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
-Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
-Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
+    Route::get('/interesses', [InteresseController::class, 'index'])->name('interesses.index');
+    Route::get('/interesses/criar', [InteresseController::class, 'create'])->name('interesses.create');
+    Route::post('/interesses', [InteresseController::class, 'store'])->name('interesses.store');
+    Route::get('/interesses/pesquisar', [InteresseController::class, 'pesquisar'])->name('interesses.pesquisar');
+    Route::get('/interesses/{slug}', [InteresseController::class, 'show'])->name('interesses.show');
+    Route::post('/interesses/{id}/seguir', [InteresseController::class, 'seguir'])->name('interesses.seguir');
+    Route::post('/interesses/{id}/deixar-seguir', [InteresseController::class, 'deixarSeguir'])->name('interesses.deixar-seguir');
+    Route::get('/interesses/sugeridos', [InteresseController::class, 'sugeridos'])->name('interesses.sugeridos');
 
-// ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
-Route::get('/interesses/{slug}/editar', [InteresseController::class, 'edit'])->name('interesses.edit')->middleware('auth');
-Route::put('/interesses/{slug}', [InteresseController::class, 'update'])->name('interesses.update')->middleware('auth');
-Route::delete('/interesses/{slug}', [InteresseController::class, 'destroy'])->name('interesses.destroy')->middleware('auth');
-Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moderadores'])->name('interesses.moderadores')->middleware('auth');
-Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador')->middleware('auth');
-Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador')->middleware('auth');
-Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade')->middleware('auth');
-Route::get('/api/interesses/todos', [InteresseController::class, 'todosInteresses']);
+    // ========== SISTEMA DE DONOS E GERENCIAMENTO DE INTERESSES ==========
+    Route::get('/interesses/{slug}/editar', [InteresseController::class, 'edit'])->name('interesses.edit')->middleware('auth');
+    Route::put('/interesses/{slug}', [InteresseController::class, 'update'])->name('interesses.update')->middleware('auth');
+    Route::delete('/interesses/{slug}', [InteresseController::class, 'destroy'])->name('interesses.destroy')->middleware('auth');
+    Route::get('/interesses/{slug}/moderadores', [InteresseController::class, 'moderadores'])->name('interesses.moderadores')->middleware('auth');
+    Route::post('/interesses/{slug}/adicionar-moderador', [InteresseController::class, 'adicionarModerador'])->name('interesses.adicionar-moderador')->middleware('auth');
+    Route::delete('/interesses/{slug}/remover-moderador', [InteresseController::class, 'removerModerador'])->name('interesses.remover-moderador')->middleware('auth');
+    Route::post('/interesses/{slug}/transferir-propriedade', [InteresseController::class, 'transferirPropriedade'])->name('interesses.transferir-propriedade')->middleware('auth');
+    Route::get('/api/interesses/todos', [InteresseController::class, 'todosInteresses']);
 
-// Rota para servir arquivos no Windows (onde storage:link não funciona)
-Route::get('/storage/serve/{path}', function($path) {
-    $storagePath = storage_path('app/public/' . $path);
-    
-    if (!file_exists($storagePath)) {
-        abort(404);
-    }
-    
-    return response()->file($storagePath);
-})->where('path', '.*')->name('storage.serve');
+    // Rota para servir arquivos no Windows (onde storage:link não funciona)
+    Route::get('/storage/serve/{path}', function($path) {
+        $storagePath = storage_path('app/public/' . $path);
+        
+        if (!file_exists($storagePath)) {
+            abort(404);
+        }
+        
+        return response()->file($storagePath);
+    })->where('path', '.*')->name('storage.serve');
 
     // Feeds por interesse
     Route::get('/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
     Route::get('/personalizado', [PostagemController::class, 'personalizado'])->name('post.personalizado');
     Route::get('/interesse/{slug}', [PostagemController::class, 'porInteresse'])->name('post.interesse');
     Route::get('/i/{slug}', [PostagemController::class, 'porInteresse']);
-
-    // ONBOARDING
-    Route::get('/onboarding', [PreferenciasUsuarioController::class, 'onboarding'])->name('onboarding');
-    Route::post('/onboarding/salvar', [PreferenciasUsuarioController::class, 'salvarOnboarding'])->name('onboarding.salvar');
-    Route::post('/onboarding/pular', [PreferenciasUsuarioController::class, 'pularOnboarding'])->name('onboarding.pular');
 
     // ========== FEED E POSTAGENS ==========
     Route::get('/feed/seguindo', [PostagemController::class, 'seguindo'])->name('post.seguindo');
@@ -218,79 +246,14 @@ Route::get('/storage/serve/{path}', function($path) {
     // Atualizar visibilidade de usuário
     Route::patch('/usuario/update-privacidade', [\App\Http\Controllers\UsuarioController::class, 'update_privacidade'])
         ->name('usuario.update_privacidade');
-});
-
-// Profissional de Saúde Logado
-Route::middleware('auth', 'is_profissional')->group(function () {
-    Route::get('/pagina_saude', function () {
-        return view('paginas/profissional_saude/inicio_profissional_saude');
-    })->name('pagina_saude');
-});
-
-Route::middleware(['auth'])->group(function () {
+        
+    // Notificações
     Route::get('/notificacoes', [NotificacaoController::class, 'index'])->name('notificacoes.index');
     Route::post('/notificacoes/{id}/aceitar', [NotificacaoController::class, 'aceitar'])->name('notificacoes.aceitar');
     Route::delete('/notificacao/{id}', [NotificacaoController::class, 'destroy'])->name('notificacao.destroy');
     Route::delete('/notificacoes/{id}', [NotificacaoController::class, 'recusar'])->name('notificacoes.recusar');
-});
-
-// Apenas Admin
-Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
-    Route::resource("admin", AdminController::class)->names("admin");
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::resource("usuario", UsuarioController::class)->names("usuario")->parameters(["usuario" => "usuarios"]);
-    Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
-    Route::delete('/usuarioDenuncia/{usuario}', [UsuarioController::class, 'destroyDenuncia'])->name('usuario.destroyDenuncia');
-    Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
-    Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
-    Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
-    Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
-    Route::post('/suporte/resposta', [ContatoController::class, 'resposta'])->name('contato.resposta');
-});
-
-// Rotas públicas
-Route::get('/perfil/{usuario_id?}', [ContaController::class, 'show'])->name('profile.show');
-Route::get('/tendencias', [TendenciaController::class, 'index'])->name('tendencias.index');
-Route::get('/tendencias/{slug}', [TendenciaController::class, 'show'])->name('tendencias.show');
-Route::get('/api/tendencias/populares', [TendenciaController::class, 'apiPopulares'])->name('api.tendencias.populares');
-Route::get('/api/tendencias/search', [TendenciaController::class, 'search'])->name('api.tendencias.search');
-Route::get('/api/tendencias', [TendenciaController::class, 'apiTendencias'])->name('api.tendencias');
-
-// API pública para interesses
-Route::get('/api/interesses/slug/{slug}', function ($slug) {
-    $interesse = \App\Models\Interesse::where('slug', $slug)->first();
-    if (!$interesse) {
-        return response()->json(['error' => 'Interesse não encontrado'], 404);
-    }
-    return response()->json([
-        'id' => $interesse->id,
-        'nome' => $interesse->nome,
-        'slug' => $interesse->slug
-    ]);
-});
-
-// Rotas para gerenciamento de telefones
-Route::middleware('auth')->group(function () {
-    Route::post('/telefones', [App\Http\Controllers\TelefoneController::class, 'store'])->name('telefones.store');
-    Route::put('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'update'])->name('telefones.update');
-    Route::delete('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'destroy'])->name('telefones.destroy');
-    Route::post('/telefones/{id}/principal', [App\Http\Controllers\TelefoneController::class, 'setPrincipal'])->name('telefones.principal');
-    Route::get('/telefones/{id}/dados', [App\Http\Controllers\TelefoneController::class, 'getDados'])->name('telefones.dados');
-});
-
-// rotas para adicionar dependente via responsavel
-Route::post('/responsavel/{id}/adicionar-dependente', [ResponsavelController::class, 'addDependente'])->name('responsavel.adicionar_dependente');
-
-// rotas do responsavel
-Route::middleware(['auth', 'is_responsavel', 'check.ban'])->group(function () {
-    Route::get('/painel-responsavel', [\App\Http\Controllers\ResponsavelPainelController::class, 'edit'])->name('responsavel.painel');
-    Route::get('/autistas/{id}/editar', [App\Http\Controllers\AutistaController::class, 'edit_responsavel'])->name('autistas.edit_responsavel');
-    Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
-    Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])->name('dependente.remover');
-});
-
-// ========== SISTEMA DE MODERAÇÃO ==========
-Route::middleware(['auth'])->group(function () {
+    
+    // ========== SISTEMA DE MODERAÇÃO ==========
     Route::prefix('moderacao')->group(function () {
         // Painéis
         Route::get('/interesse/{slugInteresse}', [ModeracaoController::class, 'painel'])->name('moderacao.painel');
@@ -326,6 +289,49 @@ Route::middleware(['auth'])->group(function () {
         // Debug (remover após testes)
         Route::get('/debug/permissoes', [ModeracaoController::class, 'debugPermissoes'])->name('moderacao.debug.permissoes');
     });
+});
+
+// ========== USUÁRIOS ESPECÍFICOS (SEM ONBOARDING OBRIGATÓRIO) ==========
+
+// Profissional de Saúde Logado
+Route::middleware(['auth', 'check.ban', 'is_profissional'])->group(function () {
+    Route::get('/pagina_saude', function () {
+        return view('paginas/profissional_saude/inicio_profissional_saude');
+    })->name('pagina_saude');
+});
+
+// Responsável Logado
+Route::middleware(['auth', 'check.ban', 'is_responsavel'])->group(function () {
+    Route::get('/painel-responsavel', [\App\Http\Controllers\ResponsavelPainelController::class, 'edit'])->name('responsavel.painel');
+    Route::get('/autistas/{id}/editar', [App\Http\Controllers\AutistaController::class, 'edit_responsavel'])->name('autistas.edit_responsavel');
+    Route::patch('/autistas/{id}', [App\Http\Controllers\AutistaController::class, 'update_responsavel'])->name('autistas.update_responsavel');
+    Route::delete('/dependente/remover', [ResponsavelController::class, 'removeDependente'])->name('dependente.remover');
+    
+    // rotas para adicionar dependente via responsavel
+    Route::post('/responsavel/{id}/adicionar-dependente', [ResponsavelController::class, 'addDependente'])->name('responsavel.adicionar_dependente');
+});
+
+// Apenas Admin (sem middleware de onboarding para admins)
+Route::middleware(['auth', 'is_admin', 'check.ban'])->group(function () {
+    Route::resource("admin", AdminController::class)->names("admin");
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::resource("usuario", UsuarioController::class)->names("usuario")->parameters(["usuario" => "usuarios"]);
+    Route::delete('/usuario/{usuario}', [UsuarioController::class, 'destroy'])->name('usuario.destroy');
+    Route::delete('/usuarioDenuncia/{usuario}', [UsuarioController::class, 'destroyDenuncia'])->name('usuario.destroyDenuncia');
+    Route::patch('/usuarios/{usuario}/desbanir', [UsuarioController::class, 'desbanir'])->name('usuario.desbanir');
+    Route::delete('/denuncia/{denuncia}', [DenunciaController::class, 'banirUsuario'])->name('denuncia.destroy');
+    Route::put('/denuncia/{denuncia}/resolve', [DenunciaController::class, 'resolve'])->name('denuncia.resolve');
+    Route::get('/suporte', [ContatoController::class, 'index'])->name('contato.index');
+    Route::post('/suporte/resposta', [ContatoController::class, 'resposta'])->name('contato.resposta');
+});
+
+// ========== ROTAS PARA TELEFONES ==========
+Route::middleware(['auth'])->group(function () {
+    Route::post('/telefones', [App\Http\Controllers\TelefoneController::class, 'store'])->name('telefones.store');
+    Route::put('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'update'])->name('telefones.update');
+    Route::delete('/telefones/{id}', [App\Http\Controllers\TelefoneController::class, 'destroy'])->name('telefones.destroy');
+    Route::post('/telefones/{id}/principal', [App\Http\Controllers\TelefoneController::class, 'setPrincipal'])->name('telefones.principal');
+    Route::get('/telefones/{id}/dados', [App\Http\Controllers\TelefoneController::class, 'getDados'])->name('telefones.dados');
 });
 
 require __DIR__ . '/auth.php';

@@ -877,18 +877,16 @@ class Usuario extends Authenticatable
      */
 
     // Verificar se o usuário tem permissões administrativas
-    public function isAdministrador(): bool
-    {
-        if ($this->tipo_usuario === 'admin') {
-            return true;
-        }
-        
-        if ($this->tipo_usuario === 1 || $this->tipo_usuario === '1') {
-            return true;
-        }
-        
-        return ($this->is_admin ?? false) || $this->admin()->exists();
+public function isAdministrador(): bool
+{
+    // Verificar se é administrador pelo tipo_usuario
+    if ($this->tipo_usuario == 1 || $this->tipo_usuario === '1') {
+        return true;
     }
+    
+    // Verificar também pela relação admin() para compatibilidade
+    return $this->admin()->exists() || ($this->tipo_usuario ?? 0) == 1;
+}
 
     // Verificar se o usuário pode acessar painel de moderação
     public function podeAcessarPainelModeracao(): bool

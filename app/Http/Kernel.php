@@ -21,13 +21,14 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\VerificarOnboarding::class,
-        
-
+        // REMOVA VerificarOnboarding daqui - middlewares globais rodam em TODAS as requisições
+        // \App\Http\Middleware\VerificarOnboarding::class,
     ];
 
     /**
      * The application's route middleware groups.
+     *
+     * These middleware may be assigned to groups or used individually.
      *
      * @var array<string, array<int, class-string|string>>
      */
@@ -39,7 +40,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'check.onboarding' => \App\Http\Middleware\CheckOnboarding::class,
+            // NÃO adicione middlewares de alias aqui! Apenas classes
         ],
 
         'api' => [
@@ -50,9 +51,9 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's middleware aliases.
+     * The application's route middleware aliases.
      *
-     * Aliases may be used to conveniently assign middleware to routes and groups.
+     * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
      *
      * @var array<string, class-string|string>
      */
@@ -64,12 +65,16 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        
+        // Middlewares personalizados
         'is_admin' => \App\Http\Middleware\IsAdmin::class,
         'is_profissional' => \App\Http\Middleware\IsProfissional::class,
         'is_responsavel' => \App\Http\Middleware\IsResponsavel::class,
         'check.ban' => \App\Http\Middleware\CheckBanned::class,
+        'check.onboarding' => \App\Http\Middleware\CheckOnboarding::class, // ADICIONE ESTA LINHA
     ];
 }

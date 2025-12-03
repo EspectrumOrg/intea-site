@@ -8,17 +8,35 @@ use Illuminate\Support\Facades\Auth;
 
 class PreferenciasUsuarioController extends Controller
 {
-    public function onboarding()
-    {
-        // ✅ CORRIGIDO - usando route('post.index') que existe
-        if (Auth::user()->onboardingConcluido()) {
-            return redirect()->route('post.index');
-        }
-
-        $interesses = Interesse::ativos()->destaques()->get();
-    
-        return view('auth.onboarding', compact('interesses'));
+   public function onboarding()
+{
+    if (Auth::user()->isAdministrador()) {
+        Auth::user()->completarOnboarding();
+        return redirect()->route('post.index');
     }
+    
+    if (Auth::user()->onboardingConcluido()) {
+        return redirect()->route('post.index');
+    }
+
+    $interesses = Interesse::ativos()->destaques()->limit(4)->get();
+    
+    if ($interesses->count() < 4) {
+        $interessesIds = $interesses->pluck('id')->toArray();
+        $interessesAdicionais = Interesse::ativos()
+            ->whereNotIn('id', $interessesIds)
+            ->limit(4 - $interesses->count())
+            ->get();
+        $interesses = $interesses->merge($interessesAdicionais);
+    }
+    
+    if ($interesses->count() == 0) {
+        Auth::user()->completarOnboarding();
+        return redirect()->route('post.index');
+    }
+
+    return view('auth.onboarding', compact('interesses'));
+}
 
     public function editar()
     {
