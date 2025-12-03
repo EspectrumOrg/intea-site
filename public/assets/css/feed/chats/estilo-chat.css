@@ -173,36 +173,15 @@
 
 .chat-window .top .botaoFecharChat {
     display: none;
-    width: max-content;
-    height: max-content;
-    margin: auto 5% auto 0;
-    padding: 0;
 }
 .chat-window .top .botaoFecharChat a {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-
-    padding: 0;
-    margin: 0 auto;
-    color: var(--preto);
-    border: none;
-    border-radius: 50%;
-    max-width: 1.4rem;
-    min-width: 0.6rem;
-    max-height: 1.4rem;
-    min-height: 0.6rem;
-    transition: all 0.4s ease-in-out;
-}
-
-.chat-window .top .botaoFecharChat a:hover {
-    background-color: var(--branco-light);
-}
-
-.material-symbols-outlined:hover::after,
-    .material-symbols-outlined.active::after {
     display: none;
 }
+
+/*.material-symbols-outlined:hover::after,
+    .material-symbols-outlined.active::after {
+    display: none;
+}*/
 
 .chat-window .top img {
     border-radius: 50%;
@@ -305,27 +284,43 @@
 }
 
 .message p img.msg-imagem {
-    width: 100%;                 
-    height: auto;                
-    max-width: 250px;            
-    max-height: 200px;    
+    width: 100%;
+    height: auto;
+    max-width: 275px;
+    max-height: 215px;
     
-    margin: 0 auto;
-    border-radius: 0.6rem;         
+    margin: 0 auto 0.35rem auto;
+    border-radius: 0.6rem;
     object-fit: cover;
 }
-.message p img.msg-imagem {
+
+.msg-img-wrapper img.msg-imagem {
+    width: 100%;
+    height: auto;
+    max-width: 200px;
+    border-radius: 1rem;
+    object-fit: cover;
+    padding: 0.2rem;
+}
+
+.message p img.msg-imagem img{
     object-fit: contain;
 }
 
 #preview-img {
-    max-width: 30%;
-    max-height: 100%;
-    border-radius: 0.75rem;
-    object-fit: cover;
+    max-width: 20%;
+    max-height: 80%;
+    border-radius: 0.35rem;
+    object-fit: contain;
     image-orientation: from-image;
     margin: auto;
+    padding: 0;
     border: 1px solid var(--branco-light);
+}
+
+#preview-img span {
+    align-self: center;
+    margin: auto;
 }
 
 
@@ -341,25 +336,6 @@
     display: flex;
     justify-content: flex-start; /* ou flex-end para mensagens do usuário */
 }
-.msg-img-wrapper img.msg-imagem {
-    width: 100%;         /* preenche a largura do container */
-    height: auto;        /* mantém proporção da imagem */
-    max-width: 200px;    /* limite de largura */
-    border-radius: 1rem; /* borda arredondada igual do texto */
-    object-fit: cover;   /* mantém cortes suaves, se necessário */
-    display: block;
-}
-
-/* horario mensagem 
-.message p .tempo {
-  position: absolute;
-  bottom: 0.25rem;
-  right: 2rem;       /* pré-verificações *
-  font-size: 8px;
-  color: var(--cinza-font);
-  white-space: nowrap;
-  pointer-events: none;
-}*/
 
 /* remetente (tu, Capitu) -> right*/
 .right {
@@ -375,7 +351,7 @@
 }
 
 /* === Confirmação visual nas mensagens enviadas === 
-
+    
 .right p::after {
   content: ""; /* pros checks *
   position: absolute;
@@ -403,7 +379,7 @@
     color: var(--branco);     
     font-size: 0.65rem;     
     opacity: 75%;     
-    bottom: 0.35rem;     
+    bottom: 0.35rem;
     right: 0.75rem;
 }
 
@@ -458,6 +434,22 @@
 #chatForm input[type="text"]:focus {
     border-color: var(--cinza);
 }
+
+
+
+
+
+.btn-image {
+    max-height: 50%;
+    max-width: 15%;
+    display: flex;
+    align-items: center;
+    padding: 0.15rem;
+}
+
+
+
+
 
 .bottom {
     width: 100%;
@@ -585,6 +577,30 @@
     .chat-window .top .botaoFecharChat {
         display: flex;
         background-color: var(--branco);
+        width: max-content;
+        height: max-content;
+        margin: auto 5% auto 0;
+        padding: 0;
+    }
+
+    .chat-window .top .botaoFecharChat a {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+
+        padding: 0;
+        margin: 0 auto;
+        color: var(--preto);
+        border: none;
+        border-radius: 50%;
+        max-width: 1.4rem;
+        min-width: 0.6rem;
+        max-height: 1.4rem;
+        min-height: 0.6rem;
+        transition: all 0.4s ease-in-out;
+    }
+    .chat-window .top .botaoFecharChat a:hover {
+        background-color: var(--branco-light);
     }
 
     .messages {
@@ -643,8 +659,28 @@
 
     .chat-window .top .botaoFecharChat {
         display: flex;
+        width: max-content;
+        height: max-content;
+        margin: auto 5% auto 0;
+        padding: 0;
     }
-    
+
+    .chat-window .top .botaoFecharChat a {
+        display: flex;
+        align-items: baseline;
+        justify-content: center;
+
+        padding: 0;
+        margin: 0 auto;
+        color: var(--preto);
+        border: none;
+        border-radius: 50%;
+        max-width: 1.4rem;
+        min-width: 0.6rem;
+        max-height: 1.4rem;
+        min-height: 0.6rem;
+        transition: all 0.4s ease-in-out;
+    }
     .bottom input[type="text"] {
         padding: 0.4rem;
     }

@@ -148,7 +148,7 @@
     .sidebar-tendencias {
         max-width: 160px;
         max-height: 75vh;
-        margin: auto 0.2rem;
+        margin: auto;
         padding: 0.25rem;
         overflow: hidden;
     }
@@ -162,6 +162,14 @@
 
     .sidebar-tendencias .tendencias-list {
         overflow: hidden;
+    }
+    
+    .sidebar-tendencias .tendencia-item {
+        padding: 0.5rem;
+    }
+
+    .sidebar-tendencias .tendencia-content {
+        gap: 0.1rem;
     }
 
     .sidebar-tendencias .ver-mais {

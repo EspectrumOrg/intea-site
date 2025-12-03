@@ -249,7 +249,7 @@ if (imagem) {
                 message: res.message,
                 foto: "{{ Auth::user()->foto }}",
                  hora: res.hora,
-                     imagem: res.imagem // <-- ADICIONE ISTO
+                     imagem: res.imagem
 
             });
             input.val('');
