@@ -86,13 +86,13 @@ class DenunciaController extends Controller
         $denuncia->status_denuncia = 'resolvida';
         $denuncia->save();
 
-        // Resolve todas as relacionadas (mesmo alvo)
+        /* Resolve todas as relacionadas (mesmo alvo)
         Denuncia::where(function ($q) use ($denuncia) {
             $q->where('id_usuario_denunciado', $denuncia->id_usuario_denunciado)
               ->orWhere('id_postagem', $denuncia->id_postagem)
               ->orWhere('id_comentario', $denuncia->id_comentario);
         })->where('id', '!=', $denuncia->id)
-          ->update(['status_denuncia' => 'resolvida']);
+          ->update(['status_denuncia' => 'resolvida']);*/
 
         return back()->with('success', 'Denúncia resolvida com sucesso!');
     }
