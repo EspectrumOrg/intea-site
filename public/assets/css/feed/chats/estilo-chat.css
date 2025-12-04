@@ -224,7 +224,7 @@
     scroll-behavior: smooth;
 }
 
-/* Scroll estilizado */
+/* Scroll estilizado wrapper*/
 .messages::-webkit-scrollbar {
     width: 0.45rem;
 }
@@ -266,10 +266,9 @@
     flex-direction: column;       
     gap: 0.1rem;                 
     height: auto;                 
-    min-width: 5rem;              
+    min-width: 5rem;
     width: auto;
-    max-width: 75%;               
-    margin-left: auto;            
+    max-width: 75%;
     padding: 1rem;
     color: var(--branco);
     background-color: var(--preto);
@@ -323,14 +322,14 @@
     margin: auto;
 }
 
-
-.msg-content-wrapper {
+/*
+.message .msg-content-wrapper {
     display: flex;
-    flex-direction: column; /* coloca a imagem acima do texto */
-    gap: 0.35rem;           /* espaçamento entre imagem e texto */
-    max-width: 75%;
-}
-
+    flex-direction: column;
+    width: fit-content;
+    margin: 0 initial;
+}   
+*/
 .msg-img-wrapper {
     width: 100%;
     display: flex;
@@ -343,6 +342,7 @@
 }
 
 .right p {
+    margin: auto 0          ;
     font-size: clamp(0.6rem, 1vw + 0.6rem, 1rem);
     width: fit-content;
     color: var(--branco);

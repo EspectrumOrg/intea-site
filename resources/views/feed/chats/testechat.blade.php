@@ -121,13 +121,11 @@ function appendMensagem(data) {
         <div class="${classe} message">
             ${isRemetente ? '' : avatarHtml}
 
-            <div class="msg-content-wrapper">
                 <p>
                     ${imagemHtml}
                     ${data.message ?? ''}
                     <small class="hora-msg">${data.hora ?? data.created_at ?? ''}</small>
                 </p>
-            </div>
 
             ${isRemetente ? avatarHtml : ''}
         </div>
