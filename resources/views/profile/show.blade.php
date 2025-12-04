@@ -830,6 +830,7 @@
                     <div class="tab-content" id="settings-tab">
                         <!-- Inclui os formulários de configurações -->
                         @include('profile.partials.update-profile-information-form')
+                        @include('profile.partials.telefones')
                         @include('profile.partials.update-privacy-form')
                     </div>
                     @endif
